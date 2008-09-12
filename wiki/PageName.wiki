@@ -1,0 +1,12 @@
+#summary First task: Regular Expressions and Automations
+
+= Regular Expressions =
+
+Subtasks:
+ * Automaton representation
+ * Automaton builder
+ * Automaton executor
+ * Visualizers
+  * Graphvis - graphical expressions
+  * TeX - tables printing
+ * Build determinized automaton
