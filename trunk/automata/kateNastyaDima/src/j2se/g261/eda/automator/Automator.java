@@ -22,6 +22,10 @@ public class Automator {
         pattern = s;
         makeGraph();
     }
+   
+    public void compile(){
+        makeGraph();
+    }
     
     private void makeGraph(){
         graph = startParse(pattern);
