@@ -5,7 +5,7 @@
 package j2se.g261.eda.automator;
 
 import j2se.g261.eda.automator.graph.Graph;
-import j2se.g261.eda.automator.graph.GraphWorkerInterface;
+import j2se.g261.eda.automator.graph.GraphWorker;
 
 /**
  *
@@ -15,8 +15,6 @@ public class Automator {
 
     private String pattern;
     private Graph graph;
-    //It must be ENTITY 
-    private GraphWorkerInterface worker;
 
     public Automator(String s) {
         pattern = s;
@@ -28,10 +26,10 @@ public class Automator {
     }
     
     private void makeGraph(){
-        graph = startParse(pattern);
-        graph = worker.markAllNodes(graph);
-        graph = worker.makeClosure(graph);
-        graph = worker.removeEpsilonNodes(graph);
+        graph = parse(pattern);
+        graph = GraphWorker.markAllNodes(graph);
+        graph = GraphWorker.makeClosure(graph);
+        graph = GraphWorker.removeEpsilonNodes(graph);
     }
 
     public boolean match(String s) {
@@ -43,8 +41,9 @@ public class Automator {
     }
     
     private Graph parse(String s) {
-        Regex r = split(pattern);
+        Regex r = split(s);
         RegexType t = r.getType();
+        
         switch (t) {
             case NOTHING: {
                 Graph g = new Graph();
@@ -58,16 +57,16 @@ public class Automator {
                 Regex regex = split(pat, RegexType.OR);
                 while (regex.getPat().length() != 0) {
                     Graph g1 = parse(r.getPat());
-                    res = worker.concatenateOR(res, g1);
+                    res = GraphWorker.concatenateOR(res, g1);
                     regex = split(regex.getRest(), RegexType.OR);
                 }
                 return res;
             }
             case ONE: {
-                return worker.concatenateONE(parse(r.getPat()));
+                return GraphWorker.concatenateONE(parse(r.getPat()));
             }
             case ANY: {
-                return worker.concatanateANY(parse(r.getPat()));
+                return GraphWorker.concatanateANY(parse(r.getPat()));
             }
             case AND: {
                 String pat = r.getPat();
@@ -76,7 +75,7 @@ public class Automator {
                 Regex regex = split(pat, RegexType.AND);
                 while (regex.getRest().length() != 0) {
                     Graph g1 = parse(r.getPat());
-                    res = worker.concatanateAND(res, g1);
+                    res = GraphWorker.concatanateAND(res, g1);
                     regex = split(regex.getRest(), RegexType.AND);
                 }
                 return res;
@@ -88,11 +87,10 @@ public class Automator {
     }
 
     private Regex split(String toSplit, RegexType t) {
-        //todo fill with some code =)
-        return null;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
     private Regex split(String toSplit) {
-        return null;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     class Regex {
