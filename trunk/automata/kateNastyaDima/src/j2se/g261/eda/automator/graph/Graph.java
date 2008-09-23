@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package j2se.g261.eda.automator.graph;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Vector;
  * @author nastya
  */
 public class Graph {
-    
+
     private Vector<Node> starts;
     private Vector<Node> ends;
     private Vector<Node> all;
@@ -23,28 +24,28 @@ public class Graph {
         ends = new Vector<Node>();
         all = new Vector<Node>();
     }
-    
-    public Node addNode(String name){
+
+    public void addNode(Node n) {
+        if (!all.contains(n)) {
+            all.add(n);
+        }
+
+        Iterator<Node> it = n.getOutcomingIterator();
+        while (it.hasNext()) {
+            Node n1 = it.next();
+            if (!all.contains(n1)) {
+                addNode(n1);
+            }
+        }
+    }
+
+    public Node addNode(String name) {
         Node n = new Node(name);
         all.add(n);
         return n;
     }
-    
-    public Node addNode(String name, boolean start, boolean end){
-        Node n = new Node(name, start, end);
-        all.add(n);
-        
-        if(start){
-            starts.add(n);
-        }
-        
-        if(end){
-            ends.add(n);
-        }
-        return n;
-    }
-    
-    public void deleteNode(Node n){
+
+    public void deleteNode(Node n) {
         n.prepareForDeleting();
         all.remove(n);
         starts.remove(n);
@@ -53,22 +54,63 @@ public class Graph {
 
     @Override
     public String toString() {
-        String s = "Graph:\n";
-        
+        String s = "Graph: " + all.size() + "nodes\n";
+
         Iterator<Node> i = all.iterator();
-        
-        while(i.hasNext()){
+
+        while (i.hasNext()) {
             s += i.next().toString();
             s += "\n";
         }
-        
+
         return s;
     }
 
-    public static Graph getEmpty(){
+    public static Graph getEmpty() {
         Graph g = new Graph();
-        g.addNode("");
+        g.addNode(Node.getEpsilonNode());
+        g.markAllEnds();
+        g.markAllStarts();
         return g;
     }
     
+
+    public void markAllStarts() {
+        starts.removeAllElements();
+        Iterator<Node> it = all.iterator();
+
+        while (it.hasNext()) {
+            Node n = it.next();
+            if (!n.haveIncoming()) {
+                starts.add(n);
+            }
+        }
+    }
+
+    public Iterator<Node> iteratorEnds(){
+        return new SafeIterator<Node>(ends);
+    }
+    public void markAllEnds(){
+        ends.removeAllElements();
+        Iterator<Node> it = all.iterator();
+
+        while (it.hasNext()) {
+            Node n = it.next();
+            if (!n.haveOutgoing()) {
+                ends.add(n);
+            }
+        }
+        
+    }
+    public Iterator<Node> iteratorStarts() {
+        return new SafeIterator<Node>(starts);
+        
+    }
+    public Iterator<Node> iteratorAll() {
+        return new SafeIterator<Node>(all);
+    }
+    
+    public boolean isStart(Node n){
+        return (starts.contains(n));
+    }
 }

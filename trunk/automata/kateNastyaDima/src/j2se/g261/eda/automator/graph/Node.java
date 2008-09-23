@@ -14,34 +14,19 @@ import java.util.Vector;
 public class Node {
     
     private String name;
-    private boolean start;
-    private boolean end;
     private Vector<Node> outgoing;
     private Vector<Node> incoming;
-
-    public Node(String name, boolean start, boolean end) {
-        this.name = name;
-        this.start = start;
-        this.end = end;
-        this.outgoing = new Vector<Node>();
-        this.incoming = new Vector<Node>();
-    }
+    private static final String EPSILON = "epsilon";
+    private static final String START = "start";
+    private static final String END = "end";
 
     public Node(String name) {
         this.name = name;
-        this.start = false;
-        this.end = false;
         this.outgoing = new Vector<Node>();
         this.incoming = new Vector<Node>();
     }
 
-    public boolean isEnd() {
-        return end;
-    }
 
-    public void setEnd(boolean end) {
-        this.end = end;
-    }
 
     public String getName() {
         return name;
@@ -51,19 +36,14 @@ public class Node {
         this.name = name;
     }
 
-    public boolean isStart() {
-        return start;
-    }
-
-    public void setStart(boolean start) {
-        this.start = start;
-    }
     
     public void addIncomingNode(Node n) {
+        if(!incoming.contains(n))
         incoming.add(n);
     }
     
     public void addOutgoingNode(Node n) {
+        if(!outgoing.contains(n))
         outgoing.add(n);
     }
     
@@ -103,8 +83,67 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node: " + name + "; [start: " + String.valueOf(start) + "; end: " + String.valueOf(end) + "]";
+        String s = "Node: " + name + "\n";
+        Iterator<Node> it = getIncomingIterator();
+        while(it.hasNext()){
+            s += it.next().getName() + "--->\n";
+        }
+        
+        it = getOutcomingIterator();
+        while(it.hasNext()){
+            s +="    ---->" + it.next().getName() + "\n";
+        }
+        
+        return s;
     }
 
+    public boolean haveIncoming(){
+        return incoming.size() != 0;
+    }
     
+    public boolean haveOutgoing(){
+        return outgoing.size() != 0;
+    }
+    
+    public Iterator<Node> getIncomingIterator(){
+        return incoming.iterator();
+    }
+    
+    public Iterator<Node> getOutcomingIterator(){
+        return outgoing.iterator();
+    }
+    
+    
+    public static Node getStartNode(){
+        return new Node(START);
+    }
+    
+    public static boolean isStartNode(Node n){
+        return n.getName().equals(START);
+    }
+
+    public static Node getEndNode(){
+        return new Node(END);
+    }
+    
+    public static boolean isEndNode(Node n){
+        return n.getName().equals(END);
+    }
+
+    public static Node getEpsilonNode(){
+        return new Node(EPSILON);
+    }
+    
+    public static boolean isEpsilonNode(Node n){
+        return n.getName().equals(EPSILON);
+    }
+    
+    public Iterator<Node> iteratorOutgoing(){
+        return new SafeIterator<Node>(outgoing);
+    }
+
+    public Iterator<Node> iteratorIncoming(){
+        return new SafeIterator<Node>(incoming);
+    }
+
 }
