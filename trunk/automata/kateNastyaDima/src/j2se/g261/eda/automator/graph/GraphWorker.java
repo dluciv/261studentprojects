@@ -4,6 +4,8 @@
  */
 package j2se.g261.eda.automator.graph;
 
+import java.util.Vector;
+
 /**
  *
  * @author Katerina, Anastasiya
@@ -100,8 +102,10 @@ public class GraphWorker {
         int h = g1.endsSize();
         int t = g2.startsSize();
         for (int i = 0; i < h; i++) {
+            System.out.println(i);
             Node n1 = g1.getNodeFromEndsAt(i);
             for (int j = 0; j < t; j++) {
+                System.out.println("===" + j);
                 Node n2 = g2.getNodeFromStartsAt(j);
                 n1.addOutgoingNode(n2);
                 n2.addIncomingNode(n1);
@@ -111,11 +115,11 @@ public class GraphWorker {
 
 
         for (int i = 0; i < t; i++) {
-            g1.addNode(g1.getNodeFromEndsAt(i));
+            g1.addNode(g2.getNodeFromStartsAt(i));
 
         }
 
-        g1.markAllEnds();
+        markAllNodes(g1);
 
         return g1;
     }
@@ -127,32 +131,49 @@ public class GraphWorker {
         }
         Node start = Node.getStartNode();
         Node end = Node.getEndNode();
+        Vector<Node> deleted = new Vector<Node>();
+
+        int h = g.allSize();
+        System.out.println("&&&&&&&");
+        System.out.println(h);
+        for (int i = 0; i < h; i++) {
+            Node n = g.getNodeFromAllAt(i);
+            System.out.println(i);
+            System.out.println(n);
+            if (Node.isEpsilonNode(n)) {
+                System.out.println("delete");
+                deleted.add(n);
+            }
+                if (g.isStart(n)) {
+                    start.addOutgoingNode(n);
+                    n.addIncomingNode(start);
+//                    int t = n.getOutgoingSize();
+//                    for (int j = 0; j < t; j++) {
+//                        Node n1 = n.getOutgoingAt(j);
+//                        n1.addIncomingNode(start);
+//                        start.addOutgoingNode(n1);
+//                    }
+//
+//                    t = n.getIncomingSize();
+//                    for (int j = 0; j < t; j++) {
+//
+//                        Node n1 = n.getIncomingAt(j);
+//                        n1.addOutgoingNode(end);
+//                        end.addIncomingNode(n1);
+//                    }
+                }
+                if(g.isEnd(n)){
+                    end.addIncomingNode(n);
+                    n.addOutgoingNode(end);
+                }
+        }
+        
+        for (Node node : deleted) {
+            g.deleteNode(node);
+        }
 
         g.addNode(start);
         g.addNode(end);
-        int h = g.allSize();
-        for (int i = 0; i < h; i++) {
-            Node n = g.getNodeFromAllAt(i);
-            if (Node.isEpsilonNode(n)) {
-                g.deleteNode(n);
-                if (g.isStart(n)) {
-                    int t = n.getOutgoingSize();
-                    for (int j = 0; j < t; j++) {
-                        Node n1 = n.getOutgoingAt(j);
-                        n1.addIncomingNode(start);
-                        start.addOutgoingNode(n1);
-                    }
-
-                    t = n.getIncomingSize();
-                    for (int j = 0; j < t; j++) {
-
-                        Node n1 = n.getIncomingAt(j);
-                        n1.addOutgoingNode(end);
-                        end.addIncomingNode(n1);
-                    }
-                }
-            }
-        }
 
 
         markAllNodes(g);
