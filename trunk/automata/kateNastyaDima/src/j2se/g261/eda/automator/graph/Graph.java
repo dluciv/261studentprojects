@@ -76,24 +76,23 @@ public class Graph {
 
     public void markAllStarts() {
         starts.removeAllElements();
-        Iterator<Node> it = all.iterator();
 
-        while (it.hasNext()) {
-            Node n = it.next();
-            if (!n.haveIncoming()) {
-                starts.add(n);
+        for (Node node : all) {
+            
+            if (!node.haveIncoming()) {
+                starts.add(node);
             }
         }
     }
 
     public void markAllEnds(){
+        
         ends.removeAllElements();
-        Iterator<Node> it = all.iterator();
-
-        while (it.hasNext()) {
-            Node n = it.next();
-            if (!n.haveOutgoing()) {
-                ends.add(n);
+        
+        for (Node node : all) {
+            System.out.println(node.getOutgoingSize());
+            if (!node.haveOutgoing()) {
+                ends.add(node);
             }
         }
         
@@ -134,6 +133,10 @@ public class Graph {
             }
         }
         return -1;
+    }
+
+    boolean isEnd(Node n) {
+        return ends.contains(n);
     }
 
 }
