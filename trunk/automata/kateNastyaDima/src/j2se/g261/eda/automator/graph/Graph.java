@@ -4,14 +4,12 @@
  */
 package j2se.g261.eda.automator.graph;
 
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 /**
  *
- * @author nastya
+ * @author Anastasiya, Dmitry
  */
 public class Graph {
 
@@ -30,16 +28,17 @@ public class Graph {
             all.add(n);
         }
 
-        Iterator<Node> it = n.getOutcomingIterator();
-        while (it.hasNext()) {
-            Node n1 = it.next();
+        int num = n.getOutgoingSize();
+        
+        for (int i = 0; i < num; i++) {
+            Node n1 = n.getOutgoingAt(i);
             if (!all.contains(n1)) {
                 addNode(n1);
             }
         }
     }
 
-    public Node addNode(String name) {
+    public Node addNode(char name) {
         Node n = new Node(name);
         all.add(n);
         return n;
@@ -87,9 +86,6 @@ public class Graph {
         }
     }
 
-    public Iterator<Node> iteratorEnds(){
-        return new SafeIterator<Node>(ends);
-    }
     public void markAllEnds(){
         ends.removeAllElements();
         Iterator<Node> it = all.iterator();
@@ -102,15 +98,42 @@ public class Graph {
         }
         
     }
-    public Iterator<Node> iteratorStarts() {
-        return new SafeIterator<Node>(starts);
-        
-    }
-    public Iterator<Node> iteratorAll() {
-        return new SafeIterator<Node>(all);
-    }
     
     public boolean isStart(Node n){
         return (starts.contains(n));
     }
+    
+    public int startsSize(){
+        return starts.size();
+    }
+    
+    public int endsSize(){
+        return ends.size();
+    }
+    
+    public int allSize(){
+        return all.size();
+    }
+    
+    public Node getNodeFromStartsAt(int index){
+        return starts.get(index);
+    }
+    
+    public Node getNodeFromEndsAt(int index){
+        return ends.get(index);
+    }
+    
+    public Node getNodeFromAllAt(int index){
+        return all.get(index);
+    }
+    
+    public int getNodeIndex(Node n){
+        for (int i = 0; i < all.size(); i++) {
+            if(all.get(i) == n){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
