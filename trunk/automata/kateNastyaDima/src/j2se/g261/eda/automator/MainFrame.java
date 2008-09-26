@@ -4,6 +4,7 @@
  */
 package j2se.g261.eda.automator;
 
+import j2se.g261.eda.automator.parser.ParserException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -12,6 +13,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -138,8 +141,12 @@ public class MainFrame extends JFrame implements ActionListener {
             }
         }
         if(e.getSource().equals(btnSetAutomat)){
-            automator = new Automator(tfPattern.getText());
-            automator.compile();
+            try {
+                automator = new Automator(tfPattern.getText());
+                automator.compile();
+            } catch (ParserException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
     }
