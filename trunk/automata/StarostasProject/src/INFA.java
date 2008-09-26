@@ -1,3 +1,6 @@
+/* (c) Tsipan K. 2008, TheFirstGroup Interface */
+
+
 import java.util.List;
 
 /**
