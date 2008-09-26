@@ -4,11 +4,9 @@
  */
 package j2se.g261.eda.automator.graph;
 
-import java.util.Iterator;
-
 /**
  *
- * @author nastya
+ * @author Katerina, Anastasiya
  */
 public class GraphWorker {
 
@@ -24,20 +22,24 @@ public class GraphWorker {
             return g1;
         }
         Graph res = Graph.getEmpty();
-        Iterator<Node> resIt = res.iteratorStarts();
 
-        while (resIt.hasNext()) {
-            Node parent = resIt.next();
-            Iterator<Node> g1It = g1.iteratorStarts();
-            while (g1It.hasNext()) {
-                Node n = g1It.next();
+        int resNum = res.startsSize();
+
+        for (int k = 0; k < resNum; k++) {
+
+            Node parent = res.getNodeFromStartsAt(k);
+
+            int num = g1.startsSize();
+            for (int i = 0; i < num; i++) {
+                Node n = g1.getNodeFromStartsAt(i);
                 parent.addOutgoingNode(n);
                 n.addIncomingNode(parent);
                 res.addNode(n);
             }
-            Iterator<Node> g2It = g2.iteratorStarts();
-            while (g2It.hasNext()) {
-                Node n = g2It.next();
+
+            num = g2.startsSize();
+            for (int i = 0; i < num; i++) {
+                Node n = g2.getNodeFromStartsAt(i);
                 parent.addOutgoingNode(n);
                 n.addIncomingNode(parent);
                 res.addNode(n);
@@ -45,10 +47,6 @@ public class GraphWorker {
         }
 
         markAllNodes(res);
-        System.out.println("$$$$$$$$");
-        System.out.println(g1);
-        System.out.println("%%%%");
-        System.out.println(res);
 
         return res;
     }
@@ -71,17 +69,12 @@ public class GraphWorker {
         g.addNode(eps1);
         g.addNode(eps2);
 
-
-        Iterator<Node> a = g.iteratorEnds();
-        while (a.hasNext()) {
-            Node n = a.next();
-//            System.out.println("&&&");
-//            System.out.println(n);
-
-            Iterator<Node> b = g.iteratorStarts();
-
-            while (b.hasNext()) {
-                Node n1 = b.next();
+        int h = g.endsSize();
+        for (int i = 0; i < h; i++) {
+            Node n = g.getNodeFromEndsAt(i);
+            int t = g.startsSize();
+            for (int j = 0; j < t; j++) {
+                Node n1 = g.getNodeFromStartsAt(j);
                 n.addOutgoingNode(n1);
                 n1.addIncomingNode(n);
                 n.addOutgoingNode(eps1);
@@ -91,9 +84,8 @@ public class GraphWorker {
             }
         }
 
+
         markAllNodes(g);
-        System.out.println("^^^^^");
-        System.out.println(g);
 
         return concatenateONE(g);
     }
@@ -105,21 +97,22 @@ public class GraphWorker {
         if (g2 == null) {
             return g1;
         }
-        Iterator<Node> a = g1.iteratorEnds();
-        while (a.hasNext()) {
-            Node n1 = a.next();
-
-            Iterator<Node> b = g2.iteratorStarts();
-            while (b.hasNext()) {
-                Node n2 = b.next();
+        int h = g1.endsSize();
+        int t = g2.startsSize();
+        for (int i = 0; i < h; i++) {
+            Node n1 = g1.getNodeFromEndsAt(i);
+            for (int j = 0; j < t; j++) {
+                Node n2 = g2.getNodeFromStartsAt(j);
                 n1.addOutgoingNode(n2);
                 n2.addIncomingNode(n1);
             }
+
         }
 
-        a = g2.iteratorStarts();
-        while (a.hasNext()) {
-            g1.addNode(a.next());
+
+        for (int i = 0; i < t; i++) {
+            g1.addNode(g1.getNodeFromEndsAt(i));
+
         }
 
         g1.markAllEnds();
@@ -137,21 +130,23 @@ public class GraphWorker {
 
         g.addNode(start);
         g.addNode(end);
-        Iterator<Node> a = g.iteratorAll();
-        while (a.hasNext()) {
-            Node n = a.next();
+        int h = g.allSize();
+        for (int i = 0; i < h; i++) {
+            Node n = g.getNodeFromAllAt(i);
             if (Node.isEpsilonNode(n)) {
                 g.deleteNode(n);
                 if (g.isStart(n)) {
-                    Iterator<Node> i = n.getOutcomingIterator();
-                    while (i.hasNext()) {
-                        Node n1 = i.next();
+                    int t = n.getOutgoingSize();
+                    for (int j = 0; j < t; j++) {
+                        Node n1 = n.getOutgoingAt(j);
                         n1.addIncomingNode(start);
                         start.addOutgoingNode(n1);
                     }
-                    i = n.getIncomingIterator();
-                    while (i.hasNext()) {
-                        Node n1 = i.next();
+
+                    t = n.getIncomingSize();
+                    for (int j = 0; j < t; j++) {
+
+                        Node n1 = n.getIncomingAt(j);
                         n1.addOutgoingNode(end);
                         end.addIncomingNode(n1);
                     }
@@ -159,14 +154,16 @@ public class GraphWorker {
             }
         }
 
+
         markAllNodes(g);
     }
-    //mark all start and ends nodes
+//mark all start and ends nodes
 
     public static void markAllNodes(Graph g) {
         if (g == null) {
             return;
         }
+
         g.markAllStarts();
         g.markAllEnds();
     }
