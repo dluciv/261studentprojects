@@ -5,7 +5,11 @@
 package j2se.g261.eda.automator;
 
 import j2se.g261.eda.automator.graph.Graph;
-import j2se.g261.eda.automator.graph.GraphWorker;
+import j2se.g261.eda.automator.graph.Node;
+import j2se.g261.eda.automator.parser.Parser;
+import j2se.g261.eda.automator.parser.ParserException;
+import j2se.g261.eda.automator.table.Table;
+import j2se.g261.eda.automator.table.TableRecord;
 
 /**
  *
@@ -13,114 +17,54 @@ import j2se.g261.eda.automator.graph.GraphWorker;
  */
 public class Automator {
 
-    private String pattern;
     private Graph graph;
+    private Parser parser;
+    private Table table;
 
     public Automator(String s) {
-        pattern = s;
+        parser = new Parser(s);
+        table = new Table();
+    }
+
+    public void compile() throws ParserException {
         makeGraph();
     }
-   
-    public void compile(){
-        makeGraph();
-    }
-    
-    private void makeGraph(){
-        graph = parse(pattern);
-        graph = GraphWorker.markAllNodes(graph);
-        graph = GraphWorker.makeClosure(graph);
-        graph = GraphWorker.removeEpsilonNodes(graph);
+
+    private void makeGraph() throws ParserException {
+//        graph = parser.parse();
+//        GraphWorker.makeClosure(graph);
     }
 
     public boolean match(String s) {
+        System.out.println(this);
         return true;
     }
 
-    private Graph startParse(String s){
-        return null;
+    @Override
+    public String toString() {
+        return graph.toString();
     }
-    
-    private Graph parse(String s) {
-        Regex r = split(s);
-        RegexType t = r.getType();
+
+    private void createDeterminatedTable() {
+        table.clear();
+        int a = graph.allSize();
+        for (int i = 0; i < a; i++) {
+            writeNodeInfoToTable(graph.getNodeFromAllAt(i));
         
-        switch (t) {
-            case NOTHING: {
-                Graph g = new Graph();
-                g.addNode(r.getPat());
-                return g;
-            }
-            case OR: {
-                String pat = r.getPat();
-                Graph res = new Graph();
-
-                Regex regex = split(pat, RegexType.OR);
-                while (regex.getPat().length() != 0) {
-                    Graph g1 = parse(r.getPat());
-                    res = GraphWorker.concatenateOR(res, g1);
-                    regex = split(regex.getRest(), RegexType.OR);
-                }
-                return res;
-            }
-            case ONE: {
-                return GraphWorker.concatenateONE(parse(r.getPat()));
-            }
-            case ANY: {
-                return GraphWorker.concatanateANY(parse(r.getPat()));
-            }
-            case AND: {
-                String pat = r.getPat();
-                Graph res = new Graph();
-
-                Regex regex = split(pat, RegexType.AND);
-                while (regex.getRest().length() != 0) {
-                    Graph g1 = parse(r.getPat());
-                    res = GraphWorker.concatanateAND(res, g1);
-                    regex = split(regex.getRest(), RegexType.AND);
-                }
-                return res;
-            }
-            
-            default:
-                return new Graph();
         }
     }
 
-    private Regex split(String toSplit, RegexType t) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-    private Regex split(String toSplit) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    class Regex {
-
-        private RegexType type;
-        private String pat;
-        private String rest;
-
-        public Regex(RegexType type, String rest, String pat) {
-            this.type = type;
-            this.pat = pat;
-            this.rest = rest;
-        }
-
-        public String getPat() {
-            return pat;
-        }
-
-        public RegexType getType() {
-            return type;
-        }
-
-        public String getRest() {
-            return rest;
-        }
+    private void writeNodeInfoToTable(Node n) {
+        TableRecord t = new TableRecord();
         
-    }
-
-    enum RegexType {
-
-        NOTHING, OR, ONE, ANY, AND
+        if(Node.isEndNode(n)){
+            t.add(TableRecord.SYMBOL_END, 0);
+        }
+        int a = n.getOutgoingSize();
+        for (int i = 0; i < a; i++) {
+            Node n1 = n.getOutgoingAt(i);
+            t.add(n1.getName(), graph.getNodeIndex(n1));
+        }
+        table.add(graph.getNodeIndex(n), t);
     }
 }
