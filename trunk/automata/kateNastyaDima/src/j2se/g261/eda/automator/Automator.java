@@ -6,7 +6,6 @@ package j2se.g261.eda.automator;
 
 import j2se.g261.eda.automator.graph.Graph;
 import j2se.g261.eda.automator.graph.Node;
-import j2se.g261.eda.automator.parser.Parser;
 import j2se.g261.eda.automator.parser.ParserException;
 import j2se.g261.eda.automator.table.Table;
 import j2se.g261.eda.automator.table.TableRecord;
@@ -18,11 +17,11 @@ import j2se.g261.eda.automator.table.TableRecord;
 public class Automator {
 
     private Graph graph;
-    private Parser parser;
+//    private Parser parser;
     private Table table;
 
     public Automator(String s) {
-        parser = new Parser(s);
+//        parser = new Parser(s);
         table = new Table();
     }
 
