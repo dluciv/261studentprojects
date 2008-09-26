@@ -8,12 +8,12 @@ package j2se.g261.eda.automator.table;
  *
  * @author Katerina
  */
-public class Lexer {
+public class StringCursor {
 
     private int cursor = -1;
     private String s;
 
-    public Lexer(String s) {
+    public StringCursor(String s) {
         this.s = s;
     }
 
