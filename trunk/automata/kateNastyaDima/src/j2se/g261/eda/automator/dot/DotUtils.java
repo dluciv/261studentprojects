@@ -40,7 +40,7 @@ public class DotUtils {
         bf.newLine();
         int num = g.startsSize();
         for (int i = 0; i < num; i++) {
-             processNode(g.getNodeFromStartsAt(i),bf,passed);
+            processNode(g.getNodeFromStartsAt(i), bf, passed);
         }
         bf.write("}");
         bf.close();
@@ -49,12 +49,12 @@ public class DotUtils {
 
     private String writeNode(Node n, BufferedWriter bf) throws IOException {
         String s1 = "node" + index + "[lable = \"" + n.getName() + "\" ";
-        if(Node.isStartNode(n) || Node.isEndNode(n)){
+        if (Node.isStartNode(n) || Node.isEndNode(n)) {
             s1 += ", shape = \"rectangle\"";
-        }else{
+        } else {
             s1 += ", shape = \"circle\"";
         }
-        bf.write( s1 + "]");
+        bf.write(s1 + "]");
         bf.newLine();
         return "node" + ++index;
     }
@@ -69,7 +69,7 @@ public class DotUtils {
             passed.put(n, writeNode(n, bf));
         }
 
-        
+
         int num = n.getOutgoingSize();
         for (int i = 0; i < num; i++) {
             Node n1 = n.getOutgoingAt(i);
@@ -81,31 +81,53 @@ public class DotUtils {
             }
         }
     }
-    
+
     public static void main(String[] args) {
         Graph g1 = new Graph();
-        g1.addNode(new Node("a"));
+        g1.addNode(new Node('a'));
+        GraphWorker.markAllNodes(g1);
         Graph g2 = new Graph();
-        g2.addNode(new Node("b"));
+        g2.addNode(new Node('b'));
+        GraphWorker.markAllNodes(g2);
         Graph g3 = GraphWorker.concatanateAND(g1, g2);
-        
+        System.out.println("______________G3______________");
+        System.out.println(g3);
+        System.out.println("______________________________");
+
         g1 = new Graph();
         g2 = new Graph();
-        g1.addNode(new Node("c"));
-        g2.addNode(new Node("d"));
+        g1.addNode(new Node('c'));
+        GraphWorker.markAllNodes(g1);
+        g2.addNode(new Node('d'));
+        GraphWorker.markAllNodes(g2);
         Graph g4 = GraphWorker.concatanateANY(g1);
+        System.out.println("______________G4______________");
+        System.out.println(g4);
+        System.out.println("______________________________");
         Graph g5 = GraphWorker.concatenateONE(g2);
-        Graph g6 = GraphWorker.concatenateOR(g3, GraphWorker.concatanateAND(g4, g5));
-        
+        System.out.println("______________G5______________");
+        System.out.println(g5);
+        System.out.println("______________________________");
+        Graph g0 = GraphWorker.concatanateAND(g4, g5);
+        System.out.println("______________G0______________");
+        System.out.println(g0);
+        System.out.println("______________________________");
+        Graph g6 = GraphWorker.concatenateOR(g3, g0);
+        System.out.println("______________G6______________");
         System.out.println(g6);
-        DotUtils d = new DotUtils(g6);
-        try {
-            d.generateDotFile("DOTFILE");
-        } catch (IOException ex) {
-            Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DotException ex) {
-            Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println("______________________________");
+        GraphWorker.makeClosure(g6);
+        System.out.println(g6);
+
+//        System.out.println(g6);
+//        DotUtils d = new DotUtils(g6);
+//        try {
+//            d.generateDotFile("DOTFILE");
+//        } catch (IOException ex) {
+//            Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (DotException ex) {
+//            Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 }
 
