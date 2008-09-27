@@ -17,10 +17,13 @@ public class Graph {
     private Vector<Node> ends;
     private Vector<Node> all;
 
-    public Graph() {
+    public Graph(Node root) {
         starts = new Vector<Node>();
         ends = new Vector<Node>();
         all = new Vector<Node>();
+        starts.add(root);
+        ends.add(root);
+        all.add(root);
     }
 
     public void addNode(Node n) {
@@ -36,12 +39,6 @@ public class Graph {
                 addNode(n1);
             }
         }
-    }
-
-    public Node addNode(char name) {
-        Node n = new Node(name);
-        all.add(n);
-        return n;
     }
 
     public void deleteNode(Node n) {
@@ -66,11 +63,7 @@ public class Graph {
     }
 
     public static Graph getEmpty() {
-        Graph g = new Graph();
-        g.addNode(Node.getEpsilonNode());
-        g.markAllEnds();
-        g.markAllStarts();
-        return g;
+        return new Graph(Node.getEpsilonNode());
     }
     
 
