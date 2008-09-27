@@ -7,6 +7,8 @@ package j2se.g261.eda.automator.parser;
 
 import j2se.g261.eda.automator.graph.Graph;
 import j2se.g261.eda.automator.graph.GraphWorker;
+import j2se.g261.eda.automator.graph.Node;
+import j2se.g261.eda.automator.graph.Node;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +34,7 @@ public class PatternParser {
     }
     
     private Graph atom() throws ParserException {
-            Graph res = new Graph();
+            Graph res = null;
         char nextLexem = lexer.nextChar();
         if(nextLexem == '('){
             res = expression();
@@ -41,9 +43,8 @@ public class PatternParser {
             }
             return res;
         }else if(isSymbol(nextLexem)){
-            res.addNode(nextLexem);
-            GraphWorker.markAllNodes(res);
-            return res;
+            
+            return new Graph(new Node(nextLexem));
         }else{
             throw new ParserException(ParserException.WRONG_USING_OPERATORS);
         }
