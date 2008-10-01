@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Dmitry
+ * Class for dot file
  */
 public class DotUtils {
 
@@ -29,6 +30,14 @@ public class DotUtils {
         this.g = g;
     }
 
+    /**
+     * This method create a dot file(In a correct format) the containing count
+     * conclude file in BufferedWriter
+     * @param filename the name of this file
+     * @return
+     * @throws IOException
+     * @throws DotException
+     */
     public File generateDotFile(String filename) throws IOException, DotException {
         index = 0;
         HashMap<Node, String> passed = new HashMap<Node, String>();
@@ -47,6 +56,14 @@ public class DotUtils {
         return f1;
     }
 
+    /**
+     * This method writes down node in a file
+     * The starts nodes have a rectangle form, the end nodes have circle form.
+     * @param n the node added in count
+     * @param bf the buffering
+     * @return "name" of node
+     * @throws IOException
+     */
     private String writeNode(Node n, BufferedWriter bf) throws IOException {
         String s1 = "node" + index + "[lable = \"" + n.getName() + "\" ";
         if (Node.isStartNode(n) || Node.isEndNode(n)) {
@@ -59,11 +76,27 @@ public class DotUtils {
         return "node" + ++index;
     }
 
+    /**
+     * This method write in file arc from node n1(name) to node n2(name)
+     * @param n1 "name" of first node
+     * @param n2 "name" of second node
+     * @param bf the buffering
+     * @throws IOException
+     */
+    
     private void writeEdge(String n1, String n2, BufferedWriter bf) throws IOException {
         bf.write(n1 + "->" + n2);
         bf.newLine();
     }
 
+    /**
+     * This method finds all pairs of nodes for filing
+     * @param n node for which the pair is searched
+     * @param bf the buffering
+     * @param passed the list of passed nodes
+     * @throws IOException
+     * @throws DotException
+     */
     private void processNode(Node n, BufferedWriter bf, HashMap<Node, String> passed) throws IOException, DotException {
         if (!passed.containsKey(n)) {
             passed.put(n, writeNode(n, bf));
