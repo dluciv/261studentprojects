@@ -188,4 +188,39 @@ public class GraphWorker {
         g.markAllStarts();
         g.markAllEnds();
     }
+    
+    public static void makeDeterministic(Graph graph){
+        int sz = graph.allSize();
+        
+        for (int i = 0; i < sz; i++) {
+            Node n = graph.getNodeFromAllAt(i);
+            
+            Vector<Node> uniq = new Vector<Node>();
+            
+            int out = n.getOutgoingSize();
+            
+            for (int j = 0; j < out; j++) {
+                Node n1 = n.getOutgoingAt(j);
+                if(uniq.contains(n1)){
+                    graph.simpleDeleteNode(n1);
+                    Node n2 = getEqualed(uniq, n1);
+                    n1.shiftConnections(n2);
+                }else{
+                    uniq.add(n1);
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    private static Node getEqualed(Vector<Node> v, Node n){
+        for (Node node : v) {
+            if(node.equals(n)) return node;
+        }
+        
+        return null;
+    }
+    
 }
