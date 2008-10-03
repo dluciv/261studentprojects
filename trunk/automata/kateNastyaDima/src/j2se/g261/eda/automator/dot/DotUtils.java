@@ -5,15 +5,12 @@
 package j2se.g261.eda.automator.dot;
 
 import j2se.g261.eda.automator.graph.Graph;
-import j2se.g261.eda.automator.graph.GraphWorker;
 import j2se.g261.eda.automator.graph.Node;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -38,7 +35,7 @@ public class DotUtils {
      * @throws IOException
      * @throws DotException
      */
-    public File generateDotFile(String filename) throws IOException, DotException {
+    public File generateDotFileForNFA(String filename) throws IOException, DotException {
         index = 0;
         HashMap<Node, String> passed = new HashMap<Node, String>();
         File f1 = File.createTempFile(filename, ".dot");
@@ -155,7 +152,7 @@ public class DotUtils {
 //        System.out.println(g6);
 //        DotUtils d = new DotUtils(g6);
 //        try {
-//            d.generateDotFile("DOTFILE");
+//            d.generateDotFileForNFA("DOTFILE");
 //        } catch (IOException ex) {
 //            Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (DotException ex) {
