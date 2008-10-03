@@ -4,7 +4,7 @@
  */
 package j2se.g261.eda.automator.graph;
 
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Vector;
 
 /**
@@ -14,16 +14,16 @@ import java.util.Vector;
 public class Node {
     
     private char name;
-    private Vector<Node> outgoing;
-    private Vector<Node> incoming;
+    private HashSet<Node> outgoing;
+    private HashSet<Node> incoming;
     private static final char EPSILON = '\r';
     private static final Node START = new Node('\t');
     private static final Node END = new Node('\n');
 
     public Node(char name) {
         this.name = name;
-        this.outgoing = new Vector<Node>();
-        this.incoming = new Vector<Node>();
+        this.outgoing = new HashSet<Node>();
+        this.incoming = new HashSet<Node>();
     }
 
 
@@ -142,11 +142,37 @@ public class Node {
     }
     
     public Node getIncomingAt(int index){
-        return incoming.get(index);
+        return (Node)(incoming.toArray())[index];
     }
     
     public Node getOutgoingAt(int index){
-        return outgoing.get(index);
+        return (Node)(outgoing.toArray())[index];
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Node other = (Node) obj;
+        if (this.name != other.name) {
+            return false;
+        }
+        return true;
+    }
+    
+    void shiftConnections(Node to){
+        for (Node node : incoming) {
+            to.addIncomingNode(node);
+        }
+        for (Node node : outgoing) {
+            to.addOutgoingNode(node);
+        }
+    }
+
+    
 }
 
