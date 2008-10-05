@@ -102,10 +102,8 @@ public class GraphWorker {
         int h = g1.endsSize();
         int t = g2.startsSize();
         for (int i = 0; i < h; i++) {
-            System.out.println(i);
             Node n1 = g1.getNodeFromEndsAt(i);
             for (int j = 0; j < t; j++) {
-                System.out.println("===" + j);
                 Node n2 = g2.getNodeFromStartsAt(j);
                 n1.addOutgoingNode(n2);
                 n2.addIncomingNode(n1);
@@ -134,19 +132,14 @@ public class GraphWorker {
         Vector<Node> deleted = new Vector<Node>();
 
         int h = g.allSize();
-        System.out.println("&&&&&&&");
-        System.out.println(h);
         for (int i = 0; i < h; i++) {
             Node n = g.getNodeFromAllAt(i);
-            System.out.println(i);
-            System.out.println(n);
             if (Node.isEpsilonNode(n)) {
-                System.out.println("delete");
                 deleted.add(n);
             }
-                if (g.isStart(n)) {
-                    start.addOutgoingNode(n);
-                    n.addIncomingNode(start);
+            if (g.isStart(n)) {
+                start.addOutgoingNode(n);
+                n.addIncomingNode(start);
 //                    int t = n.getOutgoingSize();
 //                    for (int j = 0; j < t; j++) {
 //                        Node n1 = n.getOutgoingAt(j);
@@ -161,13 +154,13 @@ public class GraphWorker {
 //                        n1.addOutgoingNode(end);
 //                        end.addIncomingNode(n1);
 //                    }
-                }
-                if(g.isEnd(n)){
-                    end.addIncomingNode(n);
-                    n.addOutgoingNode(end);
-                }
+            }
+            if (g.isEnd(n)) {
+                end.addIncomingNode(n);
+                n.addOutgoingNode(end);
+            }
         }
-        
+
         for (Node node : deleted) {
             g.deleteNode(node);
         }
@@ -188,39 +181,46 @@ public class GraphWorker {
         g.markAllStarts();
         g.markAllEnds();
     }
-    
-    public static void makeDeterministic(Graph graph){
+
+    public static void makeDeterministic(Graph graph) {
         int sz = graph.allSize();
-        
+        Vector<Node> toDelete = new Vector<Node>();
+
         for (int i = 0; i < sz; i++) {
             Node n = graph.getNodeFromAllAt(i);
-            
+
             Vector<Node> uniq = new Vector<Node>();
-            
+
             int out = n.getOutgoingSize();
-            
+
             for (int j = 0; j < out; j++) {
                 Node n1 = n.getOutgoingAt(j);
-                if(uniq.contains(n1)){
-                    graph.simpleDeleteNode(n1);
+                if (uniq.contains(n1)) {
+                    toDelete.add(n1);
                     Node n2 = getEqualed(uniq, n1);
                     n1.shiftConnections(n2);
-                }else{
+                } else {
                     uniq.add(n1);
                 }
-                
+
             }
-            
+
         }
-        
+
+        for (Node node : toDelete) {
+            graph.simpleDeleteNode(node);
+
+        }
+
     }
-    
-    private static Node getEqualed(Vector<Node> v, Node n){
+
+    private static Node getEqualed(Vector<Node> v, Node n) {
         for (Node node : v) {
-            if(node.equals(n)) return node;
+            if (node.equals(n)) {
+                return node;
+            }
         }
-        
+
         return null;
     }
-    
 }
