@@ -274,12 +274,23 @@ public class Graph implements Cloneable{
         TableRecord t = new TableRecord();
         
         if(Node.isEndNode(n)){
-            t.add(TableRecord.SYMBOL_END, 0);
+//            t.add(TableRecord.SYMBOL_END, -1);
+            
+            return;
         }
+//        if(Node.isStartNode(n)){
+//            t.add(TableRecord.SYMBOL_START, getNodeIndex(n));
+//        }
         int a = n.getOutgoingSize();
         for (int i = 0; i < a; i++) {
             Node n1 = n.getOutgoingAt(i);
-            t.add(n1.getName(), getNodeIndex(n1));
+            char c = n1.getName();
+            if(c == '\t'){
+                c = TableRecord.SYMBOL_START;
+            }else if(c == '\n'){
+                c = TableRecord.SYMBOL_END;
+            }
+            t.add(c, getNodeIndex(n1));
         }
         table.add(getNodeIndex(n), t);
     }
