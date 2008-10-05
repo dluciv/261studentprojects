@@ -8,7 +8,10 @@ package j2se.g261.eda.automator.parser;
 import j2se.g261.eda.automator.graph.Graph;
 import j2se.g261.eda.automator.graph.GraphWorker;
 import j2se.g261.eda.automator.graph.Node;
-import j2se.g261.eda.automator.graph.Node;
+import j2se.g261.eda.automator.table.Table;
+import j2se.g261.eda.automator.tex.TexWriter;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,7 +79,7 @@ public class PatternParser {
 
     private Graph sequence() throws ParserException {
         Graph res = post_option();
-        System.out.println("post option \n" + res);
+//        System.out.println("post option \n" + res);
         
         if(lexer.isEndOfLine()) return res;
         char nextChar = lexer.nextChar();
@@ -87,7 +90,7 @@ public class PatternParser {
                 return res;
             }
             Graph nw = post_option();
-            System.out.println("new \n" + nw);
+//            System.out.println("new \n" + nw);
             res = GraphWorker.concatanateAND(res, nw);
             if(lexer.isEndOfLine()) return res;
             nextChar = lexer.nextChar();
@@ -103,9 +106,37 @@ public class PatternParser {
     }
     
     public static void main(String[] args) {
-        PatternParser p = new PatternParser("(a*b)?");
+        PatternParser p = new PatternParser("(ab)|(ac)");
+        int c;
         try {
-            System.out.println(p.parse());
+            Graph g = p.parse();
+            Table t = new Table();
+            GraphWorker.makeClosure(g);
+//            GraphWorker.makeDeterministic(g);
+            System.out.println(g);
+            g.fillDeterminatedTable(t);
+            t.fillTable();
+            TexWriter tex = new TexWriter(t);
+            File f = tex.generateFile();
+            Process pr = Runtime.getRuntime().exec("latex " + f.getAbsolutePath());
+            
+            while((c = pr.getInputStream().read()) != -1){
+                System.out.print(Character.toChars(c));
+                if(Character.toChars(c).equals('?')){
+                pr.getOutputStream().write(new String("\n").getBytes());
+                pr.getOutputStream().flush();
+                }
+            }
+            String nm = f.getName();
+            System.out.println("--------------");
+//            System.out.println(nmнала г);
+            System.out.println(nm.substring(0, nm.length() - 5));
+            
+            Runtime.getRuntime().exec("kdvi " + nm.substring(0, nm.length() - 4) + ".dvi");
+            
+            System.out.println(t);
+        } catch (IOException ex) {
+            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserException ex) {
             Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
         }
