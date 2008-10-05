@@ -5,6 +5,8 @@
 package j2se.g261.eda.automator.table;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
 
@@ -15,7 +17,8 @@ import java.util.Vector;
 public class TableRecord {
 
     private HashMap<Character, Vector<Integer>> storage;
-    public static final char SYMBOL_END = '\t';
+    public static final char SYMBOL_END = '!';
+    public static final char SYMBOL_START = '.';
 
     public TableRecord() {
         storage = new HashMap<Character, Vector<Integer>>();
@@ -40,7 +43,25 @@ public class TableRecord {
         }
     }
 
-    public Set<Character> keySet() {
+    public Vector<Integer> getVectorByChar(Character c){
+        return storage.get(c);
+    }
+    
+    Set<Character> keySet() {
         return storage.keySet();
+    }
+    
+    @Override
+    public String toString(){
+        String s = "";
+        
+        Iterator<Entry<Character, Vector<Integer>>> i = storage.entrySet().iterator();
+        
+        while(i.hasNext()){
+            Entry<Character, Vector<Integer>> e = i.next();
+            s += "|" + e.getKey().toString() + "| " + e.getValue().toString() + "\n";
+        }
+        
+        return s;
     }
 }
