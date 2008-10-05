@@ -48,7 +48,7 @@ public class Table {
         storage.clear();
     }
     
-    private HashSet<Character> collectCaracterKeys(){
+    public HashSet<Character> collectCaracterKeys(){
         HashSet<Character> set = new  HashSet<Character>();
         Iterator<Entry<Integer, TableRecord>> a = storage.entrySet().iterator(); 
         while(a.hasNext()){
@@ -59,5 +59,23 @@ public class Table {
         
     }
     
+    @Override
+    public String toString(){
+        String s = "";
+        Iterator<Entry<Integer, TableRecord>> i = storage.entrySet().iterator();
+        
+        while(i.hasNext()){
+            Entry<Integer, TableRecord> e = i.next();
+            s += e.getKey().toString() + "\n";
+            s += e.getValue().toString() + "\n";
+        }
+        return s;
+    }
+    
+    
+    
+    public Iterator<Entry<Integer, TableRecord>> iteratorByRecords(){
+        return storage.entrySet().iterator();
+    }
     
 }
