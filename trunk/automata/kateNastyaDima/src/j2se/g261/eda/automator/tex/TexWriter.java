@@ -33,7 +33,6 @@ public class TexWriter {
     
     private static final String TABLE_END = "\\end{longtable}\n";
     private static final String TABLE_CAPTION = "\n\\caption{NFA TABLE} \\\\ " + TABLE_HLINE;
-    private static final String TABLE_ENDFIRSTHEAD = "\\endfirsthead " + TABLE_HLINE;
     private Table table;
     private Vector<Character> keys;
 
@@ -59,7 +58,7 @@ public class TexWriter {
 
         }
 
-        return res + " \\\\\n";
+        return res + " \\\\ " + TABLE_HLINE + "\n";
     }
 
     private String getRowByTableRecord(TableRecord record) {
@@ -104,7 +103,6 @@ public class TexWriter {
             bf.write(TABLE_BEGIN_2);
             bf.write(TABLE_CAPTION);
             bf.write(tableCaption);
-            bf.write(TABLE_ENDFIRSTHEAD);
             bf.write(getTableBody());
             
             bf.write(TABLE_END);
