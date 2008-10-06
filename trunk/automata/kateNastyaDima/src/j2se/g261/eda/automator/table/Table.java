@@ -78,4 +78,10 @@ public class Table {
         return storage.entrySet().iterator();
     }
     
+    public Vector<Integer> getStateSet(int key, char key2){
+        return storage.get(key).getStateSet(key2);
+    }
+            
+   
+    
 }

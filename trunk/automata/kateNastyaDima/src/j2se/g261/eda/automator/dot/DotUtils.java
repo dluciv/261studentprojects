@@ -112,52 +112,52 @@ public class DotUtils {
         }
     }
 
-    public static void main(String[] args) {
-//        Graph g1 = new Graph();
-//        g1.addNode(new Node('a'));
-//        GraphWorker.markAllNodes(g1);
-//        Graph g2 = new Graph();
-//        g2.addNode(new Node('b'));
-//        GraphWorker.markAllNodes(g2);
-//        Graph g3 = GraphWorker.concatanateAND(g1, g2);
-//        System.out.println("______________G3______________");
-//        System.out.println(g3);
-//        System.out.println("______________________________");
+//    public static void main(String[] args) {
+////        Graph g1 = new Graph();
+////        g1.addNode(new Node('a'));
+////        GraphWorker.markAllNodes(g1);
+////        Graph g2 = new Graph();
+////        g2.addNode(new Node('b'));
+////        GraphWorker.markAllNodes(g2);
+////        Graph g3 = GraphWorker.concatanateAND(g1, g2);
+////        System.out.println("______________G3______________");
+////        System.out.println(g3);
+////        System.out.println("______________________________");
+////
+////        g1 = new Graph();
+////        g2 = new Graph();
+////        g1.addNode(new Node('c'));
+////        GraphWorker.markAllNodes(g1);
+////        g2.addNode(new Node('d'));
+////        GraphWorker.markAllNodes(g2);
+////        Graph g4 = GraphWorker.concatanateANY(g1);
+////        System.out.println("______________G4______________");
+////        System.out.println(g4);
+////        System.out.println("______________________________");
+////        Graph g5 = GraphWorker.concatenateONE(g2);
+////        System.out.println("______________G5______________");
+////        System.out.println(g5);
+////        System.out.println("______________________________");
+////        Graph g0 = GraphWorker.concatanateAND(g4, g5);
+////        System.out.println("______________G0______________");
+////        System.out.println(g0);
+////        System.out.println("______________________________");
+////        Graph g6 = GraphWorker.concatenateOR(g3, g0);
+////        System.out.println("______________G6______________");
+////        System.out.println(g6);
+////        System.out.println("______________________________");
+////        GraphWorker.makeClosure(g6);
+////        System.out.println(g6);
 //
-//        g1 = new Graph();
-//        g2 = new Graph();
-//        g1.addNode(new Node('c'));
-//        GraphWorker.markAllNodes(g1);
-//        g2.addNode(new Node('d'));
-//        GraphWorker.markAllNodes(g2);
-//        Graph g4 = GraphWorker.concatanateANY(g1);
-//        System.out.println("______________G4______________");
-//        System.out.println(g4);
-//        System.out.println("______________________________");
-//        Graph g5 = GraphWorker.concatenateONE(g2);
-//        System.out.println("______________G5______________");
-//        System.out.println(g5);
-//        System.out.println("______________________________");
-//        Graph g0 = GraphWorker.concatanateAND(g4, g5);
-//        System.out.println("______________G0______________");
-//        System.out.println(g0);
-//        System.out.println("______________________________");
-//        Graph g6 = GraphWorker.concatenateOR(g3, g0);
-//        System.out.println("______________G6______________");
-//        System.out.println(g6);
-//        System.out.println("______________________________");
-//        GraphWorker.makeClosure(g6);
-//        System.out.println(g6);
-
-//        System.out.println(g6);
-//        DotUtils d = new DotUtils(g6);
-//        try {
-//            d.generateDotFileForNFA("DOTFILE");
-//        } catch (IOException ex) {
-//            Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (DotException ex) {
-//            Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
+////        System.out.println(g6);
+////        DotUtils d = new DotUtils(g6);
+////        try {
+////            d.generateDotFileForNFA("DOTFILE");
+////        } catch (IOException ex) {
+////            Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+////        } catch (DotException ex) {
+////            Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+////        }
+//    }
 }
 

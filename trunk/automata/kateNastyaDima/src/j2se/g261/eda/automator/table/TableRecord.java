@@ -13,6 +13,7 @@ import java.util.Vector;
 /**
  *
  * @author Katerina
+ * @author Dmitry
  */
 public class TableRecord {
 
@@ -63,5 +64,9 @@ public class TableRecord {
         }
         
         return s;
+    }
+    
+    public Vector<Integer> getStateSet(char key){
+            return storage.get(key);
     }
 }

@@ -6,12 +6,12 @@
 package j2se.g261.eda.automator.parser;
 
 import j2se.g261.eda.automator.graph.Graph;
+import j2se.g261.eda.automator.graph.GraphWalker;
 import j2se.g261.eda.automator.graph.GraphWorker;
 import j2se.g261.eda.automator.graph.Node;
+import j2se.g261.eda.automator.graph.WalkerException;
 import j2se.g261.eda.automator.table.Table;
-import j2se.g261.eda.automator.tex.TexWriter;
-import java.io.File;
-import java.io.IOException;
+import j2se.g261.eda.automator.table.TableWalker;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -106,7 +106,7 @@ public class PatternParser {
     }
     
     public static void main(String[] args) {
-        PatternParser p = new PatternParser("(ab)|(ac)");
+        PatternParser p = new PatternParser("(a|b)(ac)*|d*g?h");
         int c;
         try {
             Graph g = p.parse();
@@ -116,26 +116,34 @@ public class PatternParser {
             System.out.println(g);
             g.fillDeterminatedTable(t);
             t.fillTable();
-            TexWriter tex = new TexWriter(t);
-            File f = tex.generateFile();
-            Process pr = Runtime.getRuntime().exec("latex " + f.getAbsolutePath());
             
-            while((c = pr.getInputStream().read()) != -1){
-                System.out.print(Character.toChars(c));
-                if(Character.toChars(c).equals('?')){
-                pr.getOutputStream().write(new String("\n").getBytes());
-                pr.getOutputStream().flush();
-                }
-            }
-            String nm = f.getName();
-            System.out.println("--------------");
+            GraphWalker walker = new GraphWalker(g);
+            System.out.println(walker.check("g"));
+            TableWalker walk = new TableWalker(g,t);
+            System.out.println(walk.check("aacac"));
+            
+//            TexWriter tex = new TexWriter(t);
+//            File f = tex.generateFile();
+//            Process pr = Runtime.getRuntime().exec("latex " + f.getAbsolutePath());
+            
+//            while((c = pr.getInputStream().read()) != -1){
+//                System.out.print(Character.toChars(c));
+//                if(Character.toChars(c).equals('?')){
+//                pr.getOutputStream().write(new String("\n").getBytes());
+//                pr.getOutputStream().flush();
+//                }
+//            }
+//            String nm = f.getName();
+//            System.out.println("--------------");
 //            System.out.println(nmнала г);
-            System.out.println(nm.substring(0, nm.length() - 5));
+//            System.out.println(nm.substring(0, nm.length() - 5));
             
-            Runtime.getRuntime().exec("kdvi " + nm.substring(0, nm.length() - 4) + ".dvi");
+//            Runtime.getRuntime().exec("kdvi " + nm.substring(0, nm.length() - 4) + ".dvi");
             
-            System.out.println(t);
-        } catch (IOException ex) {
+//            System.out.println(t);
+//        } catch (IOException ex) {
+//            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (WalkerException ex) {
             Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserException ex) {
             Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
