@@ -238,7 +238,7 @@ public class Graph implements Cloneable{
         return (Node)(all.toArray())[index];
     }
 
-    int getNodeIndex(Node n) {
+    public int getNodeIndex(Node n) {
         for (int i = 0; i < all.size(); i++) {
             if ((Node)(all.toArray())[i] == n) {
                 return i;
