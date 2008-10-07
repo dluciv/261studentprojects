@@ -105,48 +105,48 @@ public class PatternParser {
         return c != '|' && c != '*' && c != '?';
     }
     
-    public static void main(String[] args) {
-        PatternParser p = new PatternParser("(a|b)(ac)*|d*g?h");
-        int c;
-        try {
-            Graph g = p.parse();
-            Table t = new Table();
-            GraphWorker.makeClosure(g);
-//            GraphWorker.makeDeterministic(g);
-            System.out.println(g);
-            g.fillDeterminatedTable(t);
-            t.fillTable();
-            
-            GraphWalker walker = new GraphWalker(g);
-            System.out.println(walker.check("g"));
-            TableWalker walk = new TableWalker(g,t);
-            System.out.println(walk.check("aacac"));
-            
-//            TexWriter tex = new TexWriter(t);
-//            File f = tex.generateFile();
-//            Process pr = Runtime.getRuntime().exec("latex " + f.getAbsolutePath());
-            
-//            while((c = pr.getInputStream().read()) != -1){
-//                System.out.print(Character.toChars(c));
-//                if(Character.toChars(c).equals('?')){
-//                pr.getOutputStream().write(new String("\n").getBytes());
-//                pr.getOutputStream().flush();
-//                }
-//            }
-//            String nm = f.getName();
-//            System.out.println("--------------");
-//            System.out.println(nmнала г);
-//            System.out.println(nm.substring(0, nm.length() - 5));
-            
-//            Runtime.getRuntime().exec("kdvi " + nm.substring(0, nm.length() - 4) + ".dvi");
-            
-//            System.out.println(t);
-//        } catch (IOException ex) {
+//    public static void main(String[] args) {
+//        PatternParser p = new PatternParser("(a|b)(ac)*|d*g?h");
+//        int c;
+//        try {
+//            Graph g = p.parse();
+//            Table t = new Table();
+//            GraphWorker.makeClosure(g);
+////            GraphWorker.makeDeterministic(g);
+//            System.out.println(g);
+//            g.fillDeterminatedTable(t);
+//            t.fillTable();
+//            
+//            GraphWalker walker = new GraphWalker(g);
+//            System.out.println(walker.check("g"));
+//            TableWalker walk = new TableWalker(g,t);
+//            System.out.println(walk.check("aacac"));
+//            
+////            TexWriter tex = new TexWriter(t);
+////            File f = tex.generateFile();
+////            Process pr = Runtime.getRuntime().exec("latex " + f.getAbsolutePath());
+//            
+////            while((c = pr.getInputStream().read()) != -1){
+////                System.out.print(Character.toChars(c));
+////                if(Character.toChars(c).equals('?')){
+////                pr.getOutputStream().write(new String("\n").getBytes());
+////                pr.getOutputStream().flush();
+////                }
+////            }
+////            String nm = f.getName();
+////            System.out.println("--------------");
+////            System.out.println(nmнала г);
+////            System.out.println(nm.substring(0, nm.length() - 5));
+//            
+////            Runtime.getRuntime().exec("kdvi " + nm.substring(0, nm.length() - 4) + ".dvi");
+//            
+////            System.out.println(t);
+////        } catch (IOException ex) {
+////            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (WalkerException ex) {
 //            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (WalkerException ex) {
-            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParserException ex) {
-            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//        } catch (ParserException ex) {
+//            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 }
