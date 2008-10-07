@@ -4,11 +4,19 @@
  */
 package j2se.g261.eda.automator;
 
+import j2se.g261.eda.automator.dot.DotException;
+import j2se.g261.eda.automator.dot.DotUtils;
 import j2se.g261.eda.automator.graph.Graph;
-import j2se.g261.eda.automator.graph.Node;
+import j2se.g261.eda.automator.graph.GraphWalker;
+import j2se.g261.eda.automator.graph.GraphWorker;
+import j2se.g261.eda.automator.graph.WalkerException;
 import j2se.g261.eda.automator.parser.ParserException;
+import j2se.g261.eda.automator.parser.PatternParser;
 import j2se.g261.eda.automator.table.Table;
-import j2se.g261.eda.automator.table.TableRecord;
+import j2se.g261.eda.automator.table.TableWalker;
+import j2se.g261.eda.automator.tex.TexWriter;
+import java.io.File;
+import java.io.IOException;
 
 /**
  *
@@ -16,54 +24,56 @@ import j2se.g261.eda.automator.table.TableRecord;
  */
 public class Automator {
 
-    private Graph graph;
-//    private Parser parser;
-    private Table table;
+    private Graph graph = null;
+    private Graph determinedGraph = null;
+    private Table table = null;
+    private String pattern = null;
+    private GraphWalker graphWalker = null;
+    private TableWalker tableWalker = null;
+    private File texFile = null;
+    private File dotFile = null;
 
-    public Automator(String s) {
-//        parser = new Parser(s);
+    public Automator(String pattern) {
+        this.pattern = pattern;
         table = new Table();
     }
 
-    public void compile() throws ParserException {
-        makeGraph();
+    public void compile() throws ParserException, WalkerException, 
+            NoConditionsException, DotException, IOException {
+        try {
+            PatternParser parser = new PatternParser(pattern);
+            graph = parser.parse();
+            GraphWorker.makeClosure(graph);
+//            determinedGraph = graph.clone();
+            graph.fillDeterminatedTable(table);
+            table.fillTable();
+//            graphWalker = new GraphWalker(determinedGraph);
+            tableWalker = new TableWalker(graph, table);
+            texFile = new TexWriter(table).generateFile();
+            dotFile = new DotUtils(graph).generateDotFileForNFA("GRAPHNFA");
+        } catch (NullPointerException ex) {
+            throw new NoConditionsException();
+        }
+
     }
 
-    private void makeGraph() throws ParserException {
-//        graph = parser.parse();
-//        GraphWorker.makeClosure(graph);
+    public boolean matchGraph(String s) {
+        return graphWalker.check(s);
     }
 
-    public boolean match(String s) {
-        System.out.println(this);
-        return true;
+    public boolean matchTable(String s) {
+        return tableWalker.check(s);
     }
 
+    public File getTexFile(){
+        return texFile;
+    }
+    public File getDotFile(){
+        return dotFile;
+    }
+    
     @Override
     public String toString() {
         return graph.toString();
-    }
-
-    private void createDeterminatedTable() {
-        table.clear();
-        int a = graph.allSize();
-        for (int i = 0; i < a; i++) {
-            writeNodeInfoToTable(graph.getNodeFromAllAt(i));
-        
-        }
-    }
-
-    private void writeNodeInfoToTable(Node n) {
-        TableRecord t = new TableRecord();
-        
-        if(Node.isEndNode(n)){
-            t.add(TableRecord.SYMBOL_END, 0);
-        }
-        int a = n.getOutgoingSize();
-        for (int i = 0; i < a; i++) {
-            Node n1 = n.getOutgoingAt(i);
-            t.add(n1.getName(), graph.getNodeIndex(n1));
-        }
-        table.add(graph.getNodeIndex(n), t);
     }
 }
