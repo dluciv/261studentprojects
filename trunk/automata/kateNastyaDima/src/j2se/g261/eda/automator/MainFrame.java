@@ -69,11 +69,11 @@ public class MainFrame extends JFrame implements ActionListener {
     private Process dviview = null;
 
     public MainFrame() {
-        btnSetAutomat = new JButton("Задать автомат");
+        btnSetAutomat = new JButton("Create automator");
         btnSetAutomat.addActionListener(this);
-        btnExit = new JButton("Выход");
+        btnExit = new JButton("Exit");
         btnExit.addActionListener(this);
-        btnVerify = new JButton("Проверить");
+        btnVerify = new JButton("Verify");
         btnVerify.addActionListener(this);
         tfPattern = new JTextField();
         tfPattern.setPreferredSize(new Dimension(140, 20));
@@ -92,7 +92,6 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     private Process runProgram(String command, File f) throws IOException {
-        System.out.println("run: " + command); 
         Runtime r = Runtime.getRuntime();
 
         if (Globals.COMMANDS_IN_ENV) {
@@ -104,12 +103,12 @@ public class MainFrame extends JFrame implements ActionListener {
 
     private void constructStatusPanel() {
         lbStatusTable = new JLabel(iconOk);
-        lbStatusTable.setToolTipText("Строка принадлежит автомату");
+        lbStatusTable.setToolTipText("String belongs to automator ");
         lbStatusGraph = new JLabel(iconOk);
-        lbStatusGraph.setToolTipText("Строка принадлежит автомату");
-        lbTable = new JLabel("<html><body><h2>Таблица</h2></body></html>");
+        lbStatusGraph.setToolTipText("String belongs to automator ");
+        lbTable = new JLabel("<html><body><h2>Table</h2></body></html>");
         lbTable.setBorder(new EmptyBorder(0, 0, 0, 70));
-        lbGraph = new JLabel("<html><body><h2>Граф</h2></body></html>");
+        lbGraph = new JLabel("<html><body><h2>Graph</h2></body></html>");
         lbGraph.setBorder(new EmptyBorder(0, 0, 0, 70));
         statusPanel = new JPanel();
         statusPanel.setLayout(new GridLayout(1, 2, 4, 20));
@@ -152,22 +151,22 @@ public class MainFrame extends JFrame implements ActionListener {
         }
         if (e.getSource().equals(btnVerify)) {
             if (automator == null) {
-                JOptionPane.showMessageDialog(this, "Задайте сначала автомат",
-                        "Ошибка", JOptionPane.ERROR_MESSAGE, iconError);
+                JOptionPane.showMessageDialog(this,"Please, create automator first",
+                        "Error", JOptionPane.ERROR_MESSAGE, iconError);
             } else {
                 if (automator.matchTable(tfInputString.getText())) {
                     lbStatusTable.setIcon(iconOk);
-                    lbStatusTable.setToolTipText("Строка принадлежит автомату");
+                    lbStatusTable.setToolTipText("String belongs to automator");
                 } else {
                     lbStatusTable.setIcon(iconBad);
-                    lbStatusTable.setToolTipText("Строка не принадлежит автомату");
+                    lbStatusTable.setToolTipText("String does not belong to automator");
                 }
                 if (automator.matchGraph(tfInputString.getText())) {
                     lbStatusGraph.setIcon(iconOk);
-                    lbStatusGraph.setToolTipText("Строка принадлежит автомату");
+                    lbStatusGraph.setToolTipText("String belongs to automator");
                 } else {
                     lbStatusGraph.setIcon(iconBad);
-                    lbStatusGraph.setToolTipText("Строка не принадлежит автомату");
+                    lbStatusGraph.setToolTipText("String does not belong to automator");
                 }
             }
         }
@@ -191,12 +190,11 @@ public class MainFrame extends JFrame implements ActionListener {
         if (e.getSource().equals(btnShowTable)) {
             System.out.println("SHOW");
             if (automator == null) {
-                JOptionPane.showMessageDialog(this, "Задайте сначала автомат", 
-                        "Ошибка", JOptionPane.ERROR_MESSAGE, iconError);
+                JOptionPane.showMessageDialog(this, "Please, create automator first", 
+                        "Error", JOptionPane.ERROR_MESSAGE, iconError);
                 return;
             }
             if (dviview == null) {
-                System.out.println("NULL");
                 try {
                     Process p = runProgram(Globals.LATEX_COMMAND, automator.getTexFile());
                     int c = 0;
@@ -204,9 +202,9 @@ public class MainFrame extends JFrame implements ActionListener {
                     dvifile = dvifile.substring(0, dvifile.length() - 4) + ".dvi";
                     dviview = runProgram(Globals.DVI_VIEWER, new File(dvifile));
                 } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Внутренняя ошибка(" +
+                JOptionPane.showMessageDialog(this, "interior error" +
                         "", 
-                        "Ошибка", JOptionPane.ERROR_MESSAGE, iconError);
+                        "Error", JOptionPane.ERROR_MESSAGE, iconError);
                 }
             } else {
                 System.out.println("NOT NULL");
@@ -239,8 +237,8 @@ public class MainFrame extends JFrame implements ActionListener {
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         panel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-        JLabel lbPattern = new JLabel("Регулярное выражение");
-        JLabel lbInput = new JLabel("Строка к проверке");
+        JLabel lbPattern = new JLabel("Regular expression");
+        JLabel lbInput = new JLabel("String is in inspection");
         System.out.println(iconOk);
         System.out.println(iconOk.getIconWidth());
 
@@ -273,14 +271,14 @@ public class MainFrame extends JFrame implements ActionListener {
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu menu = new JMenu("Помощь");
-        menu.add(new JMenuItem(new AbstractAction("Помощь") {
+        JMenu menu = new JMenu("Help");
+        menu.add(new JMenuItem(new AbstractAction("Help") {
 
             public void actionPerformed(ActionEvent e) {
                 new Help().showHelp();
             }
         }));
-        menu.add(new JMenuItem(new AbstractAction("О программе") {
+        menu.add(new JMenuItem(new AbstractAction("About") {
 
             public void actionPerformed(ActionEvent e) {
                 new About().showAbout();
@@ -319,7 +317,7 @@ class Help extends JFrame implements ActionListener {
 
     public Help() {
         JPanel p = new JPanel();
-        p.add(new JLabel("Помощь"));
+        p.add(new JLabel("Show"));
         getContentPane().add(p);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(new Dimension(M_WIDTH, M_HEIGHT));
@@ -327,7 +325,7 @@ class Help extends JFrame implements ActionListener {
         int windowY = Math.max(0, (screen.height - M_HEIGHT) / 2);
         setLocation(windowX, windowY);
         JPanel pButtonsInner = new JPanel();
-        btnExit = new JButton("Закрыть");
+        btnExit = new JButton("Exit");
         btnExit.addActionListener(this);
         pButtonsInner.add(btnExit);
         JPanel pButtons = new JPanel();
@@ -358,10 +356,10 @@ class About extends JFrame implements ActionListener {
     public About() {
         JPanel p = new JPanel();
         JTextArea area = new JTextArea();
-        area.append("Над програмой работали: \n\n");
-        area.append("  Волкова Екатерина \n");
-        area.append("  Солодкая Анастасия \n");
-        area.append("  Колянов Дмитрий ");
+        area.append("Authors \n\n");
+        area.append("  Volkova E. V. \n");
+        area.append("  Solodkaya A. S. \n");
+        area.append("  Kolyanov D. A. ");
 
         area.setEditable(false);
         area.setBackground(this.getContentPane().getBackground());

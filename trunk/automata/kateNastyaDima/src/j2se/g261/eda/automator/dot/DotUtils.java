@@ -61,17 +61,26 @@ public class DotUtils {
      * @return "name" of node
      * @throws IOException
      */
+    
     private String writeNode(Node n, BufferedWriter bf) throws IOException {
-        String s1 = "node" + index + "[lable = \"" + n.getName() + "\" ";
-        if (Node.isStartNode(n) || Node.isEndNode(n)) {
+        String s1;
+        if (Node.isStartNode(n)) {
+        	s1 = "node" + index + "[label = \"" + "START" + "\" ";
             s1 += ", shape = \"rectangle\"";
-        } else {
+        }
+        else if (Node.isEndNode(n)) {
+        	s1 = "node" + index + "[label = \"" + "END" + "\" ";
+            s1 += ", shape = \"rectangle\"";
+        }
+        else {
+        	s1 = "node" + index + "[label = \"" + n.getName() + "\" ";
             s1 += ", shape = \"circle\"";
         }
-        bf.write(s1 + "]");
+        bf.write(s1 + "];");
         bf.newLine();
-        return "node" + ++index;
+        return "node" + index++;
     }
+
 
     /**
      * This method write in file arc from node n1(name) to node n2(name)
@@ -94,6 +103,7 @@ public class DotUtils {
      * @throws IOException
      * @throws DotException
      */
+    
     private void processNode(Node n, BufferedWriter bf, HashMap<Node, String> passed) throws IOException, DotException {
         if (!passed.containsKey(n)) {
             passed.put(n, writeNode(n, bf));
@@ -103,14 +113,21 @@ public class DotUtils {
         int num = n.getOutgoingSize();
         for (int i = 0; i < num; i++) {
             Node n1 = n.getOutgoingAt(i);
+            if (passed.containsKey(n1) && !Node.isEndNode(n1))
+            {
+            	writeEdge(passed.get(n), passed.get(n1), bf);
+            	continue;
+            }
             processNode(n1, bf, passed);
             if (passed.containsKey(n) && passed.containsKey(n1)) {
                 writeEdge(passed.get(n), passed.get(n1), bf);
-            } else {
+            }
+            else {
                 throw new DotException();
             }
         }
     }
+
 
 //    public static void main(String[] args) {
 ////        Graph g1 = new Graph();

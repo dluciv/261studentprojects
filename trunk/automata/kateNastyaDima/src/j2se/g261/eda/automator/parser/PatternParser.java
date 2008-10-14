@@ -14,6 +14,9 @@ import j2se.g261.eda.automator.table.Table;
 import j2se.g261.eda.automator.table.TableWalker;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.io.IOException;
+import j2se.g261.eda.automator.dot.DotException;
+import j2se.g261.eda.automator.dot.DotUtils;
 
 /**
  *
@@ -105,48 +108,58 @@ public class PatternParser {
         return c != '|' && c != '*' && c != '?';
     }
     
-//    public static void main(String[] args) {
-//        PatternParser p = new PatternParser("(a|b)(ac)*|d*g?h");
-//        int c;
-//        try {
-//            Graph g = p.parse();
-//            Table t = new Table();
-//            GraphWorker.makeClosure(g);
-////            GraphWorker.makeDeterministic(g);
-//            System.out.println(g);
-//            g.fillDeterminatedTable(t);
-//            t.fillTable();
-//            
-//            GraphWalker walker = new GraphWalker(g);
-//            System.out.println(walker.check("g"));
-//            TableWalker walk = new TableWalker(g,t);
-//            System.out.println(walk.check("aacac"));
-//            
-////            TexWriter tex = new TexWriter(t);
-////            File f = tex.generateFile();
-////            Process pr = Runtime.getRuntime().exec("latex " + f.getAbsolutePath());
-//            
-////            while((c = pr.getInputStream().read()) != -1){
-////                System.out.print(Character.toChars(c));
-////                if(Character.toChars(c).equals('?')){
-////                pr.getOutputStream().write(new String("\n").getBytes());
-////                pr.getOutputStream().flush();
-////                }
-////            }
-////            String nm = f.getName();
-////            System.out.println("--------------");
-////            System.out.println(nmнала г);
-////            System.out.println(nm.substring(0, nm.length() - 5));
-//            
-////            Runtime.getRuntime().exec("kdvi " + nm.substring(0, nm.length() - 4) + ".dvi");
-//            
-////            System.out.println(t);
-////        } catch (IOException ex) {
-////            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (WalkerException ex) {
+    public static void main(String[] args) {
+        PatternParser p = new PatternParser("(a|b)*(c|d)*");
+        int c;
+        try {
+            Graph g = p.parse();
+            Table t = new Table();
+            GraphWorker.makeClosure(g);
+//            GraphWorker.makeDeterministic(g);
+            System.out.println(g);
+            g.fillDeterminatedTable(t);
+            t.fillTable();
+            
+            DotUtils d = new DotUtils(g);
+            try {
+              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+          } catch (IOException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (DotException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          }
+
+            
+            GraphWalker walker = new GraphWalker(g);
+            System.out.println(walker.check("a"));
+           TableWalker walk = new TableWalker(g,t);
+            System.out.println(walk.check(""));
+            
+//            TexWriter tex = new TexWriter(t);
+//            File f = tex.generateFile();
+//            Process pr = Runtime.getRuntime().exec("latex " + f.getAbsolutePath());
+            
+//            while((c = pr.getInputStream().read()) != -1){
+//                System.out.print(Character.toChars(c));
+//                if(Character.toChars(c).equals('?')){
+//                pr.getOutputStream().write(new String("\n").getBytes());
+//                pr.getOutputStream().flush();
+//                }
+//            }
+//            String nm = f.getName();
+//            System.out.println("--------------");
+//            System.out.println(nmнала г);
+//            System.out.println(nm.substring(0, nm.length() - 5));
+            
+//            Runtime.getRuntime().exec("kdvi " + nm.substring(0, nm.length() - 4) + ".dvi");
+            
+//            System.out.println(t);
+//        } catch (IOException ex) {
 //            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ParserException ex) {
-//            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+        } catch (WalkerException ex) {
+            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserException ex) {
+            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }
 }
