@@ -14,16 +14,34 @@ import java.util.Vector;
 public class Node {
     
     private char name;
-    private HashSet<Node> outgoing;
-    private HashSet<Node> incoming;
+    private int number;
+    private Vector<Node> outgoing;
+    private Vector<Node> incoming;
     private static final char EPSILON = '\r';
-    private static final Node START = new Node('\t');
-    private static final Node END = new Node('\n');
+    private static final char START = '\t';
+    private static final char END = '\n';
+    private static int index = 2;
 
     public Node(char name) {
         this.name = name;
-        this.outgoing = new HashSet<Node>();
-        this.incoming = new HashSet<Node>();
+        this.outgoing = new Vector<Node>();
+        this.incoming = new Vector<Node>();
+        number = nextIndex();
+    }
+    
+    private Node(char name, int number){
+        this.name = name;
+        this.number = number;
+        this.outgoing = new Vector<Node>();
+        this.incoming = new Vector<Node>();
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
 
@@ -76,14 +94,14 @@ public class Node {
     @Override
     public String toString() {
         
-        String s = "Node: " + toWellName(name) + "\n";
+        String s = "Node: " + toWellName(name) + getNumber() + "\n";
 
         for (Node node : incoming) {
-            s += toWellName(node.getName()) + "--->\n";
+            s += toWellName(node.getName()) + node.getNumber() + "--->\n";
         }
         
         for (Node node : outgoing) {
-            s +="    ---->" + toWellName(node.getName()) + "\n";
+            s +="    ---->" + toWellName(node.getName()) + node.getNumber() + "\n";
         }
        
         return s;
@@ -109,23 +127,23 @@ public class Node {
     }
         
     
-    public static Node getStartNode(){
-        return START;
+    public static Node startNode(){
+        return new Node(START, 0);
     }
     
     public static boolean isStartNode(Node n){
-        return n == START;
+        return n.getNumber() == 0;
     }
 
-    public static Node getEndNode(){
-        return END;
+    public static Node endNode(){
+        return new Node(END, 1);
     }
     
     public static boolean isEndNode(Node n){
-        return n == END;
+        return n.getNumber() == 1;
     }
 
-    public static Node getEpsilonNode(){
+    public static Node epsilonNode(){
         return new Node(EPSILON);
     }
     
@@ -142,11 +160,15 @@ public class Node {
     }
     
     public Node getIncomingAt(int index){
-        return (Node)(incoming.toArray())[index];
+        return (Node)incoming.get(index);
     }
     
     public Node getOutgoingAt(int index){
-        return (Node)(outgoing.toArray())[index];
+        return (Node)outgoing.get(index);
+    }
+    
+    private static int nextIndex(){
+        return index++;        
     }
 
     @Override
@@ -158,7 +180,7 @@ public class Node {
             return false;
         }
         final Node other = (Node) obj;
-        if (this.name != other.name) {
+        if (this.number != other.number) {
             return false;
         }
         return true;
@@ -173,6 +195,13 @@ public class Node {
         }
     }
 
-    
+    //@todo remove debug method (Character.toUpperCase)
+    public Node cloneWithoutConnections(){
+        if(isEndNode(this) || isStartNode(this)){
+            return new Node(getName(), getNumber());
+        }else{
+            return new Node(Character.toUpperCase(getName()), getNumber());
+        }
+    }
 }
 
