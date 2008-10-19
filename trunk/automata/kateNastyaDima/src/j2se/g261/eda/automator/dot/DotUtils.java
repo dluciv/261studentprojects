@@ -31,9 +31,9 @@ public class DotUtils {
      * This method create a dot file(In a correct format) the containing count
      * conclude file in BufferedWriter
      * @param filename the name of this file
-     * @return
-     * @throws IOException
-     * @throws DotException
+     * @return Temp file with dot-representation of graph
+     * @throws IOException if some IO errors occured
+     * @throws DotException if some internal errors occured
      */
     public File generateDotFileForNFA(String filename) throws IOException, DotException {
         index = 0;
@@ -73,7 +73,7 @@ public class DotUtils {
             s1 += ", shape = \"rectangle\"";
         }
         else {
-        	s1 = "node" + index + "[label = \"" + n.getName() + "\" ";
+        	s1 = "node" + index + "[label = \"" + n.getName() + n.getNumber() + "\" ";
             s1 += ", shape = \"circle\"";
         }
         bf.write(s1 + "];");
@@ -105,6 +105,7 @@ public class DotUtils {
      */
     
     private void processNode(Node n, BufferedWriter bf, HashMap<Node, String> passed) throws IOException, DotException {
+        System.out.println("" + n.getName() + n.getNumber());
         if (!passed.containsKey(n)) {
             passed.put(n, writeNode(n, bf));
         }
