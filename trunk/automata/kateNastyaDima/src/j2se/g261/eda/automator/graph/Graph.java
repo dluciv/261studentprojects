@@ -11,9 +11,8 @@ package j2se.g261.eda.automator.graph;
 
 import j2se.g261.eda.automator.table.Table;
 import j2se.g261.eda.automator.table.TableRecord;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Vector;
+import javax.naming.CompoundName;
 
 /**
  *Represents graph with start and end nodes. Created for presentation of 
@@ -27,20 +26,20 @@ import java.util.Vector;
  * 
  * @see j2se.g261.eda.automator.graph.GraphWorker
  */
-public class Graph implements Cloneable{
+public class Graph implements Cloneable {
 
     /**
      * Storage for start nodes
      */
-    private HashSet<Node> starts;
+    private Vector<Node> starts;
     /**
      * Storage for end nodes
      */
-    private HashSet<Node> ends;
+    private Vector<Node> ends;
     /**
      * Storage for all nodes
      */
-    private HashSet<Node> all;
+    private Vector<Node> all;
 
     /**
      * Constructor with one node which will be only node in graph.
@@ -50,12 +49,41 @@ public class Graph implements Cloneable{
      *        and end node.
      */
     public Graph(Node root) {
-        starts = new HashSet<Node>();
-        ends = new HashSet<Node>();
-        all = new HashSet<Node>();
+        starts = new Vector<Node>();
+        ends = new Vector<Node>();
+        all = new Vector<Node>();
         starts.add(root);
         ends.add(root);
         all.add(root);
+    }
+    
+    private Graph(Vector<Node> allNodes, Vector<Node> startNodes, Vector<Node> endNodes){
+        starts = new Vector<Node>();
+        ends = new Vector<Node>();
+        all = new Vector<Node>();
+
+        for (Node node : allNodes) {
+            all.add(node.cloneWithoutConnections());
+        }
+        
+        for (Node node : startNodes) {
+            starts.add(all.get(all.indexOf(node)));
+        }
+        
+        for (Node node : endNodes) {
+            ends.add(all.get(all.indexOf(node)));
+        }
+        
+        for (Node node : allNodes) {
+            Node newNode = all.get(all.indexOf(node));
+            for (int i = 0; i < node.getIncomingSize(); i++) {
+                newNode.addIncomingNode(all.get(all.indexOf(node.getIncomingAt(i))));
+            }
+            for (int i = 0; i < node.getOutgoingSize(); i++) {
+                newNode.addOutgoingNode(all.get(all.indexOf(node.getOutgoingAt(i))));
+            }
+        }
+        
     }
 
     /**
@@ -90,8 +118,8 @@ public class Graph implements Cloneable{
         starts.remove(n);
         ends.remove(n);
     }
-    
-    void simpleDeleteNode(Node n){
+
+    void simpleDeleteNode(Node n) {
         all.remove(n);
         starts.remove(n);
         ends.remove(n);
@@ -106,11 +134,10 @@ public class Graph implements Cloneable{
     public String toString() {
         String s = "Graph: " + all.size() + "nodes\n";
 
-        Iterator<Node> i = all.iterator();
-
-        while (i.hasNext()) {
-            s += i.next().toString();
+        for (Node node : all) {
+            s += node.toString();
             s += "\n";
+
         }
 
         return s;
@@ -121,8 +148,8 @@ public class Graph implements Cloneable{
      * 
      * @return epsilon-graph
      */
-    public static Graph getEmpty() {
-        return new Graph(Node.getEpsilonNode());
+    public static Graph emptyGraph() {
+        return new Graph(Node.epsilonNode());
     }
 
     /**
@@ -156,7 +183,6 @@ public class Graph implements Cloneable{
         ends.removeAll(ends);
 
         for (Node node : all) {
-            System.out.println(node.getOutgoingSize());
             if (!node.haveOutgoing()) {
                 ends.add(node);
             }
@@ -195,26 +221,23 @@ public class Graph implements Cloneable{
         return ends.size();
     }
 
-
     /**
      * Returns number of nodes ing graph(size of all node list)
      * 
      * @return all nodes size
      */
-    int allSize() {
+    public int allSize() {
         return all.size();
     }
 
-    
     /**
      * Returns node in specified position in start node list.
      * 
      * @param index index of element to return
      * @return node at the specified index
      */
-    
     public Node getNodeFromStartsAt(int index) {
-        return (Node)(starts.toArray())[index];
+        return (Node) starts.get(index);
     }
 
     /**
@@ -224,9 +247,9 @@ public class Graph implements Cloneable{
      * @return node at the specified index
      */
     Node getNodeFromEndsAt(int index) {
-        return (Node)(ends.toArray())[index];
+        return (Node) ends.get(index);
+        
     }
-
 
     /**
      * Returns node in specified position in all node list.
@@ -234,13 +257,13 @@ public class Graph implements Cloneable{
      * @param index index of element to return
      * @return node at the specified index
      */
-    Node getNodeFromAllAt(int index) {
-        return (Node)(all.toArray())[index];
+    public Node getNodeFromAllAt(int index) {
+        return (Node) all.get(index);
     }
 
     public int getNodeIndex(Node n) {
         for (int i = 0; i < all.size(); i++) {
-            if ((Node)(all.toArray())[i] == n) {
+            if (all.get(i) == n) {
                 return i;
             }
         }
@@ -259,23 +282,23 @@ public class Graph implements Cloneable{
     boolean isEnd(Node n) {
         return ends.contains(n);
     }
-    
+
     //@todo rewrite accordingly to replacing; document
     public void fillDeterminatedTable(Table table) {
         table.clear();
         int a = allSize();
         for (int i = 0; i < a; i++) {
             writeNodeInfoToTable(getNodeFromAllAt(i), table);
-        
+
         }
     }
 
     private void writeNodeInfoToTable(Node n, Table table) {
         TableRecord t = new TableRecord();
-        
-        if(Node.isEndNode(n)){
+
+        if (Node.isEndNode(n)) {
 //            t.add(TableRecord.SYMBOL_END, -1);
-            
+
             return;
         }
 //        if(Node.isStartNode(n)){
@@ -285,29 +308,28 @@ public class Graph implements Cloneable{
         for (int i = 0; i < a; i++) {
             Node n1 = n.getOutgoingAt(i);
             char c = n1.getName();
-            if(c == '\t'){
+            if (c == '\t') {
                 c = TableRecord.SYMBOL_START;
-            }else if(c == '\n'){
+            } else if (c == '\n') {
                 c = TableRecord.SYMBOL_END;
             }
             t.add(c, getNodeIndex(n1));
         }
         table.add(getNodeIndex(n), t);
     }
-    
+
     @Override
-    public Graph clone(){
-        return null;
+    public Graph clone() {
+        return new Graph(all, starts, ends);
     }
     
-    
-    
-    public static void main(String[] args) {
-        Vector<Node> v = new Vector<Node>();
-        
-        v.add(new Node('a'));
-        System.out.println(v.contains(new Node('a')));
-        
-        
-    }
+
+//    public static void main(String[] args) {
+//        Vector<Node> v = new Vector<Node>();
+//
+//        v.add(new Node('a'));
+//        System.out.println(v.contains(new Node('a')));
+//
+//
+//    }
 }
