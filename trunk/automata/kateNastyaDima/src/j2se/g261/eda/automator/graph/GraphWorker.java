@@ -23,7 +23,7 @@ public class GraphWorker {
         if (g2 == null) {
             return g1;
         }
-        Graph res = Graph.getEmpty();
+        Graph res = Graph.emptyGraph();
 
         int resNum = res.startsSize();
 
@@ -56,7 +56,7 @@ public class GraphWorker {
     //slogenie s 0
     //dlya togo chto by po zadache razdelyat' dva sluchaya
     public static Graph concatenateONE(Graph g1) {
-        return concatenateOR(g1, Graph.getEmpty());
+        return concatenateOR(g1, Graph.emptyGraph());
     }
     //zvzdochka Klini
 
@@ -64,8 +64,8 @@ public class GraphWorker {
         if (g == null) {
             return null;
         }
-        Node eps1 = Node.getEpsilonNode();
-        Node eps2 = Node.getEpsilonNode();
+        Node eps1 = Node.epsilonNode();
+        Node eps2 = Node.epsilonNode();
 
 
         g.addNode(eps1);
@@ -127,8 +127,8 @@ public class GraphWorker {
         if (g == null) {
             return;
         }
-        Node start = Node.getStartNode();
-        Node end = Node.getEndNode();
+        Node start = Node.startNode();
+        Node end = Node.endNode();
         Vector<Node> deleted = new Vector<Node>();
 
         int h = g.allSize();
@@ -140,20 +140,7 @@ public class GraphWorker {
             if (g.isStart(n)) {
                 start.addOutgoingNode(n);
                 n.addIncomingNode(start);
-//                    int t = n.getOutgoingSize();
-//                    for (int j = 0; j < t; j++) {
-//                        Node n1 = n.getOutgoingAt(j);
-//                        n1.addIncomingNode(start);
-//                        start.addOutgoingNode(n1);
-//                    }
-//
-//                    t = n.getIncomingSize();
-//                    for (int j = 0; j < t; j++) {
-//
-//                        Node n1 = n.getIncomingAt(j);
-//                        n1.addOutgoingNode(end);
-//                        end.addIncomingNode(n1);
-//                    }
+
             }
             if (g.isEnd(n)) {
                 end.addIncomingNode(n);
@@ -170,6 +157,7 @@ public class GraphWorker {
 
 
         markAllNodes(g);
+
     }
 //mark all start and ends nodes
 
@@ -182,41 +170,70 @@ public class GraphWorker {
         g.markAllEnds();
     }
 
-    public static void makeDeterministic(Graph graph) {
-        int sz = graph.allSize();
-        Vector<Node> toDelete = new Vector<Node>();
+    public static Graph makeDeterministic(Graph graph) {
 
-        for (int i = 0; i < sz; i++) {
-            Node n = graph.getNodeFromAllAt(i);
+        Graph g = graph.clone();
+        boolean haveChanges = true;
 
-            Vector<Node> uniq = new Vector<Node>();
+        while (haveChanges) {
+            haveChanges = false;
+            for (int i = 0; i < g.allSize(); i++) {
+                Node n = g.getNodeFromAllAt(i);
+                Vector<Node> v = new Vector<Node>();
+                for (int j = 0; j < n.getOutgoingSize(); j++) {
+                    Node equaled = getEqualed(v, n.getOutgoingAt(j));
 
-            int out = n.getOutgoingSize();
+                    if (equaled == null) {
+                        v.add(n.getOutgoingAt(j));
+                    } else {
+                        haveChanges = true;
+                        n.getOutgoingAt(j).removeNodeFromIncoming(n);
+                        for (int k = 0; k < n.getOutgoingAt(j).getOutgoingSize(); k++) {
+                            if(!n.getOutgoingAt(j).getOutgoingAt(k).equals(n)){
+                            equaled.addOutgoingNode(n.getOutgoingAt(j).getOutgoingAt(k));
+                            n.getOutgoingAt(j).getOutgoingAt(k).addIncomingNode(equaled);
+                            }else{
+                            equaled.addOutgoingNode(equaled);
+                            equaled.addIncomingNode(equaled);
+                            n.getOutgoingAt(j).getOutgoingAt(k)
+                                    .removeNodeFromIncoming(n.getOutgoingAt(j)
+                                    .getOutgoingAt(k));
+                            }
+                        }
+                        n.removeNodeFromOutgoing(n.getOutgoingAt(j));
+                    }
 
-            for (int j = 0; j < out; j++) {
-                Node n1 = n.getOutgoingAt(j);
-                if (uniq.contains(n1)) {
-                    toDelete.add(n1);
-                    Node n2 = getEqualed(uniq, n1);
-                    n1.shiftConnections(n2);
-                } else {
-                    uniq.add(n1);
                 }
 
+            }
+        }
+
+        int size = g.allSize();
+        for (int i = 0; i < size; i++) {
+            if (!g.isStart(g.getNodeFromAllAt(i)) && !g.getNodeFromAllAt(i).haveIncoming()) {
+                Node n = g.getNodeFromAllAt(i);
+                for (int j = 0; j < n.getOutgoingSize(); j++) {
+                    Node out = n.getOutgoingAt(j);
+                    out.removeNodeFromIncoming(n);
+                    n.removeNodeFromOutgoing(out);
+                }
+                g.simpleDeleteNode(n);
+                System.out.println("@@@@@@@@@@@@@");
+                System.out.println(n);
+                System.out.println("@@@@@@@@@@@@@");
+                i--;
+                size--;
             }
 
         }
 
-        for (Node node : toDelete) {
-            graph.simpleDeleteNode(node);
-
-        }
+        return g;
 
     }
 
     private static Node getEqualed(Vector<Node> v, Node n) {
         for (Node node : v) {
-            if (node.equals(n)) {
+            if (node.getName() == n.getName()) {
                 return node;
             }
         }
