@@ -22,7 +22,13 @@ public class TableWalker {
     public TableWalker(Graph graph, Table table) {
         this.graph = graph;
         this.table = table;
-        startNumber = graph.getNodeIndex(Node.getStartNode());
+        for (int i = 0; i < graph.allSize(); i++) {
+            if(Node.isStartNode(graph.getNodeFromAllAt(i))){
+                startNumber = i;
+                break;
+            }
+        }
+//        startNumber = graph.getNodeIndex(Node.startNode());
     }
     
    public boolean check(String s){
