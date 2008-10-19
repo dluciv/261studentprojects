@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import java.io.IOException;
 import j2se.g261.eda.automator.dot.DotException;
 import j2se.g261.eda.automator.dot.DotUtils;
+import java.util.HashMap;
 
 /**
  *
@@ -109,20 +110,36 @@ public class PatternParser {
     }
     
     public static void main(String[] args) {
-        PatternParser p = new PatternParser("(a|b)*(c|d)*");
+        
+//        HashMap<Node, Integer> hm = new HashMap<Node, Integer>();
+//        Node n = new Node('a');
+//        hm.put(n, Integer.valueOf(1));
+//        System.out.println(hm.containsKey(n.cloneWithoutConnections()));
+        PatternParser p = new PatternParser("a((bc)|(bd))");
         int c;
         try {
             Graph g = p.parse();
             Table t = new Table();
             GraphWorker.makeClosure(g);
-//            GraphWorker.makeDeterministic(g);
-            System.out.println(g);
+            Graph g1 = GraphWorker.makeDeterministic(g);
+//            System.out.println(g);
+//            System.out.println("--------------");
+//            System.out.println(g.clone());
+//            System.out.println("--------------");
+//            System.out.println(g1);
             g.fillDeterminatedTable(t);
             t.fillTable();
             
-            DotUtils d = new DotUtils(g);
+//            DotUtils d = new DotUtils(g);
+            DotUtils d1 = new DotUtils(g1);
+            System.out.println(g1);
+            System.out.println("!!!!!!!!!!");
+            for (int i = 0; i < g1.allSize(); i++) {
+                System.out.println(g1.getNodeFromAllAt(i));
+            }
             try {
-              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+//              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+              System.out.println(d1.generateDotFileForNFA("DOTFILE").getAbsolutePath());
           } catch (IOException ex) {
               Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
           } catch (DotException ex) {
