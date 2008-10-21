@@ -323,6 +323,10 @@ public class Graph implements Cloneable {
         return new Graph(all, starts, ends);
     }
     
+    public Vector<Node> getAll(){
+    	return all;
+    }
+    
 
 //    public static void main(String[] args) {
 //        Vector<Node> v = new Vector<Node>();
