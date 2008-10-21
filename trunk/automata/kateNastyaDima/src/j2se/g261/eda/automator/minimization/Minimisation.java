@@ -30,7 +30,7 @@ public class Minimisation {
 		n.addIncomingNode(n2);
 		}
 		
-		return ;
+		return j;
 	}
 	
 	public Graph toMinimise(Graph g){
