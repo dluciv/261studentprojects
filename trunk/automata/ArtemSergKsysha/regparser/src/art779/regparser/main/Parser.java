@@ -107,11 +107,11 @@ public class Parser {
 	}
 	public static void main(String[] args) {
 		
-		//Parser parser = new Parser("i(s|a*|b(c|d)*(a)*)?p");
+		Parser parser = new Parser("i(s|a*|b(c|d)*(a)*)?p");
 		//Parser parser = new Parser("a(b|c(g|e)|d)");
 		//Parser parser = new Parser("a(b(c|d)|b(g|e))");
 		
-		Parser parser = new Parser("cq|cw(w|g|we|j|wt|cs)|f");
+		//Parser parser = new Parser("cq|cw(w|g|we|j|wt|cs)|f");
 		NFABuilder NFA = parser.getNFA();
 		//NFA.determinateNode(0,0);
 		NFA.determinateNFA();

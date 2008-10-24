@@ -57,9 +57,21 @@ public class NFAVisualizer {
 		}
 		return output; 
 	}
-
-	public int getFinalState() {
-		return NFABuilder.LAST_STATE;
+	
+	public String printGraphTEX() {
+		String output = new String();
+		output = "";
+		
+		if(!NFA.graph.isEmpty())
+		{
+			output += "TEX";
+		}
+		else
+		{
+			output += "graph is empty";		
+		}
+		return output; 
 	}
+
 	
 }

@@ -8,6 +8,10 @@ public class WithGUI extends JFrame {
 	/**
 	 * 
 	 */
+	private NFABuilder NFA;
+	private NFAVisualizer visualizer;
+	private Checker checker;
+	
 	private static final long serialVersionUID = 1L;
 	private JButton button2 = new JButton("Print");	
 	private JButton button3 = new JButton("Compare");
@@ -20,7 +24,7 @@ public class WithGUI extends JFrame {
 	
 	private JTextField input = new JTextField("i(s|a*|b(c|d)*(a)*)?p", 15);
 	private JTextField input2 = new JTextField("isa", 15);
-	private JTextArea textarea = new JTextArea();
+	private TextArea textarea = new TextArea("", 23, 19, TextArea.SCROLLBARS_VERTICAL_ONLY);
 	
 	
 	private JRadioButton radio1 = new JRadioButton("Regular");
@@ -29,6 +33,8 @@ public class WithGUI extends JFrame {
 	
 	private JRadioButton radio4 = new JRadioButton("NFA");
 	private JRadioButton radio5 = new JRadioButton("DFA");
+	
+	private JScrollBar sb = new JScrollBar(); 
 
 	JPanel panel1 = new JPanel();
 	JPanel panel2 = new JPanel();
@@ -73,7 +79,7 @@ public class WithGUI extends JFrame {
 	    
 	    panel1.add(label2);
 	    panel1.add(input2);
-	    //button3.addActionListener(new ButtonEventListener());
+	    button3.addActionListener(new Button3EventListener());
 	    panel1.add(button3);
 	    panel1.add(label5);
 	    
@@ -81,36 +87,43 @@ public class WithGUI extends JFrame {
 	    panel2.setLayout(new FlowLayout());
 	    panel2.setBackground(Color.gray);
 	    getContentPane().add(panel2);
-	    //textarea.setColumns(15);
-	    //textarea.setRows(22);
-	    textarea.setLineWrap(true);
-	    textarea.setAutoscrolls(false);
 	    panel2.add(textarea);
 	    
 	}
-
 	
 	class Button2EventListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String message = "";
-			message += "Button was pressedn";
-			JOptionPane.showMessageDialog(null,
-		    		message,
-		    		"Output",
-		    	    JOptionPane.PLAIN_MESSAGE);
+			
+			Parser parser = new Parser(input.getText());
+			NFA = parser.getNFA();
+			visualizer = new NFAVisualizer(NFA);
+			textarea.setText(visualizer.printGraph());
 
+			if(radio5.isSelected())
+				NFA.determinateNFA();
+			
 			if(radio1.isSelected())
-			{
-				NFAVisualizer Visualizer = new NFAVisualizer(NFA);
-			}
+				textarea.setText(visualizer.printGraph());
+			else if(radio2.isSelected())
+				textarea.setText(visualizer.printGraphViz());
+			else if(radio3.isSelected())
+				textarea.setText(visualizer.printGraphTEX());
 		}
-		
-		
-		Parser parser = new Parser(label.getText());
-		NFABuilder NFA = parser.getNFA();
-
 	}
 
+	class Button3EventListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+			if(null!=NFA)
+			{
+				checker = new Checker(NFA);
+				if(checker.checkWord(input2.getText()))
+					label5.setText("match word");
+				else label5.setText("mismatch");
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		WithGUI app = new WithGUI();
 		app.setVisible(true);
