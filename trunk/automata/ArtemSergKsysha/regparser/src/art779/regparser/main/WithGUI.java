@@ -34,20 +34,17 @@ public class WithGUI extends JFrame {
 	private JRadioButton radio4 = new JRadioButton("NFA");
 	private JRadioButton radio5 = new JRadioButton("DFA");
 	
-	private JScrollBar sb = new JScrollBar(); 
-
 	JPanel panel1 = new JPanel();
 	JPanel panel2 = new JPanel();
 	JPanel panel3 = new JPanel();
 	JPanel panel4 = new JPanel();
 	public WithGUI() {
-		super("my Simple Example");
+		super("regparser");
 	    this.setBounds(100,100,350,400);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setResizable(false);
 	    
 	    getContentPane().setLayout(new GridLayout(1,2));
-	    panel3.setLayout(new GridLayout(2,1));
 	    panel3.add(panel1);
 	    panel3.add(panel2);
 	    
@@ -81,8 +78,7 @@ public class WithGUI extends JFrame {
 	    panel1.add(input2);
 	    button3.addActionListener(new Button3EventListener());
 	    panel1.add(button3);
-	    panel1.add(label5);
-	    
+	    panel1.add(label5);    
     
 	    panel2.setLayout(new FlowLayout());
 	    panel2.setBackground(Color.gray);
