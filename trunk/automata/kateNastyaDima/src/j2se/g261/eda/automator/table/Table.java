@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  *
@@ -32,7 +33,7 @@ public class Table {
     public void fillTable(){
         HashSet<Character> set = collectCaracterKeys();
 
-        Iterator<Entry<Integer, TableRecord>> a = storage.entrySet().iterator(); 
+        Iterator<java.util.Map.Entry<Integer, TableRecord>> a = storage.entrySet().iterator(); 
         while(a.hasNext()){
             TableRecord t = a.next().getValue();
             
@@ -50,7 +51,7 @@ public class Table {
     
     public HashSet<Character> collectCaracterKeys(){
         HashSet<Character> set = new  HashSet<Character>();
-        Iterator<Entry<Integer, TableRecord>> a = storage.entrySet().iterator(); 
+        Iterator<java.util.Map.Entry<Integer, TableRecord>> a = storage.entrySet().iterator(); 
         while(a.hasNext()){
             TableRecord t = a.next().getValue();
             set.addAll(t.keySet());
@@ -62,10 +63,10 @@ public class Table {
     @Override
     public String toString(){
         String s = "";
-        Iterator<Entry<Integer, TableRecord>> i = storage.entrySet().iterator();
+        Iterator<java.util.Map.Entry<Integer, TableRecord>> i = storage.entrySet().iterator();
         
         while(i.hasNext()){
-            Entry<Integer, TableRecord> e = i.next();
+            java.util.Map.Entry<Integer, TableRecord> e = i.next();
             s += e.getKey().toString() + "\n";
             s += e.getValue().toString() + "\n";
         }
@@ -74,8 +75,14 @@ public class Table {
     
     
     
-    public Iterator<Entry<Integer, TableRecord>> iteratorByRecords(){
-        return storage.entrySet().iterator();
+    public ConcurrentSkipListSet<Entry<Integer, TableRecord>> listOfRecords(){
+        ConcurrentSkipListSet set = new ConcurrentSkipListSet();
+        Iterator<java.util.Map.Entry<Integer, TableRecord>> i = storage.entrySet().iterator();
+        while(i.hasNext()){
+            java.util.Map.Entry<Integer, TableRecord> e = i.next();
+            set.add(new Entry<Integer, TableRecord>(e.getKey(), e.getValue()));
+        }
+        return set;
     }
     
     public Vector<Integer> getStateSet(int key, char key2){
@@ -83,5 +90,36 @@ public class Table {
     }
             
    
+    public class Entry<K extends Comparable, V> implements Comparable<Entry>{
+
+        private K key;
+        private V value;
+
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+        
+        public int compareTo(Entry o) {
+            return key.compareTo(o.getKey());
+        }
+        
+    }
     
 }
