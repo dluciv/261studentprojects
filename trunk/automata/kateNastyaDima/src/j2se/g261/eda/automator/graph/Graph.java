@@ -199,7 +199,7 @@ public class Graph implements Cloneable {
      * @see j2se.g261.eda.automator.graph.Graph#markAllStarts() 
      * @see j2se.g261.eda.automator.graph.Graph#isEnd(j2se.g261.eda.automator.graph.Node) 
      */
-    boolean isStart(Node n) {
+   public boolean isStart(Node n) {
         return (starts.contains(n));
     }
 
@@ -279,7 +279,7 @@ public class Graph implements Cloneable {
      * @see j2se.g261.eda.automator.graph.Graph#markAllEnds() 
      * @see j2se.g261.eda.automator.graph.Graph#isStart(j2se.g261.eda.automator.graph.Node) 
      */
-    boolean isEnd(Node n) {
+    public boolean isEnd(Node n) {
         return ends.contains(n);
     }
 
@@ -323,9 +323,7 @@ public class Graph implements Cloneable {
         return new Graph(all, starts, ends);
     }
     
-    public Vector<Node> getAll(){
-    	return all;
-    }
+    
     
 
 //    public static void main(String[] args) {

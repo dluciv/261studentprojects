@@ -6,34 +6,26 @@ import java.util.Vector;
 
 public class MinGraph {
 
-	private Vector<MinNode> starts;
-	private Vector<MinNode> ends;
-	private Vector<MinNode> all;
+	private Vector<Edge> all;
 	
-	
-	public MinGraph(MinNode root){
-		all = new Vector<MinNode>();
-		ends = new Vector<MinNode>();
-		starts = new Vector<MinNode>();	
-		all.add(root);
-		ends.add(root);
-		starts.add(root);
+	public MinGraph(){
+		all = new Vector<Edge>();
 	}
 	
-	public void addMinNode(MinNode n){
-		if (!all.contains(n)) {
-            all.add(n);
-        }
-
-        int num = n.getOutgoingSize();
-
-        for (int i = 0; i < num; i++) {
-            MinNode n1 = n.getOutgoingAt(i);
-            if (!all.contains(n1)) {
-                addMinNode(n1);
-            }
-        }
-
+	public Vector<Edge> getAll(){
+    	return all;
+    }
+	
+	public void add(Edge n){
+		this.all.add(n);
+	}
+	
+	public int sizeAll(){
+		return this.all.size();
+	}
+	
+	public Edge getEdgeAt(int index){
+		return this.all.get(index);
 	}
 	
 }

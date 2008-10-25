@@ -6,8 +6,21 @@ public class Edge {
 	private int incoming;
 	private int outgoing; 
 	
-	public Edge (char name){
+	public Edge (char name, int incoming, int outgoing){
+		this.outgoing = outgoing;
+		this.incoming = incoming;
 		this.name = name;
 	}
-
+	
+	public int getIncoming(){
+		return this.incoming;
+	}
+	
+	public int getOutgoing(){
+		return this.outgoing;
+	}
+	
+	public char getName(){
+		return this.name;
+	}
 }

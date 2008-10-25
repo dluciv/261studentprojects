@@ -18,6 +18,7 @@ import java.io.IOException;
 import j2se.g261.eda.automator.dot.DotException;
 import j2se.g261.eda.automator.dot.DotUtils;
 import java.util.HashMap;
+import j2se.g261.eda.automator.minimization.Minimisation;
 
 /**
  *
@@ -111,22 +112,14 @@ public class PatternParser {
     
     public static void main(String[] args) {
         
-//        HashMap<Node, Integer> hm = new HashMap<Node, Integer>();
-//        Node n = new Node('a');
-//        hm.put(n, Integer.valueOf(1));
-//        System.out.println(hm.containsKey(n.cloneWithoutConnections()));
-        PatternParser p = new PatternParser("a((bc)|(bd))");
+        PatternParser p = new PatternParser("(s((ab)*|(cd)*))*");
         int c;
         try {
             Graph g = p.parse();
             Table t = new Table();
             GraphWorker.makeClosure(g);
             Graph g1 = GraphWorker.makeDeterministic(g);
-//            System.out.println(g);
-//            System.out.println("--------------");
-//            System.out.println(g.clone());
-//            System.out.println("--------------");
-//            System.out.println(g1);
+
             g.fillDeterminatedTable(t);
             t.fillTable();
             
@@ -137,14 +130,17 @@ public class PatternParser {
             for (int i = 0; i < g1.allSize(); i++) {
                 System.out.println(g1.getNodeFromAllAt(i));
             }
-            try {
-//              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
-              System.out.println(d1.generateDotFileForNFA("DOTFILE").getAbsolutePath());
-          } catch (IOException ex) {
-              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (DotException ex) {
-              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-          }
+            
+            Minimisation m1 = new Minimisation();
+            m1.transform(g1);
+            m1.addAbsorbingState();
+            //m1.pr();
+            System.out.println(m1.pr());
+            try{
+            	System.out.println(m1.edgeDot("DOTTry").getAbsolutePath());
+            } catch (IOException ex){
+            	Logger.getLogger(Minimisation.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             
             GraphWalker walker = new GraphWalker(g);
@@ -152,27 +148,7 @@ public class PatternParser {
            TableWalker walk = new TableWalker(g,t);
             System.out.println(walk.check(""));
             
-//            TexWriter tex = new TexWriter(t);
-//            File f = tex.generateFile();
-//            Process pr = Runtime.getRuntime().exec("latex " + f.getAbsolutePath());
-            
-//            while((c = pr.getInputStream().read()) != -1){
-//                System.out.print(Character.toChars(c));
-//                if(Character.toChars(c).equals('?')){
-//                pr.getOutputStream().write(new String("\n").getBytes());
-//                pr.getOutputStream().flush();
-//                }
-//            }
-//            String nm = f.getName();
-//            System.out.println("--------------");
-//            System.out.println(nmнала г);
-//            System.out.println(nm.substring(0, nm.length() - 5));
-            
-//            Runtime.getRuntime().exec("kdvi " + nm.substring(0, nm.length() - 4) + ".dvi");
-            
-//            System.out.println(t);
-//        } catch (IOException ex) {
-//            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (WalkerException ex) {
             Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserException ex) {
