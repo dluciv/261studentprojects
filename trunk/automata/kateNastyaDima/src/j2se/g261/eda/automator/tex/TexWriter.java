@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,11 +77,10 @@ public class TexWriter {
     private String getTableBody() {
         String res = "";
 
-        Iterator<Entry<Integer, TableRecord>> a = table.iteratorByRecords();
-        while (a.hasNext()) {
-            Entry<Integer, TableRecord> e = a.next();
+        ConcurrentSkipListSet<Table.Entry<Integer, TableRecord>> a = table.listOfRecords();
+        for (Table.Entry<Integer, TableRecord> e : a) {
             res += e.getKey() + " " + getRowByTableRecord(e.getValue()) + "\n";
-
+            
         }
 
         return res;
