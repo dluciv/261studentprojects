@@ -22,6 +22,7 @@ public class Minimisation {
 	private static char additionalNode = 'h';
 	private Vector<Character> uniq;
 	private HashMap<Integer, Vector<Character>> storage;
+	
 
 	public Minimisation(){
 		edgeGraph = new MinGraph();
@@ -94,9 +95,6 @@ public class Minimisation {
 		return edgeGraph;		
 	}
 	
-	public int pr(){
-		return uniq.size();
-	}
 	
 	
 	public File edgeDot(String filename)throws IOException{
@@ -126,7 +124,7 @@ public class Minimisation {
         }
 	
 	
-	public void addToStrage(int c, Vector<Character> v) {
+	public void addToStorage(int c, Vector<Character> v) {
         if (!storage.containsKey(c)) {
             storage.put(c, v);
         }
@@ -145,6 +143,7 @@ public class Minimisation {
         }
     }
 	
+    
     private Vector<Character> difference(Vector<Character> a,Vector<Character> b){
     	int num = a.size();
     	Vector<Character> diff = new Vector<Character>();
@@ -170,7 +169,7 @@ public class Minimisation {
 			 }
 		 }
 			 int states = storage.size();
-			 for(int j = 0; j < states; j++){
+			 for(int j = 0; j < states+1; j++){
 				 if (j == 1) j++;
 				 Vector<Character> diff = new Vector<Character>();
 				 
@@ -185,9 +184,93 @@ public class Minimisation {
 					 edgeGraph.add(new Edge(diff.get(k),j,states+1));
 				 }
 			 }
+			 int size = uniq.size();
+			 for(int m = 0; m < size; m++){
+				 char name = uniq.get(m);
+				 edgeGraph.add(new Edge(name,states+1,states+1));
+			 } 
+	}
+	
+	public Vector<Edge> findEdge(int state){
+		Vector<Edge> list = new Vector<Edge>();
+		int num = edgeGraph.sizeAll();
+		
+		for(int i = 0; i < num; i++){
+			Edge edge = edgeGraph.getEdgeAt(i);
+		if (edge.getOutgoing() == state){
+			list.add(edge);
+		}			
+		}
+		return list;
+	}
+	
+	public void minimizate(){
+		Vector<Couple> diff = new Vector<Couple>();
+		int num = storage.size()+2;
+		
+		for(int i = 0; i < num; i++){
+			if (i == 1){i++;}
+			Couple c = new Couple(i,1);
+			diff.add(c);	
+		}	
+		
+		for(int j = 0; j < num; j++){
+			for (int k = 0; k < num; k++){
+				if(j != 1 && k != 1 && j != k)
+				{different.add(new Couple(j,k));}
+			}
+			}
+		
+		HelpToMinimizate(diff);
+		
+		
+		
+		for(int g = 0; g < different.size(); g++){	
+		System.out.println("first:"+ different.get(g).getFirst());
+		System.out.println("second:"+ different.get(g).getSecond());
+		}
+	}
+	
+	public void HelpToMinimizate(Vector<Couple> tmp){
+		Vector<Edge> listFirst = new Vector<Edge>();
+		Vector<Edge> listSecond = new Vector<Edge>();
+		Vector<Couple> newDiff = new Vector<Couple>();
+		
+		int num = tmp.size();
+		for(int i = 0; i < num; i++){
+			listFirst = findEdge(tmp.get(i).getFirst());
+			listSecond = findEdge(tmp.get(i).getSecond());
+			
+			int num1 = listFirst.size();
+			int num2 = listSecond.size();
+			
+			for(int j = 0; j < num1; j++){
+				for (int k = 0; k < num2; k++){
+					if(listFirst.get(j).getName() == listSecond.get(k).getName()){		
+			Couple c =
+			new Couple(listFirst.get(j).getIncoming(),listSecond.get(k).getIncoming());
+			Couple c2 =
+			new Couple(listSecond.get(k).getIncoming(),listFirst.get(j).getIncoming());
+				if(different.contains(c)){
+						newDiff.add(c);}
+						different.remove(c);
+						if (different.contains(c2)){
+							different.remove(c2);
+						}
+						}
+					
+					}
+				}
+			}
+		
+		if(!newDiff.isEmpty()){
+			System.out.println(newDiff.size());
+			HelpToMinimizate(newDiff);
+		}
 	}
 }
-		 //return edgeGraph;
+
+
  
-	
+
 

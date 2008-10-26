@@ -5,27 +5,27 @@ package j2se.g261.eda.automator.minimization;
 * @author dmitriy
 */
 public class Couple {
-	private char first;	
-	private char second;
+	private int first;	
+	private int second;
 	
-	public Couple (char a,char b ){
+	public Couple (int a,int b ){
 		this.first = a;
 		this.second = b;
 	}
 	
-	public char getFirst(){
+	public int getFirst(){
 		return this.first;
 	}
 	
-	public char getSecond(){
+	public int getSecond(){
 		return this.second;
 	}
 	
-	public void setFirst(char a){
+	public void setFirst(int a){
 		this.first = a;
 	}
 	
-	public void setSecond(char b){
+	public void setSecond(int b){
 		this.second = b;
 	}
 
