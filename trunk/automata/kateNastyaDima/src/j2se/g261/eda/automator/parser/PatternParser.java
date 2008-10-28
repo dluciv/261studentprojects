@@ -135,7 +135,7 @@ public class PatternParser {
             m1.transform(g1);
             m1.addAbsorbingState();
             //m1.pr();
-            System.out.println(m1.pr());
+//            System.out.println(m1.pr());
             try{
             	System.out.println(m1.edgeDot("DOTTry").getAbsolutePath());
             } catch (IOException ex){
