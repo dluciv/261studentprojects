@@ -31,7 +31,11 @@ public class Automator {
     private GraphWalker graphWalker = null;
     private TableWalker tableWalker = null;
     private File texFile = null;
-    private File dotFile = null;
+    private File dotNFAFile = null;
+    private File dotEpsNFAFile = null;
+
+    private File dotDFAFile = null;
+    private File dotMinGraphFile = null;
 
     public Automator(String pattern) {
         this.pattern = pattern;
@@ -44,34 +48,54 @@ public class Automator {
             PatternParser parser = new PatternParser(pattern);
             graph = parser.parse();
             GraphWorker.makeClosure(graph);
-//            determinedGraph = graph.clone();
+            determinedGraph = graph.clone();
+            GraphWorker.makeDeterministic(determinedGraph);
             graph.fillDeterminatedTable(table);
             table.fillTable();
-//            graphWalker = new GraphWalker(determinedGraph);
+            graphWalker = new GraphWalker(determinedGraph);
             tableWalker = new TableWalker(graph, table);
             texFile = new TexWriter(table).generateFile();
-            dotFile = new DotUtils(graph).generateDotFileForNFA("GRAPHNFA");
+            dotNFAFile = new DotUtils(graph).generateDotFileForNFA("GRAPHNFA");
         } catch (NullPointerException ex) {
             throw new NoConditionsException();
         }
 
     }
 
-    public boolean matchGraph(String s) {
+    public boolean matchNFAGraph(String s) {
         return graphWalker.check(s);
     }
 
     public boolean matchTable(String s) {
         return tableWalker.check(s);
     }
+    public boolean matchDFAGraph(String s) {
+        return true;
+    }
+
+    public boolean matchMinGraph(String s) {
+        return true;
+    }
 
     public File getTexFile(){
         return texFile;
     }
-    public File getDotFile(){
-        return dotFile;
+    public File getDotNFAFile(){
+        return dotNFAFile;
     }
     
+    public File getDotDFAFile() {
+        return dotDFAFile;
+    }
+
+    public File getDotEpsNFAFile() {
+        return dotEpsNFAFile;
+    }
+
+    public File getDotMinGraphFile() {
+        return dotMinGraphFile;
+    }
+
     @Override
     public String toString() {
         return graph.toString();
