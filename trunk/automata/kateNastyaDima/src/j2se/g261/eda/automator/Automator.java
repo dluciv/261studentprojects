@@ -10,6 +10,7 @@ import j2se.g261.eda.automator.graph.Graph;
 import j2se.g261.eda.automator.graph.GraphWalker;
 import j2se.g261.eda.automator.graph.GraphWorker;
 import j2se.g261.eda.automator.graph.WalkerException;
+import j2se.g261.eda.automator.minimization.Minimisation;
 import j2se.g261.eda.automator.parser.ParserException;
 import j2se.g261.eda.automator.parser.PatternParser;
 import j2se.g261.eda.automator.table.Table;
@@ -17,6 +18,8 @@ import j2se.g261.eda.automator.table.TableWalker;
 import j2se.g261.eda.automator.tex.TexWriter;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -56,6 +59,13 @@ public class Automator {
             tableWalker = new TableWalker(graph, table);
             texFile = new TexWriter(table).generateFile();
             dotNFAFile = new DotUtils(graph).generateDotFileForNFA("GRAPHNFA");
+            Minimisation m1 = new Minimisation();
+            m1.transform(graph);
+            m1.addAbsorbingState();
+            m1.minimizate();
+     
+
+            dotMinGraphFile = m1.edgeDot("DOTMIN"); 
         } catch (NullPointerException ex) {
             throw new NoConditionsException();
         }

@@ -206,6 +206,7 @@ public class Minimisation {
 	
 	public void minimizate(){
 		Vector<Couple> diff = new Vector<Couple>();
+		Vector<Couple> toDelete = new Vector<Couple>();
 		int num = storage.size()+2;
 		
 		for(int i = 0; i < num; i++){
@@ -216,19 +217,17 @@ public class Minimisation {
 		
 		for(int j = 0; j < num; j++){
 			for (int k = 0; k < num; k++){
-				if(j != 1 && k != 1 && j != k)
+				if(j != 1 && k != 1 && j > k)
 				{different.add(new Couple(j,k));}
 			}
 			}
 		
 		HelpToMinimizate(diff);
 		
-		
-		
-		for(int g = 0; g < different.size(); g++){	
-		System.out.println("first:"+ different.get(g).getFirst());
-		System.out.println("second:"+ different.get(g).getSecond());
+		for(Couple c : different){
+			System.out.println(c.getFirst() + " = " + c.getSecond());
 		}
+		
 	}
 	
 	public void HelpToMinimizate(Vector<Couple> tmp){
@@ -246,7 +245,7 @@ public class Minimisation {
 			
 			for(int j = 0; j < num1; j++){
 				for (int k = 0; k < num2; k++){
-					if(listFirst.get(j).getName() == listSecond.get(k).getName()){		
+					if(listFirst.get(j).getName() == listSecond.get(k).getName()){
 			Couple c =
 			new Couple(listFirst.get(j).getIncoming(),listSecond.get(k).getIncoming());
 			Couple c2 =

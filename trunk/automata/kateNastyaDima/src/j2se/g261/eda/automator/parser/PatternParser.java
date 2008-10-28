@@ -112,7 +112,7 @@ public class PatternParser {
     
     public static void main(String[] args) {
         
-        PatternParser p = new PatternParser("(s((ab)*|(cd)*))*");
+        PatternParser p = new PatternParser("(0101|0001)(10)*");
         int c;
         try {
             Graph g = p.parse();
@@ -134,8 +134,8 @@ public class PatternParser {
             Minimisation m1 = new Minimisation();
             m1.transform(g1);
             m1.addAbsorbingState();
-            //m1.pr();
-//            System.out.println(m1.pr());
+            m1.minimizate();
+     
             try{
             	System.out.println(m1.edgeDot("DOTTry").getAbsolutePath());
             } catch (IOException ex){

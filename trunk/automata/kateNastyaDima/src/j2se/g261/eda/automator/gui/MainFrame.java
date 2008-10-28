@@ -571,8 +571,21 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     private void showMinimizedGraphRepresentation() {
+    	String dotFileName;
+    	String fileName;
         try {
-            processes.push(Runtime.getRuntime().exec(Globals.DOT_VIEWR + " " + automator.getDotMinGraphFile()));
+        	System.out.println(automator.getDotMinGraphFile().getAbsolutePath());
+        	dotFileName = automator.getDotMinGraphFile().getName();
+        	fileName = dotFileName.substring(0, dotFileName.length() - 4);
+        	Runtime.getRuntime().exec(Globals.DOT_VIEWR + " -Tgif " + 
+        			automator.getDotMinGraphFile().getAbsolutePath() + " -o " +
+        			fileName + ".gif");
+    
+        	//System.out.println(Globals.IMG_VIEWER + " " + fileName + ".gif");
+        	//Process p = Runtime.getRuntime().exec(Globals.IMG_VIEWER + " " + fileName + ".gif");
+
+        	
+            processes.push(Runtime.getRuntime().exec(Globals.IMG_VIEWER + " " + fileName + ".gif"));
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
