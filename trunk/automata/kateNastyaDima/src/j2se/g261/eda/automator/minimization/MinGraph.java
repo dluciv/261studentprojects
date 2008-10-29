@@ -1,9 +1,11 @@
 package j2se.g261.eda.automator.minimization;
 
-import j2se.g261.eda.automator.graph.Node;
-
 import java.util.Vector;
 
+/**
+ * @author Dmitry
+ *
+ */
 public class MinGraph {
 
 	private Vector<Edge> all;

@@ -112,7 +112,7 @@ public class PatternParser {
     
     public static void main(String[] args) {
         
-        PatternParser p = new PatternParser("(0101|0001)(10)*");
+        PatternParser p = new PatternParser("(10)*(1|0)");
         int c;
         try {
             Graph g = p.parse();
@@ -124,7 +124,7 @@ public class PatternParser {
             t.fillTable();
             
 //            DotUtils d = new DotUtils(g);
-            DotUtils d1 = new DotUtils(g1);
+           // DotUtils d1 = new DotUtils(g1);
             System.out.println(g1);
             System.out.println("!!!!!!!!!!");
             for (int i = 0; i < g1.allSize(); i++) {
@@ -133,8 +133,7 @@ public class PatternParser {
             
             Minimisation m1 = new Minimisation();
             m1.transform(g1);
-            m1.addAbsorbingState();
-            m1.minimizate();
+            m1.minimize();
      
             try{
             	System.out.println(m1.edgeDot("DOTTry").getAbsolutePath());
@@ -145,8 +144,8 @@ public class PatternParser {
             
             GraphWalker walker = new GraphWalker(g);
             System.out.println(walker.check("a"));
-           TableWalker walk = new TableWalker(g,t);
-            System.out.println(walk.check(""));
+           //TableWalker walk = new TableWalker(g,t);
+           // System.out.println(walk.check(""));
             
 
         } catch (WalkerException ex) {
