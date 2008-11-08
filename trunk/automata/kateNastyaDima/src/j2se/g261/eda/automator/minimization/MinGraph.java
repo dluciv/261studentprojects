@@ -30,4 +30,6 @@ public class MinGraph {
 		return this.all.get(index);
 	}
 	
+	
+	
 }

@@ -254,6 +254,7 @@ public class Minimisation {
 			different.remove(c);
 		}
 		
+		
 		for(Couple c : different){
 			Vector<Edge> listFirst = new Vector<Edge>();
 			Vector<Edge> listSecond = new Vector<Edge>();
@@ -266,6 +267,7 @@ public class Minimisation {
 			
 			for(Edge i : listFirst){
 				Edge e = new Edge (i.getName(),i.getIncoming(),c.getFirst());
+				if(i.getIncoming() == c.getSecond()) continue;
 				if(!edgeGraph.getAll().contains(e)) edgeGraph.getAll().add(e);
 			}
 			
@@ -275,6 +277,7 @@ public class Minimisation {
 			
 			for(Edge j : listSecond){
 				Edge e = new Edge (j.getName(),c.getFirst(),j.getOutgoing());
+				if(j.getOutgoing() == c.getSecond()) continue;
 				if(!edgeGraph.getAll().contains(e)) edgeGraph.getAll().add(e);
 			}		
 			}
@@ -321,6 +324,43 @@ public class Minimisation {
 			HelpToMinimize(newDiff);
 		}
 	}
+
+	public boolean check(String s){
+		int length = s.length();
+		int state = 0;
+		boolean isNext = true;
+		
+		for(int i = 0; i < length; i++){
+			if(isNext){
+				
+			char symbol = s.charAt(i);
+			Vector<Edge> v = findOutEdge(state);
+			
+			for(Edge k : v){
+				if (k.getName() == symbol){
+					state = k.getOutgoing();
+					isNext = true;
+					break;
+				}
+				isNext = false;
+			}
+			
+			}
+		}
+		if(isNext){
+			Vector<Edge> end = findOutEdge(state);
+			for(Edge j : end){
+				if(j.getOutgoing() == 1){
+					isNext = true; 
+					break;
+				}
+				else isNext = false;
+			}
+		}
+		return isNext;
+	}
+	
+
 }
 
 
