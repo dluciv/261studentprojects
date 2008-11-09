@@ -59,13 +59,12 @@ public class Automator {
             tableWalker = new TableWalker(graph, table);
             texFile = new TexWriter(table).generateFile();
             dotNFAFile = new DotUtils(graph).generateDotFileForNFA("GRAPHNFA");
-            Minimisation m1 = new Minimisation();
+          /*  Minimisation m1 = new Minimisation();
             m1.transform(graph);
-            m1.addAbsorbingState();
-            m1.minimizate();
+            m1.minimize();
      
 
-            dotMinGraphFile = m1.edgeDot("DOTMIN"); 
+            dotMinGraphFile = m1.edgeDot("DOTMIN"); */
         } catch (NullPointerException ex) {
             throw new NoConditionsException();
         }

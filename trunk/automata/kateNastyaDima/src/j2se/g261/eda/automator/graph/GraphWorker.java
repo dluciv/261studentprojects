@@ -187,7 +187,8 @@ public class GraphWorker {
                         v.add(n.getOutgoingAt(j));
                     } else {
                         haveChanges = true;
-                        n.getOutgoingAt(j).removeNodeFromIncoming(n);
+                        n.getOutgoingAt(j).removeNodeFromIncoming(n);//1
+                        
                         for (int k = 0; k < n.getOutgoingAt(j).getOutgoingSize(); k++) {
                             if(!n.getOutgoingAt(j).getOutgoingAt(k).equals(n)){
                             equaled.addOutgoingNode(n.getOutgoingAt(j).getOutgoingAt(k));
@@ -199,13 +200,14 @@ public class GraphWorker {
                                     .removeNodeFromIncoming(n.getOutgoingAt(j)
                                     .getOutgoingAt(k));
                             }
-                        }
-                        n.removeNodeFromOutgoing(n.getOutgoingAt(j));
-                    }
+                        }  
+                        
+                        n.removeNodeFromOutgoing(n.getOutgoingAt(j));//2
+                    } 
 
-                }
+                } 
 
-            }
+            }   
         }
 
         int size = g.allSize();

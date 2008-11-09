@@ -19,6 +19,8 @@ import j2se.g261.eda.automator.dot.DotException;
 import j2se.g261.eda.automator.dot.DotUtils;
 import java.util.HashMap;
 import j2se.g261.eda.automator.minimization.Minimisation;
+import j2se.g261.eda.automator.minimization.TransformToEdge;
+import j2se.g261.eda.automator.minimization.MinGraph;
 
 /**
  *
@@ -112,7 +114,7 @@ public class PatternParser {
     
     public static void main(String[] args) {
         
-        PatternParser p = new PatternParser("(10)*(1|0)");
+        PatternParser p = new PatternParser("(1000|1010)(0|1)*");
         int c;
         try {
             Graph g = p.parse();
@@ -124,22 +126,32 @@ public class PatternParser {
             t.fillTable();
             
 //            DotUtils d = new DotUtils(g);
-           // DotUtils d1 = new DotUtils(g1);
-            System.out.println(g1);
+            DotUtils d1 = new DotUtils(g);
+          /*  System.out.println(g1);
             System.out.println("!!!!!!!!!!");
             for (int i = 0; i < g1.allSize(); i++) {
                 System.out.println(g1.getNodeFromAllAt(i));
-            }
+            }*/
             
-            Minimisation m1 = new Minimisation();
-            m1.transform(g1);
+            TransformToEdge tte = new TransformToEdge();
+            MinGraph g2 = tte.transform(g1);
+            Minimisation m1 = new Minimisation(g2);
             m1.minimize();
-     
+            System.out.println(m1.check("101010101", g2));
             try{
-            	System.out.println(m1.edgeDot("DOTTry").getAbsolutePath());
+            	System.out.println(d1.edgeDot("DOTTry",g2).getAbsolutePath());
             } catch (IOException ex){
             	Logger.getLogger(Minimisation.class.getName()).log(Level.SEVERE, null, ex);
             }
+            	
+          /*  try {
+//              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+              System.out.println(d1.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+          } catch (IOException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (DotException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          }*/
 
             
             GraphWalker walker = new GraphWalker(g);

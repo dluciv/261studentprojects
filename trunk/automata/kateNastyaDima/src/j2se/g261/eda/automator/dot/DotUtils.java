@@ -6,6 +6,9 @@ package j2se.g261.eda.automator.dot;
 
 import j2se.g261.eda.automator.graph.Graph;
 import j2se.g261.eda.automator.graph.Node;
+import j2se.g261.eda.automator.minimization.Edge;
+import j2se.g261.eda.automator.minimization.MinGraph;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -129,6 +132,34 @@ public class DotUtils {
             }
         }
     }
+    
+    public File edgeDot(String filename, MinGraph g)throws IOException{
+		File f1 = File.createTempFile(filename, ".dot");
+        BufferedWriter bf = new BufferedWriter(new FileWriter(f1));
+        bf.write("digraph");
+        bf.write(" g{");
+        bf.newLine();
+        
+        int num = g.sizeAll();
+        for(int i = 0; i<num ;i++){
+        	Edge edge = g.getEdgeAt(i); 
+        	if(edge.getName() == '\n'){
+        		bf.write(edge.getIncoming() + "->" + edge.getOutgoing() + "[label = " +
+            			"end" + "];");
+            	bf.newLine();
+        	}
+        	else{
+        	bf.write(edge.getIncoming() + "->" + edge.getOutgoing() + "[label = " +
+        			edge.getName() + "];");
+        	bf.newLine();
+        	}
+        }
+        bf.write("}");
+        bf.close();
+        return f1;
+        }
+    
+    
 
 //    public static void main(String[] args) {
 ////        Graph g1 = new Graph();
