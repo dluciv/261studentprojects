@@ -4,6 +4,7 @@ package j2se.g261.eda.automator.minimization;
 import java.util.Vector;
 import j2se.g261.eda.automator.minimization.MinGraph;
 import java.util.HashMap;
+import j2se.g261.eda.automator.minimization.Edge;
 
 /**
 *
@@ -84,31 +85,7 @@ public class Minimisation {
 			 } 
 	}
 	
-	private Vector<Edge> findIncEdge(int state, MinGraph g){
-		Vector<Edge> list = new Vector<Edge>();
 	
-		for(Edge e : g.getAll()){
-		
-			if (e.getOutgoing() == state){
-				list.add(e);
-			}	
-
-		}
-		return list;
-	}
-	
-	private Vector<Edge> findOutEdge(int state,MinGraph g){
-		Vector<Edge> list = new Vector<Edge>();
-	
-		for(Edge e : g.getAll()){
-		
-			if (e.getIncoming() == state){
-				list.add(e);
-			}	
-
-		}
-		return list;
-	}
 	
 	
 	private Vector<Couple> findEquals(Couple c , Vector<Couple> toDelite){
@@ -122,7 +99,7 @@ public class Minimisation {
 		return toDelite;
 	} 
 	
-	public void minimize(){
+	public MinGraph minimize(){
 		Vector<Couple> diff = new Vector<Couple>();
 		Vector<Couple> toDelite = new Vector<Couple>();
 		addAbsorbingState();
@@ -156,8 +133,8 @@ public class Minimisation {
 		for(Couple c : different){
 			Vector<Edge> listFirst = new Vector<Edge>();
 			Vector<Edge> listSecond = new Vector<Edge>();
-			listFirst = findIncEdge(c.getSecond(),edgeGraph);
-			listSecond = findOutEdge(c.getSecond(),edgeGraph);
+			listFirst = edgeGraph.findIncomingEdge(c.getSecond());
+			listSecond = edgeGraph.findOutgoingEdge(c.getSecond());
 			
 			for(Edge i : listFirst){
 				edgeGraph.getAll().remove(i);
@@ -180,12 +157,13 @@ public class Minimisation {
 			}		
 			}
 		
-		Vector<Edge> list = findIncEdge(storage.size()+1,edgeGraph);
+		Vector<Edge> list = edgeGraph.findIncomingEdge(storage.size()+1);
 		
 		for(Edge h : list){
 			edgeGraph.getAll().remove(h);
-		}
-			
+		}	
+		
+		return edgeGraph;
 		}
 		
 	
@@ -199,8 +177,8 @@ public class Minimisation {
 			Vector<Couple> newDiff = new Vector<Couple>();
 			
 			for(Couple t : tmp){
-			listFirst = findIncEdge(t.getFirst(),edgeGraph);
-			listSecond = findIncEdge(t.getSecond(),edgeGraph);
+			listFirst = edgeGraph.findIncomingEdge(t.getFirst());
+			listSecond = edgeGraph.findIncomingEdge(t.getSecond());
 			
 			for(Edge j : listFirst){
 				for (Edge k : listSecond){
@@ -227,40 +205,7 @@ public class Minimisation {
 		
 	}
 
-	public boolean check(String s, MinGraph g){
-		int length = s.length();
-		int state = 0;
-		boolean isNext = true;
-		
-		for(int i = 0; i < length; i++){
-			if(isNext){
-				
-			char symbol = s.charAt(i);
-			Vector<Edge> v = findOutEdge(state, g);
-			
-			for(Edge k : v){
-				if (k.getName() == symbol){
-					state = k.getOutgoing();
-					isNext = true;
-					break;
-				}
-				isNext = false;
-			}
-			
-			}
-		}
-		if(isNext){
-			Vector<Edge> end = findOutEdge(state, g);
-			for(Edge j : end){
-				if(j.getOutgoing() == 1){
-					isNext = true; 
-					break;
-				}
-				else isNext = false;
-			}
-		}
-		return isNext;
-	}
+	
 	
 
 }

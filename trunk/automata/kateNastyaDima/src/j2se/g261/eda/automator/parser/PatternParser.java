@@ -21,6 +21,7 @@ import java.util.HashMap;
 import j2se.g261.eda.automator.minimization.Minimisation;
 import j2se.g261.eda.automator.minimization.TransformToEdge;
 import j2se.g261.eda.automator.minimization.MinGraph;
+import j2se.g261.eda.automator.minimization.EdgeGraphWolker;
 
 /**
  *
@@ -136,8 +137,9 @@ public class PatternParser {
             TransformToEdge tte = new TransformToEdge();
             MinGraph g2 = tte.transform(g1);
             Minimisation m1 = new Minimisation(g2);
-            m1.minimize();
-            System.out.println(m1.check("101010101", g2));
+            MinGraph g3 = m1.minimize();
+            EdgeGraphWolker egw = new EdgeGraphWolker(g3);
+            System.out.println(egw.check("101010101"));
             try{
             	System.out.println(d1.edgeDot("DOTTry",g2).getAbsolutePath());
             } catch (IOException ex){

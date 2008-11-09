@@ -8,7 +8,7 @@ import java.util.Vector;
 
 public class TransformToEdge {
 
-	MinGraph edgeGraph;
+	private MinGraph edgeGraph;
 	
 	public TransformToEdge(){
 		this.edgeGraph = new MinGraph();

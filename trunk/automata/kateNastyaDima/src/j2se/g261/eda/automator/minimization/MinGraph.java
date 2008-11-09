@@ -30,6 +30,31 @@ public class MinGraph {
 		return this.all.get(index);
 	}
 	
+	public Vector<Edge> findIncomingEdge(int state){
+		Vector<Edge> list = new Vector<Edge>();
+	
+		for(Edge e : this.getAll()){
+		
+			if (e.getOutgoing() == state){
+				list.add(e);
+			}	
+
+		}
+		return list;
+	}
+	
+	public Vector<Edge> findOutgoingEdge(int state){
+		Vector<Edge> list = new Vector<Edge>();
+	
+		for(Edge e : this.getAll()){
+		
+			if (e.getIncoming() == state){
+				list.add(e);
+			}	
+
+		}
+		return list;
+	}
 	
 	
 }
