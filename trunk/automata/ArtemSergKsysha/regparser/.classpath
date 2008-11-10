@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="D:/study/261sp/trunk/automata/ArtemSergKsysha/lib/timer/applib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

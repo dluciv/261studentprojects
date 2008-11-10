@@ -1,5 +1,5 @@
 package art779.regparser.main;
-import java.util.List; 
+import java.util.List;
 
 public class Checker{
 	private static INFA NFA;
@@ -22,10 +22,12 @@ public class Checker{
 				{
 					if (wordRest.length() == 1){
 						List<Integer> nnStates = NFA.getNextState(nStates.get(i));
-						if(nnStates.get(0) != NFA.getFinalState())
-							return false;
-						else
-							return true;						
+						boolean correct = false;
+						for (int j = 0; j < nnStates.size(); j++) {
+							if(nnStates.get(j) == NFA.getFinalState())
+								correct = true;
+						}
+						return correct;
 					}
 					else
 						return checkNextSymbol(nStates.get(i), wordRest.substring(1));
@@ -37,7 +39,18 @@ public class Checker{
 	
 	
 	public boolean checkWord (String word){
-		return checkNextSymbol(NFA.getStartState(), word);
+		if(""==word)
+		{
+			List<Integer> nStates = NFA.getNextState(NFA.getStartState());
+			boolean correct = false;
+			for (int j = 0; j < nStates.size(); j++) {
+				if(nStates.get(j) == NFA.getFinalState())
+					correct = true;
+			}
+			return correct;
+		}
+		else
+			return checkNextSymbol(NFA.getStartState(), word);
 	}
 	
 }

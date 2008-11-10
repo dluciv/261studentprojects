@@ -64,7 +64,56 @@ public class NFAVisualizer {
 		
 		if(!NFA.graph.isEmpty())
 		{
-			output += "TEX";
+			output += "\\begin{document} ";
+			output += "\n";
+			output += "\\begin{tabbing} ";
+			output += "\n";
+			int rowlen = 0;
+			for (Integer key : NFA.alfabett.keySet()) 
+			{
+				if(NFABuilder.LAST_STATE!=key && NFABuilder.FIRST_STATE!=key && null!=NFA.alfabett.get(key))
+				{
+					output += "\\ \\= " + key.toString() + NFA.alfabett.get(key);
+					rowlen++;
+				}
+			}
+			output += " \\ \\= %";
+			output += " \\\\";
+			output += "\n";
+			
+			for (Integer key : NFA.graph.keySet())
+			{
+				ArrayList<Integer> list = NFA.graph.get(key);
+				output += key+" \\> ";
+				int i = 0;
+				for (i = 0; i < list.size(); i++) {
+					String t = list.get(i).toString(); 
+					if(list.get(i) == NFABuilder.LAST_STATE)t="!";
+					output += "\\> " + t + " \\> ";
+				}
+				while(i < rowlen){
+					i++;
+					output += "\\> # \\";
+					if(i != rowlen)output += "> ";			
+					else output += "\\";
+				}
+				output += "\n";				
+			}
+			
+			/*
+			for (Integer key : NFA.graph.keySet())
+			{
+				ArrayList<Integer> list = NFA.graph.get(key);
+				for (int i = 0; i < list.size(); i++) {
+					output += "\""+NFABuilder.alfabett.get(key)+" "+key+"\"->\""+NFABuilder.alfabett.get(list.get(i))+" "+list.get(i)+"\"\n";
+				}
+			}
+			*/
+			output += "\\end{tabbing} ";
+			output += "\n";
+			output += "\\end{document} ";
+			output += "\n";
+					
 		}
 		else
 		{

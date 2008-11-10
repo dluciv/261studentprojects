@@ -1,6 +1,6 @@
 package art779.regparser.main;
 
-import java.util.List; 
+import java.util.List;
 
 public interface INFA { 	
 	public int getStartState();

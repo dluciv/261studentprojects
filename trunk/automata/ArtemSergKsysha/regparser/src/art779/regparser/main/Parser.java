@@ -1,4 +1,5 @@
 package art779.regparser.main;
+import ru.sscc.util.*;
 
 /**
  * Class is a parser. getNFA() returns NFA by regular expression  
@@ -104,26 +105,5 @@ public class Parser {
 			NFA = pReg();
 		}
 		return NFA;
-	}
-	public static void main(String[] args) {
-		
-		Parser parser = new Parser("i(s|a*|b(c|d)*(a)*)?p");
-		//Parser parser = new Parser("a(b|c(g|e)|d)");
-		//Parser parser = new Parser("a(b(c|d)|b(g|e))");
-		
-		//Parser parser = new Parser("cq|cw(w|g|we|j|wt|cs)|f");
-		NFABuilder NFA = parser.getNFA();
-		//NFA.determinateNode(0,0);
-		NFA.determinateNFA();
-		//*** !!! FIRST_STATE
-		
-		NFAVisualizer visualizer = new NFAVisualizer(NFA);
-		System.out.println(visualizer.printGraph());
-		
-		//Checker checker = new Checker(NFA); 
-		//System.out.println(checker.checkWord("ibccccddddaaaaaaaap"));
-		
-		System.out.println(".");
-		
 	}
 }
