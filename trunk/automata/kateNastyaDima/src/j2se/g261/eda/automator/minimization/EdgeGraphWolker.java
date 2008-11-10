@@ -2,6 +2,11 @@ package j2se.g261.eda.automator.minimization;
 
 import java.util.Vector;
 
+/**
+ * @author Dmitry
+ * class for cheking if word tenance to minimize graph 
+ * (only for minimize and deterministic and graph with edges)
+ */
 public class EdgeGraphWolker {
 
 	private MinGraph g;
@@ -10,6 +15,10 @@ public class EdgeGraphWolker {
 		this.g = g;
 	}
 	
+	/**
+	 * @param s - checked word
+	 * @return true if word tenance to FA
+	 */
 	public boolean check(String s){
 		int length = s.length();
 		int state = 0;

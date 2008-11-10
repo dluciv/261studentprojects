@@ -1,7 +1,7 @@
 package j2se.g261.eda.automator.minimization;
 
 /**
-*
+* class for couple of integer
 * @author dmitriy
 */
 public class Couple {

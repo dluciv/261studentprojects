@@ -173,8 +173,8 @@ public class GraphWorker {
     public static Graph makeDeterministic(Graph graph) {
 
         Graph g = graph.clone();
-        boolean haveChanges = true;
-
+        boolean haveChanges = true;   
+        
         while (haveChanges) {
             haveChanges = false;
             for (int i = 0; i < g.allSize(); i++) {
@@ -186,7 +186,7 @@ public class GraphWorker {
                     if (equaled == null) {
                         v.add(n.getOutgoingAt(j));
                     } else {
-                        haveChanges = true;
+                    	haveChanges = true;
                         n.getOutgoingAt(j).removeNodeFromIncoming(n);//1
                         
                         for (int k = 0; k < n.getOutgoingAt(j).getOutgoingSize(); k++) {

@@ -4,7 +4,7 @@ import java.util.Vector;
 
 /**
  * @author Dmitry
- *
+ * class for graph with edges
  */
 public class MinGraph {
 

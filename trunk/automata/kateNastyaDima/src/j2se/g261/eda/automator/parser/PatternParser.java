@@ -115,11 +115,21 @@ public class PatternParser {
     
     public static void main(String[] args) {
         
-        PatternParser p = new PatternParser("(1000|1010)(0|1)*");
+        PatternParser p = new PatternParser("(0|1)*");
         int c;
         try {
             Graph g = p.parse();
             Table t = new Table();
+            DotUtils d1 = new DotUtils(g);
+            try {
+//              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+              System.out.println(d1.generateDotFileForNFA("NFA").getAbsolutePath());
+          } catch (IOException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (DotException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          }
+
             GraphWorker.makeClosure(g);
             Graph g1 = GraphWorker.makeDeterministic(g);
 
@@ -127,7 +137,7 @@ public class PatternParser {
             t.fillTable();
             
 //            DotUtils d = new DotUtils(g);
-            DotUtils d1 = new DotUtils(g);
+          
           /*  System.out.println(g1);
             System.out.println("!!!!!!!!!!");
             for (int i = 0; i < g1.allSize(); i++) {
@@ -136,26 +146,21 @@ public class PatternParser {
             
             TransformToEdge tte = new TransformToEdge();
             MinGraph g2 = tte.transform(g1);
+            try{
+            	System.out.println(d1.edgeDot("DFA",g2).getAbsolutePath());
+            } catch (IOException ex){
+            	Logger.getLogger(Minimisation.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Minimisation m1 = new Minimisation(g2);
             MinGraph g3 = m1.minimize();
             EdgeGraphWolker egw = new EdgeGraphWolker(g3);
             System.out.println(egw.check("101010101"));
             try{
-            	System.out.println(d1.edgeDot("DOTTry",g2).getAbsolutePath());
+            	System.out.println(d1.edgeDot("EDGEGRAPH",g2).getAbsolutePath());
             } catch (IOException ex){
             	Logger.getLogger(Minimisation.class.getName()).log(Level.SEVERE, null, ex);
             }
             	
-          /*  try {
-//              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
-              System.out.println(d1.generateDotFileForNFA("DOTFILE").getAbsolutePath());
-          } catch (IOException ex) {
-              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (DotException ex) {
-              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-          }*/
-
-            
             GraphWalker walker = new GraphWalker(g);
             System.out.println(walker.check("a"));
            //TableWalker walk = new TableWalker(g,t);

@@ -14,10 +14,15 @@ public class TransformToEdge {
 		this.edgeGraph = new MinGraph();
 	}
 	
+	/**
+	 * this method transform graph with nodes to graph with edges
+	 * @param g - graph with nodes
+	 * @return graph with edges
+	 */
 	public MinGraph transform(Graph g){
 		int num = g.allSize();
 		int newNumber = 2;
-		for(int i = 0;i < num;i++){
+		for(int i = 0; i < num; i++){
 			if(g.isEnd(g.getNodeFromAllAt(i))){
 				g.getNodeFromAllAt(i).setNumber(1);	
 				

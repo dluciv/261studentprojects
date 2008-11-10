@@ -9,6 +9,8 @@ import j2se.g261.eda.automator.minimization.Edge;
 /**
 *
 * @author dmitriy
+* class for minimize graph
+* only for graph with edges(MinGraph)
 */
 public class Minimisation {
 	
@@ -25,6 +27,11 @@ public class Minimisation {
 		storage = new HashMap<Integer, Vector<Character>>();
 	}
 		
+    /**
+     * this method put to storage element i with key c
+     * @param c - key
+     * @param i - element
+     */
     private void addToStorage(int c, char i) {
         if (storage.containsKey(c)) {
             Vector<Character> v = storage.get(c);
@@ -39,6 +46,12 @@ public class Minimisation {
     }
 	
     
+    /**
+     * find difference between two vectors
+     * @param a - first vector
+     * @param b - second vector
+     * @return vector of all symbols consisted in a and not consisted in b
+     */
     private Vector<Character> difference(Vector<Character> a,Vector<Character> b){
     
     	Vector<Character> diff = new Vector<Character>();
@@ -52,6 +65,9 @@ public class Minimisation {
     	return diff;
     }
 	
+	/**
+	 * add absorbing state in graph for minimize
+	 */
 	private void addAbsorbingState(){
 		 for(Edge e : edgeGraph.getAll()){
 			 
@@ -85,9 +101,6 @@ public class Minimisation {
 			 } 
 	}
 	
-	
-	
-	
 	private Vector<Couple> findEquals(Couple c , Vector<Couple> toDelite){
 		
 		for(Couple p : different){
@@ -99,6 +112,10 @@ public class Minimisation {
 		return toDelite;
 	} 
 	
+	/**
+	 * this method minimize graph
+	 * @return minimize graph
+	 */
 	public MinGraph minimize(){
 		Vector<Couple> diff = new Vector<Couple>();
 		Vector<Couple> toDelite = new Vector<Couple>();
@@ -168,6 +185,10 @@ public class Minimisation {
 		
 	
 	
+	/**
+	 * this method finds couples of equal states
+	 * @param tmp - beginning vector of different states
+	 */
 	private void helpToMinimize(Vector<Couple> tmp){
 		
 		while(true){
@@ -204,9 +225,6 @@ public class Minimisation {
 		}	
 		
 	}
-
-	
-	
 
 }
 

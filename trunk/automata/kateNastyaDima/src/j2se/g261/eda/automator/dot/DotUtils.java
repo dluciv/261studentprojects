@@ -67,13 +67,17 @@ public class DotUtils {
     
     private String writeNode(Node n, BufferedWriter bf) throws IOException {
         String s1;
-        if (Node.isStartNode(n)) {
+        if (n.getIncomingSize() == 0){
         	s1 = "node" + index + "[label = \"" + "START" + "\" ";
             s1 += ", shape = \"rectangle\"";
         }
-        else if (Node.isEndNode(n)) {
+        else if (n.getOutgoingSize() == 0) {
         	s1 = "node" + index + "[label = \"" + "END" + "\" ";
             s1 += ", shape = \"rectangle\"";
+        }
+        else if (n.getName() == '\r'){
+        	s1 = "node" + index + "[label = \"" + "EPSILON" + "\" ";
+            s1 += ", shape = \"triangle\"";
         }
         else {
         	s1 = "node" + index + "[label = \"" + n.getName() + n.getNumber() + "\" ";
@@ -133,6 +137,15 @@ public class DotUtils {
         }
     }
     
+    /**
+     * This method create a dot file(In a correct format) the containing count
+     * conclude file in BufferedWriter
+     * only for MinGraph
+     * @param filename the name of this file
+     * @param g constructed graph 
+     * @return Temp file with dot-representation of graph
+     * @throws IOException if some IO errors occured
+     */
     public File edgeDot(String filename, MinGraph g)throws IOException{
 		File f1 = File.createTempFile(filename, ".dot");
         BufferedWriter bf = new BufferedWriter(new FileWriter(f1));
