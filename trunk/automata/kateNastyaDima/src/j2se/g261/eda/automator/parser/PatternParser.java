@@ -8,7 +8,6 @@ package j2se.g261.eda.automator.parser;
 import j2se.g261.eda.automator.representations.nfa.NFA;
 import j2se.g261.eda.automator.representations.nfa.NFAWorker;
 import j2se.g261.eda.automator.representations.nfa.NFANode;
-import j2se.g261.eda.automator.minimization.EdgeGraphWolker;
 
 /**
  *
