@@ -23,42 +23,29 @@ public class TestResultItemStorage {
         filtered = new Vector<TestResultItem>();
     }
 
-    public void addTestResult(String pattern, String string, boolean matches) {
-        TestResultItem item = new TestResultItem(pattern, string, matches);
+    public void addTestResult(TestResultItem item) {
         storage.add(item);
-        if (filter != null && filter.include(item)) {
+        if (filter == null || filter.include(item)) {
             filtered.add(item);
         }
 
     }
 
     public TestResultItem getTestResult(int index) {
-        return filter == null ? storage.get(index) : filtered.get(index);
-    }
-
-    public String getPattern(int index) {
-        return filter == null ? storage.get(index).getPattern() : filtered.get(index).getPattern();
-    }
-
-    public String getString(int index) {
-        return filter == null ? storage.get(index).getString() : filtered.get(index).getString();
-    }
-
-    public String isMatches(int index) {
-        return filter == null ? (storage.get(index).isMatches() ? MATCHES : NOT_MATCHES)
-                : (filtered.get(index).isMatches() ? MATCHES : NOT_MATCHES);
+        return filtered.get(index);
     }
 
     public void removeTest(int index) {
         if (filter == null) {
+            if(filtered.contains(storage.get(index))){
+                filtered.removeElementAt(index);
+            }
             storage.removeElementAt(index);
-        } else {
-            filtered.removeElementAt(index);
         }
     }
 
     public int size() {
-        return filter == null ? storage.size() : filtered.size();
+        return filtered.size();
     }
 
     public ItemFilter getFilter() {

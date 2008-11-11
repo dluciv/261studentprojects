@@ -47,5 +47,15 @@ public class TestItemStorage implements Serializable{
     public int size(){
         return storage.size();
     }
-    
+
+
+    public static TestItemStorage concatanate(TestItemStorage[] storages){
+        TestItemStorage result = new TestItemStorage();
+        for (TestItemStorage testItemStorage : storages) {
+            for (int i = 0; i < testItemStorage.storage.size(); i++) {
+                result.storage.add(testItemStorage.storage.get(i));
+            }
+        }
+        return result;
+    }
 }

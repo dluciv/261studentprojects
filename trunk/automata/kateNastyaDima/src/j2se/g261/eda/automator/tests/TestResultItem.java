@@ -15,14 +15,10 @@ public class TestResultItem implements Serializable{
     String pattern;
     String string;
     boolean matches;
-    boolean matchesTable = false;
-    boolean matchesNFA = false;
-    boolean matchesDFA = false;
-    boolean matchesMinGraph = false;
-    long timeTable = 0l;
-    long timeNFA = 0l;
-    long timeDFA = 0l;
-    long timeMinGraph = 0l;
+    Result table;
+    Result NFA;
+    Result DFA;
+    Result minGraph;
     int cicle = 1;
 
     public TestResultItem(String pattern, String string, boolean matches) {
@@ -30,9 +26,13 @@ public class TestResultItem implements Serializable{
         this.string = string;
         this.matches = matches;
     }
-    
-    TestResultItem(TestItem item){
-        this(item.getPattern(), item.getString(), item.isMatches());
+
+    public Result getDFA() {
+        return DFA;
+    }
+
+    public Result getNFA() {
+        return NFA;
     }
 
     public int getCicle() {
@@ -43,20 +43,8 @@ public class TestResultItem implements Serializable{
         return matches;
     }
 
-    public boolean isMatchesDFA() {
-        return matchesDFA;
-    }
-
-    public boolean isMatchesMinGraph() {
-        return matchesMinGraph;
-    }
-
-    public boolean isMatchesNFA() {
-        return matchesNFA;
-    }
-
-    public boolean isMatchesTable() {
-        return matchesTable;
+    public Result getMinGraph() {
+        return minGraph;
     }
 
     public String getPattern() {
@@ -67,69 +55,59 @@ public class TestResultItem implements Serializable{
         return string;
     }
 
-    public long getTimeDFA() {
-        return timeDFA;
+    public Result getTable() {
+        return table;
     }
 
-    public long getTimeMinGraph() {
-        return timeMinGraph;
+    public void setDFA(Result DFA) {
+        this.DFA = DFA;
     }
 
-    public long getTimeNFA() {
-        return timeNFA;
-    }
-
-    public long getTimeTable() {
-        return timeTable;
+    public void setNFA(Result NFA) {
+        this.NFA = NFA;
     }
 
     public void setCicle(int cicle) {
         this.cicle = cicle;
     }
 
-    public void setMatches(boolean matches) {
-        this.matches = matches;
+    public void setMinGraph(Result minGraph) {
+        this.minGraph = minGraph;
     }
 
-    public void setMatchesDFA(boolean matchesDFA) {
-        this.matchesDFA = matchesDFA;
+    public void setTable(Result table) {
+        this.table = table;
     }
 
-    public void setMatchesMinGraph(boolean matchesMinGraph) {
-        this.matchesMinGraph = matchesMinGraph;
-    }
+    public class Result{
+        boolean matches;
+        long averageTime;
+        long minTime;
+        long maxTime;
 
-    public void setMatchesNFA(boolean matchesNFA) {
-        this.matchesNFA = matchesNFA;
-    }
+        public Result(boolean matches, long averageTime, long minTime, long maxTime) {
+            this.matches = matches;
+            this.averageTime = averageTime;
+            this.minTime = minTime;
+            this.maxTime = maxTime;
+        }
 
-    public void setMatchesTable(boolean matchesTable) {
-        this.matchesTable = matchesTable;
-    }
+        public long getAverageTime() {
+            return averageTime;
+        }
 
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
-    }
+        public boolean isMatches() {
+            return matches;
+        }
 
-    public void setString(String string) {
-        this.string = string;
-    }
+        public long getMaxTime() {
+            return maxTime;
+        }
 
-    public void setTimeDFA(long timeDFA) {
-        this.timeDFA = timeDFA;
+        public long getMinTime() {
+            return minTime;
+        }
+        
+        
     }
-
-    public void setTimeMinGraph(long timeMinGraph) {
-        this.timeMinGraph = timeMinGraph;
-    }
-
-    public void setTimeNFA(long timeNFA) {
-        this.timeNFA = timeNFA;
-    }
-
-    public void setTimeTable(long timeTable) {
-        this.timeTable = timeTable;
-    }
-    
-    
 }

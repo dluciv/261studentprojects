@@ -6,54 +6,47 @@
 package j2se.g261.eda.automator.tests;
 
 import j2se.g261.eda.automator.Automator;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  *
  * @author nastya
  */
 public abstract class Tester {
-    private ConcurrentSkipListSet<TestFile<TestItemStorage>> testStorages;
+    private TestItemStorage testStorage;
     protected TestFile current;
     protected ItemFilter resultFilter = null;
-    protected ConcurrentSkipListSet<TestFile<TestResultItemStorage>> results;
+    protected TestResultItemStorage results;
     protected Automator currentAutomator = null;
     protected long allTime;
-    protected long allPercent;
-    protected long allSize = 0l;
-    protected long allSizeFiles = 0l;
-    protected long processedSize = 0l;
-    protected long processedSizeFiles = 0l;
+    protected int allPercent = 0;
+    protected int allSizeFiles = 0;
+    protected int processedFiles = 0;
 
-    public Tester(TestFile[] tests) {
-        testStorages = new ConcurrentSkipListSet<TestFile<TestItemStorage>>();
-        results = new ConcurrentSkipListSet<TestFile<TestResultItemStorage>>();
-        for (TestFile testFile : tests) {
-            allSize += ((TestItemStorage)testFile.getStorage()).size();
-            allSizeFiles++;
-            testStorages.add(testFile);
-        }
+    public Tester(TestItemStorage[] tests) {
+        testStorage = TestItemStorage.concatanate(tests);
+        results = new TestResultItemStorage();
+        allSizeFiles = testStorage.size();
     }
     
-    public ConcurrentSkipListSet<TestFile<TestResultItemStorage>> testAll(){
-        for (TestFile testItemStorage : testStorages) {
-            current = testItemStorage;
-            TestResultItemStorage is = test((TestItemStorage) testItemStorage.getStorage());
-            is.setFilter(resultFilter);
-            results.add(new TestFile<TestResultItemStorage>(testItemStorage.getFile(), is));
-            resetTimer();
+    public void testAll(){
+        String lastPattern = "";
+        Automator a = new Automator(lastPattern);
+        for (int i = 0; i < testStorage.size(); i++) {
+            if(!testStorage.getPattern(i).equals(lastPattern)){
+                lastPattern = testStorage.getPattern(i);
+                a = new Automator(lastPattern);
+            }
+            TestResultItem tri = test(testStorage.getString(i),
+                    testStorage.isMatches(i).equals(TestItemStorage.MATCHES), a);
+            processedFiles++;
+            results.addTestResult(tri);
         }
-        return results;
     }
 
-    protected abstract TestResultItemStorage test(TestItemStorage testItemStorage);
+    protected abstract TestResultItem test(String word, boolean expectedResult, Automator a);
     protected abstract int getCurrentPercent();
-    protected abstract long getCurrentTime();
-    protected abstract String getCurrentName();
-    protected abstract int getAllPercent();
+    protected abstract String getCurrentNumber();
     protected abstract long getAllTime();
-    protected abstract void resetTimer();
-    protected abstract void loadNewPattern(String pattern);
 
     public ItemFilter getResultFilter() {
         return resultFilter;
@@ -61,9 +54,7 @@ public abstract class Tester {
 
     public void setResultFilter(ItemFilter resultFilter) {
         this.resultFilter = resultFilter;
-        for (TestFile<TestResultItemStorage> testFile : results) {
-            ((TestResultItemStorage)testFile.getStorage()).setFilter(resultFilter);
-        }
+        results.setFilter(resultFilter);
     }
     
     
