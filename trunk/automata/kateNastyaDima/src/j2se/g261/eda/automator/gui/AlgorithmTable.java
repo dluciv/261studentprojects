@@ -60,7 +60,7 @@ public class AlgorithmTable extends JPanel{
         ps.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         ps.getViewport().setBackground(table.getBackground());
         ps.getViewport().add(table);
-        ps.setPreferredSize(new Dimension(350, 150));
+        ps.setPreferredSize(new Dimension(400, 150));
         add(ps, BorderLayout.CENTER);
     }
     
