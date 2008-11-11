@@ -4,22 +4,19 @@
  */
 package j2se.g261.eda.automator;
 
-import j2se.g261.eda.automator.dot.DotException;
-import j2se.g261.eda.automator.dot.DotUtils;
-import j2se.g261.eda.automator.graph.Graph;
-import j2se.g261.eda.automator.graph.GraphWalker;
-import j2se.g261.eda.automator.graph.GraphWorker;
-import j2se.g261.eda.automator.graph.WalkerException;
-import j2se.g261.eda.automator.minimization.Minimisation;
+import j2se.g261.eda.automator.visualizing.dot.DotException;
+import j2se.g261.eda.automator.visualizing.dot.DotUtils;
+import j2se.g261.eda.automator.representations.nfa.NFA;
+import j2se.g261.eda.automator.representations.nfa.NFAWalker;
+import j2se.g261.eda.automator.representations.nfa.NFAWalkerException;
+import j2se.g261.eda.automator.representations.nfa.NFAWorker;
 import j2se.g261.eda.automator.parser.ParserException;
 import j2se.g261.eda.automator.parser.PatternParser;
-import j2se.g261.eda.automator.table.Table;
-import j2se.g261.eda.automator.table.TableWalker;
-import j2se.g261.eda.automator.tex.TexWriter;
+import j2se.g261.eda.automator.representations.table.Table;
+import j2se.g261.eda.automator.representations.table.TableWalker;
+import j2se.g261.eda.automator.visualizing.tex.TexWriter;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -27,11 +24,11 @@ import java.util.logging.Logger;
  */
 public class Automator {
 
-    private Graph graph = null;
-    private Graph determinedGraph = null;
+    private NFA graph = null;
+    private NFA determinedGraph = null;
     private Table table = null;
     private String pattern = null;
-    private GraphWalker graphWalker = null;
+    private NFAWalker graphWalker = null;
     private TableWalker tableWalker = null;
     private File texFile = null;
     private File dotNFAFile = null;
@@ -45,24 +42,24 @@ public class Automator {
         table = new Table();
     }
 
-    public void compile() throws ParserException, WalkerException, 
+    public void compile() throws ParserException, NFAWalkerException,
             NoConditionsException, DotException, IOException {
         try {
             PatternParser parser = new PatternParser(pattern);
             graph = parser.parse();
-            GraphWorker.makeClosure(graph);
+            NFAWorker.makeClosure(graph);
             determinedGraph = graph.clone();
-            GraphWorker.makeDeterministic(determinedGraph);
+//            NFAWorker.makeDeterministic(determinedGraph);
             graph.fillDeterminatedTable(table);
             table.fillTable();
-            graphWalker = new GraphWalker(determinedGraph);
+            graphWalker = new NFAWalker(determinedGraph);
             tableWalker = new TableWalker(graph, table);
             texFile = new TexWriter(table).generateFile();
             dotNFAFile = new DotUtils(graph).generateDotFileForNFA("GRAPHNFA");
           /*  Minimisation m1 = new Minimisation();
             m1.transform(graph);
             m1.minimize();
-     
+
 
             dotMinGraphFile = m1.edgeDot("DOTMIN"); */
         } catch (NullPointerException ex) {
@@ -92,7 +89,7 @@ public class Automator {
     public File getDotNFAFile(){
         return dotNFAFile;
     }
-    
+
     public File getDotDFAFile() {
         return dotDFAFile;
     }
