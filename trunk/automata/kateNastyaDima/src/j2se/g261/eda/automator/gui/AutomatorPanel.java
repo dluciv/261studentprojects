@@ -340,7 +340,7 @@ public class AutomatorPanel extends JPanel implements ActionListener {
 
     private void showDFAGraphRepresentation() {
         try {
-            processes.push(Runtime.getRuntime().exec(Globals.DOT_VIEWR + " " + automator.getDotDFAFile()));
+            processes.push(Runtime.getRuntime().exec(Globals.DOT + " " + automator.getDotDFAFile()));
         } catch (IOException ex) {
             Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -348,7 +348,7 @@ public class AutomatorPanel extends JPanel implements ActionListener {
 
     private void showEpsNFAGraphRepresentation() {
         try {
-            processes.push(Runtime.getRuntime().exec(Globals.DOT_VIEWR + " " + automator.getDotEpsNFAFile()));
+            processes.push(Runtime.getRuntime().exec(Globals.DOT + " " + automator.getDotEpsNFAFile()));
         } catch (IOException ex) {
             Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -361,7 +361,7 @@ public class AutomatorPanel extends JPanel implements ActionListener {
         	System.out.println(automator.getDotMinGraphFile().getAbsolutePath());
         	dotFileName = automator.getDotMinGraphFile().getName();
         	fileName = dotFileName.substring(0, dotFileName.length() - 4);
-        	Runtime.getRuntime().exec(Globals.DOT_VIEWR + " -Tgif " + 
+        	Runtime.getRuntime().exec(Globals.DOT + " -Tgif " +
         			automator.getDotMinGraphFile().getAbsolutePath() + " -o " +
         			fileName + ".gif");
     
@@ -377,7 +377,7 @@ public class AutomatorPanel extends JPanel implements ActionListener {
 
     private void showNFAGraphRepresentation() {
         try {
-            processes.push(Runtime.getRuntime().exec(Globals.DOT_VIEWR + " " + automator.getDotNFAFile()));
+            processes.push(Runtime.getRuntime().exec(Globals.DOT + " " + automator.getDotNFAFile()));
         } catch (IOException ex) {
             Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
         }

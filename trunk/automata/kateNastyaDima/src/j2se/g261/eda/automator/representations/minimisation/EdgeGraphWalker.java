@@ -9,9 +9,9 @@ import java.util.Vector;
  */
 public class EdgeGraphWalker {
 
-	private MinGraph g;
+	private MinimizedDFA g;
 	
-	public EdgeGraphWalker(MinGraph g){
+	public EdgeGraphWalker(MinimizedDFA g){
 		this.g = g;
 	}
 	

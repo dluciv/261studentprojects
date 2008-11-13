@@ -7,7 +7,11 @@ package j2se.g261.eda.automator.representations.dfa;
 
 import j2se.g261.eda.automator.representations.*;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Vector;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 
 /**
  *
@@ -16,7 +20,8 @@ import java.util.Vector;
 public class DFANode extends Node<String>{
     private static int index = 0;
     Vector<Integer> nodeNumbers;
-    HashMap<Character, DFANode> map;
+    HashMap<Character, DFANode> mapOutgoing;
+    HashMap< DFANode, Character> mapIncoming;
 
 
     public DFANode(String name, Vector<Integer> numbers){
@@ -26,8 +31,23 @@ public class DFANode extends Node<String>{
     
     protected DFANode(String name, int number){
         super(name, number);
-        map = new HashMap<Character, DFANode>();
+        mapOutgoing = new HashMap<Character, DFANode>();
+        mapIncoming = new HashMap<DFANode,Character>();
         nodeNumbers = new Vector<Integer>();
+    }
+    
+    public int getMapOutgoingSize(){
+    	return this.mapOutgoing.size();
+    }
+    
+    public int getMapIncomingSize(){
+    	return this.mapIncoming.size();
+    }
+    
+    
+    
+    public Iterator<Entry<Character, DFANode>> getOutgoingIterator(){
+    	return mapOutgoing.entrySet().iterator();
     }
     
     @Override
@@ -48,11 +68,16 @@ public class DFANode extends Node<String>{
         private static int nextIndex(){
         return index++;        
     }
+        
+        
 
-
-    public void mapToSymbol(DFANode node, char symbol){
-        addOutgoingNode(node);
-        map.put(symbol, node);
-    }
+        public void mapToSymbolOutgoing(DFANode node, char symbol){
+            addOutgoingNode(node);
+            mapOutgoing.put(symbol, node);
+        }
+        public void mapToSymbolIncoming(DFANode node, char symbol){
+            addIncomingNode(node);
+            mapIncoming.put(node, symbol);
+        }
 
 }

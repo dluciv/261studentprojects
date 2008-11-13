@@ -6,11 +6,11 @@ import java.util.Vector;
  * @author Dmitry
  * class for graph with edges
  */
-public class MinGraph {
+public class MinimizedDFA {
 
 	private Vector<Edge> all;
 	
-	public MinGraph(){
+	public MinimizedDFA(){
 		all = new Vector<Edge>();
 	}
 	

@@ -5,13 +5,18 @@
 package j2se.g261.eda.automator.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -20,8 +25,8 @@ import javax.swing.border.EmptyBorder;
  */
 public class MainFrame extends JFrame implements ActionListener {
 
-    private static final int M_WIDTH = 400;
-    private static final int M_HEIGHT = 530;
+    private static final int M_WIDTH = (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.95);
+    private static final int M_HEIGHT =(int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.95);;
     private JPanel buttonPanel;
     private JButton btnExit;
 
@@ -32,14 +37,32 @@ public class MainFrame extends JFrame implements ActionListener {
         getContentPane().setLayout(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.add("Automator", new AutomPanel());
-        tabbedPane.add("Statistics", new StatPanel());
+        tabbedPane.add("Statistics", new StatPanel(this));
         getContentPane().add(tabbedPane, BorderLayout.NORTH);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        JMenuBar menuBar = new JMenuBar();
+        this.setJMenuBar(menuBar);
+        JMenu file = new JMenu("File");
+        JMenuItem showProp = new JMenuItem(new AbstractAction("Settings"){
+
+            public void actionPerformed(ActionEvent e) {
+                PropertiesDialog dlg = new PropertiesDialog(MainFrame.this);
+                dlg.setVisible(true);
+            }
+        });
+        file.add(showProp);
+        menuBar.add(file);
+
     }
 
     public static void main(String[] args) {
         MainFrame m = new MainFrame();
         m.setSize(M_WIDTH, M_HEIGHT);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        int x = (screenSize.width - M_WIDTH) / 2;
+        int y = (screenSize.height - M_HEIGHT) / 2;
+        m.setLocation(x, y);
         m.setVisible(true);
 
     }

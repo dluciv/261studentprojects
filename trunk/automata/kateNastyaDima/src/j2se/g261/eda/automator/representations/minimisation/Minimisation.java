@@ -8,17 +8,17 @@ import java.util.HashMap;
 *
 * @author dmitriy
 * class for minimize graph
-* only for graph with edges(MinGraph)
+* only for graph with edges(MinimizedDFA)
 */
 public class Minimisation {
 	
-	private MinGraph edgeGraph;
+	private MinimizedDFA edgeGraph;
 	private Vector<Couple> different;
 	private Vector<Character> uniq;
 	private HashMap<Integer, Vector<Character>> storage;
 	
 
-	public Minimisation(MinGraph g){
+	public Minimisation(MinimizedDFA g){
 		edgeGraph = g;
 		different = new Vector<Couple>();
 		uniq = new Vector<Character>();
@@ -114,7 +114,7 @@ public class Minimisation {
 	 * this method minimize graph
 	 * @return minimize graph
 	 */
-	public MinGraph minimize(){
+	public MinimizedDFA minimize(){
 		Vector<Couple> diff = new Vector<Couple>();
 		Vector<Couple> toDelite = new Vector<Couple>();
 		addAbsorbingState();

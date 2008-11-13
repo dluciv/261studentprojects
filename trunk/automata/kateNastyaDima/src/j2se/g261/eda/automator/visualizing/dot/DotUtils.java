@@ -7,7 +7,7 @@ package j2se.g261.eda.automator.visualizing.dot;
 import j2se.g261.eda.automator.representations.nfa.NFA;
 import j2se.g261.eda.automator.representations.nfa.NFANode;
 import j2se.g261.eda.automator.representations.minimisation.Edge;
-import j2se.g261.eda.automator.representations.minimisation.MinGraph;
+import j2se.g261.eda.automator.representations.minimisation.MinimizedDFA;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -141,13 +141,13 @@ public class DotUtils {
    /**
      * This method create a dot file(In a correct format) the containing count
      * conclude file in BufferedWriter
-     * only for MinGraph
+     * only for MinimizedDFA
      * @param filename the name of this file
      * @param g constructed graph
      * @return Temp file with dot-representation of graph
      * @throws IOException if some IO errors occured
      */
-    public File edgeDot(String filename, MinGraph g)throws IOException{
+    public File edgeDot(String filename, MinimizedDFA g)throws IOException{
 		File f1 = File.createTempFile(filename, ".dot");
         BufferedWriter bf = new BufferedWriter(new FileWriter(f1));
         bf.write("digraph");

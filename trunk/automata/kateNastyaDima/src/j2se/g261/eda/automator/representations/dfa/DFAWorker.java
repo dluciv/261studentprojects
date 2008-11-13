@@ -46,7 +46,9 @@ public class DFAWorker {
                     DFANode newNd = new DFANode("q", extractNumbers(res));
                     result.put(res, newNd);
                 }
-                result.get(v).mapToSymbol(result.get(res), symbol);
+                result.get(v).mapToSymbolOutgoing(result.get(res), symbol);
+                result.get(res).mapToSymbolIncoming(result.get(v), symbol);
+                result.get(res).addIncomingNode(result.get(v));
                 dfa.addNode(result.get(res));
                 if(haveEndNodes(res, end)){
                     dfa.markAsEnd(result.get(res));

@@ -8,6 +8,7 @@ import j2se.g261.eda.automator.representations.nfa.NFA;
 import java.util.Vector;
 
 /**
+ * Different operation over a graph 
  *
  * @author Katerina, Anastasiya
  */
