@@ -55,7 +55,7 @@ public class Automator {
             graphWalker = new NFAWalker(determinedGraph);
             tableWalker = new TableWalker(graph, table);
             texFile = new TexWriter(table).generateFile();
-            dotNFAFile = new DotUtils(graph).generateDotFileForNFA("GRAPHNFA");
+            //dotNFAFile = new DotUtils(graph).generateDotFileForNFA("GRAPHNFA");
           /*  Minimisation m1 = new Minimisation();
             m1.transform(graph);
             m1.minimize();

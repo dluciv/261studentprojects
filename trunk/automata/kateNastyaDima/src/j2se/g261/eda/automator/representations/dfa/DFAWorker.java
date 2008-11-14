@@ -72,8 +72,10 @@ public class DFAWorker {
 
     private static Vector<NFANode> getEndNodeSet(NFANode node) {
         Vector<NFANode> result = new Vector<NFANode>();
-
-        for (int i = 0; i < node.getIncomingSize(); i++) {
+        
+        int num = node.getIncomingSize();
+        	
+        for (int i = 0; i < num; i++) {
             result.add((NFANode) node.getIncomingAt(i));
         }
 

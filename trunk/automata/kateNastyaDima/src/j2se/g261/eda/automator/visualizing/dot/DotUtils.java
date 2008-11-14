@@ -6,8 +6,10 @@ package j2se.g261.eda.automator.visualizing.dot;
 
 import j2se.g261.eda.automator.representations.nfa.NFA;
 import j2se.g261.eda.automator.representations.nfa.NFANode;
+import j2se.g261.eda.automator.representations.dfa.DFA;
 import j2se.g261.eda.automator.representations.minimisation.Edge;
 import j2se.g261.eda.automator.representations.minimisation.MinimizedDFA;
+import j2se.g261.eda.automator.representations.minimisation.MinimizedDFAWorker;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,11 +25,15 @@ import java.util.HashMap;
 public class DotUtils {
 
     private static final String DIGRAPH = "digraph";
-    private NFA g;
+    private NFA nfa;
+    private DFA dfa;
+    private MinimizedDFA mdfa; 
     private int index = 0;
 
-    public DotUtils(NFA g) {
-        this.g = g;
+    public DotUtils(NFA n, DFA d, MinimizedDFA m) {
+        this.nfa = n;
+        this.dfa = d;
+        this.mdfa = m;
     }
 
     /**
@@ -47,15 +53,43 @@ public class DotUtils {
         bf.write(DIGRAPH);
         bf.write(" g{");
         bf.newLine();
-        int num = g.startsSize();
+        int num = nfa.startsSize();
         for (int i = 0; i < num; i++) {
-            processNode(g.getNodeFromStartsAt(i), bf, passed);
+            processNode(nfa.getNodeFromStartsAt(i), bf, passed);
         }
         bf.write("}");
         bf.close();
         return f1;
     }
-
+    
+    public File generateDotFileForDFA(String filename) throws IOException, DotException {
+    	File f1 = File.createTempFile(filename, ".dot");
+    	MinimizedDFAWorker mdw = new MinimizedDFAWorker();
+    	MinimizedDFA h = mdw.convertFromNFAToMinimizedDFA(dfa);
+        BufferedWriter bf = new BufferedWriter(new FileWriter(f1));
+        bf.write("digraph");
+        bf.write(" g{");
+        bf.newLine();
+        
+        int num = h.sizeAll();
+        for(int i = 0; i<num ;i++){
+        	Edge edge = h.getEdgeAt(i); 
+        	if(edge.getName() == '\n'){
+        		bf.write(edge.getIncoming() + "->" + edge.getOutgoing() + "[label = " +
+            			"end" + "];");
+            	bf.newLine();
+        	}
+        	else{
+        	bf.write(edge.getIncoming() + "->" + edge.getOutgoing() + "[label = " +
+        			edge.getName() + "];");
+        	bf.newLine();
+        	}
+        }
+        bf.write("}");
+        bf.close();
+        return f1;	
+    }
+    
     /**
      * This method writes down node in a file
      * The starts nodes have a rectangle form, the end nodes have circle form.
@@ -147,16 +181,16 @@ public class DotUtils {
      * @return Temp file with dot-representation of graph
      * @throws IOException if some IO errors occured
      */
-    public File edgeDot(String filename, MinimizedDFA g)throws IOException{
+    public File edgeDot(String filename)throws IOException{
 		File f1 = File.createTempFile(filename, ".dot");
         BufferedWriter bf = new BufferedWriter(new FileWriter(f1));
         bf.write("digraph");
         bf.write(" g{");
         bf.newLine();
         
-        int num = g.sizeAll();
+        int num = mdfa.sizeAll();
         for(int i = 0; i<num ;i++){
-        	Edge edge = g.getEdgeAt(i); 
+        	Edge edge = mdfa.getEdgeAt(i); 
         	if(edge.getName() == '\n'){
         		bf.write(edge.getIncoming() + "->" + edge.getOutgoing() + "[label = " +
             			"end" + "];");

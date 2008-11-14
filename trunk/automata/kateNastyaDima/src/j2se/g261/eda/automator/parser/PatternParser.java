@@ -5,9 +5,23 @@
 
 package j2se.g261.eda.automator.parser;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import j2se.g261.eda.automator.representations.dfa.DFA;
+import j2se.g261.eda.automator.representations.dfa.DFAWorker;
+import j2se.g261.eda.automator.representations.minimisation.Minimisation;
+import j2se.g261.eda.automator.representations.minimisation.MinimizedDFA;
+import j2se.g261.eda.automator.representations.minimisation.MinimizedDFAWorker;
 import j2se.g261.eda.automator.representations.nfa.NFA;
+import j2se.g261.eda.automator.representations.nfa.NFAWalker;
+import j2se.g261.eda.automator.representations.nfa.NFAWalkerException;
 import j2se.g261.eda.automator.representations.nfa.NFAWorker;
 import j2se.g261.eda.automator.representations.nfa.NFANode;
+import j2se.g261.eda.automator.representations.table.Table;
+import j2se.g261.eda.automator.visualizing.dot.DotException;
+import j2se.g261.eda.automator.visualizing.dot.DotUtils;
 
 /**
  *
@@ -98,59 +112,70 @@ public class PatternParser {
     private boolean isSymbol(char c){
         return c != '|' && c != '*' && c != '?';
     }
-//
-//    public static void main(String[] args) {
-//
-//        PatternParser p = new PatternParser("(1000|1010)(0|1)*");
-//        int c;
-//        try {
-//            NFA g = p.parse();
-//            Table t = new Table();
-//            NFAWorker.makeClosure(g);
-////            NFA g1 = NFAWorker.makeDeterministic(g);
-//
-//            g.fillDeterminatedTable(t);
-//            t.fillTable();
-//
-////            DotUtils d = new DotUtils(g);
-//            DotUtils d1 = new DotUtils(g);
-//          /*  System.out.println(g1);
-//            System.out.println("!!!!!!!!!!");
-//            for (int i = 0; i < g1.allSize(); i++) {
-//                System.out.println(g1.getNodeFromAllAt(i));
-//            }*/
-//
-//            TransformToEdge tte = new TransformToEdge();
-//            MinNFA g2 = tte.transform(g1);
-//            Minimisation m1 = new Minimisation(g2);
-//            m1.minimize();
-//            System.out.println(m1.check("101010101", g2));
-//            try{
-//            	System.out.println(d1.edgeDot("DOTTry",g2).getAbsolutePath());
-//            } catch (IOException ex){
-//            	Logger.getLogger(Minimisation.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//
-//          /*  try {
-////              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
-//              System.out.println(d1.generateDotFileForNFA("DOTFILE").getAbsolutePath());
-//          } catch (IOException ex) {
-//              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-//          } catch (DotException ex) {
-//              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-//          }*/
-//
-//
-//            NFAWalker walker = new NFAWalker(g);
-//            System.out.println(walker.check("a"));
-//           //TableWalker walk = new TableWalker(g,t);
-//           // System.out.println(walk.check(""));
-//
-//
-//        } catch (WalkerException ex) {
-//            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ParserException ex) {
-//            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//     }
+
+    public static void main(String[] args) {
+
+        PatternParser p = new PatternParser("(1000|1010)(0|1)*");
+        int c;
+        try {
+            NFA nfa = p.parse();
+            Table t = new Table();
+            NFAWorker.makeClosure(nfa);
+            
+            DFAWorker dfaW = new DFAWorker();
+            
+            DFA dfa = dfaW.convertFromNFA(nfa);
+            
+            MinimizedDFAWorker mDfaW = new MinimizedDFAWorker();
+            
+            MinimizedDFA mDfa = mDfaW.convertFromNFAToMinimizedDFA(dfa);
+            
+            Minimisation m1 = new Minimisation(mDfa);
+            
+            MinimizedDFA minDfa = m1.minimize();
+            
+            
+            nfa.fillDeterminatedTable(t);
+            t.fillTable();
+
+//            DotUtils d = new DotUtils(g);
+            DotUtils d1 = new DotUtils(nfa, dfa , minDfa);
+         
+            try {
+//              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+              System.out.println(d1.generateDotFileForNFA("DOTNFA").getAbsolutePath());
+          } catch (IOException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (DotException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          }
+            
+            try{
+            	System.out.println(d1.edgeDot("DOTMIN").getAbsolutePath());
+            } catch (IOException ex){
+            	Logger.getLogger(Minimisation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+//              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+              System.out.println(d1.generateDotFileForDFA("DOTDFA").getAbsolutePath());
+          } catch (IOException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (DotException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          }
+
+
+              NFAWalker walker = new NFAWalker(nfa);
+          //  System.out.println(walker.check("a"));
+           //TableWalker walk = new TableWalker(g,t);
+           // System.out.println(walk.check(""));
+
+
+        } catch (NFAWalkerException ex) {
+            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserException ex) {
+            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }
 }
