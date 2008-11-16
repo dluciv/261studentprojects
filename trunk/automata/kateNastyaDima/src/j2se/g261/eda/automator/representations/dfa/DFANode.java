@@ -7,6 +7,8 @@ package j2se.g261.eda.automator.representations.dfa;
 
 import j2se.g261.eda.automator.representations.*;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
 import java.util.Iterator;
@@ -37,17 +39,17 @@ public class DFANode extends Node<String>{
     }
     
     public int getMapOutgoingSize(){
-    	return this.mapOutgoing.size();
+        return this.mapOutgoing.size();
     }
     
     public int getMapIncomingSize(){
-    	return this.mapIncoming.size();
+        return this.mapIncoming.size();
     }
     
     
     
     public Iterator<Entry<Character, DFANode>> getOutgoingIterator(){
-    	return mapOutgoing.entrySet().iterator();
+        return mapOutgoing.entrySet().iterator();
     }
     
     @Override
