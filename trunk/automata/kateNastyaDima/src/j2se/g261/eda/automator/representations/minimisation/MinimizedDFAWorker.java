@@ -1,13 +1,8 @@
 package j2se.g261.eda.automator.representations.minimisation;
 
-import j2se.g261.eda.automator.representations.Node;
-import j2se.g261.eda.automator.representations.nfa.NFA;
-import j2se.g261.eda.automator.representations.nfa.NFANode;
 import j2se.g261.eda.automator.representations.dfa.DFA;
 import j2se.g261.eda.automator.representations.dfa.DFANode;
-
 import java.util.Iterator;
-import java.util.Vector;
 import java.util.Map.Entry;
 /**
  * Class contains some methods for processing DFAs and minimized DFAs and easing
@@ -47,31 +42,33 @@ public class MinimizedDFAWorker {
                 newNumber++;
             }
         }
-        DFANode n = (DFANode) g.getNodeFromStartsAt(0);
+        DFANode n = (DFANode) g.getNodeFromAllAt(0);
         
         return toEdges(n, g);
     }
 
+   
     private MinimizedDFA toEdges(DFANode n, DFA g) {
-    	int num = g.allSize();
-    	for(int i = 0;i < num; i++){
-    		DFANode dfa = g.getNodeFromAllAt(i);
-    		int num2 = dfa.getMapOutgoingSize();
-    		Iterator<Entry<Character, DFANode>> iter = dfa.getOutgoingIterator();
-    		while(iter.hasNext()){
-    			Entry<Character, DFANode> en = iter.next() ;
-    			if (dfa.getMapIncomingSize() == 0) {
+        int num = g.allSize();
+        for(int i = 0;i < num; i++){
+                DFANode dfa = g.getNodeFromAllAt(i);
+                int num2 = dfa.getMapOutgoingSize();
+                Iterator<Entry<Character, DFANode>> iter = dfa.getOutgoingIterator();
+                while(iter.hasNext()){
+                        Entry<Character, DFANode> en = iter.next() ;
+                        if (dfa.getMapIncomingSize() == 0) {
                     Edge endEdge = new Edge('\n', dfa.getNumber(), en.getValue().getNumber());
                     minDFA.add(endEdge);
                     }
                     else{
-                    	Edge endEdge = new Edge(en.getKey(), dfa.getNumber(), en.getValue().getNumber());
+                        Edge endEdge = new Edge(en.getKey(), dfa.getNumber(), en.getValue().getNumber());
                         minDFA.add(endEdge);
                     }         
-    		}
-    		
-    		
-    	}
-    	return minDFA;
+                }
+                
+                
+        }
+        return minDFA;
     }
+
 }
