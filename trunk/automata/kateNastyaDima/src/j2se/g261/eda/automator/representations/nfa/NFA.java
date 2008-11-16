@@ -104,7 +104,7 @@ public class NFA extends FiniteAutomata<NFANode> implements Cloneable {
     }
 
     public NFANode getNodeById(int index){
-        for (NFANode nFANode : starts) {
+        for (NFANode nFANode : all) {
             if(nFANode.getNumber() == index){
                 return nFANode;
             }
