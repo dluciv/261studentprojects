@@ -74,7 +74,7 @@ public class DFAWorker {
         Vector<NFANode> result = new Vector<NFANode>();
         
         int num = node.getIncomingSize();
-        	
+                
         for (int i = 0; i < num; i++) {
             result.add((NFANode) node.getIncomingAt(i));
         }
@@ -127,3 +127,4 @@ public class DFAWorker {
         return v;
     }
 }
+
