@@ -29,9 +29,12 @@ public class MainFrame extends JFrame implements ActionListener {
     private static final int M_HEIGHT =(int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.95);;
     private JPanel buttonPanel;
     private JButton btnExit;
+    private PropertiesDialog propDialog;
 
     public MainFrame() {
 //        this.setResizable(false);
+        propDialog = new PropertiesDialog(MainFrame.this);
+        propDialog.loadProperties();
         createButtonPanel();
         btnExit.addActionListener(this);
         getContentPane().setLayout(new BorderLayout());
@@ -46,8 +49,8 @@ public class MainFrame extends JFrame implements ActionListener {
         JMenuItem showProp = new JMenuItem(new AbstractAction("Settings"){
 
             public void actionPerformed(ActionEvent e) {
-                PropertiesDialog dlg = new PropertiesDialog(MainFrame.this);
-                dlg.setVisible(true);
+                
+                propDialog.setVisible(true);
             }
         });
         file.add(showProp);
