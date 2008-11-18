@@ -18,9 +18,11 @@ public class NFANode extends Node<Character>{
 //    private int number;
 //    private Vector<NFANode> outgoing;
 //    private Vector<NFANode> incoming;
-    private static final Character EPSILON = Character.valueOf('\r');
-    private static final char START = Character.valueOf('\t');
-    private static final char END = Character.valueOf('\n');
+    public static final char EPSILON = '\r';
+    public  static final char START = '\t';
+    public  static final char END = '\n';
+    public static final int START_INDEX = 0;
+    public static final int END_INDEX = 1;
     private static int index = 2;
 
     public NFANode(char name) {
@@ -30,43 +32,7 @@ public class NFANode extends Node<Character>{
     protected NFANode(Character name, int number){
         super(name, number);
     }
-    
-//    private NFANode(char name, int number){
-//        this.name = name;
-//        this.number = number;
-//        this.outgoing = new Vector<NFANode>();
-//        this.incoming = new Vector<NFANode>();
-//    }
 
-//    public int getNumber() {
-//        return number;
-//    }
-//
-//    public void setNumber(int number) {
-//        this.number = number;
-//    }
-//
-
-//
-//    public char getName() {
-//        return name;
-//    }
-//
-//    public void setName(char name) {
-//        this.name = name;
-//    }
-
-    
-//    public void addIncomingNode(NFANode n) {
-//        if(!incoming.contains(n))
-//        incoming.add(n);
-//    }
-//    
-//    public void addOutgoingNode(NFANode n) {
-//        if(!outgoing.contains(n))
-//        outgoing.add(n);
-//    }
-//    
     public void prepareForDeleting() {
         
         for (Node<Character> node : outgoing) {
@@ -85,13 +51,6 @@ public class NFANode extends Node<Character>{
         
     }
 
-//    public void removeNodeFromIncoming(NFANode n) {
-//        incoming.remove(n);
-//    }
-//
-//    public void removeNodeFromOutgoing(NFANode n) {
-//        outgoing.remove(n);
-//    }
 
     @Override
     public String toString() {
@@ -120,29 +79,21 @@ public class NFANode extends Node<Character>{
             return String.valueOf(c);
         }
     }
-//    public boolean haveIncoming(){
-//        return incoming.size() != 0;
-//    }
-//    
-//    public boolean haveOutgoing(){
-//        return outgoing.size() != 0;
-//    }
-//        
-//    
+
     public static NFANode startNode(){
-        return new NFANode(START, 0);
+        return new NFANode(START, START_INDEX);
     }
     
     public static boolean isStartNode(NFANode n){
-        return n.getNumber() == 0;
+        return n.getNumber() == START_INDEX;
     }
 
     public static NFANode endNode(){
-        return new NFANode(END, 1);
+        return new NFANode(END, END_INDEX);
     }
     
     public static boolean isEndNode(NFANode n){
-        return n.getNumber() == 1;
+        return n.getNumber() == END_INDEX;
     }
 
     public static NFANode epsilonNode(){
@@ -153,41 +104,12 @@ public class NFANode extends Node<Character>{
         return n.getName() == EPSILON;
     }
     
-//    public int getOutgoingSize(){
-//        return outgoing.size();
-//    }
-//    
-//    public int getIncomingSize(){
-//        return incoming.size();
-//    }
-//    
-//    public NFANode getIncomingAt(int index){
-//        return (NFANode)incoming.get(index);
-//    }
-//    
-//    public NFANode getOutgoingAt(int index){
-//        return (NFANode)outgoing.get(index);
-//    }
-//    
+
     private static int nextIndex(){
         return index++;        
     }
 
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (obj == null) {
-//            return false;
-//        }
-//        if (getClass() != obj.getClass()) {
-//            return false;
-//        }
-//        final NFANode other = (NFANode) obj;
-//        if (this.number != other.number) {
-//            return false;
-//        }
-//        return true;
-//    }
-    
+
     void shiftConnections(NFANode to){
         for (Node<Character> node : incoming) {
             to.addIncomingNode(node);
@@ -197,13 +119,8 @@ public class NFANode extends Node<Character>{
         }
     }
 
-    //@todo remove debug method (Character.toUpperCase)
     public NFANode cloneWithoutConnections(){
-        if(isEndNode(this) || isStartNode(this)){
             return new NFANode(getName(), getNumber());
-        }else{
-            return new NFANode(Character.toUpperCase(getName()), getNumber());
-        }
     }
 }
 

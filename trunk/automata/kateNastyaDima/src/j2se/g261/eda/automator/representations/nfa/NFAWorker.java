@@ -5,6 +5,8 @@
 package j2se.g261.eda.automator.representations.nfa;
 
 import j2se.g261.eda.automator.representations.nfa.NFA;
+import j2se.g261.eda.automator.representations.table.Table;
+import j2se.g261.eda.automator.representations.table.TableRecord;
 import java.util.Vector;
 
 /**
@@ -172,79 +174,34 @@ public class NFAWorker {
         g.markAllEnds();
     }
 
-//    public static NFA makeDeterministic(NFA graph) {
-//
-//        NFA g = graph.clone();
-//        boolean haveChanges = true;
-//
-//        while (haveChanges) {
-//            haveChanges = false;
-//            for (int i = 0; i < g.allSize(); i++) {
-//                NFANode n = g.getNodeFromAllAt(i);
-//                Vector<NFANode> v = new Vector<NFANode>();
-//                for (int j = 0; j < n.getOutgoingSize(); j++) {
-//                    NFANode equaled = getEqualed(v, n.getOutgoingAt(j));
-//
-//                    if (equaled == null) {
-//                        v.add(n.getOutgoingAt(j));
-//                    } else {
-//                        haveChanges = true;
-//                        n.getOutgoingAt(j).removeNodeFromIncoming(n);//1
-//
-//                        for (int k = 0; k < n.getOutgoingAt(j).getOutgoingSize(); k++) {
-//                            if(!n.getOutgoingAt(j).getOutgoingAt(k).equals(n)){
-//                            equaled.addOutgoingNode(n.getOutgoingAt(j).getOutgoingAt(k));
-//                            n.getOutgoingAt(j).getOutgoingAt(k).addIncomingNode(equaled);
-//                            }else{
-//                            equaled.addOutgoingNode(equaled);
-//                            equaled.addIncomingNode(equaled);
-//                            n.getOutgoingAt(j).getOutgoingAt(k)
-//                                    .removeNodeFromIncoming(n.getOutgoingAt(j)
-//                                    .getOutgoingAt(k));
-//                            }
-//                        }
-//
-//                        n.removeNodeFromOutgoing(n.getOutgoingAt(j));//2
-//                    }
-//
-//                }
-//
-//            }
-//        }
-//
-//        int size = g.allSize();
-//        for (int i = 0; i < size; i++) {
-//            if (!g.isStart(g.getNodeFromAllAt(i)) && !g.getNodeFromAllAt(i).haveIncoming()) {
-//                NFANode n = g.getNodeFromAllAt(i);
-//                for (int j = 0; j < n.getOutgoingSize(); j++) {
-//                    NFANode out = n.getOutgoingAt(j);
-//                    out.removeNodeFromIncoming(n);
-//                    n.removeNodeFromOutgoing(out);
-//                }
-//                g.simpleDeleteNode(n);
-//                System.out.println("@@@@@@@@@@@@@");
-//                System.out.println(n);
-//                System.out.println("@@@@@@@@@@@@@");
-//                i--;
-//                size--;
-//            }
-//
-//        }
-//
-//        return g;
-//
-//    }
-//
-//
-//    private static NFANode getEqualed(Vector<NFANode> v, NFANode n) {
-//        for (NFANode node : v) {
-//            if (node.getName() == n.getName()) {
-//                return node;
-//            }
-//        }
-//
-//        return null;
-//    }
+    public static Table generateTable(NFA g) {
+        Table table = new Table();
 
+        int a = g.allSize();
+        for (int i = 0; i < a; i++) {
+            writeNodeInfoToTable(g, g.getNodeFromAllAt(i), table);
 
+        }
+        return table;
+    }
+
+    private static void writeNodeInfoToTable(NFA g, NFANode n, Table table) {
+        TableRecord t = new TableRecord();
+
+        if (NFANode.isEndNode(n)) {
+            return;
+        }
+        int a = n.getOutgoingSize();
+        for (int i = 0; i < a; i++) {
+            NFANode n1 = (NFANode) n.getOutgoingAt(i);
+            char c = n1.getName();
+            if (c == NFANode.START) {
+                c = TableRecord.SYMBOL_START;
+            } else if (c == NFANode.END) {
+                c = TableRecord.SYMBOL_END;
+            }
+            t.add(c, g.getNodeIndex(n1));
+        }
+        table.add(g.getNodeIndex(n), t);
+    }
 }

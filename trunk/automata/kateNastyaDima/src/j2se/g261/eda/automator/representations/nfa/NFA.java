@@ -141,48 +141,15 @@ public class NFA extends FiniteAutomata<NFANode> implements Cloneable {
         return -1;
     }
 
-    //@todo rewrite accordingly to replacing; document
-    public void fillDeterminatedTable(Table table) {
-        table.clear();
-        int a = allSize();
-        for (int i = 0; i < a; i++) {
-            writeNodeInfoToTable(getNodeFromAllAt(i), table);
-
-        }
-    }
 
     public static NFA emptyGraph(){
         return new NFA(NFANode.epsilonNode());
     }
 
-    private void writeNodeInfoToTable(NFANode n, Table table) {
-        TableRecord t = new TableRecord();
-
-        if (NFANode.isEndNode(n)) {
-//            t.add(TableRecord.SYMBOL_END, -1);
-
-            return;
-        }
-//        if(NFANode.isStartNFANode(n)){
-//            t.add(TableRecord.SYMBOL_START, getNFANodeIndex(n));
-//        }
-        int a = n.getOutgoingSize();
-        for (int i = 0; i < a; i++) {
-            NFANode n1 = (NFANode)n.getOutgoingAt(i);
-            char c = n1.getName();
-            if (c == '\t') {
-                c = TableRecord.SYMBOL_START;
-            } else if (c == '\n') {
-                c = TableRecord.SYMBOL_END;
-            }
-            t.add(c, getNodeIndex(n1));
-        }
-        table.add(getNodeIndex(n), t);
-    }
-
+ 
     @Override
     public NFA clone() {
         return new NFA(all, starts, ends);
     }
-    
+ 
 }

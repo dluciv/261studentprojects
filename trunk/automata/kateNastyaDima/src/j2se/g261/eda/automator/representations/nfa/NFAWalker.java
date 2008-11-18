@@ -33,7 +33,6 @@ public class NFAWalker {
                     break;
                 }
             }
-//            node = graph.getNodeFromStartsAt(0);
             node.getIncomingSize();
         } catch (Exception ex) {
             throw new NFAWalkerException();
@@ -60,7 +59,6 @@ public class NFAWalker {
         } else {
             char current = rest.charAt(0);
             for (int i = 0; i < n.getOutgoingSize(); i++) {
-                System.out.println(n.getName());
                 if (((NFANode)n).getOutgoingAt(i).getName().equals(current) &&
                         checkNextElement(rest.substring(1),
                         (NFANode) n.getOutgoingAt(i))) {
