@@ -64,12 +64,13 @@ public class Minimisation {
      * add absorbing state in graph for minimize
      */
     private void addAbsorbingState() {
-        for (Edge e : edgeGraph.getAll()) {
+    
+        for (int i = 0; i < edgeGraph.sizeAll(); i++) {
 
-            addToStorage(e.getIncoming(), e.getName());
+            addToStorage(edgeGraph.getEdgeAt(i).getIncoming(), edgeGraph.getEdgeAt(i).getName());
 
-            if (!uniq.contains(e.getName())) {
-                uniq.add(e.getName());
+            if (!uniq.contains(edgeGraph.getEdgeAt(i).getName())) {
+                uniq.add(edgeGraph.getEdgeAt(i).getName());
             }
 
         }
@@ -155,7 +156,7 @@ public class Minimisation {
             listSecond = edgeGraph.findOutgoingEdge(c.getSecond());
 
             for (Edge i : listFirst) {
-                edgeGraph.getAll().remove(i);
+                edgeGraph.remove(i);
             }
 
             for (Edge i : listFirst) {
@@ -163,13 +164,13 @@ public class Minimisation {
                 if (i.getIncoming() == c.getSecond()) {
                     continue;
                 }
-                if (!edgeGraph.getAll().contains(e)) {
-                    edgeGraph.getAll().add(e);
+                if (!edgeGraph.contains(e)) {
+                    edgeGraph.add(e);
                 }
             }
 
             for (Edge j : listSecond) {
-                edgeGraph.getAll().remove(j);
+                edgeGraph.remove(j);
             }
 
             for (Edge j : listSecond) {
@@ -177,8 +178,8 @@ public class Minimisation {
                 if (j.getOutgoing() == c.getSecond()) {
                     continue;
                 }
-                if (!edgeGraph.getAll().contains(e)) {
-                    edgeGraph.getAll().add(e);
+                if (!edgeGraph.contains(e)) {
+                    edgeGraph.add(e);
                 }
             }
         }
@@ -186,7 +187,7 @@ public class Minimisation {
         Vector<Edge> list = edgeGraph.findIncomingEdge(storage.size() + 1);
 
         for (Edge h : list) {
-            edgeGraph.getAll().remove(h);
+            edgeGraph.remove(h);
         }
 
         return edgeGraph;

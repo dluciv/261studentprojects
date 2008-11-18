@@ -126,6 +126,7 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Internal error during " +
                         "creating NFA walker", "Attention!", JOptionPane.ERROR_MESSAGE);
             } catch (NoConditionsException ex) {
+            	ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Internal error during " +
                         "processing pattern", "Attention!", JOptionPane.ERROR_MESSAGE);
             } catch (DotException ex) {
@@ -219,16 +220,34 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
     }
 
     private void showDFAGraphRepresentation() {
+        String dotFileName;
+        String fileName;
         try {
-            processes.push(Runtime.getRuntime().exec(Globals.DOT + " " + automator.getDotDFAFile()));
+            dotFileName = automator.getDotDFAFile().getName();
+            fileName = dotFileName.substring(0, dotFileName.length() - 4);
+            Runtime.getRuntime().exec("\"" + Globals.DOT + "\" -Tgif " +
+                    automator.getDotDFAFile().getAbsolutePath() + " -o " +
+                    fileName + ".gif");
+
+
+            processes.push(Runtime.getRuntime().exec("\"" + Globals.IMG_VIEWER + "\" " + fileName + ".gif"));
         } catch (IOException ex) {
             Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void showEpsNFAGraphRepresentation() {
+        String dotFileName;
+        String fileName;
         try {
-            processes.push(Runtime.getRuntime().exec(Globals.DOT + " " + automator.getDotEpsNFAFile()));
+            dotFileName = automator.getDotEpsNFAFile().getName();
+            fileName = dotFileName.substring(0, dotFileName.length() - 4);
+            Runtime.getRuntime().exec("\"" + Globals.DOT + "\" -Tgif " +
+                    automator.getDotEpsNFAFile().getAbsolutePath() + " -o " +
+                    fileName + ".gif");
+
+
+            processes.push(Runtime.getRuntime().exec("\"" + Globals.IMG_VIEWER + "\" " + fileName + ".gif"));
         } catch (IOException ex) {
             Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -245,15 +264,27 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
                     fileName + ".gif");
 
 
-            processes.push(Runtime.getRuntime().exec(Globals.IMG_VIEWER + " " + fileName + ".gif"));
+            processes.push(Runtime.getRuntime().exec("\"" + Globals.IMG_VIEWER + "\" " + fileName + ".gif"));
         } catch (IOException ex) {
             Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void showNFAGraphRepresentation() {
+        String dotFileName;
+        String fileName;
         try {
-            processes.push(Runtime.getRuntime().exec(Globals.DOT + " " + automator.getDotNFAFile()));
+            dotFileName = automator.getDotNFAFile().getName();
+            fileName = dotFileName.substring(0, dotFileName.length() - 4);
+            Runtime.getRuntime().exec("\"" + Globals.DOT + "\" -Tgif " +
+                    automator.getDotNFAFile().getAbsolutePath() + " -o " +
+                    fileName + ".gif");
+
+            System.out.println("\"" + Globals.DOT + "\" -Tgif " +
+                    automator.getDotNFAFile().getAbsolutePath() + " -o " +
+                    fileName + ".gif");
+
+            processes.push(Runtime.getRuntime().exec("\"" + Globals.IMG_VIEWER + "\" " + fileName + ".gif"));
         } catch (IOException ex) {
             Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -261,10 +292,10 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
 
     private void showTableRepresentation() {
         try {
-            Process p = Runtime.getRuntime().exec(Globals.LATEX_COMMAND + " " + automator.getTexFile());
+            Process p = Runtime.getRuntime().exec("\"" + Globals.LATEX_COMMAND + "\" " + automator.getTexFile());
             String dvifile = automator.getTexFile().getName();
             dvifile = dvifile.substring(0, dvifile.length() - 4) + ".dvi";
-            processes.add(Runtime.getRuntime().exec(Globals.DVI_VIEWER + " " + new File(dvifile)));
+            processes.add(Runtime.getRuntime().exec("\"" + Globals.DVI_VIEWER + "\" " + new File(dvifile)));
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "interior error",
                     "Error", JOptionPane.ERROR_MESSAGE);

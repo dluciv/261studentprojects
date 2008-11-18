@@ -110,44 +110,45 @@ public class PatternParser {
     private boolean isSymbol(char c){
         return c != '|' && c != '*' && c != '?';
     }
+/*
+    public static void main(String[] args) {
 
-//    public static void main(String[] args) {
-//
-//        PatternParser p = new PatternParser("(a|b)*(a|b)*(d|d|d)*");
-//        int c;
-//        try {
-//            NFA nfa = p.parse();
-//            Table t = new Table();
-//            NFAWorker.makeClosure(nfa);
-//            
-//            System.out.println(nfa);
-//            System.out.println("------------------");
-//            DFA dfa = DFAWorker.convertFromNFA(nfa);
-//            System.out.println(dfa);
-////            
-//            MinimizedDFAWorker mDfaW = new MinimizedDFAWorker();
-////            
-//            MinimizedDFA mDfa = mDfaW.convertFromNFAToMinimizedDFA(dfa);
-////            
-//            Minimisation m1 = new Minimisation(mDfa);
-////            
-//            MinimizedDFA minDfa = m1.minimize();
-//            
-//            
-////            nfa.fillDeterminatedTable(t);
-////            t.fillTable();
-//
-////            DotUtils d = new DotUtils(g);
-////            DotUtils d1 = new DotUtils(nfa, dfa , minDfa);
-////         
-////            try {
-//////              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
-////              System.out.println(d1.generateDotFileForNFA("DOTNFA").getAbsolutePath());
-////          } catch (IOException ex) {
-////              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-////          } catch (DotException ex) {
-////              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-////          }
+        PatternParser p = new PatternParser("(a|b)*(a|b)*(d|d|d)*");
+        int c;
+                try {
+            NFA nfa = p.parse();
+            Table t = new Table();
+            NFAWorker.makeClosure(nfa);
+            
+            System.out.println(nfa);
+            System.out.println("------------------");
+            DFA dfa = DFAWorker.convertFromNFA(nfa);
+            System.out.println(dfa);
+            
+            MinimizedDFAWorker mDfaW = new MinimizedDFAWorker();
+            
+            MinimizedDFA mDfa = mDfaW.convertFromNFAToMinimizedDFA(dfa);
+            
+            Minimisation m1 = new Minimisation(mDfa);
+            
+            MinimizedDFA minDfa = m1.minimize();
+            
+            
+            nfa.fillDeterminatedTable(t);
+            t.fillTable();
+
+//            DotUtils d = new DotUtils(g);
+            DotUtils d1 = new DotUtils(nfa, dfa , minDfa);
+         
+            try {
+            	System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+            }
+              System.out.println(d1.generateDotFileForNFA("DOTNFA").getAbsolutePath());
+           } catch (IOException ex) {
+                          Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+        	  } catch (DotException ex) {
+              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+          }
 ////            
 ////            try{
 ////                System.out.println(d1.edgeDot("DOTMIN").getAbsolutePath());
@@ -179,6 +180,6 @@ public class PatternParser {
 //        } catch (ParserException ex) {
 //            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-//     }
+//     }*/
 }
 
