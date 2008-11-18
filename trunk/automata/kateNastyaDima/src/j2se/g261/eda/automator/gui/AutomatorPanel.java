@@ -245,7 +245,6 @@ public class AutomatorPanel extends JPanel implements ActionListener {
         }
 
         if (e.getSource().equals(btnVerify)) {
-            System.out.println(automator.matchNFAGraph(tfWord.getText()));
             tablePanel.ALGORITHM_DFA.setResult(automator.matchDFAGraph(tfWord.getText()) ? Result.PASSED : Result.NOT_PASSED);
             tablePanel.ALGORITHM_NFA.setResult(automator.matchNFAGraph(tfWord.getText()) ? Result.PASSED : Result.NOT_PASSED);
             tablePanel.ALGORITHM_TABLE.setResult(automator.matchTable(tfWord.getText()) ? Result.PASSED : Result.NOT_PASSED);
@@ -358,17 +357,11 @@ public class AutomatorPanel extends JPanel implements ActionListener {
     	String dotFileName;
     	String fileName;
         try {
-        	System.out.println(automator.getDotMinGraphFile().getAbsolutePath());
         	dotFileName = automator.getDotMinGraphFile().getName();
         	fileName = dotFileName.substring(0, dotFileName.length() - 4);
         	Runtime.getRuntime().exec(Globals.DOT + " -Tgif " +
         			automator.getDotMinGraphFile().getAbsolutePath() + " -o " +
         			fileName + ".gif");
-    
-        	//System.out.println(Globals.IMG_VIEWER + " " + fileName + ".gif");
-        	//Process p = Runtime.getRuntime().exec(Globals.IMG_VIEWER + " " + fileName + ".gif");
-
-        	
             processes.push(Runtime.getRuntime().exec(Globals.IMG_VIEWER + " " + fileName + ".gif"));
         } catch (IOException ex) {
             Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);

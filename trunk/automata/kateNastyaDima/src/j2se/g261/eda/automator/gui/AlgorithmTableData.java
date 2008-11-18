@@ -17,14 +17,14 @@ public class AlgorithmTableData  extends AbstractTableModel{
 
     static final  ColumnData columns[] = {
         new ColumnData("Algorithm", 320, JLabel.LEFT),
-        new ColumnData("", 10, JLabel.LEFT)
+        new ColumnData("", 10, JLabel.CENTER)
     };
     
     protected Vector<AlgorithmResult> data = new Vector<AlgorithmResult>();
 
     public  AlgorithmResult ALGORITHM_MINIMIZATION = new AlgorithmResult("Minimization graph", Result.UNKNOWN);
-    public  AlgorithmResult ALGORITHM_TABLE = new AlgorithmResult("NFA Table", Result.PASSED);
-    public  AlgorithmResult ALGORITHM_DFA = new AlgorithmResult("DFA graph", Result.NOT_PASSED);
+    public  AlgorithmResult ALGORITHM_TABLE = new AlgorithmResult("NFA Table", Result.UNKNOWN);
+    public  AlgorithmResult ALGORITHM_DFA = new AlgorithmResult("DFA graph", Result.UNKNOWN);
     public  AlgorithmResult ALGORITHM_NFA = new AlgorithmResult("NFA graph", Result.UNKNOWN);
 
     public AlgorithmTableData() {
