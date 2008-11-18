@@ -6,6 +6,8 @@ package j2se.g261.eda.automator.visualizing.tex;
 
 import j2se.g261.eda.automator.representations.table.Table;
 import j2se.g261.eda.automator.representations.table.TableRecord;
+import j2se.g261.eda.automator.tests.TestResultItemStorage;
+import j2se.g261.eda.automator.tests.TestResultItem;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -31,11 +33,14 @@ public class TexWriter {
     private static final String TABLE_HLINE = "\\hline\n";
     private static final String TABLE_BEGIN_1 = "\\begin{longtable}{*{";
     private static final String TABLE_BEGIN_2 = "}{|c}|}";
-    
+//    private static final String TABLE_BEGIN_1_STAT = "\\begin{longtable}{*{3}{|c}|{";
+//    private static final String TABLE_BEGIN_2_STAT = "}{|c}|}";
     private static final String TABLE_END = "\\end{longtable}\n";
     private static final String TABLE_CAPTION = "\n\\caption{NFA TABLE} \\\\ " + TABLE_HLINE;
+    private static final String TABLE_CAPTION_RES = "\n\\caption{RESULTS} \\\\ " + TABLE_HLINE;
     private Table table;
     private Vector<Character> keys;
+    private static final String EXTENSION = ".tex";
 
     public TexWriter(Table table) {
         this.table = table;
@@ -80,16 +85,16 @@ public class TexWriter {
         ConcurrentSkipListSet<Table.Entry<Integer, TableRecord>> a = table.listOfRecords();
         for (Table.Entry<Integer, TableRecord> e : a) {
             res += e.getKey() + " " + getRowByTableRecord(e.getValue()) + "\n";
-            
+
         }
 
         return res;
     }
 
-    public File generateFile() {
+    public File generateFile(String filename) {
         BufferedWriter bf;
         try {
-            File f1 = File.createTempFile("NFA", ".tex");
+            File f1 = File.createTempFile(filename, EXTENSION);
 //        f1.deleteOnExit();
             bf = new BufferedWriter(new FileWriter(f1));
 
@@ -104,11 +109,11 @@ public class TexWriter {
             bf.write(TABLE_CAPTION);
             bf.write(tableCaption);
             bf.write(getTableBody());
-            
+
             bf.write(TABLE_END);
             bf.write(DOCUMENT_END);
-            
-            
+
+
             bf.close();
 
             return f1;
@@ -117,13 +122,88 @@ public class TexWriter {
         }
         return null;
     }
-    
-    private String getColumns(){
+
+    private String getColumns() {
         return String.valueOf(keys.size() + 1);
     }
-    
-    private String getCell(Vector v){
+
+    private String getCell(Vector v) {
         String s = v.toString();
         return s.substring(1, s.length() - 1);
+    }
+
+    public static File representateResultsAsTex(TestResultItemStorage dataForSerializing) {
+        BufferedWriter bf;
+        try {
+            File f2 = File.createTempFile("Result", EXTENSION);
+            bf = new BufferedWriter(new FileWriter(f2));
+
+
+            String tableCaption = getTableCaptionRes();
+            bf.write(DOCUMENT_CLASS);
+            bf.write(TABLE_ARRAY);
+            bf.write(DOCUMENT_BEGIN);
+            bf.write(TABLE_BEGIN_1);
+            bf.write(String.valueOf(getColumnsRes()));
+            bf.write(TABLE_BEGIN_2);
+            bf.write(TABLE_CAPTION_RES);
+            bf.write(tableCaption);
+            bf.write(getTableBodyRes(dataForSerializing));
+
+            bf.write(TABLE_END);
+            bf.write(DOCUMENT_END);
+
+
+            bf.close();
+
+            return f2;
+        } catch (IOException ex) {
+            Logger.getLogger(TexWriter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    private static String getTableCaptionRes() {
+        String res = "";
+        return res + " Pattern " + " & " + " String " + " & " +  "Matches" 
+                +" & " +  " Matches Table " + " & " + " Table Stat " 
+                + " & " + " Matches NFA " + " & " + " NFA Stat" 
+                + " & " + " Matches DFA " + " & " + " DFA Stat" 
+                + " & " + " Matches MinDFA " + " & " + " MinDFA Stat" 
+                + " \\\\ " + TABLE_HLINE + "\n";
+
+    }
+
+    private static Integer getColumnsRes() {
+        int res = 11;
+        return res;
+    }
+
+    private static String getTableBodyRes(TestResultItemStorage storage) {
+        String res = "";
+
+        for (int i = 0; i < storage.size(); i++) {
+            res += getRow(storage.getTestResult(i));
+        }
+
+//        for (int i = 0; i < item.getAllPatterns().size(); i++) {
+//            
+//            TestResultItem testRes = item.getTestResult(i);
+//            res += testRes.getPattern()  + " & " + testRes.getString() + " & " + testRes.getTable().isMatches() + " & " + testRes.getTable().getAverageTime() + " & " + testRes.getNFA().isMatches() + " & " + testRes.getNFA().getAverageTime() + " & " + testRes.getDFA().isMatches() + " & " + testRes.getDFA().getAverageTime() + " & " + testRes.getMinGraph().isMatches() + " & " + testRes.getMinGraph().getAverageTime()  + " \\\\ " + TABLE_HLINE + "\n";
+//        }
+
+        return res;
+    }
+
+    private static String getRow(TestResultItem item) {
+        String res = "";
+
+        res += item.getPattern() + " & " + item.getString() + " & " + item.isMatches() 
+                + "&" + item.getTable().isMatches() + " & " + item.getTable() 
+                + " & " + item.getNFA().isMatches() + " & " + item.getNFA() 
+                + " & " + item.getDFA().isMatches() + " & " + item.getDFA()
+                + " & " + item.getMinGraph().isMatches() + " & " + item.getMinGraph()
+                + " \\\\ " + TABLE_HLINE + "\n";
+        return res;
     }
 }
