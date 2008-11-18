@@ -50,4 +50,12 @@ public class Edge {
         }
         return true;
     }
+        
+        public String toString(){
+            String result = "";
+            result += "NAME: " + name;
+            result += " INC: " + incoming;
+            result += "OUT: " + outgoing;
+            return result;
+        }
 }
