@@ -24,12 +24,10 @@ public class Lexer {
     
     public char nextChar(){
         cursor++;
-//        System.out.println("inc " + cursor);
         return string.charAt(cursor);
     }
     
     public void decrementCursor(){
         cursor--;
-//        System.out.println("dec " + cursor);
     }
 }
