@@ -87,7 +87,6 @@ public class PatternParser {
 
     private NFA sequence() throws ParserException {
         NFA res = post_option();
-//        System.out.println("post option \n" + res);
         
         if(lexer.isEndOfLine()) return res;
         char nextChar = lexer.nextChar();
@@ -98,7 +97,6 @@ public class PatternParser {
                 return res;
             }
             NFA nw = post_option();
-//            System.out.println("new \n" + nw);
             res = NFAWorker.concatanateAND(res, nw);
             if(lexer.isEndOfLine()) return res;
             nextChar = lexer.nextChar();
@@ -113,69 +111,74 @@ public class PatternParser {
         return c != '|' && c != '*' && c != '?';
     }
 
-    public static void main(String[] args) {
-
-        PatternParser p = new PatternParser("(1000|1010)(0|1)*");
-        int c;
-        try {
-            NFA nfa = p.parse();
-            Table t = new Table();
-            NFAWorker.makeClosure(nfa);
-            
-            DFAWorker dfaW = new DFAWorker();
-            
-            DFA dfa = dfaW.convertFromNFA(nfa);
-            
-            MinimizedDFAWorker mDfaW = new MinimizedDFAWorker();
-            
-            MinimizedDFA mDfa = mDfaW.convertFromNFAToMinimizedDFA(dfa);
-            
-            Minimisation m1 = new Minimisation(mDfa);
-            
-            MinimizedDFA minDfa = m1.minimize();
-            
-            
-            nfa.fillDeterminatedTable(t);
-            t.fillTable();
-
-//            DotUtils d = new DotUtils(g);
-            DotUtils d1 = new DotUtils(nfa, dfa , minDfa);
-         
-            try {
-//              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
-              System.out.println(d1.generateDotFileForNFA("DOTNFA").getAbsolutePath());
-          } catch (IOException ex) {
-              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (DotException ex) {
-              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-          }
-            
-            try{
-            	System.out.println(d1.edgeDot("DOTMIN").getAbsolutePath());
-            } catch (IOException ex){
-            	Logger.getLogger(Minimisation.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            try {
-//              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
-              System.out.println(d1.generateDotFileForDFA("DOTDFA").getAbsolutePath());
-          } catch (IOException ex) {
-              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (DotException ex) {
-              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
-          }
-
-
-              NFAWalker walker = new NFAWalker(nfa);
-          //  System.out.println(walker.check("a"));
-           //TableWalker walk = new TableWalker(g,t);
-           // System.out.println(walk.check(""));
-
-
-        } catch (NFAWalkerException ex) {
-            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParserException ex) {
-            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-     }
+//    public static void main(String[] args) {
+//
+//        PatternParser p = new PatternParser("(a|b)*(a|b)*(d|d|d)*");
+//        int c;
+//        try {
+//            NFA nfa = p.parse();
+//            Table t = new Table();
+//            NFAWorker.makeClosure(nfa);
+//            
+//            System.out.println(nfa);
+//            System.out.println("------------------");
+//            DFA dfa = DFAWorker.convertFromNFA(nfa);
+//            System.out.println(dfa);
+////            
+//            MinimizedDFAWorker mDfaW = new MinimizedDFAWorker();
+////            
+//            MinimizedDFA mDfa = mDfaW.convertFromNFAToMinimizedDFA(dfa);
+////            
+//            Minimisation m1 = new Minimisation(mDfa);
+////            
+//            MinimizedDFA minDfa = m1.minimize();
+//            
+//            
+////            nfa.fillDeterminatedTable(t);
+////            t.fillTable();
+//
+////            DotUtils d = new DotUtils(g);
+////            DotUtils d1 = new DotUtils(nfa, dfa , minDfa);
+////         
+////            try {
+//////              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+////              System.out.println(d1.generateDotFileForNFA("DOTNFA").getAbsolutePath());
+////          } catch (IOException ex) {
+////              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+////          } catch (DotException ex) {
+////              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+////          }
+////            
+////            try{
+////                System.out.println(d1.edgeDot("DOTMIN").getAbsolutePath());
+////            } catch (IOException ex){
+////                Logger.getLogger(Minimisation.class.getName()).log(Level.SEVERE, null, ex);
+////            }
+////
+////            try {
+//////              System.out.println(d.generateDotFileForNFA("DOTFILE").getAbsolutePath());
+////              System.out.println(d1.generateDotFileForDFA("DOTDFA").getAbsolutePath());
+////          } catch (IOException ex) {
+////              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+////          } catch (DotException ex) {
+////              Logger.getLogger(DotUtils.class.getName()).log(Level.SEVERE, null, ex);
+////          }
+////            
+////            EdgeGraphWalker egw = new EdgeGraphWalker(mDfa);
+////            System.out.println(egw.check("ababddd"));
+////
+////
+////              NFAWalker walker = new NFAWalker(nfa);
+//          //  System.out.println(walker.check("a"));
+//           //TableWalker walk = new TableWalker(g,t);
+//           // System.out.println(walk.check(""));
+//
+//
+////        } catch (NFAWalkerException ex) {
+////            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ParserException ex) {
+//            Logger.getLogger(PatternParser.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//     }
 }
+
