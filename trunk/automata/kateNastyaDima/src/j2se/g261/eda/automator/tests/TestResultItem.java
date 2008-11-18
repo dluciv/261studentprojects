@@ -48,7 +48,7 @@ public class TestResultItem implements Serializable{
     }
 
     public String getPattern() {
-        return pattern;
+        return pattern + (cicle == 1 ? "" : "(" + cicle + ")");
     }
 
     public String getString() {
@@ -79,35 +79,5 @@ public class TestResultItem implements Serializable{
         this.table = table;
     }
 
-    public class Result{
-        boolean matches;
-        long averageTime;
-        long minTime;
-        long maxTime;
-
-        public Result(boolean matches, long averageTime, long minTime, long maxTime) {
-            this.matches = matches;
-            this.averageTime = averageTime;
-            this.minTime = minTime;
-            this.maxTime = maxTime;
-        }
-
-        public long getAverageTime() {
-            return averageTime;
-        }
-
-        public boolean isMatches() {
-            return matches;
-        }
-
-        public long getMaxTime() {
-            return maxTime;
-        }
-
-        public long getMinTime() {
-            return minTime;
-        }
-        
-        
-    }
+    
 }
