@@ -28,7 +28,6 @@ public class TableWalker {
                 break;
             }
         }
-//        startNumber = graph.getNodeIndex(NFANode.startNode());
     }
     
    public boolean check(String s){

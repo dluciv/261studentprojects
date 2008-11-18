@@ -76,7 +76,7 @@ public class Table {
     
     
     public ConcurrentSkipListSet<Entry<Integer, TableRecord>> listOfRecords(){
-        ConcurrentSkipListSet set = new ConcurrentSkipListSet();
+        ConcurrentSkipListSet<Entry<Integer, TableRecord>> set = new ConcurrentSkipListSet<Entry<Integer, TableRecord>>();
         Iterator<java.util.Map.Entry<Integer, TableRecord>> i = storage.entrySet().iterator();
         while(i.hasNext()){
             java.util.Map.Entry<Integer, TableRecord> e = i.next();
