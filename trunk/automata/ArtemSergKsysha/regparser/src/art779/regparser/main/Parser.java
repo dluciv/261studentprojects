@@ -1,5 +1,4 @@
 package art779.regparser.main;
-import ru.sscc.util.*;
 
 /**
  * Class is a parser. getNFA() returns NFA by regular expression  
@@ -16,12 +15,16 @@ public class Parser {
 		reg = new Lexer(regstr);
 	}
 	
-	public NFABuilder getNFA() {
+	public NDFABuilder getNFA() {
 		return pReg();
 	}
 	
-	private NFABuilder pReg() {
-		NFABuilder NFA = pExpr();
+	public Lexer getLexer() {
+		return reg;
+	}
+	
+	private NDFABuilder pReg() {
+		NDFABuilder NFA = pExpr();
 		while(	LexemKind.EOL != reg.getCurrent().type 
 			 && LexemKind.BRACKETCLOSE != reg.getCurrent().type 
 			 && LexemKind.UNDEFINED != reg.getCurrent().type )
@@ -29,7 +32,7 @@ public class Parser {
 			if(reg.getCurrent().type == LexemKind.VERTICALBAR)
 			{
 				reg.next();
-				NFABuilder tNFA = pExpr();
+				NDFABuilder tNFA = pExpr();
 				if(!tNFA.graph.isEmpty())
 					NFA.mergeParallel(tNFA);
 			}
@@ -40,22 +43,22 @@ public class Parser {
 			else 
 			{
 				reg.next();
-				NFABuilder tNFA = pExpr();
+				NDFABuilder tNFA = pExpr();
 				NFA.mergeSequence(tNFA);
 			}
 		}
 		return NFA;
 	}
 		
-	private NFABuilder pExpr() {
-		NFABuilder NFA = pTerm();
+	private NDFABuilder pExpr() {
+		NDFABuilder NFA = pTerm();
 		while(	 LexemKind.EOL  != reg.getCurrent().type 
 			  && LexemKind.VERTICALBAR != reg.getCurrent().type 
 			  && LexemKind.UNDEFINED != reg.getCurrent().type )
 		{
 			if(!NFA.graph.isEmpty())
 			{
-				NFABuilder tNFA = pTerm();
+				NDFABuilder tNFA = pTerm();
 				if(!tNFA.graph.isEmpty())
 					NFA.mergeSequence(tNFA);
 				else return NFA;
@@ -64,13 +67,13 @@ public class Parser {
 		return NFA;
 	}
 
-	private NFABuilder pTerm() {
-		NFABuilder NFA = pFactor();
+	private NDFABuilder pTerm() {
+		NDFABuilder NFA = pFactor();
 		if(!NFA.graph.isEmpty())
 		{
 			if(reg.getNext().type == LexemKind.NODE)
 			{
-				NFABuilder tNFA = pFactor();
+				NDFABuilder tNFA = pFactor();
 				if(!tNFA.graph.isEmpty())
 					NFA.mergeSequence(tNFA);
 			}
@@ -93,8 +96,8 @@ public class Parser {
 		}
 		return NFA;
 	}
-	private NFABuilder pFactor() {
-		NFABuilder NFA = new NFABuilder();
+	private NDFABuilder pFactor() {
+		NDFABuilder NFA = new NDFABuilder();
 		if(reg.getCurrent().type == LexemKind.NODE)
 		{
 			NFA.bNode(reg);

@@ -2,10 +2,10 @@ package art779.regparser.main;
 import java.util.List;
 
 public class Checker{
-	private static INFA NFA;
-	public Checker(INFA TNFA)
+	private static NDFABuilder NFA;
+	public Checker(NDFABuilder TNFA)
 	{
-		NFA = TNFA;
+		NFA = new NDFABuilder();
 	}
 
 	private boolean checkNextSymbol(int currentState, String wordRest){
@@ -17,7 +17,7 @@ public class Checker{
 			return false;
 		else{
 			for (int i = 0; i < nStates.size(); i++) {
-				char chB = NFA.getCurChar(nStates.get(i));
+				char chB = NFA.getChar(nStates.get(i));
 				if(chB == chA)
 				{
 					if (wordRest.length() == 1){
@@ -39,8 +39,10 @@ public class Checker{
 	
 	
 	public boolean checkWord (String word){
-		if(""==word)
+
+		if(0==word.length())
 		{
+			/*
 			List<Integer> nStates = NFA.getNextState(NFA.getStartState());
 			boolean correct = false;
 			for (int j = 0; j < nStates.size(); j++) {
@@ -48,6 +50,8 @@ public class Checker{
 					correct = true;
 			}
 			return correct;
+			*/
+			return false;
 		}
 		else
 			return checkNextSymbol(NFA.getStartState(), word);

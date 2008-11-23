@@ -21,7 +21,7 @@ public class WithGUI extends JFrame {
 	/**
 	 * 
 	 */
-	private Basic tool;
+	private Helper tool;
 	//private NFABuilder NFA;
 	//private NFAVisualizer visualizer;
 	//private Checker checker;
@@ -43,7 +43,7 @@ public class WithGUI extends JFrame {
 	
 	private JTextField input = new JTextField("ab|bc", 15);
 	private JTextField input2 = new JTextField("abc", 15);
-	private JTextField input3 = new JTextField("6000", 15);
+	private JTextField input3 = new JTextField("90010", 15);
 	private TextArea textarea = new TextArea("", 29, 19, TextArea.SCROLLBARS_VERTICAL_ONLY);
 	
 	
@@ -117,13 +117,13 @@ public class WithGUI extends JFrame {
 	class Button2EventListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			
-
-			tool = new Basic();
-			NFABuilder NFA =  tool.buildNFA(input.getText());
-			//textarea.setText(tool.printRegular(NFA));
-
+			tool = new Helper();
+			
+			NDFABuilder NFA;
 			if(radio5.isSelected())
-				NFA.determinateNFA();
+				NFA =  tool.buildNFA(input.getText());
+			else
+				NFA =  tool.buildDFA(input.getText());
 			
 			if(radio1.isSelected())
 				textarea.setText(tool.printRegular(NFA));
@@ -137,8 +137,8 @@ public class WithGUI extends JFrame {
 	class Button3EventListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			
-			tool = new Basic();
-			NFABuilder NFA;
+			tool = new Helper();
+			NDFABuilder NFA;
 			
 			if(radio5.isSelected())
 				NFA = tool.buildNFA(input.getText());
@@ -157,8 +157,8 @@ public class WithGUI extends JFrame {
 	class Button4EventListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			
-			tool = new Basic();
-			NFABuilder NFA;
+			tool = new Helper();
+			NDFABuilder NFA;
 			
 			if(radio5.isSelected())
 				NFA = tool.buildNFA(input.getText());
@@ -186,12 +186,15 @@ public class WithGUI extends JFrame {
 					String timeSpentSec = tool.getTimeSec();
 					
 					label7.setText("time is " + timeSpentSec + " sec.");
-					//!! почему выдает ошибку ??
+
 					double speed = runsCount * input.getText().length() / timeSpent ;
+
 					
 					label8.setText("speed is " + speed + " sym/ms");
 					
-					label9.setText(speed*1000/1024 + " kb/s");
+					int mbpsint = (int) (speed*100000/1024/1024);
+					float mbps = mbpsint/100;
+					label9.setText( mbps + " mb/s");
 				}
 			}
 			catch(NumberFormatException e1)
