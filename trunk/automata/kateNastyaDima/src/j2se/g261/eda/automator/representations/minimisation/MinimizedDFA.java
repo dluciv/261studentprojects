@@ -21,29 +21,28 @@ public class MinimizedDFA {
 
     public void add(Edge n) {
         all.add(n);
-        addToAllEdges(n.getIncoming(), n);
+        addToAllEdges(n);
     }
     
-    private void addToAllEdges(int c, Edge i) {
-        if (allEdges.containsKey(c)) {
-            Vector<Edge> v = allEdges.get(c);
-            if (!v.contains(i)) {
-                v.add(i);
-            }
+    private void addToAllEdges(Edge i) {
+        if (allEdges.containsKey(i.getIncoming())) {
+            if (!allEdges.get(i.getIncoming()).contains(i)) {
+        	allEdges.get(i.getIncoming()).add(i);
+        	}
+            
         } else {
             Vector<Edge> v = new Vector<Edge>();
             v.add(i);
-            allEdges.put(c, v);
+            allEdges.put(i.getIncoming(), v);
         }
     }
     
-    private void removeFromAllEdges(int c, char i) {
-        if (allEdges.containsKey(c)) {
-            Vector<Edge> v = allEdges.get(c);
-            if (v.contains(i)) {
-                v.remove(i);
-            }
+    
+    private void removeFromAllEdges(Edge e) {
+        if (allEdges.containsKey(e.getIncoming())) {
+        	allEdges.get(e.getIncoming()).remove(e);
         } 
+        else{;}
     }
     
     public int sizeAll() {
@@ -69,8 +68,8 @@ public class MinimizedDFA {
     
     public void remove(Edge e){
     	all.remove(e);
-    	removeFromAllEdges(e.getIncoming(),e.getName());
-    	
+    	//removeFromAllEdges(e.getIncoming(),e.getName());
+    	removeFromAllEdges(e);
     }
     
     public boolean contains(Edge e){
@@ -80,7 +79,13 @@ public class MinimizedDFA {
     public Vector<Edge> findOutgoingEdge(int state) {
         Vector<Edge> list = new Vector<Edge>();
         list = allEdges.get(state);
-        
+        /*for (Edge e : all) {
+
+            if (e.getIncoming() == state) {
+                list.add(e);
+            }
+
+        }*/
         return list;
     }
 }

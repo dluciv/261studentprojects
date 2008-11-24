@@ -151,14 +151,22 @@ public class Minimisation {
 
         for (Couple c : different) {
             Vector<Edge> listFirst = new Vector<Edge>();
-            Vector<Edge> listSecond = new Vector<Edge>();
+            Vector<Edge> listSecond2 = new Vector<Edge>();
+          
+            
             listFirst = edgeGraph.findIncomingEdge(c.getSecond());
-            listSecond = edgeGraph.findOutgoingEdge(c.getSecond());
-
+            listSecond2 = edgeGraph.findOutgoingEdge(c.getSecond());
+            
+            Vector<Edge> listSecond = new Vector<Edge>();
+            
+            for(Edge e: listSecond2){
+            listSecond.add(e);
+            }
+              
             for (Edge i : listFirst) {
                 edgeGraph.remove(i);
             }
-
+            
             for (Edge i : listFirst) {
                 Edge e = new Edge(i.getName(), i.getIncoming(), c.getFirst());
                 if (i.getIncoming() == c.getSecond()) {
@@ -168,11 +176,12 @@ public class Minimisation {
                     edgeGraph.add(e);
                 }
             }
-
-            for (Edge j : listSecond) {
-                edgeGraph.remove(j);
+          
+            
+            for (Edge j: listSecond) {    	       	
+                edgeGraph.remove(j);               
             }
-
+               	
             for (Edge j : listSecond) {
                 Edge e = new Edge(j.getName(), c.getFirst(), j.getOutgoing());
                 if (j.getOutgoing() == c.getSecond()) {
@@ -183,7 +192,7 @@ public class Minimisation {
                 }
             }
         }
-
+        
         Vector<Edge> list = edgeGraph.findIncomingEdge(storage.size() + 1);
 
         for (Edge h : list) {
