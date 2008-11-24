@@ -71,4 +71,8 @@ public class Lexer extends Lexem{
 	public int getPointer() {
 		return pointer;
 	}
+	
+	public void incPointer() {
+			pointer++;
+	}
 }
