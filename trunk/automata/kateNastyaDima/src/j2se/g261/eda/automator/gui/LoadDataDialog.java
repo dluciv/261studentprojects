@@ -75,13 +75,10 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
         rbLoadTests.addActionListener(this);
         rbLoadTests.setSelected(true);
         spMeasure.setValue(1);
-        spCicle.setValue(1);
         tfMaxLength.setText(String.valueOf(DEFAULT_MAX_LENGTH));
         ftfNumberOfTests.setText(String.valueOf(DEFAULT_NUMBER));
         ((SpinnerNumberModel) spMeasure.getModel()).setMinimum(MINIMUM_NUMBER_OF_MEASURES);
         ((SpinnerNumberModel) spMeasure.getModel()).setMaximum(MAX_NUMBER_OF_MEASURES);
-        ((SpinnerNumberModel) spCicle.getModel()).setMinimum(MINIMUM_NUMBER_OF_CICLES);
-        ((SpinnerNumberModel) spCicle.getModel()).setMaximum(MAX_NUMBER_OF_CICLES);
 
     }
 
@@ -89,9 +86,6 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
         return toTest;
     }
 
-    public int getNumberOfCicles() {
-        return Integer.parseInt(String.valueOf(spCicle.getValue()));
-    }
 
     public int getNumberOfMeasures() {
         return Integer.parseInt(String.valueOf(spMeasure.getValue()));
@@ -268,8 +262,6 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
         jLabel2 = new javax.swing.JLabel();
         tfMaxLength = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        spCicle = new javax.swing.JSpinner();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         spMeasure = new javax.swing.JSpinner();
         btnOk = new javax.swing.JButton();
@@ -397,8 +389,6 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Additional parameters", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jLabel3.setText("Cicle");
-
         jLabel4.setText("Number of measurements");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -406,26 +396,20 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addGap(39, 39, 39)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(spMeasure)
-                    .addComponent(spCicle, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addGap(37, 37, 37)
+                .addComponent(spMeasure, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(187, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(spCicle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(spMeasure, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)))
+                    .addComponent(jLabel4)
+                    .addComponent(spMeasure, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         btnOk.setText("Ok");
@@ -436,12 +420,12 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnCancel)
@@ -455,11 +439,11 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOk))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         pack();
@@ -494,7 +478,6 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
     private javax.swing.JFormattedTextField ftfNumberOfTests;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -503,7 +486,6 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
     private javax.swing.JRadioButton rbGenerateRandom;
     private javax.swing.JRadioButton rbLoadResults;
     private javax.swing.JRadioButton rbLoadTests;
-    private javax.swing.JSpinner spCicle;
     private javax.swing.JSpinner spMeasure;
     private javax.swing.JTextField tfLoadResults;
     private javax.swing.JTextField tfLoadTests;

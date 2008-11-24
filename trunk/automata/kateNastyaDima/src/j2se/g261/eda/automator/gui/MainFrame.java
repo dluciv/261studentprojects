@@ -32,6 +32,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private PropertiesDialog propDialog;
 
     public MainFrame() {
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 //        this.setResizable(false);
         propDialog = new PropertiesDialog(MainFrame.this);
         propDialog.loadProperties();
