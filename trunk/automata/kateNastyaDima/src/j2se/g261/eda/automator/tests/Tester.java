@@ -10,7 +10,6 @@ import j2se.g261.eda.automator.parser.ParserException;
 import j2se.g261.eda.automator.representations.nfa.NFAWalkerException;
 import j2se.g261.eda.automator.visualizing.dot.DotException;
 import java.io.IOException;
-import java.util.Calendar;
 
 /**
  *
@@ -28,7 +27,6 @@ public class Tester {
     protected int allSizeFiles = 0;
     protected int processedFiles = 0;
     private int numberOfMesures = 1000;
-    private int cicle = 1;
 
     public Tester(TestItemStorage[] tests) {
         testStorage = TestItemStorage.concatanate(tests);
@@ -36,9 +34,6 @@ public class Tester {
         allSizeFiles = testStorage.size();
     }
 
-    public void setCicle(int cicle) {
-        this.cicle = cicle;
-    }
 
     public int getNumberOfMesures() {
         return numberOfMesures;
@@ -70,13 +65,11 @@ public class Tester {
 
     protected TestResultItem test(String word, boolean expectedResult, Automator a, String pattern) {
         TestResultItem result = new TestResultItem(pattern, word, expectedResult);
-        result.setCicle(cicle);
         testNFA(result, a, word, expectedResult);
 
         testDFA(result, a, word, expectedResult);
         testMinGraph(result, a, word, expectedResult);
         testTable(result, a, word, expectedResult);
-        result.setCicle(1);
         return result;
     }
 
@@ -90,9 +83,9 @@ public class Tester {
         boolean res = false;
         long all = 0;
         for (int i = 0; i < numberOfMesures; i++) {
-            long startNFA = Calendar.getInstance().getTimeInMillis();
+            long startNFA = System.nanoTime();
             res = a.matchNFAGraph(word);
-            long endNFA = Calendar.getInstance().getTimeInMillis();
+            long endNFA = System.nanoTime();
             long cur = endNFA - startNFA;
             if (i == 0) {
                 min = cur;
@@ -125,9 +118,9 @@ public class Tester {
         boolean res = false;
         long all = 0;
         for (int i = 0; i < numberOfMesures; i++) {
-            long startNFA = Calendar.getInstance().getTimeInMillis();
+            long startNFA = System.nanoTime();
             res = a.matchDFAGraph(word);
-            long endNFA = Calendar.getInstance().getTimeInMillis();
+            long endNFA = System.nanoTime();
             long cur = endNFA - startNFA;
             if (i == 0) {
                 min = cur;
@@ -155,9 +148,9 @@ public class Tester {
         boolean res = false;
         long all = 0;
         for (int i = 0; i < numberOfMesures; i++) {
-            long startNFA = Calendar.getInstance().getTimeInMillis();
+            long startNFA = System.nanoTime();
             res = a.matchMinGraph(word);
-            long endNFA = Calendar.getInstance().getTimeInMillis();
+            long endNFA = System.nanoTime();
             long cur = endNFA - startNFA;
             if (i == 0) {
                 min = cur;
@@ -184,9 +177,9 @@ public class Tester {
         boolean res = false;
         long all = 0;
         for (int i = 0; i < numberOfMesures; i++) {
-            long startNFA = Calendar.getInstance().getTimeInMillis();
+            long startNFA = System.nanoTime();
             res = a.matchTable(word);
-            long endNFA = Calendar.getInstance().getTimeInMillis();
+            long endNFA = System.nanoTime();
             long cur = endNFA - startNFA;
             if (i == 0) {
                 min = cur;

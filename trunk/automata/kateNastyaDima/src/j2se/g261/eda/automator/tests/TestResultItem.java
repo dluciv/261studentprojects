@@ -19,7 +19,6 @@ public class TestResultItem implements Serializable{
     Result NFA;
     Result DFA;
     Result minGraph;
-    int cicle = 1;
 
     public TestResultItem(String pattern, String string, boolean matches) {
         this.pattern = pattern;
@@ -35,9 +34,6 @@ public class TestResultItem implements Serializable{
         return NFA;
     }
 
-    public int getCicle() {
-        return cicle;
-    }
 
     public boolean isMatches() {
         return matches;
@@ -48,7 +44,7 @@ public class TestResultItem implements Serializable{
     }
 
     public String getPattern() {
-        return pattern + (cicle == 1 ? "" : "(" + cicle + ")");
+        return pattern;
     }
 
     public String getString() {
@@ -67,9 +63,6 @@ public class TestResultItem implements Serializable{
         this.NFA = NFA;
     }
 
-    public void setCicle(int cicle) {
-        this.cicle = cicle;
-    }
 
     public void setMinGraph(Result minGraph) {
         this.minGraph = minGraph;
