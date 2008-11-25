@@ -6,31 +6,30 @@ package j2se.g261.eda.automator.representations.minimisation;
  *
  */
 public class Edge {
-	
-	private char name;
-	private int incoming;
-	private int outgoing; 
-	
-	public Edge (char name, int incoming, int outgoing){
-		this.outgoing = outgoing;
-		this.incoming = incoming;
-		this.name = name;
-	}
-	
-	public int getIncoming(){
-		return this.incoming;
-	}
-	
-	public int getOutgoing(){
-		return this.outgoing;
-	}
-	
-	public char getName(){
-		return this.name;
-	}
-	
-	
-	@Override
+
+    private char name;
+    private int incoming;
+    private int outgoing;
+
+    public Edge(char name, int incoming, int outgoing) {
+        this.outgoing = outgoing;
+        this.incoming = incoming;
+        this.name = name;
+    }
+
+    public int getIncoming() {
+        return this.incoming;
+    }
+
+    public int getOutgoing() {
+        return this.outgoing;
+    }
+
+    public char getName() {
+        return this.name;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -50,12 +49,12 @@ public class Edge {
         }
         return true;
     }
-        
-        public String toString(){
-            String result = "";
-            result += "NAME: " + name;
-            result += " INC: " + incoming;
-            result += "OUT: " + outgoing;
-            return result;
-        }
+
+    public String toString() {
+        String result = "";
+        result += "NAME: " + name;
+        result += " INC: " + incoming;
+        result += "OUT: " + outgoing;
+        return result;
+    }
 }

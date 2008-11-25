@@ -189,18 +189,21 @@ public class NFAWorker {
         TableRecord t = new TableRecord();
 
         if (NFANode.isEndNode(n)) {
-            return;
-        }
-        int a = n.getOutgoingSize();
-        for (int i = 0; i < a; i++) {
-            NFANode n1 = (NFANode) n.getOutgoingAt(i);
-            char c = n1.getName();
-            if (c == NFANode.START) {
-                c = TableRecord.SYMBOL_START;
-            } else if (c == NFANode.END) {
-                c = TableRecord.SYMBOL_END;
+            char c = TableRecord.SYMBOL_END;
+            t.add(c, g.getNodeIndex(n));
+        } else {
+            int a = n.getOutgoingSize();
+            for (int i = 0; i < a; i++) {
+                NFANode n1 = (NFANode) n.getOutgoingAt(i);
+
+                char c = n1.getName();
+                if (c == NFANode.START) {
+                    c = TableRecord.SYMBOL_START;
+                } else if (c == NFANode.END) {
+                    c = TableRecord.SYMBOL_END;
+                }
+                t.add(c, g.getNodeIndex(n1));
             }
-            t.add(c, g.getNodeIndex(n1));
         }
         table.add(g.getNodeIndex(n), t);
     }

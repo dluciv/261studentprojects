@@ -10,10 +10,7 @@
 package j2se.g261.eda.automator.representations.nfa;
 
 import j2se.g261.eda.automator.representations.*;
-import j2se.g261.eda.automator.representations.table.Table;
-import j2se.g261.eda.automator.representations.table.TableRecord;
 import java.util.Vector;
-import javax.naming.CompoundName;
 
 /**
  *Represents graph with start and end nodes. Created for presentation of 
@@ -29,7 +26,6 @@ import javax.naming.CompoundName;
  */
 public class NFA extends FiniteAutomata<NFANode> implements Cloneable {
 
-
     /**
      * Constructor with one node which will be only node in graph.
      * 
@@ -40,21 +36,21 @@ public class NFA extends FiniteAutomata<NFANode> implements Cloneable {
     public NFA(NFANode root) {
         super(root);
     }
-    
-    private NFA(Vector<NFANode> allNFANodes, Vector<NFANode> startNFANodes, Vector<NFANode> endNFANodes){
+
+    private NFA(Vector<NFANode> allNFANodes, Vector<NFANode> startNFANodes, Vector<NFANode> endNFANodes) {
 
         for (NFANode node : allNFANodes) {
             all.add(node.cloneWithoutConnections());
         }
-        
+
         for (NFANode node : startNFANodes) {
             starts.add(all.get(all.indexOf(node)));
         }
-        
+
         for (NFANode node : endNFANodes) {
             ends.add(all.get(all.indexOf(node)));
         }
-        
+
         for (NFANode node : allNFANodes) {
             NFANode newNFANode = all.get(all.indexOf(node));
             for (int i = 0; i < node.getIncomingSize(); i++) {
@@ -64,7 +60,7 @@ public class NFA extends FiniteAutomata<NFANode> implements Cloneable {
                 newNFANode.addOutgoingNode(all.get(all.indexOf(node.getOutgoingAt(i))));
             }
         }
-        
+
     }
 
     /**
@@ -103,9 +99,9 @@ public class NFA extends FiniteAutomata<NFANode> implements Cloneable {
         }
     }
 
-    public NFANode getNodeById(int index){
+    public NFANode getNodeById(int index) {
         for (NFANode nFANode : all) {
-            if(nFANode.getNumber() == index){
+            if (nFANode.getNumber() == index) {
                 return nFANode;
             }
         }
@@ -141,15 +137,12 @@ public class NFA extends FiniteAutomata<NFANode> implements Cloneable {
         return -1;
     }
 
-
-    public static NFA emptyGraph(){
+    public static NFA emptyGraph() {
         return new NFA(NFANode.epsilonNode());
     }
 
- 
     @Override
     public NFA clone() {
         return new NFA(all, starts, ends);
     }
- 
 }

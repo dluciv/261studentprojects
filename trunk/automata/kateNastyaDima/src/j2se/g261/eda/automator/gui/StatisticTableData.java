@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package j2se.g261.eda.automator.gui;
 
 import j2se.g261.eda.automator.tests.ItemFilter;
@@ -16,12 +15,12 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author nastya
  */
-public class StatisticTableData extends  AbstractTableModel{
-    
-    static final  ColumnData columns[] = {
-//        new ColumnData("Pattern", 100, JLabel.LEFT),
-//        new ColumnData("String", 150, JLabel.LEFT),
-//        new ColumnData("", 25, JLabel.LEFT),
+public class StatisticTableData extends AbstractTableModel {
+
+    static final ColumnData columns[] = {
+        //        new ColumnData("Pattern", 100, JLabel.LEFT),
+        //        new ColumnData("String", 150, JLabel.LEFT),
+        //        new ColumnData("", 25, JLabel.LEFT),
         new ColumnData("Table", 50, JLabel.CENTER),
         new ColumnData("Table stat", 200, JLabel.LEFT),
         new ColumnData("DFA", 30, JLabel.CENTER),
@@ -31,10 +30,9 @@ public class StatisticTableData extends  AbstractTableModel{
         new ColumnData("MinDFA", 60, JLabel.CENTER),
         new ColumnData("MinDFA stat", 200, JLabel.LEFT),
     };
-    
     private TestResultItemStorage data;
-    
-    public StatisticTableData(){
+
+    public StatisticTableData() {
         data = new TestResultItemStorage();
     }
 
@@ -42,7 +40,7 @@ public class StatisticTableData extends  AbstractTableModel{
         this.data = data;
     }
 
-   public int getRowCount() {
+    public int getRowCount() {
         return data.size();
     }
 
@@ -55,16 +53,14 @@ public class StatisticTableData extends  AbstractTableModel{
         return columns[columnIndex].title;
     }
 
-
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-//        System.out.println("row index: " + rowIndex);
         TestResultItem item = data.getTestResult(rowIndex);
-        switch(columnIndex){
+        switch (columnIndex) {
             case 0:
                 return item.getTable().isMatches();
             case 1:
@@ -92,9 +88,4 @@ public class StatisticTableData extends  AbstractTableModel{
     void setFilter(ItemFilter filter) {
         data.setFilter(filter);
     }
-
-    
-
- 
-
 }

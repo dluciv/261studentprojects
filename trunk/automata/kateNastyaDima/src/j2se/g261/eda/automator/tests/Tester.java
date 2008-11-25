@@ -34,7 +34,6 @@ public class Tester {
         allSizeFiles = testStorage.size();
     }
 
-
     public int getNumberOfMesures() {
         return numberOfMesures;
     }
@@ -47,8 +46,6 @@ public class Tester {
             NoConditionsException, DotException, IOException {
         String lastPattern = "";
         Automator a = new Automator(lastPattern);
-        System.out.println("!!!!!!!!!!");
-        System.out.println(testStorage.size());
         for (int i = 0; i < testStorage.size(); i++) {
             if (!testStorage.getPattern(i).equals(lastPattern)) {
                 lastPattern = testStorage.getPattern(i);
@@ -59,7 +56,6 @@ public class Tester {
                     testStorage.isMatches(i).equals(TestItemStorage.MATCHES), a, lastPattern);
             processedFiles++;
             results.addTestResult(tri);
-            System.out.println(i);
         }
     }
 
@@ -100,12 +96,7 @@ public class Tester {
             }
             all += cur;
         }
-        System.out.println("min: " + min);
-        System.out.println("max: " + max);
-        System.out.println("all: " + all);
-        System.out.println("num: " + numberOfMesures);
-        System.out.println("avg: " + (long)(all / numberOfMesures));
-        testResultItem.setNFA(new Result(res, (long)(all / numberOfMesures), min, max));
+        testResultItem.setNFA(new Result(res, (long) (all / numberOfMesures), min, max));
     }
 
     private void testDFA(TestResultItem testResultItem, Automator a, String word, boolean exp) {

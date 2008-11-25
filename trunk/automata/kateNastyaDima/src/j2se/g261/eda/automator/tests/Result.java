@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author nastya
  */
-public class Result implements  Serializable{
+public class Result implements Serializable {
 
     boolean matches;
     long averageTime;

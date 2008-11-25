@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package j2se.g261.eda.automator.tests;
 
 import java.io.File;
@@ -11,7 +10,8 @@ import java.io.File;
  *
  * @author nastya
  */
-public class TestFile<ST> implements Comparable<TestFile>{
+public class TestFile<ST> implements Comparable<TestFile> {
+
     File file;
     ST storage;
 
@@ -39,6 +39,4 @@ public class TestFile<ST> implements Comparable<TestFile>{
     public int compareTo(TestFile o) {
         return file.compareTo(o.getFile());
     }
-    
-    
 }

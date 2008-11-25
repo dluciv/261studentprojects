@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package j2se.g261.eda.automator.tests;
 
 import java.io.Serializable;
@@ -11,7 +10,8 @@ import java.io.Serializable;
  *
  * @author nastya
  */
-public class TestResultItem implements Serializable{
+public class TestResultItem implements Serializable {
+
     String pattern;
     String string;
     boolean matches;
@@ -33,7 +33,6 @@ public class TestResultItem implements Serializable{
     public Result getNFA() {
         return NFA;
     }
-
 
     public boolean isMatches() {
         return matches;
@@ -63,7 +62,6 @@ public class TestResultItem implements Serializable{
         this.NFA = NFA;
     }
 
-
     public void setMinGraph(Result minGraph) {
         this.minGraph = minGraph;
     }
@@ -71,6 +69,4 @@ public class TestResultItem implements Serializable{
     public void setTable(Result table) {
         this.table = table;
     }
-
-    
 }

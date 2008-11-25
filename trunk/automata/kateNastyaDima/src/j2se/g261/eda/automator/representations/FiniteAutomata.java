@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package j2se.g261.eda.automator.representations;
 
 import j2se.g261.eda.automator.representations.nfa.NFANode;
@@ -13,18 +12,19 @@ import java.util.Vector;
  * @author nastya
  */
 public class FiniteAutomata<NodeType extends Node> {
+
     /**
      * Storage for start nodes
      */
-    protected  Vector<NodeType> starts;
+    protected Vector<NodeType> starts;
     /**
      * Storage for end nodes
      */
-    protected  Vector<NodeType> ends;
+    protected Vector<NodeType> ends;
     /**
      * Storage for all nodes
      */
-    protected  Vector<NodeType> all;
+    protected Vector<NodeType> all;
 
     public FiniteAutomata(NodeType root) {
         starts = new Vector<NodeType>();
@@ -40,7 +40,6 @@ public class FiniteAutomata<NodeType extends Node> {
         ends = new Vector<NodeType>();
         all = new Vector<NodeType>();
     }
-
 
     public void addNode(NodeType n) {
         if (!all.contains(n)) {
@@ -114,5 +113,4 @@ public class FiniteAutomata<NodeType extends Node> {
     public int startsSize() {
         return starts.size();
     }
-
 }

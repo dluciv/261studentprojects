@@ -44,29 +44,29 @@ public class TableRecord {
         }
     }
 
-    public Vector<Integer> getVectorByChar(Character c){
+    public Vector<Integer> getVectorByChar(Character c) {
         return storage.get(c);
     }
-    
+
     Set<Character> keySet() {
         return storage.keySet();
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         String s = "";
-        
+
         Iterator<Entry<Character, Vector<Integer>>> i = storage.entrySet().iterator();
-        
-        while(i.hasNext()){
+
+        while (i.hasNext()) {
             Entry<Character, Vector<Integer>> e = i.next();
             s += "|" + e.getKey().toString() + "| " + e.getValue().toString() + "\n";
         }
-        
+
         return s;
     }
-    
-    public Vector<Integer> getStateSet(char key){
-            return storage.get(key);
+
+    public Vector<Integer> getStateSet(char key) {
+        return storage.get(key);
     }
 }

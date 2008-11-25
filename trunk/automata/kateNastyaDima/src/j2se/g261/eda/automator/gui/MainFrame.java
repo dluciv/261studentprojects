@@ -26,7 +26,8 @@ import javax.swing.border.EmptyBorder;
 public class MainFrame extends JFrame implements ActionListener {
 
     private static final int M_WIDTH = (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.95);
-    private static final int M_HEIGHT =(int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.95);;
+    private static final int M_HEIGHT = (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.95);
+    ;
     private JPanel buttonPanel;
     private JButton btnExit;
     private PropertiesDialog propDialog;
@@ -47,10 +48,10 @@ public class MainFrame extends JFrame implements ActionListener {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
         JMenu file = new JMenu("File");
-        JMenuItem showProp = new JMenuItem(new AbstractAction("Settings"){
+        JMenuItem showProp = new JMenuItem(new AbstractAction("Settings") {
 
             public void actionPerformed(ActionEvent e) {
-                
+
                 propDialog.setVisible(true);
             }
         });

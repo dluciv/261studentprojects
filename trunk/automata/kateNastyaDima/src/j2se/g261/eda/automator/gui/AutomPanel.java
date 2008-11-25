@@ -26,15 +26,10 @@ import j2se.g261.eda.automator.gui.AlgorithmTableData.AlgorithmResult;
 import j2se.g261.eda.automator.gui.AlgorithmTableData.Result;
 import j2se.g261.eda.automator.parser.ParserException;
 import j2se.g261.eda.automator.util.Globals;
+import j2se.g261.eda.automator.util.Utils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -108,8 +103,8 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
         }
 
         if (e.getSource().equals(btnSetAutomator)) {
-            if(tfPattern.getText().isEmpty()){
-                JOptionPane.showMessageDialog(this, "Please, enter pattern", 
+            if (tfPattern.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please, enter pattern",
                         "Attention!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -120,13 +115,13 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
                 btnSave.setEnabled(true);
                 btnShow.setEnabled(true);
             } catch (ParserException ex) {
-                JOptionPane.showMessageDialog(this, "Wrong pattern", 
+                JOptionPane.showMessageDialog(this, "Wrong pattern",
                         "Attention!", JOptionPane.ERROR_MESSAGE);
             } catch (NFAWalkerException ex) {
                 JOptionPane.showMessageDialog(this, "Internal error during " +
                         "creating NFA walker", "Attention!", JOptionPane.ERROR_MESSAGE);
             } catch (NoConditionsException ex) {
-            	ex.printStackTrace();
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Internal error during " +
                         "processing pattern", "Attention!", JOptionPane.ERROR_MESSAGE);
             } catch (DotException ex) {
@@ -197,24 +192,45 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
                         "representation first", "Attention!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            fc.setSelectedFile(new File(fileToSave.getName()));
-            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                if (fc.getSelectedFile().exists()) {
-                    if (JOptionPane.showConfirmDialog(this, "Overwrite existing file?",
-                            "Confirm Overwrite",
-                            JOptionPane.OK_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
-                        return;
+            onSave(fileToSave);
+//            fc.setSelectedFile(new File(fileToSave.getName()));
+//            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+//                if (fc.getSelectedFile().exists()) {
+//                    if (JOptionPane.showConfirmDialog(this, "Overwrite existing file?",
+//                            "Confirm Overwrite",
+//                            JOptionPane.OK_CANCEL_OPTION,
+//                            JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
+//                        return;
+//
+//                    }
+//                    File selected = fc.getSelectedFile();
+//                    try{
+//                    Utils.copy(fileToSave, selected);
+//                    }catch (IOException ex){
+//                        JOptionPane.showMessageDialog(this, ex.getMessage(), 
+//                                "Error occurs during copying file", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                }
+//            }
+        }
+    }
 
-                    }
-                    File selected = fc.getSelectedFile();
-                    try{
-                    copy(fileToSave, selected);
-                    }catch (IOException ex){
-                        JOptionPane.showMessageDialog(this, ex.getMessage(), 
-                                "Error occurs during copying file", JOptionPane.ERROR_MESSAGE);
+    private void onSave(File fileToSave) {
+        JFileChooser fc = new JFileChooser();
+        fc.setApproveButtonText("Save");
+        fc.setMultiSelectionEnabled(false);
+        fc.setSelectedFile(new File("./" + fileToSave.getName()));
+        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                if (fc.getSelectedFile().exists()) {
+                    if (JOptionPane.showConfirmDialog(this, "Overwrite existing file?", "Confirm Overwrite", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
+                        return;
                     }
                 }
+                Utils.copy(fileToSave, fc.getSelectedFile());
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Error occurs during copying file", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -230,7 +246,8 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
                     fileName + ".gif");
             processes.push(Runtime.getRuntime().exec(Globals.IMG_VIEWER + fileName + ".gif"));
         } catch (IOException ex) {
-            Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "interior error",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -247,7 +264,8 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
 
             processes.push(Runtime.getRuntime().exec(Globals.IMG_VIEWER + fileName + ".gif"));
         } catch (IOException ex) {
-            Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "interior error",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -261,10 +279,11 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
             Runtime.getRuntime().exec(Globals.DOT + " -Tgif " +
                     automator.getDotMinGraphFile().getAbsolutePath() + " -o " +
                     fileName + ".gif");
-            
+
             processes.push(Runtime.getRuntime().exec(Globals.IMG_VIEWER + fileName + ".gif"));
         } catch (IOException ex) {
-            Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "interior error",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -279,7 +298,8 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
                     fileName + ".gif");
             processes.push(Runtime.getRuntime().exec(Globals.IMG_VIEWER + fileName + ".gif"));
         } catch (IOException ex) {
-            Logger.getLogger(AutomatorPanel.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "interior error",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -519,83 +539,6 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
                 /*  we have no Image, clear the box */
                 g.setColor(getBackground());
                 g.clearRect(0, 0, dim.width, dim.height);
-            }
-        }
-    }
-
-    public static void copy(File fromFile, File toFile)
-            throws IOException {
-        if (fromFile == null || toFile == null) {
-            return;
-        }
-
-        if (!fromFile.exists()) {
-            throw new IOException("FileCopy: " + "no such source file: " + fromFile.getAbsolutePath());
-        }
-        if (!fromFile.isFile()) {
-            throw new IOException("FileCopy: " + "can't copy directory: " + fromFile.getAbsolutePath());
-        }
-        if (!fromFile.canRead()) {
-            throw new IOException("FileCopy: " + "source file is unreadable: " + fromFile.getAbsolutePath());
-        }
-        if (toFile.isDirectory()) {
-            toFile = new File(toFile, fromFile.getName());
-        }
-        if (toFile.exists()) {
-            if (!toFile.canWrite()) {
-                throw new IOException("FileCopy: " + "destination file is unwriteable: " + toFile.getAbsolutePath());
-            }
-            System.out.print("Overwrite existing file " + toFile.getName() + "? (Y/N): ");
-            System.out.flush();
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    System.in));
-            String response = in.readLine();
-            if (!response.equals("Y") && !response.equals("y")) {
-                throw new IOException("FileCopy: " + "existing file was not overwritten.");
-            }
-        } else {
-            String parent = toFile.getParent();
-            if (parent == null) {
-                parent = System.getProperty("user.dir");
-            }
-            File dir = new File(parent);
-            if (!dir.exists()) {
-                throw new IOException("FileCopy: " + "destination directory doesn't exist: " + parent);
-            }
-            if (dir.isFile()) {
-                throw new IOException("FileCopy: " + "destination is not a directory: " + parent);
-            }
-            if (!dir.canWrite()) {
-                throw new IOException("FileCopy: " + "destination directory is unwriteable: " + parent);
-            }
-        }
-
-        FileInputStream from = null;
-        FileOutputStream to = null;
-        try {
-            from = new FileInputStream(fromFile);
-            to = new FileOutputStream(toFile);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-
-            while ((bytesRead = from.read(buffer)) != -1) {
-                to.write(buffer, 0, bytesRead); // write
-
-            }
-        } finally {
-            if (from != null) {
-                try {
-                    from.close();
-                } catch (IOException e) {
-                    ;
-                }
-            }
-            if (to != null) {
-                try {
-                    to.close();
-                } catch (IOException e) {
-                    ;
-                }
             }
         }
     }

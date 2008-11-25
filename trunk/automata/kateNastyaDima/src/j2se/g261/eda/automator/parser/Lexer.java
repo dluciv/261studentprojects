@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package j2se.g261.eda.automator.parser;
 
 /**
@@ -17,17 +16,17 @@ public class Lexer {
     public Lexer(String string) {
         this.string = string;
     }
-    
-    public boolean isEndOfLine(){
+
+    public boolean isEndOfLine() {
         return cursor + 1 >= string.length();
     }
-    
-    public char nextChar(){
+
+    public char nextChar() {
         cursor++;
         return string.charAt(cursor);
     }
-    
-    public void decrementCursor(){
+
+    public void decrementCursor() {
         cursor--;
     }
 }

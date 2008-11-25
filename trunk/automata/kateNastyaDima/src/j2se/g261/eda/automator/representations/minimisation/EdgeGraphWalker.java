@@ -1,6 +1,5 @@
 package j2se.g261.eda.automator.representations.minimisation;
 
-import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -11,11 +10,11 @@ import java.util.Vector;
 public class EdgeGraphWalker {
 
     private MinimizedDFA g;
-  //  private HashMap<Integer, Vector<Character>> allEdges; 
+    //  private HashMap<Integer, Vector<Character>> allEdges; 
 
     public EdgeGraphWalker(MinimizedDFA g) {
         this.g = g;
-       // allEdges = new HashMap<Integer, Vector<Character>>();     
+    // allEdges = new HashMap<Integer, Vector<Character>>();     
     }
 
     /**

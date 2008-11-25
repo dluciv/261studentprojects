@@ -14,7 +14,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.Level;
@@ -33,8 +32,6 @@ public class TexWriter {
     private static final String TABLE_HLINE = "\\hline\n";
     private static final String TABLE_BEGIN_1 = "\\begin{longtable}{*{";
     private static final String TABLE_BEGIN_2 = "}{|c}|}";
-//    private static final String TABLE_BEGIN_1_STAT = "\\begin{longtable}{*{3}{|c}|{";
-//    private static final String TABLE_BEGIN_2_STAT = "}{|c}|}";
     private static final String TABLE_END = "\\end{longtable}\n";
     private static final String TABLE_CAPTION = "\n\\caption{NFA TABLE} \\\\ " + TABLE_HLINE;
     private static final String TABLE_CAPTION_RES = "\n\\caption{RESULTS} \\\\ " + TABLE_HLINE;
@@ -95,7 +92,7 @@ public class TexWriter {
         BufferedWriter bf;
         try {
             File f1 = File.createTempFile(filename, EXTENSION);
-//        f1.deleteOnExit();
+            f1.deleteOnExit();
             bf = new BufferedWriter(new FileWriter(f1));
 
 
@@ -111,6 +108,9 @@ public class TexWriter {
             bf.write(getTableBody());
 
             bf.write(TABLE_END);
+
+
+
             bf.write(DOCUMENT_END);
 
 
@@ -136,6 +136,7 @@ public class TexWriter {
         BufferedWriter bf;
         try {
             File f2 = File.createTempFile("Result", EXTENSION);
+            f2.deleteOnExit();
             bf = new BufferedWriter(new FileWriter(f2));
 
 
@@ -151,6 +152,16 @@ public class TexWriter {
             bf.write(getTableBodyRes(dataForSerializing));
 
             bf.write(TABLE_END);
+
+            bf.write(TABLE_BEGIN_1);
+            bf.write(String.valueOf(2));
+            bf.write(TABLE_BEGIN_2);
+            bf.write(TABLE_CAPTION_RES);
+            bf.write("Pattern & Bandwidth " + " \\\\ " + TABLE_HLINE + "\n");
+            bf.write(bandWidthTableBody(dataForSerializing));
+
+            bf.write(TABLE_END);
+
             bf.write(DOCUMENT_END);
 
 
@@ -165,12 +176,7 @@ public class TexWriter {
 
     private static String getTableCaptionRes() {
         String res = "";
-        return res + " Pattern " + " & " + " String " + " & " +  "Matches" 
-                +" & " +  " Matches Table " + " & " + " Table Stat " 
-                + " & " + " Matches NFA " + " & " + " NFA Stat" 
-                + " & " + " Matches DFA " + " & " + " DFA Stat" 
-                + " & " + " Matches MinDFA " + " & " + " MinDFA Stat" 
-                + " \\\\ " + TABLE_HLINE + "\n";
+        return res + " Pattern " + " & " + " String " + " & " + "Matches" + " & " + " Matches Table " + " & " + " Table Stat " + " & " + " Matches NFA " + " & " + " NFA Stat" + " & " + " Matches DFA " + " & " + " DFA Stat" + " & " + " Matches MinDFA " + " & " + " MinDFA Stat" + " \\\\ " + TABLE_HLINE + "\n";
 
     }
 
@@ -186,11 +192,26 @@ public class TexWriter {
             res += getRow(storage.getTestResult(i));
         }
 
-//        for (int i = 0; i < item.getAllPatterns().size(); i++) {
-//            
-//            TestResultItem testRes = item.getTestResult(i);
-//            res += testRes.getPattern()  + " & " + testRes.getString() + " & " + testRes.getTable().isMatches() + " & " + testRes.getTable().getAverageTime() + " & " + testRes.getNFA().isMatches() + " & " + testRes.getNFA().getAverageTime() + " & " + testRes.getDFA().isMatches() + " & " + testRes.getDFA().getAverageTime() + " & " + testRes.getMinGraph().isMatches() + " & " + testRes.getMinGraph().getAverageTime()  + " \\\\ " + TABLE_HLINE + "\n";
-//        }
+        return res;
+    }
+
+    private static String bandWidthTableBody(TestResultItemStorage storage) {
+        storage.countBandwidth();
+        String res = "";
+
+        Vector<String> patterns = storage.getAllPatterns();
+        for (int i = 0; i < patterns.size(); i++) {
+            double f = storage.getBandwidthByPattern(patterns.get(i));
+            String s = "";
+            if (f > 1024 * 1024) {
+                s = f / (1024 * 1024) + " Mb/sec";
+            } else if (f > 1024) {
+                s = f / 1024 + " Kb / sec";
+            } else {
+                s = f + "b / sec";
+            }
+            res += patterns.get(i) + " & " + s + " \\\\ " + TABLE_HLINE + "\n";
+        }
 
         return res;
     }
@@ -198,12 +219,7 @@ public class TexWriter {
     private static String getRow(TestResultItem item) {
         String res = "";
 
-        res += item.getPattern() + " & " + item.getString() + " & " + item.isMatches() 
-                + "&" + item.getTable().isMatches() + " & " + item.getTable() 
-                + " & " + item.getNFA().isMatches() + " & " + item.getNFA() 
-                + " & " + item.getDFA().isMatches() + " & " + item.getDFA()
-                + " & " + item.getMinGraph().isMatches() + " & " + item.getMinGraph()
-                + " \\\\ " + TABLE_HLINE + "\n";
+        res += item.getPattern() + " & " + item.getString() + " & " + item.isMatches() + "&" + item.getTable().isMatches() + " & " + item.getTable() + " & " + item.getNFA().isMatches() + " & " + item.getNFA() + " & " + item.getDFA().isMatches() + " & " + item.getDFA() + " & " + item.getMinGraph().isMatches() + " & " + item.getMinGraph() + " \\\\ " + TABLE_HLINE + "\n";
         return res;
     }
 }

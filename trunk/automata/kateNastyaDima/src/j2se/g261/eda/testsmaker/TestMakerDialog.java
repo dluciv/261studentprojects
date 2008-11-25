@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -84,25 +82,27 @@ public class TestMakerDialog extends javax.swing.JDialog implements ActionListen
         }
 
         if (btnSave.equals(e.getSource())) {
-            JFileChooser fc = new JFileChooser();
-            fc.setApproveButtonText("Save");
-            fc.setMultiSelectionEnabled(false);
-//            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fc.setSelectedFile(new File("./tests" + new Random().nextInt() + ".ser"));
-            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                if (fc.getSelectedFile().exists()) {
-                    if (JOptionPane.showConfirmDialog(this, "Overwrite existing file?",
-                            "Confirm Overwrite",
-                            JOptionPane.OK_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
-                        return;
-                    }
-                }
-                    System.out.println(fc.getSelectedFile());
-                    serializeResults(fc.getSelectedFile());
-            }
+            onSave();
         }
 
+    }
+
+    private void onSave() {
+        JFileChooser fc = new JFileChooser();
+        fc.setApproveButtonText("Save");
+        fc.setMultiSelectionEnabled(false);
+        fc.setSelectedFile(new File("./tests" + new Random().nextInt() + ".ser"));
+        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (fc.getSelectedFile().exists()) {
+                if (JOptionPane.showConfirmDialog(this, "Overwrite existing file?",
+                        "Confirm Overwrite",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
+                    return;
+                }
+            }
+            serializeResults(fc.getSelectedFile());
+        }
     }
 
     public TestItemStorage getData() {
@@ -275,9 +275,11 @@ public class TestMakerDialog extends javax.swing.JDialog implements ActionListen
             out.writeObject(testTable.getDataObject());
             out.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(MakeTestDialog.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "internal error",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
-            Logger.getLogger(MakeTestDialog.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "internal error",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

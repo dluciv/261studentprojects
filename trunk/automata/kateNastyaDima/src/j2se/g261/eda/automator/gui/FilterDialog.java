@@ -76,6 +76,7 @@ public class FilterDialog extends javax.swing.JDialog implements ActionListener,
         switchFilters(rbFilterNone, true);
         lastSelectedRadioButton = rbFilterNone;
     }
+
     public void updateShowLabel() {
         lbShowed.setText("Show " + table.getData().size() + " from " + table.getData().allSize());
         lbShowed.updateUI();
@@ -290,9 +291,9 @@ public class FilterDialog extends javax.swing.JDialog implements ActionListener,
                 lastSelectedRadioButton = (JRadioButton) e.getSource();
             }
 
-                table.setFilter(createFilter((JRadioButton) e.getSource()));
-                updateShowLabel();
-                table.updateTableUI();
+            table.setFilter(createFilter((JRadioButton) e.getSource()));
+            updateShowLabel();
+            table.updateTableUI();
         }
         if (e.getSource() instanceof JComboBox) {
             table.setFilter(createCompareFilter());

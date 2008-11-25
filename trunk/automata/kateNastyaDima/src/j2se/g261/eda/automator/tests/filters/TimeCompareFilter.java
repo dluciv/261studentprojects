@@ -62,7 +62,7 @@ public class TimeCompareFilter implements ItemFilter {
 
         }
 
-        
+
         switch (type) {
             case MORE:
                 return first > second;

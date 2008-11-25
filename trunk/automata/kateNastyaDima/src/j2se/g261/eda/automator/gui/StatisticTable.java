@@ -41,7 +41,7 @@ public class StatisticTable extends JPanel {
         UIManager.put("Table.focusCellHighlightBorder",
                 new LineBorder(Color.black, 0));
 
-        header = new JTable(){
+        header = new JTable() {
 
             public Component prepareRenderer(TableCellRenderer renderer,
                     int rowIndex, int vColIndex) {

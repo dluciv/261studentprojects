@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package j2se.g261.eda.automator.representations.dfa;
 
 import j2se.g261.eda.automator.representations.*;
@@ -12,32 +11,32 @@ import j2se.g261.eda.automator.representations.nfa.NFANode;
  *
  * @author nastya
  */
-public class DFA extends FiniteAutomata<DFANode>{
+public class DFA extends FiniteAutomata<DFANode> {
 
     public static final char EMPTY_CHARACTER = NFANode.END;
-    
+
     public DFA(DFANode root) {
         super(root);
         ends.clear();
     }
 
-    public void markAsEnd(DFANode node){
-        if(!all.contains(node)){
+    public void markAsEnd(DFANode node) {
+        if (!all.contains(node)) {
             all.add(node);
         }
-        if(!ends.contains(node)){
-        ends.add(node);
+        if (!ends.contains(node)) {
+            ends.add(node);
         }
     }
-    
-    public String toString(){
+
+    public String toString() {
         String result = "";
-        
+
         for (DFANode dFANode : all) {
             result += dFANode.toString() + "\n";
         }
-        
-        
+
+
         result += "********************END********************\n";
         for (DFANode dFANode : ends) {
             result += dFANode.toString() + "\n";
@@ -50,8 +49,8 @@ public class DFA extends FiniteAutomata<DFANode>{
         result += "<*******************************************>\n";
         return result;
     }
-    
-    public void makeEndClosure(){
+
+    public void makeEndClosure() {
         DFANode end = DFANode.createEndNode();
         for (DFANode dFANode : ends) {
             end.mapToSymbolIncoming(dFANode, EMPTY_CHARACTER);
@@ -65,7 +64,4 @@ public class DFA extends FiniteAutomata<DFANode>{
         DFANode end = DFANode.createEndNode();
         return end.equals(n);
     }
-    
-    
-
 }

@@ -43,7 +43,6 @@ public class Automator {
     private File dotEpsNFAFile = null;
     private File dotDFAFile = null;
     private File dotMinGraphFile = null;
-    
     private String DOT_NFA_FILENAME = "DOTNFA";
     private String DOT_DFA_FILENAME = "DOTDFA";
     private String DOT_MIN_DFA_FILENAME = "DOTMINDFA";

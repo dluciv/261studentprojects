@@ -14,7 +14,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import j2se.g261.eda.automator.tests.*;
 import j2se.g261.eda.testsmaker.TestMakerDialog;
-import j2se.g261.eda.testsmaker.TestMakerDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -85,7 +84,6 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
     public Object[] getToTest() {
         return toTest;
     }
-
 
     public int getNumberOfMeasures() {
         return Integer.parseInt(String.valueOf(spMeasure.getValue()));
@@ -190,8 +188,6 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
                 try {
                     in = new ObjectInputStream(new FileInputStream(selected[i]));
                     lastLoadedResults[i] = (TestResultItemStorage) in.readObject();
-                    System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
-                    System.out.println(lastLoadedResults[i] == null);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this,
                             "You choose wrong files. Please choose another",

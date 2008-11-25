@@ -43,17 +43,17 @@ public class TestResultItemStorage implements Serializable {
         if (!allPatterns.contains(item.getPattern())) {
             allPatterns.add(item.getPattern());
         }
-        if(!counts.containsKey(item.getPattern())){
+        if (!counts.containsKey(item.getPattern())) {
             counts.put(item.getPattern(), 1);
-        }else{
+        } else {
             int c = counts.get(item.getPattern()) + 1;
             counts.remove(item.getPattern());
             counts.put(item.getPattern(), c);
         }
 
     }
-    
-    public int getCountOfItemsForPattern(String pattern){
+
+    public int getCountOfItemsForPattern(String pattern) {
         return counts.get(pattern);
     }
 
@@ -65,9 +65,10 @@ public class TestResultItemStorage implements Serializable {
         return filtered.size();
     }
 
-    public int allSize(){
+    public int allSize() {
         return storage.size();
     }
+
     public ItemFilter getFilter() {
         return filter;
     }

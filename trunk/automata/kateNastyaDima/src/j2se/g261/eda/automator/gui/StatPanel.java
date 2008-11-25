@@ -16,9 +16,9 @@ import j2se.g261.eda.automator.representations.nfa.NFAWalkerException;
 import j2se.g261.eda.automator.tests.*;
 
 import j2se.g261.eda.automator.util.Globals;
+import j2se.g261.eda.automator.util.Utils;
 import j2se.g261.eda.automator.visualizing.dot.DotException;
 import j2se.g261.eda.automator.visualizing.tex.TexWriter;
-import j2se.g261.eda.testsmaker.MakeTestDialog;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,8 +32,6 @@ import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Timer;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -382,41 +380,24 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         if (table.getData() == null) {
             return;
         }
-        JFileChooser fc = new JFileChooser();
-        fc.setApproveButtonText("Save");
-        fc.setMultiSelectionEnabled(false);
-//            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        fc.setSelectedFile(new File("./results_table" + new Random().nextInt() + ".dvi"));
-        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            try {
-                if (fc.getSelectedFile().exists()) {
-                    if (JOptionPane.showConfirmDialog(this, "Overwrite existing file?", "Confirm Overwrite", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
-                        return;
-                    }
-                }
 
-                File tex = saveResultsAsTex(TestResultItemStorage.getDataForSerializing(table.getData()));
-                System.out.println(Globals.LATEX_COMMAND);
-                Runtime.getRuntime().exec(Globals.LATEX_COMMAND + " " + tex);
-                String dvifile = tex.getName();
-                dvifile = dvifile.substring(0, dvifile.length() - 4) + ".dvi";
-                System.out.println(new File(dvifile).exists());
-                System.out.println(new File(dvifile).getAbsolutePath());
-                AutomPanel.copy(new File(dvifile), fc.getSelectedFile());
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(),
-                        "Error occurs during copying file", JOptionPane.ERROR_MESSAGE);
-
-            }
-
+        try{
+        File tex = saveResultsAsTex(TestResultItemStorage.getDataForSerializing(table.getData()));
+        Runtime.getRuntime().exec(Globals.LATEX_COMMAND + " " + tex);
+        String dvifile = tex.getName();
+        dvifile = dvifile.substring(0, dvifile.length() - 4) + ".dvi";
+        File dvi = new File("./" + dvifile);
+        onSave(dvi);
+        }catch(IOException e){
+                            JOptionPane.showMessageDialog(this, "Internal error. Check commands for latex",
+                        "Error!", JOptionPane.ERROR_MESSAGE);
 
         }
+
     }
 
     private File saveResultsAsTex(TestResultItemStorage dataForSerializing) {
         File f = TexWriter.representateResultsAsTex(dataForSerializing);
-        System.out.println("|||||||||||||||||||||||||||||||||||||");
-        System.out.println(f);
         return f;
     }
 
@@ -438,7 +419,6 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
                     return;
                 }
             }
-            System.out.println(fc.getSelectedFile());
             serializeResults(TestResultItemStorage.getDataForSerializing(table.getData()), fc.getSelectedFile());
         }
     }
@@ -450,9 +430,11 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
             out.writeObject(dataForSerializing);
             out.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(MakeTestDialog.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "internal error",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
-            Logger.getLogger(MakeTestDialog.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "internal error",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -463,10 +445,10 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         double d = table.getData().getBandwidthByPattern(
                 (String) patternList.getSelectedValue());
         String s = " B / sec";
-        if(d > 1024*1024){
+        if (d > 1024 * 1024) {
             d = d / (1024 * 1024);
             s = " MB / sec";
-        }else if (d > 1024) {
+        } else if (d > 1024) {
             d = d / 1024;
             s = " kB / sec";
         }
@@ -549,5 +531,23 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         lbShowed.updateUI();
     }
 
-
+    private void onSave(File fileToSave) {
+        JFileChooser fc = new JFileChooser();
+        fc.setApproveButtonText("Save");
+        fc.setMultiSelectionEnabled(false);
+        fc.setSelectedFile(new File("./" + fileToSave.getName()));
+        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                if (fc.getSelectedFile().exists()) {
+                    if (JOptionPane.showConfirmDialog(this, "Overwrite existing file?", "Confirm Overwrite", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
+                        return;
+                    }
+                }
+                Utils.copy(fileToSave, fc.getSelectedFile());
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Error occurs during copying file", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
 }

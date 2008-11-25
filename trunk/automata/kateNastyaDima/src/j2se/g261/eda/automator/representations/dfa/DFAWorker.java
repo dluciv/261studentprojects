@@ -7,7 +7,6 @@ package j2se.g261.eda.automator.representations.dfa;
 import j2se.g261.eda.automator.representations.nfa.NFANode;
 import j2se.g261.eda.automator.representations.nfa.NFA;
 import java.util.HashMap;
-import java.util.Stack;
 import java.util.Vector;
 
 /**
@@ -15,7 +14,7 @@ import java.util.Vector;
  * @author nastya
  */
 public class DFAWorker {
-    
+
     private static final String DEFAULT_PREFIX = "q";
 
     public static DFA convertFromNFA(NFA graph) {
@@ -26,24 +25,24 @@ public class DFAWorker {
         NFANode startNode = nfa.getNodeById(NFANode.START_INDEX);
         NFANode endNode = nfa.getNodeById(NFANode.END_INDEX);
 
-        HashMap<VectorWithIndiscernibleOrder<NFANode>, DFANode> result = 
+        HashMap<VectorWithIndiscernibleOrder<NFANode>, DFANode> result =
                 new HashMap<VectorWithIndiscernibleOrder<NFANode>, DFANode>();
-        Vector<VectorWithIndiscernibleOrder<NFANode>> seen = 
+        Vector<VectorWithIndiscernibleOrder<NFANode>> seen =
                 new Vector<VectorWithIndiscernibleOrder<NFANode>>();
         Vector<Character> alphabet = getAlphabet(nfa);
-        VectorWithIndiscernibleOrder<NFANode> start = 
+        VectorWithIndiscernibleOrder<NFANode> start =
                 new VectorWithIndiscernibleOrder<NFANode>();
         start.add(startNode);
         Vector<NFANode> end = getEndNodeSet(endNode);
-        Vector<VectorWithIndiscernibleOrder<NFANode>> toSee = 
+        Vector<VectorWithIndiscernibleOrder<NFANode>> toSee =
                 new Vector<VectorWithIndiscernibleOrder<NFANode>>();
 
         toSee.add(start);
-        
+
         DFANode stDFANode = new DFANode(DEFAULT_PREFIX, extractNumbers(start));
         result.put(start, stDFANode);
         DFA dfa = new DFA(stDFANode);
-        if(haveEndNodes(start, end)){
+        if (haveEndNodes(start, end)) {
             dfa.markAsEnd(stDFANode);
         }
 
@@ -99,7 +98,6 @@ public class DFAWorker {
         return result;
     }
 
-
     private static boolean haveEndNodes(Vector<NFANode> res, Vector<NFANode> end) {
         for (NFANode nFANode : res) {
             if (end.contains(nFANode)) {
@@ -110,14 +108,14 @@ public class DFAWorker {
     }
 
     private static VectorWithIndiscernibleOrder<NFANode> move(Vector<NFANode> nodes, char symbol) {
-        VectorWithIndiscernibleOrder<NFANode> result = 
+        VectorWithIndiscernibleOrder<NFANode> result =
                 new VectorWithIndiscernibleOrder<NFANode>();
 
         for (NFANode node : nodes) {
             for (int i = 0; i < node.getOutgoingSize(); i++) {
                 if (((NFANode) node.getOutgoingAt(i)).getName().equals(symbol)) {
-                    if(!result.contains(((NFANode)node).getOutgoingAt(i))){
-                    result.add((NFANode) node.getOutgoingAt(i));
+                    if (!result.contains(((NFANode) node).getOutgoingAt(i))) {
+                        result.add((NFANode) node.getOutgoingAt(i));
                     }
                 }
             }

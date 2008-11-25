@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package j2se.g261.eda.testsmaker.table;
 
 import j2se.g261.eda.automator.tests.TestItemStorage;
@@ -13,7 +12,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author nastya
  */
-public class TestsTableData  extends AbstractTableModel{
+public class TestsTableData extends AbstractTableModel {
 
     static final public ColumnData columns[] = {
         new ColumnData("Pattern", 180, JLabel.LEFT),
@@ -36,30 +35,31 @@ public class TestsTableData  extends AbstractTableModel{
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        switch (columnIndex){
-            case 0 : return data.getPattern(rowIndex);
-            case 1 : return data.getString(rowIndex);
-            case 2 : return data.isMatches(rowIndex);
+        switch (columnIndex) {
+            case 0:
+                return data.getPattern(rowIndex);
+            case 1:
+                return data.getString(rowIndex);
+            case 2:
+                return data.isMatches(rowIndex);
         }
         return "";
     }
-    
-    
+
     @Override
     public boolean isCellEditable(int nRow, int nCol) {
         return false;
     }
 
-    void addData(String pattern, String string, boolean matches){
+    void addData(String pattern, String string, boolean matches) {
         data.addTest(pattern, string, matches);
     }
-    
-    void removeData(int index){
+
+    void removeData(int index) {
         data.removeTest(index);
     }
 
-    
-    TestItemStorage getDataObject(){
+    TestItemStorage getDataObject() {
         return data;
     }
 

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package j2se.g261.eda.automator.gui;
 
 import java.awt.BorderLayout;
@@ -24,23 +23,23 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
-
 /**
  *
  * @author nastya
  */
-public class AlgorithmTable extends JPanel{
+public class AlgorithmTable extends JPanel {
 
     public JTable table;
-    private AlgorithmTableData tableData  = new AlgorithmTableData();
-    public  AlgorithmTableData.AlgorithmResult ALGORITHM_MINIMIZATION = tableData.ALGORITHM_MINIMIZATION;
-    public  AlgorithmTableData.AlgorithmResult ALGORITHM_TABLE = tableData.ALGORITHM_TABLE;
-    public  AlgorithmTableData.AlgorithmResult ALGORITHM_DFA = tableData.ALGORITHM_DFA;
-    public  AlgorithmTableData.AlgorithmResult ALGORITHM_NFA = tableData.ALGORITHM_NFA;
-    public AlgorithmTable(){
+    private AlgorithmTableData tableData = new AlgorithmTableData();
+    public AlgorithmTableData.AlgorithmResult ALGORITHM_MINIMIZATION = tableData.ALGORITHM_MINIMIZATION;
+    public AlgorithmTableData.AlgorithmResult ALGORITHM_TABLE = tableData.ALGORITHM_TABLE;
+    public AlgorithmTableData.AlgorithmResult ALGORITHM_DFA = tableData.ALGORITHM_DFA;
+    public AlgorithmTableData.AlgorithmResult ALGORITHM_NFA = tableData.ALGORITHM_NFA;
+
+    public AlgorithmTable() {
         UIManager.put("Table.focusCellHighlightBorder",
                 new LineBorder(Color.black, 0));
-        
+
         table = new JTable();
         table.setAutoCreateColumnsFromModel(false);
         table.setModel(tableData);
@@ -63,25 +62,25 @@ public class AlgorithmTable extends JPanel{
         ps.setPreferredSize(new Dimension(400, 150));
         add(ps, BorderLayout.CENTER);
     }
-    
-    public void addSelectionLisener(ListSelectionListener l){
+
+    public void addSelectionLisener(ListSelectionListener l) {
         table.getSelectionModel().addListSelectionListener(l);
     }
-    
-    public void isSource(ListSelectionEvent e){
+
+    public void isSource(ListSelectionEvent e) {
         table.getSelectionModel().equals(e.getSource());
     }
-    
-    public AlgorithmTableData.AlgorithmResult getSelected(){
-        if(table.getSelectedRow() > -1){
+
+    public AlgorithmTableData.AlgorithmResult getSelected() {
+        if (table.getSelectedRow() > -1) {
             return tableData.getAlgorithmResultAtRow(table.getSelectedRow());
         }
         return null;
     }
-    
-    public void setSelected(AlgorithmTableData.AlgorithmResult r){
+
+    public void setSelected(AlgorithmTableData.AlgorithmResult r) {
         table.getSelectionModel().setSelectionInterval(
-                tableData.getAlgorithmResultIndex(r), 
+                tableData.getAlgorithmResultIndex(r),
                 tableData.getAlgorithmResultIndex(r));
     }
 
@@ -89,6 +88,7 @@ public class AlgorithmTable extends JPanel{
         table.updateUI();
     }
 }
+
 class ColumnData {
 
     public String title;
@@ -102,28 +102,27 @@ class ColumnData {
     }
 }
 
-
-
-    class ResultCellRenderer extends DefaultTableCellRenderer {
+class ResultCellRenderer extends DefaultTableCellRenderer {
 
     private static final String IMAGE_OK = "icons" + File.separator + "ok.png";
     private static final String IMAGE_CANCEL = "icons" + File.separator + "cancel.png";
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component o = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            if (o instanceof JLabel && column == 1) {
-                ((JLabel) o).setText("");
-                if (value == AlgorithmTableData.Result.PASSED) {
-                    ((JLabel) o).setIcon(new ImageIcon(IMAGE_OK));
-                } else if(value == AlgorithmTableData.Result.NOT_PASSED){
-                    ((JLabel) o).setIcon(new ImageIcon(IMAGE_CANCEL));
-                }else{
-                    ((JLabel) o).setIcon(null);
-                }
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        Component o = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        if (o instanceof JLabel && column == 1) {
+            ((JLabel) o).setText("");
+            if (value == AlgorithmTableData.Result.PASSED) {
+                ((JLabel) o).setIcon(new ImageIcon(IMAGE_OK));
+            } else if (value == AlgorithmTableData.Result.NOT_PASSED) {
+                ((JLabel) o).setIcon(new ImageIcon(IMAGE_CANCEL));
+            } else {
+                ((JLabel) o).setIcon(null);
             }
-            return o;
         }
+        return o;
     }
+}
 
 
 

@@ -19,16 +19,17 @@ import j2se.g261.eda.automator.representations.nfa.NFA;
 public class NFAWalker {
 
     private NFANode node = null;
-/**
- * default constructor 
- * @param graph walked graph 
- * @throws j2se.g261.eda.automator.graph.NFAWalkerException
- * if graph not epsilon-closed
- */
+
+    /**
+     * default constructor 
+     * @param graph walked graph 
+     * @throws j2se.g261.eda.automator.graph.NFAWalkerException
+     * if graph not epsilon-closed
+     */
     public NFAWalker(NFA graph) throws NFAWalkerException {
         try {
             for (int i = 0; i < graph.allSize(); i++) {
-                if(NFANode.isStartNode(graph.getNodeFromAllAt(i))){
+                if (NFANode.isStartNode(graph.getNodeFromAllAt(i))) {
                     node = graph.getNodeFromAllAt(i);
                     break;
                 }
@@ -39,11 +40,12 @@ public class NFAWalker {
         }
 
     }
-/**
- * cheks if word tenances FA
- * @param s string to be checked
- * @return if word tenances FA then <code> true</code> ,<code> false</code> otherwise
- */
+
+    /**
+     * cheks if word tenances FA
+     * @param s string to be checked
+     * @return if word tenances FA then <code> true</code> ,<code> false</code> otherwise
+     */
     public boolean check(String s) {
         return checkNextElement(s, node);
     }
@@ -59,7 +61,7 @@ public class NFAWalker {
         } else {
             char current = rest.charAt(0);
             for (int i = 0; i < n.getOutgoingSize(); i++) {
-                if (((NFANode)n).getOutgoingAt(i).getName().equals(current) &&
+                if (((NFANode) n).getOutgoingAt(i).getName().equals(current) &&
                         checkNextElement(rest.substring(1),
                         (NFANode) n.getOutgoingAt(i))) {
                     return true;

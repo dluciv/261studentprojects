@@ -54,17 +54,17 @@ public class MinimizedDFAWorker {
         int num = g.allSize();
         for (int i = 0; i < num; i++) {
             DFANode dfaNode = g.getNodeFromAllAt(i);
-            
+
             Iterator<Entry<Character, DFANode>> iter = dfaNode.getOutgoingIterator();
             while (iter.hasNext()) {
                 Entry<Character, DFANode> en = iter.next();
                 if (en.getKey() == DFA.EMPTY_CHARACTER) {
                     Edge endEdge = new Edge(DFA.EMPTY_CHARACTER, dfaNode.getNumber(), 1);
-                    
+
                     minDFA.add(endEdge);
                 } else {
                     Edge endEdge = new Edge(en.getKey(), dfaNode.getNumber(), en.getValue().getNumber());
-                    
+
                     minDFA.add(endEdge);
                 }
             }

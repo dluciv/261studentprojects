@@ -75,32 +75,32 @@ public class DFANode extends Node<String> {
         addIncomingNode(node);
         mapIncoming.put(node, symbol);
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         String result = "";
         result += "------------------------------------------------------\n";
         result += "DFANode " + name + ": " + number + "[i: " + incoming.size() + ",o: " + outgoing.size() + "]";
         result += "\n" + nodeNumbers + "\n";
         result += "\n INCOMING: \n";
         Iterator<Entry<DFANode, Character>> i = mapIncoming.entrySet().iterator();
-        while(i.hasNext()){
+        while (i.hasNext()) {
             Entry<DFANode, Character> e = i.next();
             result += e.getKey().nodeNumbers + " - " + e.getValue() + "\n";
         }
         result += "\n OUTGOING: \n";
-        Iterator<Entry< Character, DFANode>> h = mapOutgoing.entrySet().iterator();
-        while(h.hasNext()){
-            Entry< Character, DFANode> e = h.next();
-            result +=e.getKey() + " - " + e.getValue().nodeNumbers  + "\n";
+        Iterator<Entry<Character, DFANode>> h = mapOutgoing.entrySet().iterator();
+        while (h.hasNext()) {
+            Entry<Character, DFANode> e = h.next();
+            result += e.getKey() + " - " + e.getValue().nodeNumbers + "\n";
         }
         result += "------------------------------------------------------";
-        
+
         return result;
     }
-    
-    public static DFANode createEndNode(){
+
+    public static DFANode createEndNode() {
         return new DFANode(NAME_END, NUMBER_END);
-    
+
     }
 }
