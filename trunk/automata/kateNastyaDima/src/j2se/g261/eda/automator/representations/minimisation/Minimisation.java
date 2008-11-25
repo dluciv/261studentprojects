@@ -1,5 +1,6 @@
 package j2se.g261.eda.automator.representations.minimisation;
 
+import java.util.Collection;
 import java.util.Vector;
 import java.util.HashMap;
 
@@ -150,15 +151,17 @@ public class Minimisation {
 
 
         for (Couple c : different) {
-            Vector<Edge> listFirst = new Vector<Edge>();
-            Vector<Edge> listSecond2 = new Vector<Edge>();
+            Vector<Edge> listFirst;
+            Collection<Edge> listSecond2;
 
 
             listFirst = edgeGraph.findIncomingEdge(c.getSecond());
             listSecond2 = edgeGraph.findOutgoingEdge(c.getSecond());
 
+            
             Vector<Edge> listSecond = new Vector<Edge>();
-
+            
+            
             for (Edge e : listSecond2) {
                 listSecond.add(e);
             }

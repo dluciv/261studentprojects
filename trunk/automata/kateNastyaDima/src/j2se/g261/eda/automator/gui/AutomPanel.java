@@ -305,10 +305,12 @@ public class AutomPanel extends javax.swing.JPanel implements ActionListener {
 
     private void showTableRepresentation() {
         try {
-            Process p = Runtime.getRuntime().exec(Globals.LATEX_COMMAND + automator.getTexFile());
+            Process p = Runtime.getRuntime().exec(Globals.LATEX_COMMAND + " "+ automator.getTexFile());
+            System.out.println(Globals.LATEX_COMMAND + " "+ automator.getTexFile());
             String dvifile = automator.getTexFile().getName();
             dvifile = dvifile.substring(0, dvifile.length() - 4) + ".dvi";
             processes.add(Runtime.getRuntime().exec(Globals.DVI_VIEWER + new File(dvifile)));
+            System.out.println(Globals.DVI_VIEWER +" "+ new File(dvifile));
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "interior error",
                     "Error", JOptionPane.ERROR_MESSAGE);

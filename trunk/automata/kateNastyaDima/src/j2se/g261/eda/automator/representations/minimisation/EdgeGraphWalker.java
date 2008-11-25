@@ -1,6 +1,9 @@
 package j2se.g261.eda.automator.representations.minimisation;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Vector;
+import j2se.g261.eda.automator.representations.dfa.DFA;
 
 /**
  * @author Dmitry
@@ -25,35 +28,33 @@ public class EdgeGraphWalker {
         int length = s.length();
         int state = 0;
         boolean isNext = true;
-
+//        long time1 = System.nanoTime();
+        
         for (int i = 0; i < length; i++) {
             if (isNext) {
 
                 char symbol = s.charAt(i);
-                Vector<Edge> v = g.findOutgoingEdge(state);
-
-                for (Edge k : v) {
-                    if (k.getName() == symbol) {
-                        state = k.getOutgoing();
-                        isNext = true;
-                        break;
-                    }
-                    isNext = false;
+                
+                Edge v = g.getX(state).get(symbol);
+                
+                if(v != null){
+                	state = v.getOutgoing();
+                	isNext = true;
                 }
-
+                
+                else isNext = false;
+                }
             }
-        }
+        
+        //long time2 = System.nanoTime();
+        //System.out.println("------" + (time2 - time1));
+        //long time2_ = System.nanoTime();
         if (isNext) {
-            Vector<Edge> end = g.findOutgoingEdge(state);
-            for (Edge j : end) {
-                if (j.getOutgoing() == 1) {
-                    isNext = true;
-                    break;
-                } else {
-                    isNext = false;
-                }
+            Edge end = g.getX(state).get(DFA.EMPTY_CHARACTER);
+                isNext = end != null;
             }
-        }
+        
+//        System.out.println("++++++" + (System.nanoTime() - time2_));
         return isNext;
     }
 }
