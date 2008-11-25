@@ -42,7 +42,7 @@ public class EdgeGraphWalker {
                 	isNext = true;
                 }
                 
-                else isNext = false;
+                else {isNext = false;break;}
                 }
             }
         

@@ -201,8 +201,11 @@ public class Minimisation {
         for (Edge h : list) {
             edgeGraph.remove(h);
         }
-
+        
+        System.out.println(edgeGraph);
+        System.out.println(edgeGraph.numEdges(0));
         return edgeGraph;
+        //((0011)|(1010))*(0|1)*
     }
 
     /**

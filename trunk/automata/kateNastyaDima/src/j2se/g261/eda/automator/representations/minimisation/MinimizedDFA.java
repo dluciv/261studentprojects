@@ -28,12 +28,11 @@ public class MinimizedDFA {
             if (!allEdges.get(i.getIncoming()).containsKey(i.getName())) {
                 allEdges.get(i.getIncoming()).put(i.getName(), i);
             }
-
+            
         } else {
             HashMap<Character, Edge> v = new HashMap<Character, Edge>();
             v.put(i.getName(), i);
-            allEdges.put(i.getIncoming(), v);
-            
+            allEdges.put(i.getIncoming(), v);           
         }
     }
 
@@ -41,8 +40,20 @@ public class MinimizedDFA {
         if (allEdges.containsKey(e.getIncoming())) {
             allEdges.get(e.getIncoming()).remove(e.getName());
         } 
+        if(allEdges.get(e.getIncoming()) != null 
+        		&& allEdges.get(e.getIncoming()).isEmpty()){
+        	allEdges.remove(e.getIncoming());
+        }
     }
-
+    
+    public String toString(){
+    	return "alledge's size: " + allEdges.size() + "; all's size: " + all.size();
+    }
+    
+    public int numEdges(int state){
+    	return allEdges.get(state).size();
+    }
+    
     public int sizeAll() {
         return this.all.size();
     }
