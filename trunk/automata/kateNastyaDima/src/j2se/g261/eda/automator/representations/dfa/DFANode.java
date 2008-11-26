@@ -43,6 +43,10 @@ public class DFANode extends Node<String> {
         return this.mapIncoming.size();
     }
 
+    public DFANode getNextNode(char symbol){
+        return mapOutgoing.get(symbol);
+    }
+    
     public Iterator<Entry<Character, DFANode>> getOutgoingIterator() {
         return mapOutgoing.entrySet().iterator();
     }

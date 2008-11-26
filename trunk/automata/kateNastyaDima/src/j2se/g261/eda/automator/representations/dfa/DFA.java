@@ -20,6 +20,9 @@ public class DFA extends FiniteAutomata<DFANode> {
         ends.clear();
     }
 
+    public DFANode getStartNode(){
+        return starts.firstElement();
+    }
     public void markAsEnd(DFANode node) {
         if (!all.contains(node)) {
             all.add(node);
