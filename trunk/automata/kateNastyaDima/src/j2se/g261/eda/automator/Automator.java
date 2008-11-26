@@ -12,6 +12,7 @@ import j2se.g261.eda.automator.representations.nfa.NFAWorker;
 import j2se.g261.eda.automator.parser.ParserException;
 import j2se.g261.eda.automator.parser.PatternParser;
 import j2se.g261.eda.automator.representations.dfa.DFA;
+import j2se.g261.eda.automator.representations.dfa.DFAWalker;
 import j2se.g261.eda.automator.representations.dfa.DFAWorker;
 import j2se.g261.eda.automator.representations.minimisation.EdgeGraphWalker;
 import j2se.g261.eda.automator.representations.minimisation.Minimisation;
@@ -36,7 +37,7 @@ public class Automator {
     private String pattern = null;
     private NFAWalker graphWalker = null;
     private TableWalker tableWalker = null;
-    public EdgeGraphWalker dfaWalker = null;
+    public DFAWalker dfaWalker = null;
     public EdgeGraphWalker minDFAWalker = null;
     private File texFile = null;
     private File dotNFAFile = null;
@@ -71,7 +72,7 @@ public class Automator {
             MinimizedDFA dfaInMinView = mDfaW.convertFromNFAToMinimizedDFA(dfa);
             Minimisation m1 = new Minimisation(dfaInMinView);
             MinimizedDFA minDfa = m1.minimize();
-            dfaWalker = new EdgeGraphWalker(dfaInMinView);
+            dfaWalker = new DFAWalker(dfa);
             minDFAWalker = new EdgeGraphWalker(minDfa);
             dotNFAFile = new DotUtils().generateDotFileForNFA(graph, DOT_NFA_FILENAME);
             dotEpsNFAFile = new DotUtils().generateDotFileForNFA(epsGraph, DOT_EPS_NFAFILENAME);
