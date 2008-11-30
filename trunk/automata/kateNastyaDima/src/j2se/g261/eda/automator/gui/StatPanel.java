@@ -13,6 +13,7 @@ package j2se.g261.eda.automator.gui;
 import j2se.g261.eda.automator.NoConditionsException;
 import j2se.g261.eda.automator.parser.ParserException;
 import j2se.g261.eda.automator.representations.nfa.NFAWalkerException;
+import j2se.g261.eda.automator.representations.table.TableRecord;
 import j2se.g261.eda.automator.tests.*;
 
 import j2se.g261.eda.automator.util.Globals;
@@ -36,6 +37,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -80,6 +82,7 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         btnSaveResults.addActionListener(this);
         saveAsDVI.addActionListener(this);
         btnFilter.addActionListener(this);
+        btnDeleteRows.addActionListener(this);
         filters = new FilterDialog(null, true, table, lbShowed);
         patternList.addListSelectionListener(this);
         cbIgnoreNulls.addActionListener(this);
@@ -95,6 +98,14 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         }
 
         return result;
+    }
+
+    private void deleteSelectedRows() {
+        table.deleteSelectedRows();
+        table.getData().countBandwidth();
+        fillPatternList();
+        updateShowLabel();
+        showBandwidth();
     }
 
     private void fillComputerInfo(TestResultItemStorage[] testResultItemStorage) {
@@ -113,11 +124,8 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         tfComputer.setText(info);
     }
 
-    private void fillTable(TestResultItemStorage[] toTest) {
-        TestResultItemStorage stor = concatanate(toTest);
-        stor.countBandwidth();
-        table.setData(stor);
-        Vector<String> data = stor.getAllPatterns();
+    private void fillPatternList() {
+        Vector<String> data = table.getData().getAllPatterns();
         ((DefaultListModel) filters.patternList.getModel()).removeAllElements();
         ((DefaultListModel) patternList.getModel()).removeAllElements();
         for (String pattern : data) {
@@ -127,8 +135,15 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         if (((DefaultListModel) patternList.getModel()).getSize() != 0) {
             patternList.setSelectedIndex(0);
         }
-        table.updateTableUI();
         patternList.updateUI();
+    }
+
+    private void fillTable(TestResultItemStorage[] toTest) {
+        TestResultItemStorage stor = concatanate(toTest);
+        stor.countBandwidth();
+        table.setData(stor);
+        fillPatternList();
+        table.updateTableUI();
         updateShowLabel();
         updateUI();
     }
@@ -156,13 +171,21 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         patternList = new javax.swing.JList();
-        tfBandwidth = new javax.swing.JTextField();
+        tfBandwidthNFA = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         cbIgnoreNulls = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
         tfCountOfResults = new javax.swing.JTextField();
+        tfBandwidthTable = new javax.swing.JTextField();
+        tfBandwidthDFA = new javax.swing.JTextField();
+        tfBandwidthMinDFA = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         lbShowed = new javax.swing.JLabel();
+        btnDeleteRows = new javax.swing.JButton();
 
         btnSaveResults.setText("Save Results");
 
@@ -179,7 +202,7 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
             tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 939, Short.MAX_VALUE)
+            .addGap(0, 964, Short.MAX_VALUE)
         );
         tablePanelLayout.setVerticalGroup(
             tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +216,7 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         patternList.setModel(new DefaultListModel());
         jScrollPane1.setViewportView(patternList);
 
-        tfBandwidth.setEditable(false);
+        tfBandwidthNFA.setEditable(false);
 
         jLabel3.setText("Pattern:");
 
@@ -206,6 +229,20 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
 
         tfCountOfResults.setEditable(false);
 
+        tfBandwidthTable.setEditable(false);
+
+        tfBandwidthDFA.setEditable(false);
+
+        tfBandwidthMinDFA.setEditable(false);
+
+        jLabel6.setText("NFA");
+
+        jLabel7.setText("Table");
+
+        jLabel8.setText("DFA");
+
+        jLabel9.setText("MinDFA");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -213,17 +250,32 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbIgnoreNulls)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbIgnoreNulls))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfCountOfResults, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfBandwidth, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                    .addComponent(jLabel5)
-                    .addComponent(tfCountOfResults, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfBandwidthMinDFA, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tfBandwidthDFA, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tfBandwidthTable, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tfBandwidthNFA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -235,18 +287,36 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
                     .addComponent(jLabel4)
                     .addComponent(cbIgnoreNulls))
                 .addGap(13, 13, 13)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfBandwidthNFA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfBandwidthTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfBandwidthDFA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfBandwidthMinDFA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                    .addComponent(jLabel5)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(tfBandwidth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
+                        .addGap(1, 1, 1)
                         .addComponent(tfCountOfResults, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGap(14, 14, 14))
         );
 
         lbShowed.setText("Show : 0 from 0");
+
+        btnDeleteRows.setText("Delete rows");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -267,23 +337,25 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
                                 .addGap(571, 571, 571)
                                 .addComponent(jLabel2)
                                 .addGap(27, 27, 27)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnSaveResults, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(saveAsDVI, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(2, 2, 2))
-                                    .addComponent(tfComputer, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)))
+                                        .addComponent(saveAsDVI, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(tfComputer))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnLoadData, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(btnLoadData, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(41, 41, 41)
                                         .addComponent(lbShowed)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnDeleteRows, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnFilter, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
@@ -298,26 +370,29 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfComputer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addComponent(tfComputer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(saveAsDVI)
                             .addComponent(btnSaveResults)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addComponent(lbShowed)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbShowed)
+                            .addComponent(btnDeleteRows))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnFilter)
                             .addComponent(btnLoadData))))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeleteRows;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnLoadData;
     private javax.swing.JButton btnSaveResults;
@@ -330,13 +405,20 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbShowed;
     private javax.swing.JList patternList;
     private javax.swing.JButton saveAsDVI;
     private javax.swing.JPanel tablePanel;
-    private javax.swing.JTextField tfBandwidth;
+    private javax.swing.JTextField tfBandwidthDFA;
+    private javax.swing.JTextField tfBandwidthMinDFA;
+    private javax.swing.JTextField tfBandwidthNFA;
+    private javax.swing.JTextField tfBandwidthTable;
     private javax.swing.JTextField tfComputer;
     private javax.swing.JTextField tfCountOfResults;
     // End of variables declaration//GEN-END:variables
@@ -364,6 +446,10 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         if (e.getSource().equals(cbIgnoreNulls)) {
             recalculateBandwidth();
         }
+        
+        if(e.getSource().equals(btnDeleteRows)){
+            deleteSelectedRows();
+        }
     }
 
     private void recalculateBandwidth() {
@@ -376,6 +462,12 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         showBandwidth();
     }
 
+    private void showBandwidth(){
+        showBandwidth(tfBandwidthDFA, TestResultItemStorage.TYPE.DFA);
+        showBandwidth(tfBandwidthNFA, TestResultItemStorage.TYPE.NFA);
+        showBandwidth(tfBandwidthTable, TestResultItemStorage.TYPE.TABLE);
+        showBandwidth(tfBandwidthMinDFA, TestResultItemStorage.TYPE.MINDFA);
+    }
     private void saveResultAsDVI() {
         if (table.getData() == null) {
             return;
@@ -438,12 +530,14 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         }
     }
 
-    private void showBandwidth() {
+    private void showBandwidth(JTextField bandwidthField, TestResultItemStorage.TYPE type) {
         if (table.getData() == null || patternList.getSelectedValue() == null) {
+            bandwidthField.setText("");
+            tfCountOfResults.setText("");
             return;
         }
         double d = table.getData().getBandwidthByPattern(
-                (String) patternList.getSelectedValue());
+                (String) patternList.getSelectedValue(), type);
         String s = " B / sec";
         if (d > 1024 * 1024) {
             d = d / (1024 * 1024);
@@ -454,7 +548,7 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         }
         DecimalFormat f = new DecimalFormat("#.##");
 
-        tfBandwidth.setText(f.format(d) + s);
+        bandwidthField.setText(f.format(d) + s);
         tfCountOfResults.setText(String.valueOf(
                 table.getData().getCountOfItemsForPattern(
                 (String) patternList.getSelectedValue())));

@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class Table {
 
     private HashMap<Integer, TableRecord> storage;
-    private int index = 0;
 
     public Table() {
         storage = new HashMap<Integer, TableRecord>();

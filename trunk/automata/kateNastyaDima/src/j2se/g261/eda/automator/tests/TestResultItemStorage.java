@@ -23,7 +23,10 @@ public class TestResultItemStorage implements Serializable {
     private Vector<TestResultItem> filtered;
     private String additionalInfo = "";
     private Vector<String> allPatterns;
-    private HashMap<String, Double> bandWidthAll;
+    private HashMap<String, Double> bandWidthMinDFA;
+    private HashMap<String, Double> bandWidthDFA;
+    private HashMap<String, Double> bandWidthNFA;
+    private HashMap<String, Double> bandWidthTable;
     public static boolean IGNORE_NULL_TIME = true;
     private HashMap<String, Integer> counts;
 
@@ -31,7 +34,10 @@ public class TestResultItemStorage implements Serializable {
         storage = new Vector<TestResultItem>();
         filtered = new Vector<TestResultItem>();
         allPatterns = new Vector<String>();
-        bandWidthAll = new HashMap<String, Double>();
+        bandWidthDFA = new HashMap<String, Double>();
+        bandWidthNFA = new HashMap<String, Double>();
+        bandWidthMinDFA = new HashMap<String, Double>();
+        bandWidthTable = new HashMap<String, Double>();
         counts = new HashMap<String, Integer>();
     }
 
@@ -59,6 +65,22 @@ public class TestResultItemStorage implements Serializable {
 
     public TestResultItem getTestResult(int index) {
         return filtered.get(index);
+    }
+
+    public void removeTestResult(int selectedRow) {
+        removeTestResult(filtered.get(selectedRow));
+    }
+
+    public void removeTestResult(TestResultItem item) {
+        storage.remove(item);
+        filtered.remove(item);
+        if(counts.get(item.getPattern()) == 1){
+            allPatterns.remove(item.getPattern());
+        }else{
+            int r = counts.get(item.getPattern());
+            counts.remove(item.getPattern());
+            counts.put(item.getPattern(), r - 1);
+        }
     }
 
     public int size() {
@@ -111,47 +133,55 @@ public class TestResultItemStorage implements Serializable {
     }
 
     public void countBandwidth() {
-        ResultTimeStorage result = new ResultTimeStorage();
+        ResultTimeStorage resultDFA = new ResultTimeStorage();
+        ResultTimeStorage resultNFA = new ResultTimeStorage();
+        ResultTimeStorage resultMinDFA = new ResultTimeStorage();
+        ResultTimeStorage resultTable = new ResultTimeStorage();
         for (TestResultItem testResultItem : storage) {
             int length = testResultItem.getString().getBytes().length;
             Vector<Double> times = new Vector<Double>();
             if (!(IGNORE_NULL_TIME && testResultItem.getDFA().getAverageTime() == 0)) {
-                times.add((double) length / testResultItem.getDFA().getAverageTime());
+                resultDFA.addTime(testResultItem.getPattern(),
+                        1000000000d * (double) length / testResultItem.getDFA().getAverageTime());
             }
             if (!(IGNORE_NULL_TIME && testResultItem.getNFA().getAverageTime() == 0)) {
-                times.add((double) length / testResultItem.getNFA().getAverageTime());
+                resultNFA.addTime(testResultItem.getPattern(),
+                        1000000000d * (double) length / testResultItem.getNFA().getAverageTime());
             }
             if (!(IGNORE_NULL_TIME && testResultItem.getMinGraph().getAverageTime() == 0)) {
-                times.add((double) length / testResultItem.getMinGraph().getAverageTime());
+                resultMinDFA.addTime(testResultItem.getPattern(),
+                        1000000000d * (double) length / testResultItem.getMinGraph().getAverageTime());
             }
             if (!(IGNORE_NULL_TIME && testResultItem.getTable().getAverageTime() == 0)) {
-                times.add((double) length / testResultItem.getTable().getAverageTime());
+                resultTable.addTime(testResultItem.getPattern(),
+                        1000000000d * (double) length / testResultItem.getTable().getAverageTime());
             }
-            if (!times.isEmpty()) {
-                result.addTime(testResultItem.getPattern(), 1000000000d * min(times));
-            }
+
         }
-        bandWidthAll = result.getBandwidth();
+        bandWidthDFA = resultDFA.getBandwidth();
+        bandWidthNFA = resultNFA.getBandwidth();
+        bandWidthTable = resultTable.getBandwidth();
+        bandWidthMinDFA = resultMinDFA.getBandwidth();
     }
 
-    public double getBandwidthByPattern(String pattern) {
-        return bandWidthAll.get(pattern);
+    public double getBandwidthByPattern(String pattern, TYPE type) {
+        switch (type) {
+            case NFA:
+                return bandWidthNFA == null ? 0d : (bandWidthNFA.get(pattern) == null ? 0 : bandWidthNFA.get(pattern));
+            case DFA:
+                return bandWidthDFA == null ? 0d : (bandWidthDFA.get(pattern) == null ? 0 : bandWidthDFA.get(pattern));
+            case MINDFA:
+                return bandWidthMinDFA == null ? 0d : (bandWidthMinDFA.get(pattern) == null ? 0 : bandWidthMinDFA.get(pattern));
+            case TABLE:
+                return bandWidthTable == null ? 0d : (bandWidthTable.get(pattern) == null ? 0 : bandWidthTable.get(pattern));
+            default:
+                return bandWidthNFA.get(pattern);
+        }
     }
 
-    private double min(Vector<Double> aDouble) {
-        double min = 0d;
-        if (aDouble.size() == 0) {
-            return 0;
-        }
-        if (aDouble.size() > 0) {
-            min = aDouble.get(0);
-        }
-        for (int i = 0; i < aDouble.size(); i++) {
-            if (min > aDouble.get(i)) {
-                min = aDouble.get(i);
-            }
-        }
-        return min;
+    public enum TYPE {
+
+        NFA, DFA, MINDFA, TABLE
     }
 }
 

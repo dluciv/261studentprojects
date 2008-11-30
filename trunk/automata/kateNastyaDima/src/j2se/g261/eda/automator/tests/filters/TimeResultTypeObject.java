@@ -19,6 +19,8 @@ public class TimeResultTypeObject {
     public final static TimeResultTypeObject RESULT_MIN_DFA =
             new TimeResultTypeObject(TimeResultType.MIN_DFA, "MDFA");
     public final static TimeResultTypeObject RESULT_TABLE = new TimeResultTypeObject(TimeResultType.TABLE, "TABLE");
+    public final static TimeResultTypeObject RESULT_ALL = new TimeResultTypeObject(TimeResultType.ALL, "ALL");
+    public final static TimeResultTypeObject RESULT_SOME = new TimeResultTypeObject(TimeResultType.SOME, "SOME");
 
     private TimeResultTypeObject(TimeResultType type, String name) {
         this.type = type;
@@ -36,7 +38,7 @@ public class TimeResultTypeObject {
 
     enum TimeResultType {
 
-        NFA, DFA, MIN_DFA, TABLE
+        NFA, DFA, MIN_DFA, TABLE, ALL, SOME
     }
 }
 

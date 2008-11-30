@@ -85,6 +85,7 @@ public class StatisticTableData extends AbstractTableModel {
         return data;
     }
 
+
     void setFilter(ItemFilter filter) {
         data.setFilter(filter);
     }

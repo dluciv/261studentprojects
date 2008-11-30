@@ -35,6 +35,7 @@ public class TexWriter {
     private static final String TABLE_END = "\\end{longtable}\n";
     private static final String TABLE_CAPTION = "\n\\caption{NFA TABLE} \\\\ " + TABLE_HLINE;
     private static final String TABLE_CAPTION_RES = "\n\\caption{RESULTS} \\\\ " + TABLE_HLINE;
+
     private Table table;
     private Vector<Character> keys;
     private static final String EXTENSION = ".tex";
@@ -69,7 +70,7 @@ public class TexWriter {
         String res = "";
 
         for (Character character : keys) {
-            res += " & " + getCell(record.getVectorByChar(character));
+            res += " & " + getCell(record.getStateSet(character));
         }
 
         return res + " \\\\ " + TABLE_HLINE + "\n";
@@ -154,10 +155,10 @@ public class TexWriter {
             bf.write(TABLE_END);
 
             bf.write(TABLE_BEGIN_1);
-            bf.write(String.valueOf(2));
+            bf.write(String.valueOf(5));
             bf.write(TABLE_BEGIN_2);
             bf.write(TABLE_CAPTION_RES);
-            bf.write("Pattern & Bandwidth " + " \\\\ " + TABLE_HLINE + "\n");
+            bf.write("Pattern & Bandwidth NFA & Bandwidth Table & Bandwidth DFA & Bandwidth MinDFA" + " \\\\ " + TABLE_HLINE + "\n");
             bf.write(bandWidthTableBody(dataForSerializing));
 
             bf.write(TABLE_END);
@@ -201,7 +202,20 @@ public class TexWriter {
 
         Vector<String> patterns = storage.getAllPatterns();
         for (int i = 0; i < patterns.size(); i++) {
-            double f = storage.getBandwidthByPattern(patterns.get(i));
+            res += patterns.get(i);
+            double f = storage.getBandwidthByPattern(patterns.get(i), TestResultItemStorage.TYPE.NFA);
+            res += " & " + showMbSek(f);
+            f = storage.getBandwidthByPattern(patterns.get(i), TestResultItemStorage.TYPE.TABLE);
+            res += " & " + showMbSek(f);
+            f = storage.getBandwidthByPattern(patterns.get(i), TestResultItemStorage.TYPE.DFA);
+            res += " & " + showMbSek(f);
+            f = storage.getBandwidthByPattern(patterns.get(i), TestResultItemStorage.TYPE.MINDFA);
+            res += " & " + showMbSek(f) + " \\\\ " + TABLE_HLINE + "\n";
+        }
+
+        return res;
+    }
+    private static String showMbSek(double f) {
             String s = "";
             if (f > 1024 * 1024) {
                 s = f / (1024 * 1024) + " Mb/sec";
@@ -210,10 +224,7 @@ public class TexWriter {
             } else {
                 s = f + "b / sec";
             }
-            res += patterns.get(i) + " & " + s + " \\\\ " + TABLE_HLINE + "\n";
-        }
-
-        return res;
+            return s;
     }
 
     private static String getRow(TestResultItem item) {

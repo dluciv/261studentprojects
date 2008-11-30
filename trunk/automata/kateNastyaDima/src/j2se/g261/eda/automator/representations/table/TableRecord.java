@@ -44,10 +44,6 @@ public class TableRecord {
         }
     }
 
-    public Vector<Integer> getVectorByChar(Character c) {
-        return storage.get(c);
-    }
-
     Set<Character> keySet() {
         return storage.keySet();
     }

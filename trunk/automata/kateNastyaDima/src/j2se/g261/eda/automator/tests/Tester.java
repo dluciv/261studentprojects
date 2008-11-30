@@ -56,6 +56,7 @@ public class Tester {
                     testStorage.isMatches(i).equals(TestItemStorage.MATCHES), a, lastPattern);
             processedFiles++;
             results.addTestResult(tri);
+            System.gc();
         }
     }
 

@@ -16,6 +16,7 @@ public class TableWalker {
 
     private NFA graph;
     private Table table;
+    private SearchTable searchTable;
     private int startNumber;
 
     public TableWalker(NFA graph, Table table) {
@@ -27,6 +28,7 @@ public class TableWalker {
                 break;
             }
         }
+        searchTable = new SearchTable(table);
     }
 
     public boolean check(String s) {

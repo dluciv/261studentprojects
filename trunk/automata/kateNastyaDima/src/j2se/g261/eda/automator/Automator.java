@@ -18,6 +18,7 @@ import j2se.g261.eda.automator.representations.minimisation.EdgeGraphWalker;
 import j2se.g261.eda.automator.representations.minimisation.Minimisation;
 import j2se.g261.eda.automator.representations.minimisation.MinimizedDFA;
 import j2se.g261.eda.automator.representations.minimisation.MinimizedDFAWorker;
+import j2se.g261.eda.automator.representations.table.SearchTable;
 import j2se.g261.eda.automator.representations.table.Table;
 import j2se.g261.eda.automator.representations.table.TableWalker;
 import j2se.g261.eda.automator.visualizing.dot.DotUtils;

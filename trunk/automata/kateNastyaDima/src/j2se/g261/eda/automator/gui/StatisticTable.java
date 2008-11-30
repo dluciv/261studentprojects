@@ -5,12 +5,14 @@
 package j2se.g261.eda.automator.gui;
 
 import j2se.g261.eda.automator.tests.ItemFilter;
+import j2se.g261.eda.automator.tests.TestResultItem;
 import j2se.g261.eda.automator.tests.TestResultItemStorage;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
+import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -26,6 +28,41 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+
+//class ColumnData {
+//
+//    public String title;
+//    public int width;
+//    public int alignment;
+//
+//    public ColumnData(String title, int width, int alignment) {
+//        this.title = title;
+//        this.width = width;
+//        this.alignment = alignment;
+//    }
+//}
+//
+//class ResultCellRenderer extends DefaultTableCellRenderer {
+//
+//    private static final String IMAGE_OK = "icons" + File.separator + "ok.png";
+//    private static final String IMAGE_CANCEL = "icons" + File.separator + "cancel.png";
+//
+//    @Override
+//    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//        Component o = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//        if (o instanceof JLabel && column == 1) {
+//            ((JLabel) o).setText("");
+//            if (String.valueOf(value).equals(Boolean.toString(true))) {
+//                ((JLabel) o).setIcon(new ImageIcon(IMAGE_OK));
+//            } else if (String.valueOf(value).equals(Boolean.toString(false))) {
+//                ((JLabel) o).setIcon(new ImageIcon(IMAGE_CANCEL));
+//            } else {
+//                ((JLabel) o).setIcon(null);
+//            }
+//        }
+//        return o;
+//    }
+//}
 /**
  *
  * @author nastya
@@ -75,7 +112,7 @@ public class StatisticTable extends JPanel {
         table.setAutoCreateColumnsFromModel(false);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setModel(tableData);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         for (int k = 0; k < tableData.getColumnCount(); k++) {
             DefaultTableCellRenderer renderer = new StatResultCellRenderer();
             renderer.setHorizontalAlignment(
@@ -124,6 +161,21 @@ public class StatisticTable extends JPanel {
         add(ps, BorderLayout.CENTER);
     }
 
+    void deleteSelectedRows() {
+        Vector<TestResultItem> toDelete = new Vector<TestResultItem>();
+        for (int i = 0; i < table.getSelectedRows().length; i++) {
+            toDelete.add(tableData.getData().getTestResult(table.getSelectedRows()[i]));
+        }
+        
+            table.getSelectionModel().removeSelectionInterval(
+                    0, table.getRowCount() - 1);
+        for (TestResultItem testResultItem : toDelete) {
+            tableData.getData().removeTestResult(testResultItem);
+        }
+        table.updateUI();
+        header.updateUI();
+    }
+
     void updateTableUI() {
         table.updateUI();
         header.updateUI();
@@ -146,41 +198,6 @@ public class StatisticTable extends JPanel {
         header.updateUI();
     }
 }
-
-//class ColumnData {
-//
-//    public String title;
-//    public int width;
-//    public int alignment;
-//
-//    public ColumnData(String title, int width, int alignment) {
-//        this.title = title;
-//        this.width = width;
-//        this.alignment = alignment;
-//    }
-//}
-//
-//class ResultCellRenderer extends DefaultTableCellRenderer {
-//
-//    private static final String IMAGE_OK = "icons" + File.separator + "ok.png";
-//    private static final String IMAGE_CANCEL = "icons" + File.separator + "cancel.png";
-//
-//    @Override
-//    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//        Component o = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-//        if (o instanceof JLabel && column == 1) {
-//            ((JLabel) o).setText("");
-//            if (String.valueOf(value).equals(Boolean.toString(true))) {
-//                ((JLabel) o).setIcon(new ImageIcon(IMAGE_OK));
-//            } else if (String.valueOf(value).equals(Boolean.toString(false))) {
-//                ((JLabel) o).setIcon(new ImageIcon(IMAGE_CANCEL));
-//            } else {
-//                ((JLabel) o).setIcon(null);
-//            }
-//        }
-//        return o;
-//    }
-//}
 class StatResultCellRenderer extends DefaultTableCellRenderer {
 
     private static final String IMAGE_OK = "icons" + File.separator + "ok.png";
