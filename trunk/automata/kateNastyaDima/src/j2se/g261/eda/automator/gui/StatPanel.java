@@ -446,8 +446,8 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         if (e.getSource().equals(cbIgnoreNulls)) {
             recalculateBandwidth();
         }
-        
-        if(e.getSource().equals(btnDeleteRows)){
+
+        if (e.getSource().equals(btnDeleteRows)) {
             deleteSelectedRows();
         }
     }
@@ -462,27 +462,28 @@ public class StatPanel extends javax.swing.JPanel implements ActionListener, Lis
         showBandwidth();
     }
 
-    private void showBandwidth(){
+    private void showBandwidth() {
         showBandwidth(tfBandwidthDFA, TestResultItemStorage.TYPE.DFA);
         showBandwidth(tfBandwidthNFA, TestResultItemStorage.TYPE.NFA);
         showBandwidth(tfBandwidthTable, TestResultItemStorage.TYPE.TABLE);
         showBandwidth(tfBandwidthMinDFA, TestResultItemStorage.TYPE.MINDFA);
     }
+
     private void saveResultAsDVI() {
         if (table.getData() == null) {
             return;
         }
 
-        try{
-        File tex = saveResultsAsTex(TestResultItemStorage.getDataForSerializing(table.getData()));
-        Runtime.getRuntime().exec(Globals.LATEX_COMMAND + " " + tex);
-        String dvifile = tex.getName();
-        dvifile = dvifile.substring(0, dvifile.length() - 4) + ".dvi";
-        File dvi = new File("./" + dvifile);
-        onSave(dvi);
-        }catch(IOException e){
-                            JOptionPane.showMessageDialog(this, "Internal error. Check commands for latex",
-                        "Error!", JOptionPane.ERROR_MESSAGE);
+        try {
+            File tex = saveResultsAsTex(TestResultItemStorage.getDataForSerializing(table.getData()));
+            Runtime.getRuntime().exec(Globals.LATEX_COMMAND + " " + tex);
+            String dvifile = tex.getName();
+            dvifile = dvifile.substring(0, dvifile.length() - 4) + ".dvi";
+            File dvi = new File("./" + dvifile);
+            onSave(dvi);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Internal error. Check commands for latex",
+                    "Error!", JOptionPane.ERROR_MESSAGE);
 
         }
 

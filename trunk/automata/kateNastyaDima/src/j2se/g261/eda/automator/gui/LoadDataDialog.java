@@ -100,6 +100,14 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
         return alp;
     }
 
+    private TestItemStorage convertTests(tests.TestItemStorage testItemStorage) {
+        TestItemStorage st = new TestItemStorage();
+        for (int i = 0; i < testItemStorage.size(); i++) {
+            st.addTest(testItemStorage.getPattern(i), testItemStorage.getString(i), testItemStorage.isMatches(i).equals("1"));
+        }
+        return st;
+    }
+
     private char nextCharacterFromAlphabet(Vector<Character> alphabet, Random rng) {
         if (alphabet.size() == 0) {
             return ' ';
@@ -537,7 +545,16 @@ public class LoadDataDialog extends javax.swing.JDialog implements ActionListene
                 ObjectInputStream in;
                 try {
                     in = new ObjectInputStream(new FileInputStream(selected[i]));
-                    lastLoadedTests[i] = (TestItemStorage) in.readObject();
+                    Object o = in.readObject();
+                    if (o instanceof tests.TestItemStorage) {
+                        lastLoadedTests[i]  = convertTests((tests.TestItemStorage)o);
+                    } else if (o instanceof TestItemStorage) {
+                        lastLoadedTests[i] = (TestItemStorage) o;
+                    } else {
+                        JOptionPane.showMessageDialog(this,
+                                "Some internal error occurs.",
+                                "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this,
                             "You choose wrong files. Please choose another",
