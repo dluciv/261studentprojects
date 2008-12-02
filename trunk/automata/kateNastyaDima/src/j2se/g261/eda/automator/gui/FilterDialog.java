@@ -209,7 +209,7 @@ public class FilterDialog extends javax.swing.JDialog implements ActionListener,
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
+       // bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
@@ -339,8 +339,8 @@ public class FilterDialog extends javax.swing.JDialog implements ActionListener,
         slDeviation.setToolTipText("Choose value in percents");
         slDeviation.setValue(30);
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, slDeviation, org.jdesktop.beansbinding.ELProperty.create("${value}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
+        //org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, slDeviation, org.jdesktop.beansbinding.ELProperty.create("${value}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        //bindingGroup.addBinding(binding);
 
         jLabel3.setText("%");
 
@@ -493,7 +493,7 @@ public class FilterDialog extends javax.swing.JDialog implements ActionListener,
                 .addContainerGap())
         );
 
-        bindingGroup.bind();
+        //bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -549,7 +549,7 @@ public class FilterDialog extends javax.swing.JDialog implements ActionListener,
     private javax.swing.JSlider slDeviation;
     private javax.swing.JTextField tfMax;
     private javax.swing.JTextField tfMin;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
+   // private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
     public void actionPerformed(ActionEvent e) {

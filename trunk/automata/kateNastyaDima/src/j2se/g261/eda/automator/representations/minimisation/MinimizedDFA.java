@@ -88,6 +88,12 @@ public class MinimizedDFA {
         return  allEdges.get(state).values();
     }
     
+    public void fix(){
+    	for(Edge e:all){
+    		addToAllEdges(e);	
+    	}
+    }
+    
     public HashMap<Character, Edge> getX(int state){
     	return allEdges.get(state);
     } 

@@ -120,6 +120,7 @@ public class Minimisation {
         Vector<Couple> diff = new Vector<Couple>();
         Vector<Couple> toDelite = new Vector<Couple>();
         addAbsorbingState();
+        
         int num = storage.size() + 2;
 
         for (int i = 0; i < num; i++) {
@@ -139,7 +140,7 @@ public class Minimisation {
         }
 
         helpToMinimize(diff);
-
+        
 
         for (Couple c : different) {
             toDelite = findEquals(c, toDelite);
@@ -157,7 +158,7 @@ public class Minimisation {
 
             listFirst = edgeGraph.findIncomingEdge(c.getSecond());
             listSecond2 = edgeGraph.findOutgoingEdge(c.getSecond());
-
+            
             
             Vector<Edge> listSecond = new Vector<Edge>();
             
@@ -165,7 +166,7 @@ public class Minimisation {
             for (Edge e : listSecond2) {
                 listSecond.add(e);
             }
-
+            
             for (Edge i : listFirst) {
                 edgeGraph.remove(i);
             }
@@ -197,14 +198,12 @@ public class Minimisation {
         }
 
         Vector<Edge> list = edgeGraph.findIncomingEdge(storage.size() + 1);
-
+       
         for (Edge h : list) {
             edgeGraph.remove(h);
         }
-        
-        System.out.println(edgeGraph);
-        System.out.println(edgeGraph.numEdges(0));
-        return edgeGraph;
+       edgeGraph.fix();
+       return edgeGraph;
         //((0011)|(1010))*(0|1)*
     }
 
