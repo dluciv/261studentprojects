@@ -14,9 +14,10 @@ public class NFA {
 
     int first, fin;
     HashMap<Integer, ArrayList<Transition>> states = new HashMap<Integer, ArrayList<Transition>>();
-    
-    static char EMPTY = '$';
+    int pos = 0;
     static int stateNum = 0;
+    static char EMPTY = '$';
+    
 
     protected ArrayList<Transition> getTrans(int state) {
         return this.states.get(state);
@@ -91,19 +92,20 @@ public class NFA {
     }
 
     public void printAutomaton() {
-        for ( int i: this.states.keySet()) {
+        for (int i : this.states.keySet()) {
             for (Transition trans : this.states.get(i)) {
                 System.out.println(i + "->" + trans.to + ":" + trans.symbol);
             }
         }
     }
 
-    public boolean checkWord(String word, int currentState, int pos) {
+    public boolean checkWord(String word, int currentState) {
         if (pos < word.length()) {
             if (this.states.containsKey(currentState)) {
                 for (Transition trans : this.states.get(currentState)) {
                     if (trans.symbol == word.charAt(pos)) {
-                        boolean checkTail = this.checkWord(word, trans.to, ++pos);
+                        ++pos;
+                        boolean checkTail = this.checkWord(word, trans.to);
                         if (checkTail) {
                             return checkTail;
                         }
@@ -111,7 +113,7 @@ public class NFA {
                 }
                 for (Transition trans2 : this.states.get(currentState)) {
                     if (trans2.symbol == EMPTY) {
-                        boolean checkTail = this.checkWord(word, trans2.to, pos);
+                        boolean checkTail = this.checkWord(word, trans2.to);
                         if (checkTail) {
                             return checkTail;
                         }
@@ -120,11 +122,32 @@ public class NFA {
             }
             return false;
 
-        } else if (currentState == this.fin) {
-            return true;
-        } else {
-            return false;
         }
+        if (currentState == this.fin) {
+            return true;
+        }
+        if (this.hasEmptyTrans(currentState)) {
+            for (Transition trans : this.states.get(currentState)) {
+                if (trans.symbol == EMPTY) {
+                    boolean checkTail = this.checkWord(word, trans.to);
+                    if (checkTail) {
+                        return checkTail;
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
+
+    private boolean hasEmptyTrans(int state) {
+        for (Transition trans : this.states.get(state)) {
+            if (trans.symbol == EMPTY) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     private void combine(NFA additional) {
@@ -144,16 +167,21 @@ public class NFA {
         this.states.get(stateNum).add(new Transition(this.first, EMPTY));
         this.first = stateNum;
     }
+
     private void addEmptyEnd() {
         this.states.put(++stateNum, new ArrayList<Transition>());
         this.states.get(this.fin).add(new Transition(stateNum, EMPTY));
         this.fin = stateNum;
     }
-    protected void newState( int state){
+
+    protected void newState(int state) {
         this.states.put(state, new ArrayList<Transition>());
     }
-    protected void addTrans( int from, int to, char by ){
+
+    protected void addTrans(int from, int to, char by) {
         this.states.get(from).add(new Transition(to, by));
     }
+    public void prepareForNextWord(){
+        this.pos = 0;
+    }
 }
-

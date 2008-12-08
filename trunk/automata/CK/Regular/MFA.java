@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Regular;
 
 /**
@@ -14,13 +13,15 @@ import java.util.ArrayList;
 public class MFA extends DFA {
 
     public void minimizer(DFA DFA) {
+        this.setAlphabet();
         ArrayList<ArrayList<Integer>> statesSet = getMFAstates(DFA);
-        this.setStates( statesSet );
+        this.setStates(statesSet);
+        this.setTrans(DFA);
         this.setFirst(DFA.first);
         this.setFins(DFA);
-        this.setTrans(DFA);
     }
-    private static ArrayList<ArrayList<Integer>> getMFAstates(DFA DFA){
+
+    private static ArrayList<ArrayList<Integer>> getMFAstates(DFA DFA) {
         ArrayList<ArrayList<Integer>> statesSet = firstPartition(DFA);
         ArrayList<ArrayList<Integer>> newStatesSet = newPartition(statesSet, DFA);
         while (!newStatesSet.equals(statesSet)) {
@@ -40,10 +41,9 @@ public class MFA extends DFA {
     }
 
     private void setFins(DFA DFA) {
-        this.fins = new ArrayList<Integer>();
-        for( int fin: DFA.fins){
-            for(int state: this.states.keySet()){
-                if(this.states.get(state).statesList.contains(fin) & !this.fins.contains(state)){
+        for (int fin : DFA.fins) {
+            for (int state : this.states.keySet()) {
+                if (this.states.get(state).statesList.contains(fin) & !this.fins.contains(state)) {
                     this.fins.add(state);
                 }
             }
@@ -58,9 +58,32 @@ public class MFA extends DFA {
 
     private void setTrans(DFA DFA) {
         for (int state : this.states.keySet()) {
-            for (int DFAstate : this.states.get(state).statesList) {
+            ArrayList<Transition> transList = getTransList(DFA, state);
+            for( int destState : this.states.keySet()){
+                for( Transition trans: transList){
+                    if( this.states.get(destState).statesList.contains(trans.to) ){
+                          this.states.get(state).trans.add( new Transition (destState, trans.symbol));
+                    }
+                }
             }
         }
+    }
+
+    private ArrayList<Transition> getTransList(DFA DFA, int state) {
+        ArrayList<Transition> trans = new ArrayList<Transition>();
+        int dest;
+        for (String letter : alphabet) {
+            char symb = letter.charAt(0);
+            for (int DFAstate : this.states.get(state).statesList) {
+                dest = DFA.whereTo(symb, DFAstate);
+                if (dest != BAD) {
+                    trans.add(new Transition(dest, symb));
+                    break;
+                }
+            }
+        }
+        return trans;
+
     }
 
     private static ArrayList<ArrayList<Integer>> newPartition(ArrayList<ArrayList<Integer>> statesSet, DFA DFA) {
@@ -85,31 +108,34 @@ public class MFA extends DFA {
         return newStatesSet;
     }
 
-    private static ArrayList<Integer> makeGroup(int state){
+    private static ArrayList<Integer> makeGroup(int state) {
         ArrayList<Integer> newGroup = new ArrayList<Integer>();
         newGroup.add(state);
         return newGroup;
     }
+
     private static boolean equival(int state1, int state2, DFA DFA, ArrayList<ArrayList<Integer>> statesSet) {
         int dest1, dest2;
-        for (char symb = 'a'; symb <= 'z'; symb++) {
+        for (String letter : DFA.alphabet) {
+            char symb = letter.charAt(0);
             dest1 = DFA.whereTo(symb, state1);
             dest2 = DFA.whereTo(symb, state2);
             for (ArrayList<Integer> group : statesSet) {
-                if ((group.contains(dest1) & !group.contains(dest2))|(!group.contains(dest1) & group.contains(dest2)) ){
+                if ((group.contains(dest1) & !group.contains(dest2)) | (!group.contains(dest1) & group.contains(dest2))) {
                     return false;
                 }
             }
         }
         return true;
     }
-    public static ArrayList<ArrayList<Integer>> firstPartition(DFA DFA){
+
+    public static ArrayList<ArrayList<Integer>> firstPartition(DFA DFA) {
         ArrayList<ArrayList<Integer>> statesSet = new ArrayList<ArrayList<Integer>>();
         ArrayList<Integer> allStates = new ArrayList<Integer>();
         allStates.addAll(DFA.states.keySet());
         allStates.removeAll(DFA.fins);
         statesSet.add(allStates);
-        statesSet.add(DFA.fins); 
+        statesSet.add(DFA.fins);
         return statesSet;
     }
 }
