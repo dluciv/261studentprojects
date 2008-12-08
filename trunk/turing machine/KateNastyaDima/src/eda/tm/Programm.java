@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class Programm {
 
-	private HashMap<StateSymbol,StateSymbolMove> rules;
+	private HashMap<StateSymbol, StateSymbolMove> rules;
 	private String beginState;
 	private String endState;
 	private Vector<String> alphabet;
@@ -54,6 +54,19 @@ public class Programm {
 		this.alphabet = alphabet;
 	}
 	
+	public Tape performMove(StateSymbol tmp, Tape tape){
+		StateSymbolMove nextMove = rules.get(tmp);
+		tmp.setState(nextMove.getState());
+		tape.write(nextMove.getSymbol());
+		tape.changePosition(nextMove.getMove());
+		tmp.setSymbol(tape.returnCurrentSymbol());
+		if(nextMove.getState() != endState) return performMove(tmp, tape);
+		else return tape;
+	}
 	
+	public Tape performProgramm(Tape tape){
+		StateSymbol start = new StateSymbol(beginState, tape.returnCurrentSymbol());
+		return performMove(start, tape);
+	}
 	
 }
