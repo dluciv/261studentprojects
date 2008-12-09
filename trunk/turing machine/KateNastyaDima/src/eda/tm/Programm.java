@@ -8,18 +8,11 @@ public class Programm {
 	private HashMap<StateSymbol, StateSymbolMove> rules;
 	private String beginState;
 	private String endState;
-	private Vector<String> alphabet;
 	
-	public Programm(String beginState) {
-		this.beginState = beginState;
-	}
-
-	public Programm(Vector<String> alphabet, String beginState,
-			String endState, HashMap<StateSymbol, StateSymbolMove> rules) {
-		this.alphabet = alphabet;
+	public Programm(String beginState, String endState) {
 		this.beginState = beginState;
 		this.endState = endState;
-		this.rules = rules;
+		this.rules = new HashMap<StateSymbol, StateSymbolMove>();
 	}
 
 	public HashMap<StateSymbol, StateSymbolMove> getRules() {
@@ -29,7 +22,7 @@ public class Programm {
 	public void setRules(HashMap<StateSymbol, StateSymbolMove> rules) {
 		this.rules = rules;
 	}
-
+	
 	public String getBeginState() {
 		return beginState;
 	}
@@ -46,12 +39,8 @@ public class Programm {
 		this.endState = endState;
 	}
 
-	public Vector<String> getAlphabet() {
-		return alphabet;
-	}
-
-	public void setAlphabet(Vector<String> alphabet) {
-		this.alphabet = alphabet;
+	public void addRule(StateSymbol stateSymbol, StateSymbolMove stateSymbolMove){
+		rules.put(stateSymbol, stateSymbolMove);
 	}
 	
 	public Tape performMove(StateSymbol tmp, Tape tape){
@@ -64,7 +53,7 @@ public class Programm {
 		else return tape;
 	}
 	
-	public Tape performProgramm(Tape tape){
+	public Tape execute(Tape tape){
 		StateSymbol start = new StateSymbol(beginState, tape.returnCurrentSymbol());
 		return performMove(start, tape);
 	}

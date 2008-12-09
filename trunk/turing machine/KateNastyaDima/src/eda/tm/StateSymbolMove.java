@@ -4,9 +4,9 @@ public class StateSymbolMove {
 
 	private String state;
 	private char symbol;
-	private char move;
+	private Moving move;
 	
-	public StateSymbolMove(char move, String state, char symbol) {
+	public StateSymbolMove(Moving move, String state, char symbol) {
 		this.move = move;
 		this.state = state;
 		this.symbol = symbol;
@@ -23,12 +23,10 @@ public class StateSymbolMove {
 	public void setSymbol(char symbol) {
 		this.symbol = symbol;
 	}
-	public char getMove() {
+	public Moving getMove() {
 		return move;
 	}
-	public void setMove(char move) {
+	public void setMove(Moving move) {
 		this.move = move;
 	}
-	
-	
 }
