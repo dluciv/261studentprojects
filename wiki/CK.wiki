@@ -5,3 +5,19 @@
 Group consists of:
 C. Kuznetsov, 
 V. Sorokin (?).
+
+= Bugs =
+
+1. Package name should be lower case
+
+2. StringIndexOutOfBoundsException
+{{{
+>java Regular/Main
+aa*(b|c)|a*(c|d)
+...
+a
+Exception in thread "main" java.lang.StringIndexOutOfBoundsException: String index out of range: 1
+        at java.lang.String.charAt(Unknown Source)
+        at Regular.NFA.checkWord(NFA.java:106)
+        at Regular.Main.main(Main.java:33)
+}}}
