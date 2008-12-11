@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Regular;
+package regular;
 
 /**
  *
@@ -19,49 +19,49 @@ public class DFA {
     int first;
     int stateNum = 0;
     int pos = 0;
-    TreeSet<String> alphabet = new TreeSet();
-    static char EMPTY = '$';
-    static int BAD = -1;
+    static TreeSet<String> alphabet = new TreeSet<String>();
+    static final char EMPTY = '$';
+    static final int BAD = -1;
 
     public void Determinator(NFA NFA) {
         int currentState;
-        this.setAlphabet();
+        setAlphabet();
         ArrayList<Integer> firstState = new ArrayList<Integer>();
         firstState.add(NFA.first);
         ArrayList<Integer> DFAbeg = reachedBy(EMPTY, firstState, NFA);
         this.first = stateNum;
-        this.newState(this.first, DFAbeg, false);
-        while (this.hasUnmarkedStates()) {
-            currentState = this.getUnmarked();
-            this.mark(currentState);
+        newState(first, DFAbeg, false);
+        while (hasUnmarkedStates()) {
+            currentState = getUnmarked();
+            mark(currentState);
             for (String letter : alphabet) {
                 char symb = letter.charAt(0);
-                ArrayList<Integer> next = reachedBy(EMPTY, reachedBy(symb, this.states.get(currentState).statesList, NFA), NFA);
+                ArrayList<Integer> next = reachedBy(EMPTY, reachedBy(symb, states.get(currentState).statesList, NFA), NFA);
                 if (!next.isEmpty()) {
-                    int num = this.getNum(next);
+                    int num = getNum(next);
                     if (num == BAD) {
-                        this.newState(++stateNum, next, false);
-                        this.addTrans(currentState, stateNum, symb);
+                        newState(++stateNum, next, false);
+                        addTrans(currentState, stateNum, symb);
                     } else {
-                        this.addTrans(currentState, num, symb);
+                        addTrans(currentState, num, symb);
                     }
                 }
             }
         }
-        this.setFinalStates(NFA.fin);
+        setFinalStates(NFA.fin);
     }
 
     private void setFinalStates(int NFAfin) {
-        for (int state : this.states.keySet()) {
-            if (this.states.get(state).statesList.contains(NFAfin)) {
-                this.fins.add(state);
+        for (int state : states.keySet()) {
+            if (states.get(state).statesList.contains(NFAfin)) {
+                fins.add(state);
             }
         }
     }
 
     private boolean hasUnmarkedStates() {
-        for (int state : this.states.keySet()) {
-            if (!this.states.get(state).marked) {
+        for (int state : states.keySet()) {
+            if (!states.get(state).marked) {
                 return true;
             }
         }
@@ -69,8 +69,8 @@ public class DFA {
     }
 
     private int getNum(ArrayList<Integer> NFAstatesList) {
-        for (int DFAstate : this.states.keySet()) {
-            if (NFAstatesList.equals(this.states.get(DFAstate).statesList)) {
+        for (int DFAstate : states.keySet()) {
+            if (NFAstatesList.equals(states.get(DFAstate).statesList)) {
                 return DFAstate;
             }
         }
@@ -78,13 +78,13 @@ public class DFA {
     }
 
     private void newState(int DFAstate, ArrayList<Integer> NFAstates, boolean marked) {
-        this.states.put(DFAstate, new DFAstateStatus(NFAstates, marked, new ArrayList<Transition>()));
+        states.put(DFAstate, new DFAstateStatus(NFAstates, marked, new ArrayList<Transition>()));
 
     }
 
     private int getUnmarked() {
-        for (int state : this.states.keySet()) {
-            if (this.states.get(state).marked == false) {
+        for (int state : states.keySet()) {
+            if (states.get(state).marked == false) {
                 return state;
             }
         }
@@ -92,7 +92,7 @@ public class DFA {
     }
 
     private void mark(int state) {
-        this.states.get(state).marked = true;
+        states.get(state).marked = true;
     }
 
     private static ArrayList<Integer> reachedBy(char symb, ArrayList<Integer> states, NFA NFA) {
@@ -112,28 +112,25 @@ public class DFA {
          return result;
     }
 
-    public void setAlphabet() {
+    protected void setAlphabet() {
         for (char symb = 'a'; symb <= 'z'; symb++) {
-            this.alphabet.add("" + symb);
+            alphabet.add("" + symb);
         }
     }
-//    protected static ArrayList<String> getSymbols( ArrayList<Integer> NFAstates, NFA NFA){
-//        ArrayList<String> alphabet = new ArrayList<String>();
-//        for(int state: NFAstates){
-//            for(Transition trans: NFA.getTrans(state)){
-//                if( !alphabet.contains(trans.symbol)) {
-//                    alphabet.add("" + trans.symbol);
-//                }               
-//            }
-//        } 
-//        return alphabet;
-//    }
+    public static TreeSet<String> getAlphabet( String expr){
+    	for(int i = 0; i< expr.length()){
+    		if(!alphabet.containes(expr.charAt(i))){
+    			alphabet.add("" + expr.charAt(i));
+    		}
+    	}
+        return alphabet;
+    }
     protected void addTrans(int from, int to, char by) {
-        this.states.get(from).trans.add(new Transition(to, by));
+        states.get(from).trans.add(new Transition(to, by));
     }
 
     protected int whereTo(char symb, int from) {
-        for (Transition trans : this.states.get(from).trans) {
+        for (Transition trans : states.get(from).trans) {
             if (trans.symbol == symb) {
                 return trans.to;
             }
@@ -142,25 +139,29 @@ public class DFA {
     }
 
     public void printAutomaton() {
-        for (int i : this.states.keySet()) {
-            for (Transition trans : this.states.get(i).trans) {
+        for (int i : states.keySet()) {
+            for (Transition trans : states.get(i).trans) {
                 System.out.println(i + "->" + trans.to + ":" + trans.symbol);
             }
         }
     }
 
-    public boolean checkWord(String word, int currentState) {
+    public boolean checkWord(String word){
+    	prepareForNextWord();
+    	return checkTail( word, first);
+    }
+    public boolean checkTail(String word, int currentState) {
     if (pos < word.length()) {
-        for (Transition trans : this.states.get(currentState).trans) {
+        for (Transition trans : states.get(currentState).trans) {
                 if (trans.symbol == word.charAt(pos)) {
                     ++pos;
-                    boolean checkTail = this.checkWord(word, trans.to);
+                    boolean checkTail = checkTail(word, trans.to);
                     return checkTail;
                 }
             }
             return false;
         }
-        if (this.fins.contains(currentState)) {
+        if (fins.contains(currentState)) {
             return true;
         }
         return false;
@@ -168,6 +169,6 @@ public class DFA {
     }
 
     public void prepareForNextWord() {
-        this.pos = 0;
+        pos = 0;
     }
 }

@@ -1,4 +1,4 @@
-package Regular;
+package regular;
 
 /*
  * To change this template, choose Tools | Templates

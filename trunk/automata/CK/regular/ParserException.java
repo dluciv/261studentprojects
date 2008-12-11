@@ -3,19 +3,19 @@
  * and open the template in the editor.
  */
 
-package Regular;
+package regular;
 
 /**
  *
  * @author Кирилл
  */
 
-public class ParserException extends Exception{
-    static int MISSED_CLOSING_BRACKET = 0;
-    int type;
-
-    public ParserException(int type) {
-        this.type = type;
-    }
-}
+//public class ParserException extends Exception{
+//    static int MISSED_CLOSING_BRACKET = 0;
+//    int type;
+//
+//    public ParserException(int type) {
+//        this.type = type;
+//    }
+//}
 

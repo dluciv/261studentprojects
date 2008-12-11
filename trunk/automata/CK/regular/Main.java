@@ -1,4 +1,4 @@
-package Regular;
+package regular;
 
 /*
  * To change this template, choose Tools | Templates
@@ -30,12 +30,9 @@ public class Main {
         MFA.printAutomaton();
         String word = in.getLine();
         while (!word.equals("")) {
-            System.out.println(NFA.checkWord(word, NFA.first));
-            System.out.println(DFA.checkWord(word, DFA.first));
-            System.out.println(MFA.checkWord(word, MFA.first));
-            NFA.prepareForNextWord();
-            DFA.prepareForNextWord();
-            MFA.prepareForNextWord();
+            System.out.println(NFA.checkWord(word));
+            System.out.println(DFA.checkWord(word));
+            System.out.println(MFA.checkWord(word));
             word = in.getLine();
         }
     }

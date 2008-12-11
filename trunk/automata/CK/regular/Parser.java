@@ -1,4 +1,4 @@
-package Regular;
+package regular;
 /**
  *
  * @author Кирилл
@@ -29,7 +29,7 @@ public class Parser {
     }
     private static NFA parseConcat( String expr){
         NFA auto = parseClosureQuestion( expr);
-    	while( isLetter(currentChar(expr))| (currentChar(expr) == '(')){
+    	while( isLetter(currentChar(expr)) || (currentChar(expr) == '(')){
     		auto = NFA.buildConcat(auto, parseConcat( expr));
     	}
         return auto;
