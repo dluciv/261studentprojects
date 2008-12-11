@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package regular;
 
 /**
@@ -12,15 +8,39 @@ import java.util.*;
 
 public class NFA {
 
+<<<<<<< .mine
+	int first, fin;
+	HashMap<Integer, ArrayList<Transition>> states = new HashMap<Integer, ArrayList<Transition>>();
+	int pos = 0;
+        static TreeSet<String> alphabet = new TreeSet<String>();
+	static int stateNum = 0;
+	static char EMPTY = '$';
+=======
 	int first, fin;
 	HashMap<Integer, ArrayList<Transition>> states = new HashMap<Integer, ArrayList<Transition>>();
 	int pos = 0;
 	static int stateNum = 0;
 	static char EMPTY = '$';
+>>>>>>> .r221
 
+<<<<<<< .mine
 	protected ArrayList<Transition> getTrans(int state) {
 		return this.states.get(state);
 	}
+        public TreeSet<String> getAlphabet( String expr){
+     	for(int i = 0; i< expr.length(); ++i){
+    		if((expr.charAt(i)!= '*')&(expr.charAt(i)!= '(')&(expr.charAt(i)!= ')')
+                        &(expr.charAt(i)!= '|')&(expr.charAt(i)!= '?')) {
+    			alphabet.add("" + expr.charAt(i));
+    		}
+    	}
+        return alphabet;
+    }
+=======
+	protected ArrayList<Transition> getTrans(int state) {
+		return this.states.get(state);
+	}
+>>>>>>> .r221
 
 	protected void setFirst(int newFirst) {
 		ArrayList<Transition> buf = this.states.get(this.first);
@@ -90,6 +110,16 @@ public class NFA {
 		return automat;
 	}
 
+<<<<<<< .mine
+	public void printAutomaton() {
+		for (int i : this.states.keySet()) {
+			for (Transition trans : this.states.get(i)) {
+				System.out.println(i + "->" + trans.to + ":" + trans.symbol);
+			}
+		}
+                System.out.println('\n');
+	}
+=======
 	public void printAutomaton() {
 		for (int i : this.states.keySet()) {
 			for (Transition trans : this.states.get(i)) {
@@ -97,6 +127,7 @@ public class NFA {
 			}
 		}
 	}
+>>>>>>> .r221
 
 	public boolean checkWord(String word) {
 		prepareForNextWord();

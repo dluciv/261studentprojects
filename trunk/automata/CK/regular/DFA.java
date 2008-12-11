@@ -1,8 +1,14 @@
+package Regular;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+<<<<<<< .mine
+=======
 package regular;
+>>>>>>> .r221
+
 
 /**
  *
@@ -23,10 +29,25 @@ public class DFA {
     static final char EMPTY = '$';
     static final int BAD = -1;
 
-    public void Determinator(NFA NFA) {
+    public static DFA Determinator(NFA nfa) {
+        DFA dfa = new DFA();
         int currentState;
+<<<<<<< .mine
+=======
         setAlphabet();
+>>>>>>> .r221
         ArrayList<Integer> firstState = new ArrayList<Integer>();
+<<<<<<< .mine
+        
+        alphabet = NFA.alphabet;
+        firstState.add(nfa.first);
+        ArrayList<Integer> DFAbeg = reachedBy(EMPTY, firstState, nfa);
+        dfa.first = dfa.stateNum;
+        dfa.newState(dfa.first, DFAbeg, false);
+        while (dfa.hasUnmarkedStates()) {
+            currentState = dfa.getUnmarked();
+            dfa.mark(currentState);
+=======
         firstState.add(NFA.first);
         ArrayList<Integer> DFAbeg = reachedBy(EMPTY, firstState, NFA);
         this.first = stateNum;
@@ -34,21 +55,44 @@ public class DFA {
         while (hasUnmarkedStates()) {
             currentState = getUnmarked();
             mark(currentState);
+>>>>>>> .r221
             for (String letter : alphabet) {
                 char symb = letter.charAt(0);
+<<<<<<< .mine
+                ArrayList<Integer> next = reachedBy(EMPTY, reachedBy(symb, dfa.states.get(currentState).statesList, nfa), nfa);
+=======
                 ArrayList<Integer> next = reachedBy(EMPTY, reachedBy(symb, states.get(currentState).statesList, NFA), NFA);
+>>>>>>> .r221
                 if (!next.isEmpty()) {
+<<<<<<< .mine
+                    int num = dfa.getNum(next);
+=======
                     int num = getNum(next);
+>>>>>>> .r221
                     if (num == BAD) {
+<<<<<<< .mine
+                        dfa.newState(++dfa.stateNum, next, false);
+                        dfa.addTrans(currentState, dfa.stateNum, symb);
+=======
                         newState(++stateNum, next, false);
                         addTrans(currentState, stateNum, symb);
+>>>>>>> .r221
                     } else {
+<<<<<<< .mine
+                        dfa.addTrans(currentState, num, symb);
+=======
                         addTrans(currentState, num, symb);
+>>>>>>> .r221
                     }
                 }
             }
         }
+<<<<<<< .mine
+        dfa.setFinalStates(nfa.fin);
+        return dfa;
+=======
         setFinalStates(NFA.fin);
+>>>>>>> .r221
     }
 
     private void setFinalStates(int NFAfin) {
@@ -112,6 +156,9 @@ public class DFA {
          return result;
     }
 
+<<<<<<< .mine
+    
+=======
     protected void setAlphabet() {
         for (char symb = 'a'; symb <= 'z'; symb++) {
             alphabet.add("" + symb);
@@ -125,6 +172,7 @@ public class DFA {
     	}
         return alphabet;
     }
+>>>>>>> .r221
     protected void addTrans(int from, int to, char by) {
         states.get(from).trans.add(new Transition(to, by));
     }
@@ -144,6 +192,7 @@ public class DFA {
                 System.out.println(i + "->" + trans.to + ":" + trans.symbol);
             }
         }
+        System.out.println('\n');
     }
 
     public boolean checkWord(String word){

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package regular;
 
 /**
@@ -12,13 +8,14 @@ import java.util.ArrayList;
 
 public class MFA extends DFA {
 
-    public void minimizer(DFA DFA) {
-        this.setAlphabet();
-        ArrayList<ArrayList<Integer>> statesSet = getMFAstates(DFA);
-        this.setStates(statesSet);
-        this.setTrans(DFA);
-        this.setFirst(DFA.first);
-        this.setFins(DFA);
+    public static MFA minimizer(DFA dfa) {
+        MFA mfa = new MFA();
+        ArrayList<ArrayList<Integer>> statesSet = getMFAstates(dfa);
+        mfa.setStates(statesSet);
+        mfa.setTrans(dfa);
+        mfa.setFirst(dfa.first);
+        mfa.setFins(dfa);
+        return mfa;
     }
 
     private static ArrayList<ArrayList<Integer>> getMFAstates(DFA DFA) {
@@ -59,10 +56,10 @@ public class MFA extends DFA {
     private void setTrans(DFA DFA) {
         for (int state : this.states.keySet()) {
             ArrayList<Transition> transList = getTransList(DFA, state);
-            for( int destState : this.states.keySet()){
-                for( Transition trans: transList){
-                    if( this.states.get(destState).statesList.contains(trans.to) ){
-                          this.states.get(state).trans.add( new Transition (destState, trans.symbol));
+            for (int destState : this.states.keySet()) {
+                for (Transition trans : transList) {
+                    if (this.states.get(destState).statesList.contains(trans.to)) {
+                        this.states.get(state).trans.add(new Transition(destState, trans.symbol));
                     }
                 }
             }
