@@ -1,4 +1,4 @@
-package regular;
+package Regular;
 
 /**
  *
@@ -21,15 +21,9 @@ public class Main {
         mfa.printAutomaton();
         String word = in.getLine();
         while (!word.equals("")) {
-<<<<<<< .mine
             System.out.println(nfa.checkWord(word));
             System.out.println(dfa.checkWord(word));
             System.out.println(mfa.checkWord(word));
-=======
-            System.out.println(NFA.checkWord(word));
-            System.out.println(DFA.checkWord(word));
-            System.out.println(MFA.checkWord(word));
->>>>>>> .r221
             word = in.getLine();
         }
     }
