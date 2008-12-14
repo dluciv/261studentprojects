@@ -11,4 +11,5 @@ package eda.tm;
  */
 public enum Moving {
     STEND, RIGHT, LEFT
+            
 }

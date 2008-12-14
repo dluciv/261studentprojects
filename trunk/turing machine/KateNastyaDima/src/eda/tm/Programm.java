@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.events.StartDocument;
 import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -33,10 +36,6 @@ public class Programm {
         return rules;
     }
 
-    public void setRules(HashMap<StateSymbol, StateSymbolMove> rules) {
-        this.rules = rules;
-    }
-
     public String getBeginState() {
         return beginState;
     }
@@ -57,22 +56,30 @@ public class Programm {
         rules.put(stateSymbol, stateSymbolMove);
     }
 
-    public Tape performMove(StateSymbol tmp, Tape tape) {
+    public Trace performMove(StateSymbol tmp, Tape tape, Trace trace) {
         StateSymbolMove nextMove = rules.get(tmp);
+        if(nextMove.getState().equals(endState)){
+            trace.add(new TraceTape(tape, Moving.STEND));
+            return trace;
+        }
         tmp.setState(nextMove.getState());
         tape.write(nextMove.getSymbol());
         tape.changePosition(nextMove.getMove());
         tmp.setSymbol(tape.returnCurrentSymbol());
-        if (nextMove.getState() != endState) {
-            return performMove(tmp, tape);
-        } else {
-            return tape;
-        }
+        trace.add(new TraceTape(tape, nextMove.getMove()));
+        System.out.println(tape);
+//        if (!nextMove.getState().equals(endState)) {
+            return performMove(tmp, tape, trace);
+//        } else {
+//            return tape;
+//        }
     }
 
-    public Tape execute(Tape tape) {
+    public Trace execute(Tape tape) {
         StateSymbol start = new StateSymbol(beginState, tape.returnCurrentSymbol());
-        return performMove(start, tape);
+        Trace trace = new Trace();
+        trace.add(new TraceTape(tape, Moving.STEND));
+        return performMove(start, tape, trace);
     }
 
     private enum XML_TAGS {
@@ -92,14 +99,10 @@ public class Programm {
             Element start = doc.createElement(String.valueOf(XML_TAGS.start));
             start.setTextContent(beginState);
             root.appendChild(start);
-            System.out.println(start);
 
             Element end = doc.createElement(String.valueOf(XML_TAGS.end));
             end.setTextContent(endState);
             root.appendChild(end);
-            System.out.println(end);
-
-            System.out.println(root);
 
             Iterator<Entry<StateSymbol, StateSymbolMove>> i = rules.entrySet().iterator();
 
@@ -160,22 +163,28 @@ public class Programm {
 //        
 //        p.writeToXML();
 //    }
-    
-    public static Programm parseProgram(File filename){
-            Programm program = null;
+
+    public static Programm parseProgram(File filename) {
+        Programm program = null;
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(filename);
             doc.getDocumentElement().normalize();
             Element root = doc.getDocumentElement();
-            if(!root.getNodeName().equals(String.valueOf(XML_TAGS.program))) return null;
+            if (!root.getNodeName().equals(String.valueOf(XML_TAGS.program))) {
+                return null;
             //@todo throw exception if file have wrong root element
-            NodeList node = doc.getElementsByTagName(String.valueOf(XML_TAGS.start));
-            if(node.getLength() == 0) return null;
+            }
+            NodeList node = doc.getElementsByTagName(String.valueOf(XML_TAGS.end));
+            if (node.getLength() == 0) {
+                return null;
+            }
             String endStateProgram = node.item(0).getTextContent();
-            node = doc.getElementsByTagName(String.valueOf(XML_TAGS.end));
-            if(node.getLength() == 0) return null;
+            node = doc.getElementsByTagName(String.valueOf(XML_TAGS.start));
+            if (node.getLength() == 0) {
+                return null;
+            }
             String startStateProgram = node.item(0).getTextContent();
             program = new Programm(startStateProgram, endStateProgram);
             node = doc.getElementsByTagName(String.valueOf(XML_TAGS.passage));
@@ -190,9 +199,8 @@ public class Programm {
                 String endMove = ((Element) end.getElementsByTagName(String.valueOf(XML_TAGS.move)).item(0)).getTextContent();
                 StateSymbol ss = new StateSymbol(startState, startSymbol.charAt(0));
                 StateSymbolMove ssm = new StateSymbolMove(
-                        endMove.equals(String.valueOf(Moving.STEND)) ? Moving.STEND : 
-                            (endMove.equals(String.valueOf(Moving.RIGHT)) ? Moving.RIGHT : Moving.LEFT),
-                            endState, endSymbol.charAt(0));
+                        endMove.equals(String.valueOf(Moving.STEND)) ? Moving.STEND : (endMove.equals(String.valueOf(Moving.RIGHT)) ? Moving.RIGHT : Moving.LEFT),
+                        endState, endSymbol.charAt(0));
                 program.addRule(ss, ssm);
             }
         } catch (SAXException ex) {
@@ -204,23 +212,106 @@ public class Programm {
         }
         return program;
     }
+
+//    public static void main(String[] args) {
+//        try {
+//            Programm umt = parseProgram(new File("/home/nastya/dddd/UMT.xml"));
+////            System.out.println(umt.getBeginState());
+//            System.out.println(umt);
+//////        Vector<Character> v  = new Vector<Character>();
+////////        v.add('*');
+//////        v.add('1');
+//////        v.add('1');
+//////        v.add('*');
+//////        v.add('1');
+//////        v.add('1');nextMove.getState().equals(endState)
+//////        v.add('1');
+//////        v.add('*');
+////            Vector v = translateToVector("ccC111R1c11R0c0cc0c0c1R1cc0c0c0cccN101");
+////            Tape tape = new Tape(v);
+////////        
+////            System.out.println(tape);
+////            Tape tape1 = umt.execute(tape);
+////            System.out.println(tape1);
+//            
+//            Programm p = new Programm("q1", "q3");
+//            p.addRule(new StateSymbol("q1", 'b'), new StateSymbolMove(Moving.RIGHT, "q3", '1'));
+//            p.addRule(new StateSymbol("q1", '0'), new StateSymbolMove(Moving.RIGHT, "q2", '0'));
+//            p.addRule(new StateSymbol("q2", '1'), new StateSymbolMove(Moving.RIGHT, "q1", '1'));
+//            
+//            String data  = p.toUTMString() + "c" + "N101";
+//            
+//            System.out.println(umt.execute(new Tape(translateToVector(data))));
+//        } catch (NullPointerException ex) {
+//            System.out.println("ERROR");
+//        }
+//            
+//    }
+//    
     
-    public static void main(String[] args) {
-        Programm p = parseProgram(new File("/home/nastya/dddd/Program.xml"));
-        System.out.println(p);
+    public static Vector<Character> translateToVector(String s) {
+        Vector<Character> v = new Vector<Character>();
+        for (int i = 0; i < s.length(); i++) {
+            v.add(s.charAt(i));
+        }
+        return v;
+    }
+       
+    private Table toTable(){
+        HashMap<String, Integer> states = new HashMap<String, Integer>();
+        Set<Entry<StateSymbol,StateSymbolMove>> set = rules.entrySet();
+        Iterator<Entry<StateSymbol,StateSymbolMove>> i = set.iterator();
+        states.put(beginState, 1);
+        int number = 2;
+        while(i.hasNext()){
+            Entry<StateSymbol,StateSymbolMove> e = i.next();
+            if(!states.containsKey(e.getKey().getState()) 
+                    && !e.getKey().getState().equals(beginState) 
+                    && !e.getKey().getState().equals(endState)){
+                states.put(e.getKey().getState(), number);
+                number++;
+            }
+             if(!states.containsKey(e.getValue().getState()) 
+                    && !e.getValue().getState().equals(beginState) 
+                    && !e.getValue().getState().equals(endState)){
+                states.put(e.getValue().getState(), number);
+                number++;
+            }
+        }
+        
+        states.put(endState, number);
+        Table table = new Table(states.size());
+        i = set.iterator();
+        while(i.hasNext()){
+            Entry<StateSymbol,StateSymbolMove> e = i.next();
+            
+            StateSymbolMove ssm = new StateSymbolMove(e.getValue().getMove(),
+                    String.valueOf(states.get(e.getValue().getState())),
+                    e.getValue().getSymbol());
+            
+            table.add(states.get(e.getKey().getState()),e.getKey().getSymbol(), ssm);
+        }
+        
+        table.fillTable();
+        return table;
+    }
+    
+   
+    
+    public  String toUTMString(){
+        return toTable().toString();
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         String s = "PROGRAM: \n";
-        s += "  start: " + beginState + "\n"; 
-        s += "  end: " + endState + "\n\n"; 
+        s += "  start: " + beginState + "\n";
+        s += "  end: " + endState + "\n\n";
         Iterator<Entry<StateSymbol, StateSymbolMove>> i = rules.entrySet().iterator();
-        while(i.hasNext()){
+        while (i.hasNext()) {
             Entry<StateSymbol, StateSymbolMove> e = i.next();
             s += "  " + e.getKey() + " -> " + e.getValue() + "\n";
         }
         return s;
     }
-            
 }
