@@ -26,15 +26,19 @@ public class TraceTape {
         switch(lastMove){
             case LEFT:
                 lastPosition = currentPosition + 1;
+                break;
             case RIGHT:
                 lastPosition = currentPosition - 1;
+                break;
             case STEND:
                 lastPosition = currentPosition;
+                break;
         }
-        
+        System.out.println(currentPosition);
+        System.out.println(lastPosition);
         for (int i = 0; i < v.size(); i++) {
                 trace.add(new TraceItem(
-                        v.get(i) == Tape.EMPTY ? '*' : v.get(i),
+                        v.get(i) == Tape.EMPTY ? 'b' : v.get(i),
                         i == currentPosition, i == lastPosition));
         }
     }

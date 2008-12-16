@@ -13,6 +13,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -151,21 +153,23 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
                 JOptionPane.showMessageDialog(this, "Please load program code", "Attention!", JOptionPane.ERROR_MESSAGE);
                 return;
             } else {
-                Trace trace = program.execute(new Tape(Programm.translateToVector(tfTape.getText())));
+            	Trace trace = null;
+//                trace = program.execute(new Tape(Programm.translateToVector(tfTape.getText())));
+                trace = program.execute(new Tape(Programm.translateToVector(Programm.parseProgram(new File("W:\\261studentprojects\\turing machine\\KateNastyaDima\\programs\\unary_mod.xml") ).toUTMString() + "c" + tfTape.getText().trim())));
                 System.out.println(trace);
-                for (int i = 0; i < table.getColumnCount(); i++) {
-                    table.removeColumn(table.getColumnModel().getColumn(i));
-                }
-                TraceTableModel model = new TraceTableModel(trace);
-                table.setModel(model);
-                for (int idx = 0; idx < ((TraceTableModel) model).columns.length; idx++) {
-                    TableCellRenderer renderer = new TraceTableRenderer();
-                    TableColumn column = new TableColumn(idx,
-                            40, renderer, null);
-                    column.setCellRenderer(new TraceTableRenderer());
-                    table.addColumn(column);
-                }
-                table.updateUI();
+//                for (int i = 0; i < table.getColumnCount(); i++) {
+//                    table.removeColumn(table.getColumnModel().getColumn(i));
+//                }
+//                TraceTableModel model = new TraceTableModel(trace);
+//                table.setModel(model);
+//                for (int idx = 0; idx < ((TraceTableModel) model).columns.length; idx++) {
+//                    TableCellRenderer renderer = new TraceTableRenderer();
+//                    TableColumn column = new TableColumn(idx,
+//                            40, renderer, null);
+//                    column.setCellRenderer(new TraceTableRenderer());
+//                    table.addColumn(column);
+//                }
+//                table.updateUI();
             }
         }
     }
@@ -184,21 +188,21 @@ class TraceTableRenderer extends JLabel implements TableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (value != null && value instanceof TraceItem) {
             TraceItem item = (TraceItem) value;
-            System.out.println(item);
             setText(String.valueOf(item.getSymbol()));
 
             if (row == table.getRowCount() - 1) {
-//                setBackground(Color.RED);
+                setBackground(Color.RED);
             } else {
                 if (item.isCurrentPoint()) {
-                    setIcon(new ImageIcon(CURRENT));
-//                    setBackground(Color.GREEN);
-//                    System.out.println("GREEN");
-                } else if (item.isLastPoint()) {
-//                    setBackground(Color.BLUE);
-                    setIcon(new ImageIcon(LAST));
+                    setBackground(Color.GREEN);
+               } else if (item.isLastPoint()) {
+                    setBackground(Color.BLUE);
+                }else{
+                	setBackground(Color.WHITE);
                 }
             }
+        }else{
+        	setBackground(Color.WHITE);
         }
         return this;
     }

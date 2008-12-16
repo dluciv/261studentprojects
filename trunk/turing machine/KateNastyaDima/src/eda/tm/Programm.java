@@ -57,22 +57,25 @@ public class Programm {
     }
 
     public Trace performMove(StateSymbol tmp, Tape tape, Trace trace) {
-        StateSymbolMove nextMove = rules.get(tmp);
-        if(nextMove.getState().equals(endState)){
-            trace.add(new TraceTape(tape, Moving.STEND));
-            return trace;
-        }
+    	StateSymbolMove nextMove  = null;
+    	do{
+    		nextMove = rules.get(tmp);
+
+            if(nextMove == null){
+        	System.out.println(tmp);
+        	return trace;
+            }
         tmp.setState(nextMove.getState());
         tape.write(nextMove.getSymbol());
         tape.changePosition(nextMove.getMove());
         tmp.setSymbol(tape.returnCurrentSymbol());
         trace.add(new TraceTape(tape, nextMove.getMove()));
         System.out.println(tape);
-//        if (!nextMove.getState().equals(endState)) {
-            return performMove(tmp, tape, trace);
-//        } else {
-//            return tape;
-//        }
+
+        //return performMove(tmp, tape, trace);
+        }while(nextMove != null && !nextMove.getState().equals(endState));
+    	trace.add(new TraceTape(tape, Moving.STEND));
+    	return trace;
     }
 
     public Trace execute(Tape tape) {

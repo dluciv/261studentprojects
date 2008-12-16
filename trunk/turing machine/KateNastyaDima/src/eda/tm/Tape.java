@@ -5,7 +5,7 @@ import java.util.Vector;
 public class Tape {
 
     public static final char STAR = '*';
-    public static final char EMPTY = '*';
+    public static final char EMPTY = 'b';
     private Vector<Character> tape;
     private int position;
 
