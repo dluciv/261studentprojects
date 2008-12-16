@@ -136,6 +136,10 @@ public class Graph {
 		List<Integer> nStatesList = getNextState(State);
 		
 		ArrayList<Integer> nStatesListCh = new ArrayList<Integer>(); 
+		if(nStatesList == null)
+		{
+			return nStatesListCh;
+		}
 		
 		for (int i = 0; i < nStatesList.size(); i++) {
 			if(null!=alfabett.get(nStatesList.get(i)))
