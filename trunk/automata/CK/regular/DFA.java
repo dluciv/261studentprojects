@@ -4,8 +4,9 @@ package Regular;
  *
  * @author Кирилл
  */
-import java.util.HashMap;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeSet;
 
 public class DFA {
@@ -19,11 +20,11 @@ public class DFA {
     static final char EMPTY = '$';
     static final int BAD = -1;
 
-    public static DFA Determinator(NFA nfa) {
+    public static DFA determine(NFA nfa) {
         DFA dfa = new DFA();
         int currentState;
         ArrayList<Integer> firstState = new ArrayList<Integer>();
-        
+
         alphabet = NFA.alphabet;
         firstState.add(nfa.first);
         ArrayList<Integer> DFAbeg = reachedBy(EMPTY, firstState, nfa);
@@ -43,7 +44,7 @@ public class DFA {
                         dfa.addTrans(currentState, dfa.stateNum, symb);
                     } else {
                         dfa.addTrans(currentState, num, symb);
-     }
+                    }
                 }
             }
         }
@@ -110,7 +111,7 @@ public class DFA {
                 }
             }
         }
-         return result;
+        return result;
     }
 
 
@@ -136,13 +137,14 @@ public class DFA {
         System.out.println('\n');
     }
 
-    public boolean checkWord(String word){
-    	prepareForNextWord();
-    	return checkTail( word, first);
+    public boolean checkWord(String word) {
+        prepareForNextWord();
+        return checkTail(word, first);
     }
+
     public boolean checkTail(String word, int currentState) {
-    if (pos < word.length()) {
-        for (Transition trans : states.get(currentState).trans) {
+        if (pos < word.length()) {
+            for (Transition trans : states.get(currentState).trans) {
                 if (trans.symbol == word.charAt(pos)) {
                     ++pos;
                     boolean checkTail = checkTail(word, trans.to);

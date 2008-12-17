@@ -4,11 +4,12 @@ package Regular;
  *
  * @author Кирилл
  */
+
 import java.util.ArrayList;
 
 public class MFA extends DFA {
 
-    public static MFA minimizer(DFA dfa) {
+    public static MFA minimize(DFA dfa) {
         MFA mfa = new MFA();
         ArrayList<ArrayList<Integer>> statesSet = getMFAstates(dfa);
         mfa.setStates(statesSet);
@@ -113,12 +114,13 @@ public class MFA extends DFA {
 
     private static boolean equival(int state1, int state2, DFA DFA, ArrayList<ArrayList<Integer>> statesSet) {
         int dest1, dest2;
-        for (String letter : DFA.alphabet) {
+        for (String letter : MFA.alphabet) {
             char symb = letter.charAt(0);
             dest1 = DFA.whereTo(symb, state1);
             dest2 = DFA.whereTo(symb, state2);
             for (ArrayList<Integer> group : statesSet) {
-                if ((group.contains(dest1) & !group.contains(dest2)) | (!group.contains(dest1) & group.contains(dest2))) {
+                if ((group.contains(dest1) & !group.contains(dest2)) | (!group.contains(dest1) & group.contains(dest2)))
+                {
                     return false;
                 }
             }
