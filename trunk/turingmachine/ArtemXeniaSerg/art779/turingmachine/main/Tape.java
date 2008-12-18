@@ -1,9 +1,10 @@
 package art779.turingmachine.main;
 
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Stack;
 
 public class Tape {
-	//private ArrayList<String> tape = new ArrayList<String>();
 	private HashMap<Integer, String> tape = new HashMap<Integer, String>();
 	private int pointer = 1;
     public static final String startSym = "Ss";
@@ -13,14 +14,31 @@ public class Tape {
     
     Tape()
     {
-    	tape.put(0,infinitySym);
-    	tape.put(1,"1");
-    	tape.put(2,"+");
-    	tape.put(3,"1");
-    	tape.put(4,"1");
-
+    	String[] tape_r = {
+    		"1","1","+","1","1"
+    	};
+    	fillTape(tape_r);
     }
 
+    public Stack<String> getAlphabett(){
+    	Stack<String> alphabett = new Stack<String> ();
+    	
+    	for (String alpha : tape.values()) {
+			if(!alphabett.contains(alpha))
+				alphabett.add(alpha);
+		}
+    	return alphabett;
+    	
+    	
+	}
+    
+    public void fillTape(String[] tape_r){
+    	tape.put(0,infinitySym);
+    	for (int i = 1; i <= tape_r.length; i++) {
+    		tape.put(i,tape_r[i-1]);
+		}
+	}
+    
 	public void movePointerRight(){
 		pointer ++;
 	}

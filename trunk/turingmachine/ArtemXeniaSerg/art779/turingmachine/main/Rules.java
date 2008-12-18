@@ -12,81 +12,40 @@ public class Rules {
 	
 	Rules()
 	{
-		RuleSet k;
-		RuleSet v;
-
-		k = new RuleSet(Tape.startSym,"1");
-		v = new RuleSet("mr","W","#");
-		rules.put(k, v);
-
-		k = new RuleSet(Tape.startSym,"+");
-		v = new RuleSet(Tape.startSym,"W","#");
-		rules.put(k, v);
-
-		k = new RuleSet(Tape.startSym,"#");
-		v = new RuleSet(Tape.startSym,R);
-		rules.put(k, v);
-
-		k = new RuleSet("mr","1");
-		v = new RuleSet("mr",R);
-		rules.put(k, v);
-
-		k = new RuleSet("mr","+");
-		v = new RuleSet("mr",R);
-		rules.put(k, v);
-
-		k = new RuleSet("mr","#");
-		v = new RuleSet("mr",R);
-		rules.put(k, v);
-
-		k = new RuleSet("mr",Tape.infinitySym);
-		v = new RuleSet("=",W,"=");
-		rules.put(k, v);
-
-		k = new RuleSet("=","=");
-		v = new RuleSet("=",R);
-		rules.put(k, v);
-
-		k = new RuleSet("=",Tape.infinitySym);
-		v = new RuleSet("mle",W,"1");
-		rules.put(k, v);
-
-		k = new RuleSet("=","1");
-		v = new RuleSet("=",R);
-		rules.put(k, v);
-
-		k = new RuleSet("mle","1");
-		v = new RuleSet("mle",L);
-		rules.put(k, v);
-
-		k = new RuleSet("mle","=");
-		v = new RuleSet("mlc",L);
-		rules.put(k, v);
-
-		k = new RuleSet("mlc","1");
-		v = new RuleSet("ml",L);
-		rules.put(k, v);
-
-		k = new RuleSet("mlc","#");
-		v = new RuleSet(Tape.finalSym,H);
-		rules.put(k, v);
-
-		k = new RuleSet("ml","1");
-		v = new RuleSet("ml",L);
-		rules.put(k, v);
-
-		k = new RuleSet("ml","+");
-		v = new RuleSet("ml",L);
-		rules.put(k, v);
-
-		k = new RuleSet("ml","#");
-		v = new RuleSet(Tape.startSym,R);
-		rules.put(k, v);
-
-		k = new RuleSet("mr","=");
-		v = new RuleSet("=",R);
+		setRule(Tape.startSym,"1","mr","W","#");
+		setRule(Tape.startSym,"+",Tape.startSym,"W","#");
+		setRule(Tape.startSym,"#",Tape.startSym,R);
+		setRule("mr","1","mr",R);
+		setRule("mr","+","mr",R);
+		setRule("mr","#","mr",R);
+		setRule("mr",Tape.infinitySym,"=",W,"=");
+		setRule("=","=","=",R);
+		setRule("=",Tape.infinitySym,"mle",W,"1");
+		setRule("=","1","=",R);
+		setRule("mle","1","mle",L);
+		setRule("mle","=","mlc",L);
+		setRule("mlc","1","ml",L);
+		setRule("mlc","#",Tape.finalSym,H);
+		setRule("ml","1","ml",L);
+		setRule("ml","+","ml",L);
+		setRule("ml","#",Tape.startSym,R);
+		setRule("mr","=","=",R);
+	}
+	
+	public void setRule(String state, String sym, String st, String op, String val)
+	{
+		RuleSet k = new RuleSet(state,sym);
+		RuleSet v = new RuleSet(st,op,val);
 		rules.put(k, v);
 	}
+	public void setRule(String state, String sym, String st, String op)
+	{
+		RuleSet k = new RuleSet(state,sym);
+		RuleSet v = new RuleSet(st,op);
+		rules.put(k, v);
+	}
+
+	
 	
 	public RuleSet getRule(String State, String Sym)
 	{

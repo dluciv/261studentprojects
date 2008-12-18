@@ -1,38 +1,54 @@
 package art779.turingmachine.main;
 
-public class Performer {
+import java.util.Stack;
 
-	public void run()
+public class Performer {
+	
+	private static Performer instance = new Performer();
+	private Performer(){}
+	public static Performer getInstance()
+	{	return instance;}
+
+	public boolean setForAlphabettRules(Stack<String> alphabett,Rules rules)
+	{	
+		while(!alphabett.isEmpty())
+		{
+			String alpha = alphabett.pop();
+			//for
+		}
+		return true;
+	}
+	
+	public void run(Tape tape,Rules rules)
 	{
-		Tape tape = new Tape();
-		Rules rules = new Rules();
-		tape.printTape();
 
 		String theState = Tape.startSym;
 		String theSym = tape.curSym();
 
-		/*
-		System.out.println(rules.toString());		
-		RuleSet toDo = rules.getRule(theState, theSym);
-		System.out.println(toDo.toString());
-		*/
-
 		int k=0;
-		while(theState!=Tape.finalSym && k<99)
+		int lim=99;
+		while(theState!=Tape.finalSym && k<lim)
 		{
 			k++;
-			System.out.print(theState+theSym);
-			RuleSet toDo = rules.getRule(theState, theSym);
-			System.out.println(toDo.toString());
-			theState = toDo.getState();
+			if(k==lim)
+				System.out.println("k lim reached");
 
+			
+			RuleSet toDo = rules.getRule(theState, theSym);
+			//System.out.print(theState+theSym);			
+			//System.out.println(toDo.toString());
+			theState = toDo.getState();
+			
 			String op = toDo.getOperation();
+			
 			if(op == Rules.R)
 				tape.movePointerRight();
 			else if(op == Rules.L)
 				tape.movePointerLeft();
 			else if (op == Rules.W)
 				tape.setValue(toDo.getValue());
+			else if (op == Rules.H)
+				{	/* do stuff */	}
 			else
 			{
 				System.out.println("else");
@@ -40,18 +56,6 @@ public class Performer {
 			}
 			theSym = tape.curSym();
 		}
-		tape.printTape();
-
-	}
-	
-	public static void main(String[] args) {
-
-		String str = "";
-		
-		Performer p = new Performer();
-		p.run();
-		
-		System.out.println(str + " \n.");
 	}
 
 }
