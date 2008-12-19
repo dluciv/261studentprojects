@@ -4,10 +4,10 @@ package Regular;
  * 
  * @author ������
  */
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
+import java.io.*;
 
 public class NFA {
 
@@ -18,21 +18,18 @@ public class NFA {
     static int stateNum = 0;
     static char EMPTY = '$';
 
-
     protected ArrayList<Transition> getTrans(int state) {
         return this.states.get(state);
     }
 
     public TreeSet<String> getAlphabet(String expr) {
         for (int i = 0; i < expr.length(); ++i) {
-            if ((expr.charAt(i) != '*') & (expr.charAt(i) != '(') & (expr.charAt(i) != ')')
-                    & (expr.charAt(i) != '|') & (expr.charAt(i) != '?')) {
+            if ((expr.charAt(i) != '*') & (expr.charAt(i) != '(') & (expr.charAt(i) != ')') & (expr.charAt(i) != '|') & (expr.charAt(i) != '?')) {
                 alphabet.add("" + expr.charAt(i));
             }
         }
         return alphabet;
     }
-
 
     protected void setFirst(int newFirst) {
         ArrayList<Transition> buf = this.states.get(this.first);
@@ -102,16 +99,26 @@ public class NFA {
         return automat;
     }
 
-
     public void printAutomaton() {
-        for (int i : this.states.keySet()) {
-            for (Transition trans : this.states.get(i)) {
-                System.out.println(i + "->" + trans.to + ":" + trans.symbol);
+        File dot = new File("NFA.dot");
+        dot.delete();
+        try {
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(dot)));
+            out.println("digraph NFA {");
+            for (int i : states.keySet()) {
+                for (Transition trans : states.get(i)) {
+                    out.println(i + "->" + trans.to + "[taillabel = \"" + trans.symbol + "\"]");
+                }
             }
-        }
-        System.out.println('\n');
-    }
+            out.println("}");
+            out.close();//dot -v out.dot -T png -O
+            Runtime.getRuntime().exec(GlobalVars.DOT + " -v NFA.dot -Tgif -o NFA.gif");
+            //Runtime.getRuntime().exec(GlobalVars.VIEWER + " -T NFA.gif");
 
+        } catch (IOException io) {
+        }
+        //dot familytree.dot -O -Tpng
+    }
 
     public boolean checkWord(String word) {
         prepareForNextWord();

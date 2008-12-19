@@ -4,10 +4,10 @@ package Regular;
  *
  * @author Кирилл
  */
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
+import java.io.*;
 
 public class DFA {
 
@@ -35,8 +35,8 @@ public class DFA {
             dfa.mark(currentState);
             for (String letter : alphabet) {
                 char symb = letter.charAt(0);
-                ArrayList<Integer> next = reachedBy(EMPTY, reachedBy(symb, dfa.states.get(currentState).statesList, nfa), nfa);
-
+                ArrayList<Integer> next = reachedBy(EMPTY,reachedBy(EMPTY,
+                        reachedBy(symb, dfa.states.get(currentState).statesList, nfa), nfa), nfa);
                 if (!next.isEmpty()) {
                     int num = dfa.getNum(next);
                     if (num == BAD) {
@@ -97,13 +97,13 @@ public class DFA {
         states.get(state).marked = true;
     }
 
-    private static ArrayList<Integer> reachedBy(char symb, ArrayList<Integer> states, NFA NFA) {
+    private static ArrayList<Integer> reachedBy(char symb, ArrayList<Integer> states, NFA nfa) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         if (symb == EMPTY) {
             result.addAll(states);
         }
         for (Integer state : states) {
-            for (Transition trans : NFA.states.get(state)) {
+            for (Transition trans : nfa.states.get(state)) {
                 if (trans.symbol == symb) {
                     if (!result.contains(trans.to)) {
                         result.add(trans.to);
@@ -113,7 +113,6 @@ public class DFA {
         }
         return result;
     }
-
 
     protected void addTrans(int from, int to, char by) {
         states.get(from).trans.add(new Transition(to, by));
@@ -129,12 +128,23 @@ public class DFA {
     }
 
     public void printAutomaton() {
-        for (int i : states.keySet()) {
-            for (Transition trans : states.get(i).trans) {
-                System.out.println(i + "->" + trans.to + ":" + trans.symbol);
+        String fileName = getClass().getCanonicalName().substring(8);
+        File dot = new File( fileName+ ".dot");
+        try {
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(dot)));
+            out.println("digraph " + fileName + "{");
+            for (int i : states.keySet()) {
+                for (Transition trans : states.get(i).trans) {
+                    out.println(i + " -> " + trans.to + "[taillabel = \"" + trans.symbol + "\"]");
+                }
             }
+            out.println("}");
+            out.close();
+            Runtime.getRuntime().exec(GlobalVars.DOT + " -v " + fileName + ".dot -Tgif  -o " + fileName  +".gif");
+//            Runtime.getRuntime().exec(GlobalVars.VIEWER + fileName +"gif .gif");
+            
+        } catch (IOException io) {
         }
-        System.out.println('\n');
     }
 
     public boolean checkWord(String word) {
