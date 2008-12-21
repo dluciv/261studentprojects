@@ -6,7 +6,7 @@ public class Performer {
 	private Tape tape;
 	private Rules rules;
 	private int iterationsCount = 0;
-	private int limIterationsCount = 1020;
+	private int limIterationsCount = 9999;
 	
 	public Performer(Tape tape,Rules rules)
 	{
@@ -35,14 +35,8 @@ public class Performer {
 		String theState = rules.sState;
 		String theSym = tape.curSym();
 
-		while(theState != rules.fState && iterationsCount <= limIterationsCount)
+		while(!theState.equals(rules.fState) && iterationsCount <= limIterationsCount)
 		{
-			/*		почему не срабатывает сравнение?
-			 * 			theState != rules.fState
-			 * 
-			 * 		System.out.println(theState+rules.fState);
-			 * 
-			 */
 			
 			iterationsCount++;
 			if(iterationsCount == limIterationsCount)
