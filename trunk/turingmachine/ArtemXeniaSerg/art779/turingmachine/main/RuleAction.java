@@ -4,18 +4,17 @@ public class RuleAction {
 	
 	private String state;
 	private Action action;
-	private String param;
+	private String param = null;
 	
 	RuleAction(String v1,Action v2){
 		this.state = v1;
 		this.action = v2;
-		this.param = null;
 	}
 	
 	RuleAction(String v1,Action v2,String v3){
 		this.state = v1;
 		this.action = v2;
-		this.param = v3;
+		if(v3!="")this.param = v3;
 	}
 	
 	public String getState(){
@@ -32,9 +31,8 @@ public class RuleAction {
 	
 	public String toString()
 	{
-		String str = "("+ state +","+ action ;
-		if(null!=param)str += " " +param;
-		str += ")";
+		String str = "("+ state +")"+ action ;
+		if(null!=param)str += "\"" + param + "\"";
 		return str;
 	}
 }

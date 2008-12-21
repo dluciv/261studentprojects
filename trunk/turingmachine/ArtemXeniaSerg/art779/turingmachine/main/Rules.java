@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class Rules {
 
-	public String SState;
-	public String FState;
+	public String sState;
+	public String fState;
 	
 	private HashMap<RuleKey, RuleAction> rules = new HashMap<RuleKey, RuleAction>();
 	
@@ -13,30 +13,10 @@ public class Rules {
 	
 	Rules(String SState,String FState)
 	{
-		this.SState = SState;
-		this.FState = FState;
-		
-		setRule(this.SState,"1","mrgs",Action.W,"#");
-		setRule("mrgs","#","mrgs",Action.R);
-		setRule("mrgs","1","mr",Action.W,"#");
-		setRule("mrgs","+","mrgs",Action.W,"#");
-		setRule("mrgs","#","mrgs",Action.R);
-		setRule("mr","1","mr",Action.R);
-		setRule("mr","+","mr",Action.R);
-		setRule("mr","#","mr",Action.R);
-		setRule("mr",Tape.infinitySym,"=",Action.W,"=");
-		setRule("=","=","=",Action.R);
-		setRule("=",Tape.infinitySym,"mle",Action.W,"1");
-		setRule("=","1","=",Action.R);
-		setRule("mle","1","mle",Action.L);
-		setRule("mle","=","mlc",Action.L);
-		setRule("mlc","1","ml",Action.L);
-		setRule("mlc","#",this.FState,Action.H);
-		setRule("ml","1","ml",Action.L);
-		setRule("ml","+","ml",Action.L);
-		setRule("ml","#","mrgs",Action.R);
-		setRule("mr","=","=",Action.R);
+		this.sState = SState;
+		this.fState = FState;
 	}
+	
 	public boolean hasConversionForAlpha(String alpha)
 	{
 		for (RuleKey vt : rules.keySet()) {
@@ -81,9 +61,10 @@ public class Rules {
 		//*/
 	}
 	
+	@Override
 	public String toString()
 	{
-		String str = "[";
+		String str = "[ {"+ sState + "->" + fState + "}: ";
 		for (RuleKey k : rules.keySet()) {
 			 RuleAction v = rules.get(k);		 
 			 str += k.toString() + "->" + v.toString()+" ";

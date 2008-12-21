@@ -8,15 +8,17 @@ public class TuringMachine {
 		String str = "";
 
 		Tape tape = new Tape();	
-		Rules rules = new Rules("S","F");
+		//Rules rules = new Rules("A","Y");
+		//Rules rules =  RulesMaker.parseXMLFileProgram("UMT.xml");
+		Rules rules =  RulesMaker.parseXMLFileProgram("unarsum.xml");
 			str += rules.toString();
 			str += "\n";
 			str += tape.toString();
-
+		
 		Performer p = new Performer(tape,rules);
 		try {
 			p.run();
-		} catch (Exception e) {
+		} catch (BadDataException e) {
 			str += "\n";
 			str += e.toString();
 		}
@@ -24,7 +26,7 @@ public class TuringMachine {
 			str += "iterations " + p.getIterationsCount();
 			str += "\n";
 			str += tape.toString();
-
+		
 		System.out.println(str);
 
 	}

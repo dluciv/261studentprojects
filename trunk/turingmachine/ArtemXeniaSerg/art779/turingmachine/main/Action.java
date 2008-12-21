@@ -1,5 +1,5 @@
 package art779.turingmachine.main;
 
 public enum Action {
-		H, R, L, W
+		H, R, L
 }

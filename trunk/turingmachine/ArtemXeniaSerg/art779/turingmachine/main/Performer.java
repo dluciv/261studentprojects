@@ -6,7 +6,7 @@ public class Performer {
 	private Tape tape;
 	private Rules rules;
 	private int iterationsCount = 0;
-	private int limIterationsCount = 9999;
+	private int limIterationsCount = 1020;
 	
 	public Performer(Tape tape,Rules rules)
 	{
@@ -21,8 +21,7 @@ public class Performer {
 		for (String alpha : alphabett) {
 			if(!rules.hasConversionForAlpha(alpha))
 				return false;
-		}
-		
+		}	
 		return true;
 	}
 	
@@ -33,27 +32,32 @@ public class Performer {
 	public void execute()
 	{
 
-		String theState = rules.SState;
+		String theState = rules.sState;
 		String theSym = tape.curSym();
 
-		while(theState != rules.FState & iterationsCount <= limIterationsCount)
+		while(theState != rules.fState & iterationsCount <= limIterationsCount)
 		{
+			System.out.println(theState);
 			iterationsCount++;
 			if(iterationsCount == limIterationsCount)
 				System.out.println("k lim reached");
 
 			
 			RuleAction act = rules.getAct(theState, theSym);
-
-			theState = act.getState();
+			try {
+				theState = act.getState();
+			} catch (Exception e) {
+				break;
+			}
 			Action op = act.getAction();
 			
+			if (null != act.getParam())
+				tape.setValue(act.getParam());
+				
 			if(op == Action.R)
 				tape.moveRight();
 			else if(op == Action.L)
 				tape.moveLeft();
-			else if (op == Action.W)
-				tape.setValue(act.getParam());
 			else if (op == Action.H)
 				{	/* do stuff */	}
 			else
@@ -65,7 +69,7 @@ public class Performer {
 		}
 	}
 	
-	public void run() throws Exception
+	public void run() throws BadDataException
 	{
 		if(isRulesFitAlphabet())
 			execute();

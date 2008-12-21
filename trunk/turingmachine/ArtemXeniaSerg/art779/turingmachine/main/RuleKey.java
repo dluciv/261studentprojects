@@ -20,8 +20,7 @@ public class RuleKey {
 	
 	public String toString()
 	{
-		String str = "("+ state +","+ sym ;
-		str += ")";
+		String str = "("+ state +")"+ sym ;
 		return str;
 	}
 }

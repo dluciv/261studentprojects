@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Tape {
 	
-	private int pointer = 1;	
+	private int pointer = 0;	
 	private ArrayList<String> tape = new ArrayList<String>();
     public static final String terminalSym = "T";
     public static final String infinitySym = " ";
@@ -20,7 +20,6 @@ public class Tape {
 
     
     public void fillTape(String[] tape_r){
-    	tape.add(infinitySym);
     	for (int i = 0; i < tape_r.length; i++) {
     		tape.add(tape_r[i]);
 		}
@@ -47,7 +46,8 @@ public class Tape {
 		else
 			return tape.get(pointer);
 	}
-
+	
+	@Override
 	public String toString() {
 		return tape.toString();
 	}
