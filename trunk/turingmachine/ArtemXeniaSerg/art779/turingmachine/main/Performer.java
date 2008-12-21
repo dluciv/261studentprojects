@@ -35,12 +35,18 @@ public class Performer {
 		String theState = rules.sState;
 		String theSym = tape.curSym();
 
-		while(theState != rules.fState & iterationsCount <= limIterationsCount)
+		while(theState != rules.fState && iterationsCount <= limIterationsCount)
 		{
-			System.out.println(theState);
+			/*		почему не срабатывает сравнение?
+			 * 			theState != rules.fState
+			 * 
+			 * 		System.out.println(theState+rules.fState);
+			 * 
+			 */
+			
 			iterationsCount++;
 			if(iterationsCount == limIterationsCount)
-				System.out.println("k lim reached");
+				System.out.println("limit if iterations is reached");
 
 			
 			RuleAction act = rules.getAct(theState, theSym);
@@ -49,6 +55,7 @@ public class Performer {
 			} catch (Exception e) {
 				break;
 			}
+			
 			Action op = act.getAction();
 			
 			if (null != act.getParam())
