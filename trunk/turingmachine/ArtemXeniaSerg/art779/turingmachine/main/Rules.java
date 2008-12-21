@@ -4,64 +4,88 @@ import java.util.HashMap;
 
 public class Rules {
 
-	public static String H = "H"; // не выполяем дейстиве
-	public static String R = "R"; // шаг вправо
-	public static String L = "L"; // шаг влево
-	public static String W = "W"; // записать
-	private HashMap<RuleSet, RuleSet> rules = new HashMap<RuleSet, RuleSet>();
+	public String SState;
+	public String FState;
 	
-	Rules()
+	private HashMap<RuleKey, RuleAction> rules = new HashMap<RuleKey, RuleAction>();
+	
+	
+	
+	Rules(String SState,String FState)
 	{
-		setRule(Tape.startSym,"1","mr","W","#");
-		setRule(Tape.startSym,"+",Tape.startSym,"W","#");
-		setRule(Tape.startSym,"#",Tape.startSym,R);
-		setRule("mr","1","mr",R);
-		setRule("mr","+","mr",R);
-		setRule("mr","#","mr",R);
-		setRule("mr",Tape.infinitySym,"=",W,"=");
-		setRule("=","=","=",R);
-		setRule("=",Tape.infinitySym,"mle",W,"1");
-		setRule("=","1","=",R);
-		setRule("mle","1","mle",L);
-		setRule("mle","=","mlc",L);
-		setRule("mlc","1","ml",L);
-		setRule("mlc","#",Tape.finalSym,H);
-		setRule("ml","1","ml",L);
-		setRule("ml","+","ml",L);
-		setRule("ml","#",Tape.startSym,R);
-		setRule("mr","=","=",R);
+		this.SState = SState;
+		this.FState = FState;
+		
+		setRule(this.SState,"1","mrgs",Action.W,"#");
+		setRule("mrgs","#","mrgs",Action.R);
+		setRule("mrgs","1","mr",Action.W,"#");
+		setRule("mrgs","+","mrgs",Action.W,"#");
+		setRule("mrgs","#","mrgs",Action.R);
+		setRule("mr","1","mr",Action.R);
+		setRule("mr","+","mr",Action.R);
+		setRule("mr","#","mr",Action.R);
+		setRule("mr",Tape.infinitySym,"=",Action.W,"=");
+		setRule("=","=","=",Action.R);
+		setRule("=",Tape.infinitySym,"mle",Action.W,"1");
+		setRule("=","1","=",Action.R);
+		setRule("mle","1","mle",Action.L);
+		setRule("mle","=","mlc",Action.L);
+		setRule("mlc","1","ml",Action.L);
+		setRule("mlc","#",this.FState,Action.H);
+		setRule("ml","1","ml",Action.L);
+		setRule("ml","+","ml",Action.L);
+		setRule("ml","#","mrgs",Action.R);
+		setRule("mr","=","=",Action.R);
 	}
-	
-	public void setRule(String state, String sym, String st, String op, String val)
+	public boolean hasConversionForAlpha(String alpha)
 	{
-		RuleSet k = new RuleSet(state,sym);
-		RuleSet v = new RuleSet(st,op,val);
+		for (RuleKey vt : rules.keySet()) {
+			if(vt.getSym().equals(alpha))
+				return true;
+		}
+		return false;
+	}
+	public void setRule(String state, String sym, String st, Action op, String val)
+	{
+		RuleKey k = new RuleKey(state,sym);
+		RuleAction v = new RuleAction(st,op,val);
 		rules.put(k, v);
 	}
-	public void setRule(String state, String sym, String st, String op)
+	public void setRule(String state, String sym, String st, Action op)
 	{
-		RuleSet k = new RuleSet(state,sym);
-		RuleSet v = new RuleSet(st,op);
+		RuleKey k = new RuleKey(state,sym);
+		RuleAction v = new RuleAction(st,op);
 		rules.put(k, v);
 	}
 
-	
-	
-	public RuleSet getRule(String State, String Sym)
+	public boolean hasRuleForAlpha(String alpha)
 	{
-		for (RuleSet vt : rules.keySet()) {
+		for (RuleKey vt : rules.keySet()) {
+			System.out.println(vt);
+		}
+
+		return false;
+	}
+	
+	public RuleAction getAct(String State, String Sym)
+	{
+		//RuleKey vt = new RuleKey(State,Sym);
+		//return rules.get(vt);
+		///*
+		for (RuleKey vt : rules.keySet()) {
 			if(vt.getState().equals(State))
 				if(vt.getSym().equals(Sym))
 					return rules.get(vt);
 		}
 		return null;
+		//*/
 	}
 	
 	public String toString()
 	{
 		String str = "[";
-		for (RuleSet k : rules.keySet()) {
-			 RuleSet v = rules.get(k);		 
+		for (RuleKey k : rules.keySet()) {
+			 RuleAction v = rules.get(k);		 
 			 str += k.toString() + "->" + v.toString()+" ";
 		}
 		str += "]";

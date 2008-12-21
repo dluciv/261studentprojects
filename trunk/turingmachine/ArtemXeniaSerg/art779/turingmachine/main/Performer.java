@@ -1,53 +1,60 @@
 package art779.turingmachine.main;
 
-import java.util.Stack;
+import java.util.LinkedList;
 
 public class Performer {
+	private Tape tape;
+	private Rules rules;
+	private int iterationsCount = 0;
+	private int limIterationsCount = 9999;
 	
-	private static Performer instance = new Performer();
-	private Performer(){}
-	public static Performer getInstance()
-	{	return instance;}
+	public Performer(Tape tape,Rules rules)
+	{
+		this.tape = tape;
+		this.rules = rules;
 
-	public boolean setForAlphabettRules(Stack<String> alphabett,Rules rules)
+	}
+
+	public boolean isRulesFitAlphabet()
 	{	
-		while(!alphabett.isEmpty())
-		{
-			String alpha = alphabett.pop();
-			//for
+		LinkedList<String> alphabett = tape.getAlphabett();
+		for (String alpha : alphabett) {
+			if(!rules.hasConversionForAlpha(alpha))
+				return false;
 		}
+		
 		return true;
 	}
 	
-	public void run(Tape tape,Rules rules)
+	public int getIterationsCount(){
+		return iterationsCount;
+	}
+
+	public void execute()
 	{
 
-		String theState = Tape.startSym;
+		String theState = rules.SState;
 		String theSym = tape.curSym();
 
-		int k=0;
-		int lim=99;
-		while(theState!=Tape.finalSym && k<lim)
+		while(theState != rules.FState & iterationsCount <= limIterationsCount)
 		{
-			k++;
-			if(k==lim)
+			iterationsCount++;
+			if(iterationsCount == limIterationsCount)
 				System.out.println("k lim reached");
 
 			
-			RuleSet toDo = rules.getRule(theState, theSym);
-			//System.out.print(theState+theSym);			
-			//System.out.println(toDo.toString());
-			theState = toDo.getState();
+			RuleAction act = rules.getAct(theState, theSym);
+
+			theState = act.getState();
+			Action op = act.getAction();
 			
-			String op = toDo.getOperation();
-			
-			if(op == Rules.R)
-				tape.movePointerRight();
-			else if(op == Rules.L)
-				tape.movePointerLeft();
-			else if (op == Rules.W)
-				tape.setValue(toDo.getValue());
-			else if (op == Rules.H)
+			if(op == Action.R)
+				tape.moveRight();
+			else if(op == Action.L)
+				tape.moveLeft();
+			else if (op == Action.W)
+				tape.setValue(act.getParam());
+			else if (op == Action.H)
 				{	/* do stuff */	}
 			else
 			{
@@ -55,6 +62,15 @@ public class Performer {
 				break;
 			}
 			theSym = tape.curSym();
+		}
+	}
+	
+	public void run() throws Exception
+	{
+		if(isRulesFitAlphabet())
+			execute();
+		else{
+			throw new BadDataException();
 		}
 	}
 
