@@ -36,7 +36,6 @@ public class Tester {
                 out.println(expr);
                 Parser.pos = 0;
                 NFA nfa = Parser.parse(expr);
-                nfa.printAutomaton();
                 DFA dfa = DFA.determine(nfa);
                 MFA mfa = MFA.minimize(dfa);
                 for (String word : exprAndWords) {
