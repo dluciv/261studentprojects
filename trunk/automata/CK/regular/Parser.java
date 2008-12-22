@@ -24,15 +24,14 @@ public class Parser {
         NFA nfa = new NFA();
         nfa.getAlphabet(expr);
         alphabet = NFA.alphabet;
-        if (expr .equals("")) {
+        if (expr.equals("")) {
             return NFA.buildPrimitive(NFA.EMPTY);
-        } 
+        }
         nfa = parseConcat(expr);
         while (currentChar(expr) == '|') {
             next();
             nfa = NFA.buildAltern(nfa, parse(expr));
         }
-        pos = 0;
         return nfa;
     }
 
@@ -54,6 +53,7 @@ public class Parser {
             next();
         }
         return auto;
+
     }
 
     private static NFA parseSymb(String expr) {
@@ -65,15 +65,19 @@ public class Parser {
             next();
             nfa = parse(expr);
             next();
-//            if(isCloseingBracket){
-//       	    } else {
-//       	    	error;
-//       	    }
+            if (currentChar(expr) == ')') {
+            } else {
+                try {
+                    throw (new ParserException(ParserException.MISSED_CLOSING_BRACKET));
+                } catch (ParserException p) {
+                }
+            }
         } else {
             return null;
         }
 
         return nfa;
+
     }
 
     private static void next() {
@@ -81,8 +85,8 @@ public class Parser {
     }
 
     private static char currentChar(String expr) {
-        
-         if (pos == expr.length()) {
+
+        if (pos == expr.length()) {
             return EOL;
         } else {
             return expr.charAt(pos);

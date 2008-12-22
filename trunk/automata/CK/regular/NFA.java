@@ -100,25 +100,8 @@ public class NFA {
     }
 
     public void printAutomaton() {
-        File dot = new File("NFA.dot");
-        dot.delete();
-        try {
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(dot)));
-            out.println("digraph NFA {");
-            for (int i : states.keySet()) {
-                for (Transition trans : states.get(i)) {
-                    out.println(i + "->" + trans.to + "[taillabel = \"" + trans.symbol + "\"]");
-                }
-            }
-            out.println("}");
-            out.close();//dot -v out.dot -T png -O
-            Runtime.getRuntime().exec(GlobalVars.DOT + " -v NFA.dot -Tgif -o NFA.gif");
-            //Runtime.getRuntime().exec(GlobalVars.VIEWER + " -T NFA.gif");
-
-        } catch (IOException io) {
-        }
-        //dot familytree.dot -O -Tpng
-    }
+        Visualizator.printNFA(this);
+      }
 
     public boolean checkWord(String word) {
         prepareForNextWord();

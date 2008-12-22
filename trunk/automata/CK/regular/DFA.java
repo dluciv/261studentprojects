@@ -35,7 +35,7 @@ public class DFA {
             dfa.mark(currentState);
             for (String letter : alphabet) {
                 char symb = letter.charAt(0);
-                ArrayList<Integer> next = reachedBy(EMPTY,reachedBy(EMPTY,
+                ArrayList<Integer> next = reachedBy(EMPTY, reachedBy(EMPTY,
                         reachedBy(symb, dfa.states.get(currentState).statesList, nfa), nfa), nfa);
                 if (!next.isEmpty()) {
                     int num = dfa.getNum(next);
@@ -128,23 +128,7 @@ public class DFA {
     }
 
     public void printAutomaton() {
-        String fileName = getClass().getCanonicalName().substring(8);
-        File dot = new File( fileName+ ".dot");
-        try {
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(dot)));
-            out.println("digraph " + fileName + "{");
-            for (int i : states.keySet()) {
-                for (Transition trans : states.get(i).trans) {
-                    out.println(i + " -> " + trans.to + "[taillabel = \"" + trans.symbol + "\"]");
-                }
-            }
-            out.println("}");
-            out.close();
-            Runtime.getRuntime().exec(GlobalVars.DOT + " -v " + fileName + ".dot -Tgif  -o " + fileName  +".gif");
-//            Runtime.getRuntime().exec(GlobalVars.VIEWER + fileName +"gif .gif");
-            
-        } catch (IOException io) {
-        }
+        Visualizator.printDFA(this);
     }
 
     public boolean checkWord(String word) {

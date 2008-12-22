@@ -34,6 +34,7 @@ public class Tester {
                 exprAndWords.remove(0);
                 out.println("Test № " + i++);
                 out.println(expr);
+                Parser.pos = 0;
                 NFA nfa = Parser.parse(expr);
                 nfa.printAutomaton();
                 DFA dfa = DFA.determine(nfa);
