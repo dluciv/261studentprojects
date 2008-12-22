@@ -237,8 +237,8 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
 //            for (int i = 0; i < table.getColumnCount(); i++) {
 //                table.removeColumn(table.getColumnModel().getColumn(i));
 //            }
-            
-            while(table.getColumnModel().getColumnCount() > 0){
+
+            while (table.getColumnModel().getColumnCount() > 0) {
                 TableColumn c = table.getColumnModel().getColumn(0);
                 table.removeColumn(c);
                 table.getColumnModel().removeColumn(c);
@@ -319,8 +319,11 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
 
 class TraceTableRenderer extends JLabel implements TableCellRenderer {
 
-    private static final String CURRENT = "./icons/current.gif";
-    private static final String LAST = "./icons/last.gif";
+    private static final Color CURRENT = new Color(108, 195, 185);
+    private static final Color LAST = new Color(155, 238, 185);
+    private static final Color RESULT = new Color(240, 223, 239);
+    private static final Color START = new Color(240, 223, 239);
+    private static final Color EMPTY = new Color(229, 240, 238);
 
     public TraceTableRenderer() {
         super();
@@ -334,18 +337,20 @@ class TraceTableRenderer extends JLabel implements TableCellRenderer {
             setText(String.valueOf(item.getSymbol()));
 
             if (row == table.getRowCount() - 1) {
-                setBackground(Color.RED);
+                setBackground(RESULT);
+            } else if (row == 0) {
+                setBackground(START);
             } else {
                 if (item.isCurrentPoint()) {
-                    setBackground(Color.GREEN);
+                    setBackground(CURRENT);
                 } else if (item.isLastPoint()) {
-                    setBackground(Color.BLUE);
+                    setBackground(LAST);
                 } else {
-                    setBackground(Color.WHITE);
+                    setBackground(EMPTY);
                 }
             }
         } else {
-            setBackground(Color.WHITE);
+            setBackground(EMPTY);
         }
         return this;
     }
