@@ -29,7 +29,6 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-
 /**
  *
  * @author  nastya
@@ -213,21 +212,21 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
             dlg.setVisible(true);
         }
         if (e.getSource().equals(btnLoad)) {
-            onLoadProgram(program, "Please choose machine code.");
+            program = onLoadProgram("Please choose machine code.");
         }
         if (e.getSource().equals(btnExecute)) {
-            onExecutrProgram();
+            onExecuteProgram();
 
         }
 
         if (e.getSource().equals(cbUseUTM)) {
             if (cbUseUTM.isSelected() && utm == null) {
-                onLoadProgram(utm, "Please choose UTM code.");
+                utm = onLoadProgram("Please choose UTM code.");
             }
         }
     }
 
-    private void onExecutrProgram() {
+    private void onExecuteProgram() {
         if (program == null) {
             JOptionPane.showMessageDialog(this, "Please load program code", "Attention!", JOptionPane.ERROR_MESSAGE);
             return;
@@ -235,30 +234,48 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
             JOptionPane.showMessageDialog(this, "Please load UTM code", "Attention!", JOptionPane.ERROR_MESSAGE);
             return;
         } else {
+//            for (int i = 0; i < table.getColumnCount(); i++) {
+//                table.removeColumn(table.getColumnModel().getColumn(i));
+//            }
+            
+            while(table.getColumnModel().getColumnCount() > 0){
+                TableColumn c = table.getColumnModel().getColumn(0);
+                table.removeColumn(c);
+                table.getColumnModel().removeColumn(c);
+            }
+            table.setModel(new TraceTableModel(new Trace()));
+            table.updateUI();
             Trace trace = new Trace();
             Tape.EMPTY = tfEmptySymbol.getText().charAt(0);
             RepresentationChooser.Representations representation = RepresentationChooser.show(this);
             if (cbUseUTM.isSelected()) {
                 try {
-                    utm.execute(new Tape(Program.translateToVector(program.toUTMString() + "c" + tfTape.getText().trim())), trace);
-                    lbStatus.setText("<html>STATUS: <span style=\"color:green\">COMPLETED<\\span><\\html>");
+                    String tp = tfTape.getText().trim();
+                    if (tp.startsWith(String.valueOf(Tape.EMPTY))) {
+                        tp = String.valueOf(Tape.EMPTY).toLowerCase() + tp.substring(1);
+                    } else if (tp.startsWith("0")) {
+                        tp = "N" + tp.substring(1);
+                    } else if (tp.startsWith("1")) {
+                        tp = "O" + tp.substring(0);
+                    } else if (tp.startsWith("c")) {
+                        tp = "C" + tp.substring(1);
+                    }
+                    utm.execute(new Tape(Program.translateToVector(program.toUTMString() + "c" + tp.trim())), trace);
+                    lbStatus.setText("<html>STATUS: <span style=\"color:green\">SUCCEDED");
                 } catch (NoSuchPassageException ex) {
-                    lbStatus.setText("<html>STATUS: <span style=\"color:red\">FAILED<\\span><\\html>");
+                    lbStatus.setText("<html>STATUS: <span style=\"color:red\">FAILED");
                 }
             } else {
                 try {
                     program.execute(new Tape(Program.translateToVector(tfTape.getText())), trace);
-                    lbStatus.setText("<html>STATUS: <span style=\"color:green\">COMPLETED<\\span><\\html>");
+                    lbStatus.setText("<html>STATUS: <span style=\"color:green\">SUCCEDED");
                 } catch (NoSuchPassageException ex) {
-                    lbStatus.setText("<html>STATUS: <span style=\"color:red\">FAILED<\\span><\\html>");
+                    lbStatus.setText("<html>STATUS: <span style=\"color:red\">FAILED");
                 }
-//                System.out.println(trace);
             }
 
+            System.out.println(trace);
             if (representation == RepresentationChooser.Representations.TABLE || representation == RepresentationChooser.Representations.TABLE_AND_TEX) {
-                for (int i = 0; i < table.getColumnCount(); i++) {
-                    table.removeColumn(table.getColumnModel().getColumn(i));
-                }
                 TraceTableModel model = new TraceTableModel(trace);
                 table.setModel(model);
                 for (int idx = 0; idx < ((TraceTableModel) model).columns.length; idx++) {
@@ -277,7 +294,7 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
         }
     }
 
-    private void onLoadProgram(Program p, String toolTip) {
+    private Program onLoadProgram(String toolTip) {
         JFileChooser fc = new JFileChooser();
         fc.setToolTipText(toolTip);
         fc.setMultiSelectionEnabled(false);
@@ -293,10 +310,13 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
             }
         });
         if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            p = Program.parseProgram(fc.getSelectedFile());
+            return Program.parseProgram(fc.getSelectedFile());
         }
+
+        return null;
     }
 }
+
 class TraceTableRenderer extends JLabel implements TableCellRenderer {
 
     private static final String CURRENT = "./icons/current.gif";
