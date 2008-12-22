@@ -4,7 +4,7 @@
  */
 package eda.tm.gui;
 
-import eda.tm.Trace;
+import eda.tm.representations.gui.Trace;
 import javax.swing.table.AbstractTableModel;
 
 /**

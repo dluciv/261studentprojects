@@ -5,26 +5,30 @@
  */
 package eda.tm.gui;
 
-import eda.tm.Programm;
+import eda.tm.NoSuchPassageException;
+import eda.tm.Program;
 import eda.tm.Tape;
-import eda.tm.Trace;
-import eda.tm.TraceItem;
+import eda.tm.representations.gui.Trace;
+import eda.tm.representations.gui.TraceItem;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+
 
 /**
  *
@@ -32,14 +36,30 @@ import javax.swing.table.TableColumn;
  */
 public class MachineFactoryForm extends javax.swing.JPanel implements ActionListener {
 
-    Programm program = null;
+    Program program = null;
+    Program utm = null;
+    private JFrame parentFrame;
 
     /** Creates new form MachineFactoryForm */
-    public MachineFactoryForm() {
+    public MachineFactoryForm(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
         initComponents();
+        tfEmptySymbol.setInputVerifier(new InputVerifier() {
+
+            @Override
+            public boolean verify(JComponent input) {
+                if (((JTextField) tfEmptySymbol).getText().length() != 1 ||
+                        ((JTextField) tfEmptySymbol).getText().equals("1") ||
+                        ((JTextField) tfEmptySymbol).getText().equals("0")) {
+                    tfEmptySymbol.setText("b");
+                }
+                return true;
+            }
+        });
         btnCreate.addActionListener(this);
         btnExecute.addActionListener(this);
         btnLoad.addActionListener(this);
+        cbUseUTM.addActionListener(this);
     }
 
     /** This method is called from within the constructor to
@@ -58,6 +78,11 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
         btnCreate = new javax.swing.JButton();
         tfTape = new javax.swing.JTextField();
         btnExecute = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        cbUseUTM = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        tfEmptySymbol = new javax.swing.JTextField();
+        lbStatus = new javax.swing.JLabel();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.MatteBorder(null), "Trace"));
 
@@ -84,7 +109,7 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -94,88 +119,186 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
 
         btnExecute.setText("Execute");
 
+        jLabel1.setText("Tape");
+
+        cbUseUTM.setText("Use UTM");
+
+        jLabel2.setText("Empty symbol: ");
+
+        tfEmptySymbol.setText("b");
+
+        lbStatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbStatus.setText("STATUS");
+        lbStatus.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnLoad)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCreate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfTape, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnExecute)))
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cbUseUTM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnLoad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCreate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 418, Short.MAX_VALUE)
+                                .addComponent(btnExecute))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                                .addGap(3, 3, 3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(23, 23, 23)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfEmptySymbol, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfTape, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(306, 306, 306))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(lbStatus)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLoad)
                     .addComponent(btnCreate)
-                    .addComponent(btnExecute)
+                    .addComponent(btnExecute))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbUseUTM)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(tfEmptySymbol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
                     .addComponent(tfTape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnExecute;
     private javax.swing.JButton btnLoad;
+    private javax.swing.JCheckBox cbUseUTM;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbStatus;
     private javax.swing.JTable table;
+    private javax.swing.JTextField tfEmptySymbol;
     private javax.swing.JTextField tfTape;
     // End of variables declaration//GEN-END:variables
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(btnCreate)) {
+            ProgramMakerDialog dlg = new ProgramMakerDialog(parentFrame, false);
+            dlg.setVisible(true);
         }
         if (e.getSource().equals(btnLoad)) {
-            JFileChooser fc = new JFileChooser();
-            fc.setMultiSelectionEnabled(false);
-            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                program = Programm.parseProgram(fc.getSelectedFile());
-            }
-
+            onLoadProgram(program, "Please choose machine code.");
         }
         if (e.getSource().equals(btnExecute)) {
-            if (program == null) {
-                JOptionPane.showMessageDialog(this, "Please load program code", "Attention!", JOptionPane.ERROR_MESSAGE);
-                return;
-            } else {
-            	Trace trace = null;
-//                trace = program.execute(new Tape(Programm.translateToVector(tfTape.getText())));
-                trace = program.execute(new Tape(Programm.translateToVector(Programm.parseProgram(new File("W:\\261studentprojects\\turing machine\\KateNastyaDima\\programs\\unary_mod.xml") ).toUTMString() + "c" + tfTape.getText().trim())));
-                System.out.println(trace);
-//                for (int i = 0; i < table.getColumnCount(); i++) {
-//                    table.removeColumn(table.getColumnModel().getColumn(i));
-//                }
-//                TraceTableModel model = new TraceTableModel(trace);
-//                table.setModel(model);
-//                for (int idx = 0; idx < ((TraceTableModel) model).columns.length; idx++) {
-//                    TableCellRenderer renderer = new TraceTableRenderer();
-//                    TableColumn column = new TableColumn(idx,
-//                            40, renderer, null);
-//                    column.setCellRenderer(new TraceTableRenderer());
-//                    table.addColumn(column);
-//                }
-//                table.updateUI();
+            onExecutrProgram();
+
+        }
+
+        if (e.getSource().equals(cbUseUTM)) {
+            if (cbUseUTM.isSelected() && utm == null) {
+                onLoadProgram(utm, "Please choose UTM code.");
             }
         }
     }
-}
 
+    private void onExecutrProgram() {
+        if (program == null) {
+            JOptionPane.showMessageDialog(this, "Please load program code", "Attention!", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else if (cbUseUTM.isSelected() && utm == null) {
+            JOptionPane.showMessageDialog(this, "Please load UTM code", "Attention!", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            Trace trace = new Trace();
+            Tape.EMPTY = tfEmptySymbol.getText().charAt(0);
+            RepresentationChooser.Representations representation = RepresentationChooser.show(this);
+            if (cbUseUTM.isSelected()) {
+                try {
+                    utm.execute(new Tape(Program.translateToVector(program.toUTMString() + "c" + tfTape.getText().trim())), trace);
+                    lbStatus.setText("<html>STATUS: <span style=\"color:green\">COMPLETED<\\span><\\html>");
+                } catch (NoSuchPassageException ex) {
+                    lbStatus.setText("<html>STATUS: <span style=\"color:red\">FAILED<\\span><\\html>");
+                }
+            } else {
+                try {
+                    program.execute(new Tape(Program.translateToVector(tfTape.getText())), trace);
+                    lbStatus.setText("<html>STATUS: <span style=\"color:green\">COMPLETED<\\span><\\html>");
+                } catch (NoSuchPassageException ex) {
+                    lbStatus.setText("<html>STATUS: <span style=\"color:red\">FAILED<\\span><\\html>");
+                }
+//                System.out.println(trace);
+            }
+
+            if (representation == RepresentationChooser.Representations.TABLE || representation == RepresentationChooser.Representations.TABLE_AND_TEX) {
+                for (int i = 0; i < table.getColumnCount(); i++) {
+                    table.removeColumn(table.getColumnModel().getColumn(i));
+                }
+                TraceTableModel model = new TraceTableModel(trace);
+                table.setModel(model);
+                for (int idx = 0; idx < ((TraceTableModel) model).columns.length; idx++) {
+                    TableCellRenderer renderer = new TraceTableRenderer();
+                    TableColumn column = new TableColumn(idx,
+                            40, renderer, null);
+                    column.setCellRenderer(new TraceTableRenderer());
+                    table.addColumn(column);
+                }
+                table.updateUI();
+            }
+
+            if (representation == RepresentationChooser.Representations.TEX || representation == RepresentationChooser.Representations.TABLE_AND_TEX) {
+            }
+
+        }
+    }
+
+    private void onLoadProgram(Program p, String toolTip) {
+        JFileChooser fc = new JFileChooser();
+        fc.setToolTipText(toolTip);
+        fc.setMultiSelectionEnabled(false);
+        fc.setFileFilter(new FileFilter() {
+
+            public boolean accept(File pathname) {
+                return pathname.isDirectory() || pathname.getName().toLowerCase().endsWith(".xml");
+            }
+
+            @Override
+            public String getDescription() {
+                return ".xml";
+            }
+        });
+        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            p = Program.parseProgram(fc.getSelectedFile());
+        }
+    }
+}
 class TraceTableRenderer extends JLabel implements TableCellRenderer {
+
     private static final String CURRENT = "./icons/current.gif";
     private static final String LAST = "./icons/last.gif";
 
@@ -195,14 +318,14 @@ class TraceTableRenderer extends JLabel implements TableCellRenderer {
             } else {
                 if (item.isCurrentPoint()) {
                     setBackground(Color.GREEN);
-               } else if (item.isLastPoint()) {
+                } else if (item.isLastPoint()) {
                     setBackground(Color.BLUE);
-                }else{
-                	setBackground(Color.WHITE);
+                } else {
+                    setBackground(Color.WHITE);
                 }
             }
-        }else{
-        	setBackground(Color.WHITE);
+        } else {
+            setBackground(Color.WHITE);
         }
         return this;
     }

@@ -6,7 +6,7 @@
 package eda.tm.gui;
 
 import eda.tm.Moving;
-import eda.tm.Programm;
+import eda.tm.Program;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -28,7 +28,7 @@ import javax.swing.table.TableColumn;
  * @author  nastya
  */
 public class ProgramMakerDialog extends javax.swing.JDialog implements ActionListener {
-    private Programm program = null;
+    private Program program = null;
     private static final String XML_PREFIX = "XML";
 
     /** Creates new form ProgramMakerDialog */
@@ -613,7 +613,7 @@ public class ProgramMakerDialog extends javax.swing.JDialog implements ActionLis
             return;
         }
         
-        program = new Programm(tfStart.getText().trim(),(String) ((DefaultListModel)lstEndStates.getModel()).getElementAt(0));
+        program = new Program(tfStart.getText().trim(),(String) ((DefaultListModel)lstEndStates.getModel()).getElementAt(0));
         
         for (TemporaryData tempData: ((TableDataModel)table.getModel()).getData()) {
             program.addRule(tempData.getStateSymbol(), tempData.getStateSymbolMove());
