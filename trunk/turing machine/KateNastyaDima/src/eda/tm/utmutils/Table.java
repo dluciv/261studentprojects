@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package eda.tm;
+package eda.tm.utmutils;
 
+import eda.tm.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,7 +19,7 @@ public class Table {
     private HashMap<Integer, TableRecord> storage;
 
 
-    Table(int size) {
+    public Table(int size) {
         storage = new HashMap<Integer, TableRecord>();
         for (int i = 1; i <= size; i++) {
             storage.put(i, new TableRecord());            

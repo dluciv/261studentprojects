@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package eda.tm;
+package eda.tm.utmutils;
 
+import eda.tm.*;
 import java.util.HashMap;
 import java.util.Set;
 

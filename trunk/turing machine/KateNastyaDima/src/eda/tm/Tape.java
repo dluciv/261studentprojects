@@ -4,8 +4,7 @@ import java.util.Vector;
 
 public class Tape {
 
-    public static final char STAR = '*';
-    public static final char EMPTY = 'b';
+    public static char EMPTY = 'b';
     private Vector<Character> tape;
     private int position;
 
@@ -55,7 +54,7 @@ public class Tape {
         return (Vector<Character>) tape.clone();
     }
 
-    int getPosition() {
+    public int getPosition() {
         return position;
     }
 }

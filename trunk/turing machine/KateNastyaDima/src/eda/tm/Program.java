@@ -1,5 +1,8 @@
 package eda.tm;
 
+import eda.tm.representations.gui.TraceTape;
+import eda.tm.representations.gui.Trace;
+import eda.tm.utmutils.Table;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,13 +23,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class Programm {
+public class Program {
 
     private HashMap<StateSymbol, StateSymbolMove> rules;
     private String beginState;
     private String endState;
 
-    public Programm(String beginState, String endState) {
+    public Program(String beginState, String endState) {
         this.beginState = beginState;
         this.endState = endState;
         this.rules = new HashMap<StateSymbol, StateSymbolMove>();
@@ -56,33 +59,30 @@ public class Programm {
         rules.put(stateSymbol, stateSymbolMove);
     }
 
-    public Trace performMove(StateSymbol tmp, Tape tape, Trace trace) {
-    	StateSymbolMove nextMove  = null;
-    	do{
-    		nextMove = rules.get(tmp);
+    public void performMove(StateSymbol tmp, Tape tape, Trace trace) throws NoSuchPassageException {
+        StateSymbolMove nextMove = null;
+        do {
+            nextMove = rules.get(tmp);
 
-            if(nextMove == null){
-        	System.out.println(tmp);
-        	return trace;
+            if (nextMove == null) {
+                throw new NoSuchPassageException();
             }
-        tmp.setState(nextMove.getState());
-        tape.write(nextMove.getSymbol());
-        tape.changePosition(nextMove.getMove());
-        tmp.setSymbol(tape.returnCurrentSymbol());
-        trace.add(new TraceTape(tape, nextMove.getMove()));
-        System.out.println(tape);
+            tmp.setState(nextMove.getState());
+            tape.write(nextMove.getSymbol());
+            tape.changePosition(nextMove.getMove());
+            tmp.setSymbol(tape.returnCurrentSymbol());
+            trace.add(new TraceTape(tape, nextMove.getMove()));
+            System.out.println(tape);
 
         //return performMove(tmp, tape, trace);
-        }while(nextMove != null && !nextMove.getState().equals(endState));
-    	trace.add(new TraceTape(tape, Moving.STEND));
-    	return trace;
+        } while (nextMove != null && !nextMove.getState().equals(endState));
+        trace.add(new TraceTape(tape, Moving.STEND));
     }
 
-    public Trace execute(Tape tape) {
+    public void execute(Tape tape, Trace trace) throws NoSuchPassageException {
         StateSymbol start = new StateSymbol(beginState, tape.returnCurrentSymbol());
-        Trace trace = new Trace();
         trace.add(new TraceTape(tape, Moving.STEND));
-        return performMove(start, tape, trace);
+        performMove(start, tape, trace);
     }
 
     private enum XML_TAGS {
@@ -153,13 +153,13 @@ public class Programm {
 //serializer.transform(domSource, streamResult);
 //String result = writer.getBuffer().toString();
         } catch (IOException ex) {
-            Logger.getLogger(Programm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {
-            Logger.getLogger(Programm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 //    public static void main(String[] args) {
-//        Programm p = new Programm("q0","q1");
+//        Program p = new Program("q0","q1");
 //        p.addRule(new StateSymbol("q0", '1'), new StateSymbolMove(Moving.RIGHT, "q1", '0'));
 //        p.addRule(new StateSymbol("q0", '0'), new StateSymbolMove(Moving.LEFT, "q1", '0'));
 //        p.addRule(new StateSymbol("q1", '1'), new StateSymbolMove(Moving.STEND, "q0", '1'));
@@ -167,8 +167,8 @@ public class Programm {
 //        p.writeToXML();
 //    }
 
-    public static Programm parseProgram(File filename) {
-        Programm program = null;
+    public static Program parseProgram(File filename) {
+        Program program = null;
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -189,7 +189,7 @@ public class Programm {
                 return null;
             }
             String startStateProgram = node.item(0).getTextContent();
-            program = new Programm(startStateProgram, endStateProgram);
+            program = new Program(startStateProgram, endStateProgram);
             node = doc.getElementsByTagName(String.valueOf(XML_TAGS.passage));
             for (int i = 0; i < node.getLength(); i++) {
                 Element current = (Element) node.item(i);
@@ -207,18 +207,18 @@ public class Programm {
                 program.addRule(ss, ssm);
             }
         } catch (SAXException ex) {
-            Logger.getLogger(Programm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Programm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {
-            Logger.getLogger(Programm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
         }
         return program;
     }
 
 //    public static void main(String[] args) {
 //        try {
-//            Programm umt = parseProgram(new File("/home/nastya/dddd/UMT.xml"));
+//            Program umt = parseProgram(new File("/home/nastya/dddd/UMT.xml"));
 ////            System.out.println(umt.getBeginState());
 //            System.out.println(umt);
 //////        Vector<Character> v  = new Vector<Character>();
@@ -237,7 +237,7 @@ public class Programm {
 ////            Tape tape1 = umt.execute(tape);
 ////            System.out.println(tape1);
 //            
-//            Programm p = new Programm("q1", "q3");
+//            Program p = new Program("q1", "q3");
 //            p.addRule(new StateSymbol("q1", 'b'), new StateSymbolMove(Moving.RIGHT, "q3", '1'));
 //            p.addRule(new StateSymbol("q1", '0'), new StateSymbolMove(Moving.RIGHT, "q2", '0'));
 //            p.addRule(new StateSymbol("q2", '1'), new StateSymbolMove(Moving.RIGHT, "q1", '1'));
@@ -251,7 +251,6 @@ public class Programm {
 //            
 //    }
 //    
-    
     public static Vector<Character> translateToVector(String s) {
         Vector<Character> v = new Vector<Character>();
         for (int i = 0; i < s.length(); i++) {
@@ -259,52 +258,46 @@ public class Programm {
         }
         return v;
     }
-       
-    private Table toTable(){
+
+    private Table toTable() {
         HashMap<String, Integer> states = new HashMap<String, Integer>();
-        Set<Entry<StateSymbol,StateSymbolMove>> set = rules.entrySet();
-        Iterator<Entry<StateSymbol,StateSymbolMove>> i = set.iterator();
+        Set<Entry<StateSymbol, StateSymbolMove>> set = rules.entrySet();
+        Iterator<Entry<StateSymbol, StateSymbolMove>> i = set.iterator();
         states.put(beginState, 1);
         int number = 2;
-        while(i.hasNext()){
-            Entry<StateSymbol,StateSymbolMove> e = i.next();
-            if(!states.containsKey(e.getKey().getState()) 
-                    && !e.getKey().getState().equals(beginState) 
-                    && !e.getKey().getState().equals(endState)){
+        while (i.hasNext()) {
+            Entry<StateSymbol, StateSymbolMove> e = i.next();
+            if (!states.containsKey(e.getKey().getState()) && !e.getKey().getState().equals(beginState) && !e.getKey().getState().equals(endState)) {
                 states.put(e.getKey().getState(), number);
                 number++;
             }
-             if(!states.containsKey(e.getValue().getState()) 
-                    && !e.getValue().getState().equals(beginState) 
-                    && !e.getValue().getState().equals(endState)){
+            if (!states.containsKey(e.getValue().getState()) && !e.getValue().getState().equals(beginState) && !e.getValue().getState().equals(endState)) {
                 states.put(e.getValue().getState(), number);
                 number++;
             }
         }
-        
+
         states.put(endState, number);
         Table table = new Table(states.size());
         i = set.iterator();
-        while(i.hasNext()){
-            Entry<StateSymbol,StateSymbolMove> e = i.next();
-            
+        while (i.hasNext()) {
+            Entry<StateSymbol, StateSymbolMove> e = i.next();
+
             StateSymbolMove ssm = new StateSymbolMove(e.getValue().getMove(),
                     String.valueOf(states.get(e.getValue().getState())),
                     e.getValue().getSymbol());
-            
-            table.add(states.get(e.getKey().getState()),e.getKey().getSymbol(), ssm);
+
+            table.add(states.get(e.getKey().getState()), e.getKey().getSymbol(), ssm);
         }
-        
+
         table.fillTable();
         return table;
     }
-    
-   
-    
-    public  String toUTMString(){
+
+    public String toUTMString() {
         return toTable().toString();
     }
-    
+
     @Override
     public String toString() {
         String s = "PROGRAM: \n";
