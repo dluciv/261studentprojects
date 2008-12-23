@@ -9,6 +9,7 @@ import eda.tm.NoSuchPassageException;
 import eda.tm.Program;
 import eda.tm.Tape;
 import eda.tm.TexWriter;
+import eda.tm.Paths;
 import eda.tm.representations.gui.Trace;
 import eda.tm.representations.gui.TraceItem;
 import java.awt.Color;
@@ -279,12 +280,8 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
             }
 
             System.out.println(trace);
-            TexWriter tw = new TexWriter(trace);
-            try {
-                System.out.println(tw.createTexFile("turingMT").getAbsolutePath());
-              } catch (IOException ex){
-              	Logger.getLogger(TexWriter.class.getName()).log(Level.SEVERE, null, ex);
-              }
+            
+          
             if (representation == RepresentationChooser.Representations.TABLE || representation == RepresentationChooser.Representations.TABLE_AND_TEX) {
                 TraceTableModel model = new TraceTableModel(trace);
                 table.setModel(model);
@@ -299,6 +296,19 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
             }
 
             if (representation == RepresentationChooser.Representations.TEX || representation == RepresentationChooser.Representations.TABLE_AND_TEX) {
+            	try {
+            		TexWriter tw = new TexWriter(trace);
+            		String texFileName = tw.createTexFile("turingMT").getAbsolutePath();
+                	System.out.println(texFileName);
+					Runtime.getRuntime().exec(Paths.LATEX + " " + texFileName);
+					System.out.println(Paths.LATEX + " " + texFileName);
+					String dviFileName = texFileName.substring(0, texFileName.length() - 4);
+					Runtime.getRuntime().exec(Paths.DVIPS + " " + dviFileName + ".dvi");
+					System.out.println(Paths.DVIPS + " " + dviFileName + ".dvi");
+					String psFileName = texFileName.substring(0, dviFileName.length() - 4);
+					Runtime.getRuntime().exec(Paths.DVIPS + " " + psFileName + ".ps");
+					System.out.println(Paths.DVIPS + " " + psFileName + ".ps");
+				} catch (IOException e) {}
             }
 
         }
