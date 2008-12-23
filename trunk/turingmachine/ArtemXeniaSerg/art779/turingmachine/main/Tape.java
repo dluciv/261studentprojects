@@ -1,3 +1,10 @@
+/*
+ * @author art779j
+ * Licensed under the GNU General Public License v2 
+ * @copyrights 261studentprojects
+ *  
+ */
+
 package art779.turingmachine.main;
 
 import java.util.*;
@@ -9,11 +16,8 @@ public class Tape {
     public static final String terminalSym = "T";
     public static final String infinitySym = " ";
     
-    Tape()
+    Tape(String[] tape_r)
     {
-    	String[] tape_r = {
-    		"1","1","+","1","1","+","1","1","1"
-    	};
     	fillTape(tape_r);
     }
 

@@ -1,3 +1,10 @@
+/*
+ * @author ksenyiacypan
+ * Licensed under the GNU General Public License v2 
+ * @copyrights 261studentprojects
+ *  
+ */
+
 package art779.turingmachine.main;
 
 import java.util.LinkedList;
@@ -49,22 +56,16 @@ public class Performer {
 			} catch (Exception e) {
 				break;
 			}
-			
-			Action op = act.getAction();
-			
 			if (null != act.getParam())
-				tape.setValue(act.getParam());
-				
-			if(op == Action.R)
-				tape.moveRight();
-			else if(op == Action.L)
-				tape.moveLeft();
-			else if (op == Action.H)
-				{	/* do stuff */	}
-			else
-			{
-				System.out.println("else");
-				break;
+				tape.setValue(act.getParam());			
+			Action op = act.getAction();		
+			switch (op) {
+				case R:
+					tape.moveRight();
+					break;
+				case L:
+					tape.moveLeft();
+					break;
 			}
 			theSym = tape.curSym();
 		}

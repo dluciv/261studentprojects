@@ -1,3 +1,10 @@
+/*
+ * @author ksenyiacypan
+ * Licensed under the GNU General Public License v2 
+ * @copyrights 261studentprojects
+ *  
+ */
+
 package art779.turingmachine.main;
 
 import java.util.HashMap;
@@ -8,8 +15,6 @@ public class Rules {
 	public String fState;
 	
 	private HashMap<RuleKey, RuleAction> rules = new HashMap<RuleKey, RuleAction>();
-	
-	
 	
 	Rules(String SState,String FState)
 	{
@@ -49,16 +54,20 @@ public class Rules {
 	
 	public RuleAction getAct(String State, String Sym)
 	{
-		//RuleKey vt = new RuleKey(State,Sym);
-		//return rules.get(vt);
-		///*
+		/*
+		RuleKey vt = new RuleKey(State,Sym);
+		return rules.get(vt);
+		equals
+		hashcode
+		*///*
+		
 		for (RuleKey vt : rules.keySet()) {
 			if(vt.getState().equals(State))
 				if(vt.getSym().equals(Sym))
 					return rules.get(vt);
 		}
 		return null;
-		//*/
+		
 	}
 	
 	@Override

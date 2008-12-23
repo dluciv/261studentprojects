@@ -1,3 +1,10 @@
+/*
+ * @author art779j
+ * Licensed under the GNU General Public License v2 
+ * @copyrights 261studentprojects
+ *  
+ */
+
 package art779.turingmachine.main;
 
 import java.io.File;
@@ -14,7 +21,6 @@ import org.xml.sax.SAXException;
 
 public class RulesMaker {
     private enum XML_TAGS {
-
         program, start, end, passage, initstate, endstate, state, symbol, move
     }
 
