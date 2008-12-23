@@ -10,7 +10,7 @@ import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
-public class DomParser {
+public class XMLDomParser {
 
     private static Document doc = null;
     private static String currentState = "";

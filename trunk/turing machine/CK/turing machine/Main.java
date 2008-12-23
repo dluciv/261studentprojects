@@ -12,7 +12,7 @@ public class Main {
      */
     public static void main(String[] args) {
         String xmlName = "D:\\My_Progs\\Проги\\umt.xml";
-        DomParser.getMachine(xmlName);
+        XMLDomParser.getMachine(xmlName);
     }
 
 }
