@@ -15,6 +15,11 @@ public class Helper {
 		return graph.buildDFA(regexp);
 	}
 	
+	public Graph buildDFAM(String regexp) {
+		Graph graph = new Graph(); 
+		return graph.buildDFAM(regexp);		
+	}
+	
 	public boolean chekWord(Graph NFA, String word) {
 		Checker checker = new Checker(NFA);
 		return checker.checkWord(word);

@@ -38,7 +38,7 @@ public class WithGUI extends JFrame {
 	private JLabel label8 = new JLabel("parse speed");
 	private JLabel label9 = new JLabel("");
 	
-	private JTextField input = new JTextField("a(bc|b(cf)*)", 15);
+	private JTextField input = new JTextField("c(ab)*|(ab)*", 15);
 	private JTextField input2 = new JTextField("abc", 15);
 	private JTextField input3 = new JTextField("90010", 15);
 	private TextArea textarea = new TextArea("", 29, 19, TextArea.SCROLLBARS_VERTICAL_ONLY);
@@ -50,6 +50,7 @@ public class WithGUI extends JFrame {
 	
 	private JRadioButton radio4 = new JRadioButton("NFA");
 	private JRadioButton radio5 = new JRadioButton("DFA");
+	private JRadioButton radio6 = new JRadioButton("DFA M");
 	
 	JPanel panel1 = new JPanel();
 	JPanel panel2 = new JPanel();
@@ -65,7 +66,7 @@ public class WithGUI extends JFrame {
 	    panel3.add(panel1);
 	    panel3.add(panel2);
 	    
-	    panel1.setLayout(new GridLayout(20,1));
+	    panel1.setLayout(new GridLayout(22,1));
 	    panel1.setBackground(Color.white);
 	    getContentPane().add(panel1);
 	    
@@ -75,10 +76,14 @@ public class WithGUI extends JFrame {
 	    ButtonGroup group1 = new ButtonGroup();
 	    group1.add(radio4);
 	    group1.add(radio5);
+	    group1.add(radio6);
 	    panel1.add(radio4);
 	    radio4.setSelected(true);
 	    panel1.add(radio5);
+	    panel1.add(radio6);
 	    panel1.add(label4);
+	    
+	    
 	    ButtonGroup group2 = new ButtonGroup();
 	    group2.add(radio1);
 	    group2.add(radio2);
@@ -87,6 +92,7 @@ public class WithGUI extends JFrame {
 	    radio1.setSelected(true);
 	    panel1.add(radio2);
 	    panel1.add(radio3);
+	    
 	    
 	    button2.addActionListener(new Button2EventListener());
 	    panel1.add(button2);
@@ -115,10 +121,12 @@ public class WithGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			
 			Graph NFA;
-			if(!radio5.isSelected())
-				NFA =  tool.buildNFA(input.getText());
-			else
+			if(radio5.isSelected())
 				NFA =  tool.buildDFA(input.getText());
+			if(radio6.isSelected())
+				NFA =  tool.buildDFAM(input.getText());
+			else
+				NFA =  tool.buildNFA(input.getText());
 			
 			if(radio1.isSelected())
 				textarea.setText(tool.printRegular(NFA));
@@ -134,10 +142,13 @@ public class WithGUI extends JFrame {
 			
 			Graph NFA;
 			
-			if(!radio5.isSelected())
-				NFA = tool.buildNFA(input.getText());
+			if(radio5.isSelected())
+				NFA =  tool.buildDFA(input.getText());
+			if(radio6.isSelected())
+				NFA =  tool.buildDFAM(input.getText());
 			else
-				NFA = tool.buildDFA(input.getText());
+				NFA =  tool.buildNFA(input.getText());
+
 			
 			if(null!=NFA)
 			{
@@ -153,10 +164,12 @@ public class WithGUI extends JFrame {
 			
 			Graph NFA;
 			
-			if(!radio5.isSelected())
-				NFA = tool.buildNFA(input.getText());
+			if(radio5.isSelected())
+				NFA =  tool.buildDFA(input.getText());
+			if(radio6.isSelected())
+				NFA =  tool.buildDFAM(input.getText());
 			else
-				NFA = tool.buildDFA(input.getText());
+				NFA =  tool.buildNFA(input.getText());
 			
 			try {
 				int runsCount = Integer.parseInt(input3.getText());

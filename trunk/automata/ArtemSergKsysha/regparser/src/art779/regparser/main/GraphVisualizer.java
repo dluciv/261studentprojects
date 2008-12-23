@@ -36,6 +36,10 @@ public class GraphVisualizer {
 	}
 	
 	public String printGraphViz() {
+		//////////////////////////////////////
+		//NFA.minimizeDFA();
+		/////////////////////////////////////////
+
 		String output = new String();
 		output = "";
 		
