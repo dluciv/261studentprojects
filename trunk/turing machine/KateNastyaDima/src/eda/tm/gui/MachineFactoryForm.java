@@ -8,6 +8,7 @@ package eda.tm.gui;
 import eda.tm.NoSuchPassageException;
 import eda.tm.Program;
 import eda.tm.Tape;
+import eda.tm.TexWriter;
 import eda.tm.representations.gui.Trace;
 import eda.tm.representations.gui.TraceItem;
 import java.awt.Color;
@@ -15,6 +16,9 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
@@ -275,6 +279,12 @@ public class MachineFactoryForm extends javax.swing.JPanel implements ActionList
             }
 
             System.out.println(trace);
+            TexWriter tw = new TexWriter(trace);
+            try {
+                System.out.println(tw.createTexFile("turingMT").getAbsolutePath());
+              } catch (IOException ex){
+              	Logger.getLogger(TexWriter.class.getName()).log(Level.SEVERE, null, ex);
+              }
             if (representation == RepresentationChooser.Representations.TABLE || representation == RepresentationChooser.Representations.TABLE_AND_TEX) {
                 TraceTableModel model = new TraceTableModel(trace);
                 table.setModel(model);
