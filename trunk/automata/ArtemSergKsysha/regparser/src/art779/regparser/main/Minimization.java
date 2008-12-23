@@ -13,10 +13,7 @@ public class Minimization {
 		
 
 		
-	}
-//////////////////////////////////////////////////////////////////////////////////////
-	//////MINIMIZING//////MINIMIZING//////MINIMIZING//////MINIMIZING//////MINIMIZING//////
-	//////////////////////////////////////////////////////////////////////////////////////	
+	}	
 	public HashMap<Integer, ArrayList<Integer>> revgraph = new HashMap<Integer, ArrayList<Integer>>();
 	public HashMap<Integer, ArrayList<Integer>> NonEqualPares = new HashMap<Integer, ArrayList<Integer>>();
 	public HashMap<Integer, ArrayList<Integer>> NewFront = new HashMap<Integer, ArrayList<Integer>>();
@@ -50,9 +47,7 @@ public class Minimization {
 		}
 		return null;
 	}
-	
-	
-	public void MaxStId(){
+	public int MaxStId(){
 		int id = 0;
 		Set<Integer> allNodes = DFA.alfabett.keySet();	
 		for (int innode : allNodes) {
@@ -60,9 +55,8 @@ public class Minimization {
 				id = innode;
 			}
 		}
-		h = id + 2;
+		return id + 2;
 	}
-	
 	public void FirstFront() {
 		Set<Integer> allNodes = DFA.alfabett.keySet();	
 		for (int innode : allNodes) {
@@ -74,15 +68,9 @@ public class Minimization {
 			}
 		}
 	}
-	
-	
-	
-	
 	public ArrayList<Integer> getStates(int State) {
 		return revgraph.get(State);
 	}
-	
-	
 	public void addOneInRev(int in, int what) {
 		ArrayList<Integer> fromStates;
 		if(revgraph.containsKey(in))
@@ -98,9 +86,6 @@ public class Minimization {
 		}
 		revgraph.put(in, fromStates);
 	}
-	
-	
-	
 	public void addOneInPares(int in, int what) {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
 		int flag2 = 0;
@@ -140,7 +125,6 @@ public class Minimization {
 			}			
 		}		
 	}
-	
 	public void addOneWithoutRep(int in, int what) {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
 		int flag2 = 0;				
@@ -164,7 +148,6 @@ public class Minimization {
 			DFA.graph.put(in, States);					
 		}		
 	}
-	
 	public void addOneInEqualPares(int in, int what) {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
 		int flag2 = 0;
@@ -204,7 +187,6 @@ public class Minimization {
 			}			
 		}		
 	}
-	
 	public void addInEqualPares(int in, int what) {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
 		int flag2 = 0;
@@ -244,8 +226,6 @@ public class Minimization {
 			}			
 		}		
 	}
-	
-	
 	public void addOneInNewFront(int in, int what) {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
 		int flag2 = 0;
@@ -286,7 +266,6 @@ public class Minimization {
 			}			
 		}		
 	}
-	
 	public void addOneInNextFront(int in, int what) {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
 		int flag2 = 0;
@@ -326,8 +305,6 @@ public class Minimization {
 			}			
 		}		
 	}
-
-	
 	public void BuildRev() {		
 		Set<Integer> allNodes = DFA.alfabett.keySet();	
 		for (int innode : allNodes) {
@@ -343,7 +320,6 @@ public class Minimization {
 			}
 		}		
 	}
-	
 	public void FrontResolve() {
 		int flag = 0;
 		NextFront.clear();
@@ -383,7 +359,6 @@ public class Minimization {
 		}
 		NewFront = NextFront;
 	}
-	
 	public void delEqualStFromGraph() {			
 		for(int key : EqualPares. keySet()) {			
 			if(EqualPares.get(key).size() == 0) {
@@ -408,7 +383,6 @@ public class Minimization {
 			}			
 		}	
 	}
-	
 	public void transClose() {
 		int maxclass = 0;
 		for(int key : EqualPares. keySet()) {			
@@ -452,7 +426,6 @@ public class Minimization {
 			}
 		}
 	}
-	
 	public void getEqualPares() {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
 		for(int key : DFA.alfabett.keySet() ) {
@@ -496,15 +469,8 @@ public class Minimization {
 			}			
 		}		
 	}
-	
-	
-	public Graph minimizeDFA() {
-		/*for(int key : graph. keySet()) {
-			for(int val : graph.get(key)) {
-				System.out.print(key + "-" + val + "\n");
-			}	
-		}*/		
-		MaxStId();
+	public Graph minimizeDFA() 	{	
+		h = MaxStId();
 		BuildRev();
 		FirstFront();
 		FrontResolve();
@@ -513,26 +479,7 @@ public class Minimization {
 		}		
 		getEqualPares();
 		transClose();
-		delEqualStFromGraph();
-		
-		System.out.print("////////////////////////////////////" + "\n");
-		for(int key : EqualPares. keySet()) {
-			for(int val : EqualPares.get(key)) {
-				System.out.print(key + "-" + val + "\n");
-			}	
-		}
-		System.out.print("////////////////////////////////////" + "\n");
-		for(int key : DFA.graph. keySet()) {
-			for(int val : DFA.graph.get(key)) {
-				System.out.print(key + "-" + val + "\n");
-			}	
-		}
+		delEqualStFromGraph();		
 		return DFA;
 	}
-	
-	
-	//////////////////////////////////////////////////////////////////////////////////////
-	//////MINIMIZING//////MINIMIZING//////MINIMIZING//////MINIMIZING//////MINIMIZING//////
-	//////////////////////////////////////////////////////////////////////////////////////
-
 }
