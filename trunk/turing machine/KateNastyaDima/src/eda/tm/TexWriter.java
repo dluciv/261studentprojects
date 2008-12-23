@@ -23,7 +23,7 @@ public class TexWriter {
     private static String BLUE_COLUMN_COLOUR = ">{\\columncolor{blue}}c|";
     private static String END_LINE = "\\\\\n";
     private static String WHITE_SPACE = "&";
-    private static String NEWPAGE = "\\newpage";
+    private static String NEWPAGE = "\\newpage\n";
     
     private static final String EXTENSION = ".tex";
     
@@ -49,8 +49,10 @@ public class TexWriter {
 		}
 		//lastPoint
 		for(int k = 0; k < size;k++){
-			if(tt.get(k).isLastPoint()){
-				last = k;
+			if(tt.get(k).isLastPoint() && (last-1 != current || last+1 != current)){
+				if(last-1 < current) last = current-1;
+				else if(last-1 > current) last = current + 1;
+				else last = k;
 				break;
 				}
 			}
@@ -59,7 +61,7 @@ public class TexWriter {
 		bf.write(BEGIN_TABULAR);
 		for(int m = 0; m < size; m++){
 			if(m == current) bf.write(RED_COLUMN_COLOUR);
-			//if(m == last) bf.write(BLUE_COLUMN_COLOUR);
+			else if(m == last) bf.write(BLUE_COLUMN_COLOUR);
 			else bf.write(SIMPLE_COLUMN);
 		}
 		bf.write(CLOSE);
@@ -85,6 +87,7 @@ public class TexWriter {
             bf.write(DOCUMENTCLASS);
             bf.write(USEPACKAGE);
             bf.write(BEGIN_DOCUMENT);
+            bf.write("\n");
             int size = trace.size();
             
             for(int i = 0; i < size; i++){
