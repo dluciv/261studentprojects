@@ -67,7 +67,7 @@ public class XMLDomParser {
             Machine tm = new Machine();
             getRules(doc, 0, tm);
             rules = tm.getRules();
-//            printRules();
+            printRules();
             return tm;
         } catch (SAXException se) {
         } catch (IOException ie) {
