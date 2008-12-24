@@ -22,6 +22,8 @@ public class Machine {
         InitialCondition currentCondition = new InitialCondition(first, tape.get(tapePointer));
         
         while (!currentCondition.getState().equals(fin)) {
+            printTape();
+            Visualizator.tapes.add(tape);
             Action act = rules.get(currentCondition); 
             newState = act.getState();
             newSymbol = act.getSymbol();
