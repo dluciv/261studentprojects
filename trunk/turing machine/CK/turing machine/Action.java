@@ -6,7 +6,7 @@ package turingmachine;
  * @author Кирилл
  */
 public class Action extends InitialCondition{
-   String direction;
+   private String direction;
    Action(String state, String symbol, String direction){
        super( state, symbol);
        this.direction = direction;

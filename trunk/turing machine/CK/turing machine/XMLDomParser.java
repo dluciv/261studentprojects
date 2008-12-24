@@ -15,7 +15,7 @@ public class XMLDomParser {
     private static Document doc = null;
     private static String currentState = "";
     private static String currentSymbol = "";
-    private static String txt = "";
+    private static String currentLeaf = "";
     private static HashMap<InitialCondition, Action> rules = new HashMap<InitialCondition, Action>();
     private static InitialCondition currentInit = null;
     private static boolean DEAL_WITH_INITIAL = true;
@@ -34,32 +34,27 @@ public class XMLDomParser {
         for (int i = 0, cnt = nl.getLength(); i < cnt; i++) {
             if (nl.item(i).getNodeType() == Node.TEXT_NODE) {
                 parent = nl.item(i).getParentNode().getNodeName();
-                txt = nl.item(i).getNodeValue();
+                currentLeaf = nl.item(i).getNodeValue();
                 if (parent.equals("state")) {
-                    currentState = txt;
+                    currentState = currentLeaf;
                 } else if (parent.equals("symbol")) {
-                    currentSymbol = txt;
+                    currentSymbol = currentLeaf;
                     if (DEAL_WITH_INITIAL) {
                         currentInit = new InitialCondition(currentState, currentSymbol);
-                        tm.rules.put(currentInit, new Action("", "", ""));
+                        tm.getRules().put(currentInit, new Action("", "", ""));
                         DEAL_WITH_INITIAL = false;
                     }
                 } else if (parent.equals("move")) {
-                    tm.rules.get(currentInit).setState(currentState);
-                    tm.rules.get(currentInit).setSymbol(currentSymbol);
-                    tm.rules.get(currentInit).setDirection(txt);
+                    tm.getRules().get(currentInit).setState(currentState);
+                    tm.getRules().get(currentInit).setSymbol(currentSymbol);
+                    tm.getRules().get(currentInit).setDirection(currentLeaf);
                     DEAL_WITH_INITIAL = true;
                 } else if (parent.equals("first")) {
-                    tm.first = txt;
+                    tm.setFirst(currentLeaf);
                 } else if (parent.equals("fin")) {
-                    tm.fin = txt;
+                    tm.setFin( currentLeaf ) ;
                 }
-//            } else {
-//                if(parent.equals("rule")){
-//                if (nl.item(i).getNodeName().equals("initcondition")) {
-//                    rules.put(new InitialCondition("",""), new Action("","",""));
-//                }
-//                }
+
             }
             getRules(nl.item(i), level + 1, tm);
         }
@@ -71,8 +66,8 @@ public class XMLDomParser {
             doc = parseXML(new File(fName));
             Machine tm = new Machine();
             getRules(doc, 0, tm);
-            rules = tm.rules;
-            printRules();
+            rules = tm.getRules();
+//            printRules();
             return tm;
         } catch (SAXException se) {
         } catch (IOException ie) {
@@ -82,8 +77,7 @@ public class XMLDomParser {
     }
 
     public static void printRules() {
-        for (InitialCondition init : rules.keySet()) {
-            System.out.println(init.state + " " + init.symbol + "->" + rules.get(init).state + " " + rules.get(init).symbol + " " + rules.get(init).direction);
-        }
+        for (InitialCondition init : rules.keySet()) 
+            System.out.println(init.state + " " + init.symbol + "->" + rules.get(init).state + " " + rules.get(init).symbol + " " + rules.get(init).getDirection());
     }
 }
