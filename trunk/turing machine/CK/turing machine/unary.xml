@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <program>
-    <first>find1</first>
+    <first>find*</first>
     <fin>done</fin>
     <passage>
         <initstate>
@@ -8,15 +8,48 @@
             <symbol>1</symbol>
         </initstate>
         <endstate>
-            <state>add1</state>
+            <state>findfirst*</state>
             <symbol>*</symbol>
+            <move>LEFT</move>
+        </endstate>
+    </passage>
+	<passage>
+        <initstate>
+            <state>findfirst*</state>
+            <symbol>*</symbol>
+        </initstate>
+        <endstate>
+            <state>findfirst*</state>
+            <symbol>*</symbol>
+            <move>LEFT</move>
+        </endstate>
+    </passage>
+	<passage>
+        <initstate>
+            <state>findfirst*</state>
+            <symbol> </symbol>
+        </initstate>
+        <endstate>
+            <state>add1</state>
+            <symbol></symbol>
             <move>RIGHT</move>
         </endstate>
     </passage>
-    <passage>
+	<passage>
+        <initstate>
+            <state>findfirst*</state>
+            <symbol>1</symbol>
+        </initstate>
+        <endstate>
+            <state>add1</state>
+            <symbol>1</symbol>
+            <move>RIGHT</move>
+        </endstate>
+    </passage>
+	<passage>
         <initstate>
             <state>find1</state>
-            <symbol>+</symbol>
+            <symbol>*</symbol>
         </initstate>
         <endstate>
             <state>find1</state>
@@ -26,8 +59,41 @@
     </passage>
     <passage>
         <initstate>
+            <state>add1</state>
+            <symbol>*</symbol>
+        </initstate>
+        <endstate>
+            <state>find*</state>
+            <symbol>1</symbol>
+            <move>RIGHT</move>
+        </endstate>
+    </passage>
+<passage>
+        <initstate>
+            <state>find*</state>
+            <symbol>1</symbol>
+        </initstate>
+        <endstate>
+            <state>find*</state>
+            <symbol>1</symbol>
+            <move>LEFT</move>
+        </endstate>
+    </passage>
+	<passage>
+        <initstate>
+            <state>find*</state>
+            <symbol> </symbol>
+        </initstate>
+        <endstate>
+            <state>done</state>
+            <symbol></symbol>
+            <move>HOLD</move>
+        </endstate>
+    </passage>
+ <passage>
+        <initstate>
             <state>find1</state>
-            <symbol>=</symbol>
+            <symbol> </symbol>
         </initstate>
         <endstate>
             <state>done</state>
@@ -35,81 +101,15 @@
             <move>HOLD</move>
         </endstate>
     </passage>
-    <passage>
-        <initstate>
-            <state>add1</state>
-            <symbol>1</symbol>
-        </initstate>
-        <endstate>
-            <state>add1</state>
-            <symbol>1</symbol>
-            <move>RIGHT</move>
-        </endstate>
-    </passage>
-    <passage>
-        <initstate>
-            <state>add1</state>
-            <symbol>+</symbol>
-        </initstate>
-        <endstate>
-            <state>add1</state>
-            <symbol>+</symbol>
-            <move>RIGHT</move>
-        </endstate>
-    </passage>
-    <passage>
-        <initstate>
-            <state>add1</state>
-            <symbol>=</symbol>
-        </initstate>
-        <endstate>
-            <state>add1</state>
-            <symbol>=</symbol>
-            <move>RIGHT</move>
-        </endstate>
-    </passage>
-    <passage>
-        <initstate>
-            <state>add1</state>
-            <symbol> </symbol>
-        </initstate>
-        <endstate>
-            <state>find*</state>
-            <symbol>1</symbol>
-            <move>LEFT</move>
-        </endstate>
-    </passage>
-    <passage>
-        <initstate>
-            <state>find*</state>
-            <symbol>1</symbol>
-        </initstate>
-        <endstate>
-            <state>find*</state>
-            <symbol>1</symbol>
-            <move>LEFT</move>
-        </endstate>
-    </passage>
  <passage>
         <initstate>
             <state>find*</state>
-            <symbol>=</symbol>
+            <symbol>1</symbol>
         </initstate>
         <endstate>
             <state>find*</state>
-            <symbol>=</symbol>
-            <move>LEFT</move>
-        </endstate>
-    </passage>
- <passage>
-        <initstate>
-            <state>find*</state>
-            <symbol>+</symbol>
-        </initstate>
-        <endstate>
-            <state>find*</state>
-            <symbol>+</symbol>
-            <move>LEFT</move>
+            <symbol>1</symbol>
+            <move>RIGHT</move>
         </endstate>
     </passage>
  <passage>
@@ -123,4 +123,5 @@
             <move>RIGHT</move>
         </endstate>
     </passage>
+	
 </program>
