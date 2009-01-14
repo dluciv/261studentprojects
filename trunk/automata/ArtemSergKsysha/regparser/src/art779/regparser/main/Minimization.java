@@ -6,50 +6,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Minimization {
-	public Graph DFA;
-	Minimization(Graph TMDFA){
-		DFA = TMDFA;
-		
-
-		
-	}	
-	public HashMap<Integer, ArrayList<Integer>> revgraph = new HashMap<Integer, ArrayList<Integer>>();
-	public HashMap<Integer, ArrayList<Integer>> NonEqualPares = new HashMap<Integer, ArrayList<Integer>>();
-	public HashMap<Integer, ArrayList<Integer>> NewFront = new HashMap<Integer, ArrayList<Integer>>();
-	public HashMap<Integer, ArrayList<Integer>> NextFront = new HashMap<Integer, ArrayList<Integer>>();
-	public HashMap<Integer, ArrayList<Integer>> EqualPares = new HashMap<Integer, ArrayList<Integer>>();
-	public HashMap<Integer, Integer> classes = new HashMap<Integer, Integer>();
-	public int h = 0;
+public class Minimization {		
+	private static Graph dFA;
+	private static Graph revgraph;	
+	private static HashMap<Integer, ArrayList<Integer>> NonEqualPares;
+	private static HashMap<Integer, ArrayList<Integer>> NewFront;
+	private static HashMap<Integer, ArrayList<Integer>> NextFront;
+	private static HashMap<Integer, ArrayList<Integer>> EqualPares;
+	private static HashMap<Integer, Integer> classes;	
+	private static int h = 0;	
 	
-	
-	
-	public ArrayList<Integer> getNextSt(int State, char ch) {
-		
-		List<Integer> nStatesList = DFA.getNextState(State);
-		
-		ArrayList<Integer> nStatesListCh = new ArrayList<Integer>(); 
-		if(nStatesList == null)
-		{
-			return null;
-		}
-		
-		for (int i = 0; i < nStatesList.size(); i++) {
-			if(null!=DFA.alfabett.get(nStatesList.get(i)))
-			{
-				char curChar = DFA.alfabett.get(nStatesList.get(i)).charAt(0);
-				if(curChar == ch)
-				{			
-					nStatesListCh.add(nStatesList.get(i));
-					return nStatesListCh;
-				}
-			}
-		}
-		return null;
-	}
-	public int MaxStId(){
+	private static int MaxStId(){
 		int id = 0;
-		Set<Integer> allNodes = DFA.alfabett.keySet();	
+		Set<Integer> allNodes = dFA.alfabett.keySet();	
 		for (int innode : allNodes) {
 			if (innode > id) {
 				id = innode;
@@ -57,26 +26,25 @@ public class Minimization {
 		}
 		return id + 2;
 	}
-	public void FirstFront() {
-		Set<Integer> allNodes = DFA.alfabett.keySet();	
+	
+	private static void FirstFront() {
+		Set<Integer> allNodes = dFA.alfabett.keySet();	
 		for (int innode : allNodes) {
-			if (innode != DFA.getFinalState() && innode != h) {
-				addOneInPares( DFA.getFinalState(), innode );				
+			if (innode != dFA.getFinalState() && innode != h) {
+				addOneInPares( dFA.getFinalState(), innode );				
 			}
 			if (innode != h ) {				
 				addOneInNewFront( h, innode );
 			}
 		}
 	}
-	public ArrayList<Integer> getStates(int State) {
-		return revgraph.get(State);
-	}
-	public void addOneInRev(int in, int what) {
+	
+	private static void addOneInRev(int in, int what) {
 		ArrayList<Integer> fromStates;
-		if(revgraph.containsKey(in))
+		if(revgraph.graph.containsKey(in))
 		{
-			fromStates = getStates(in);
-			revgraph.remove(in);
+			fromStates = revgraph.graph.get(in);
+			revgraph.graph.remove(in);
 			fromStates.add(what);
 		}
 		else
@@ -84,95 +52,96 @@ public class Minimization {
 			fromStates = new ArrayList<Integer> ();
 			fromStates.add(what);
 		}
-		revgraph.put(in, fromStates);
+		revgraph.graph.put(in, fromStates);
 	}
-	public void addOneInPares(int in, int what) {
-		ArrayList<Integer> States = new ArrayList<Integer> ();		
-		int flag2 = 0;
-		int flag1 = 0;
+	
+	private static void addOneInPares(int in, int what) {
+		ArrayList<Integer> states = new ArrayList<Integer> ();		
+		boolean keyInContainsWhat = false;
+		boolean keyWhatContainsIn = false;
 		if(NonEqualPares.containsKey(what)) {
 			ArrayList<Integer> stlst = new ArrayList<Integer>();
 			stlst = NonEqualPares.get(what);
 			for (int st : stlst) {
 				if( st == in ) {
-					flag1 = 1;
+					keyWhatContainsIn = true;
 				}
 			}				
 		}		
 		if(NonEqualPares.containsKey(in))
-		{
-			
-			if( flag1 == 0){
-				States = NonEqualPares.get(in);
-				NonEqualPares.remove(in);				
-				for (int st : States) {
-					if( st == what ) {
-						flag2 = 1;
-					}
-				}				
-				if(flag2 == 0){
-					States.add(what);		
-				}				
-				NonEqualPares.put(in, States);
-			}	
-		}
-		else 
-		{		
-			if( flag1 == 0){
-				//States = new ArrayList<Integer> ();
-				States.add(what);
-				NonEqualPares.put(in, States);
-			}			
-		}		
-	}
-	public void addOneWithoutRep(int in, int what) {
-		ArrayList<Integer> States = new ArrayList<Integer> ();		
-		int flag2 = 0;				
-		if(DFA.graph.containsKey(in))
 		{			
-			States = DFA.graph.get(in);
-			DFA.graph.remove(in);				
-			for (int st : States) {
+			if( keyWhatContainsIn == false){
+				states = NonEqualPares.get(in);
+				NonEqualPares.remove(in);				
+				for (int st : states) {
+					if( st == what ) {
+						keyInContainsWhat = true;
+					}
+				}				
+				if(keyInContainsWhat == false){
+					states.add(what);		
+				}				
+				NonEqualPares.put(in, states);
+			}	
+		}
+		else 
+		{		
+			if( keyWhatContainsIn == false){
+				//States = new ArrayList<Integer> ();
+				states.add(what);
+				NonEqualPares.put(in, states);
+			}			
+		}		
+	}
+	
+	private static void addOneWithoutRep(int in, int what) {
+		ArrayList<Integer> states = new ArrayList<Integer> ();		
+		boolean keyInContainsWhat = false;
+		if(dFA.graph.containsKey(in))
+		{			
+			states = dFA.graph.get(in);
+			dFA.graph.remove(in);				
+			for (int st : states) {
 				if( st == what ) {
-					flag2 = 1;
+					keyInContainsWhat = true;
 				}
 			}				
-			if(flag2 == 0){
-				States.add(what);		
+			if(keyInContainsWhat == false){
+				states.add(what);		
 			}				
-			DFA.graph.put(in, States);				
+			dFA.graph.put(in, states);				
 		}
 		else 
 		{		
-			States.add(what);
-			DFA.graph.put(in, States);					
+			states.add(what);
+			dFA.graph.put(in, states);					
 		}		
 	}
-	public void addOneInEqualPares(int in, int what) {
+	
+	private static void addOneInEqualPares(int in, int what) {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
-		int flag2 = 0;
-		int flag1 = 0;
+		boolean keyInContainsWhat = false;
+		boolean keyWhatContainsIn = false;
 		if(EqualPares.containsKey(what)) {
 			ArrayList<Integer> stlst = new ArrayList<Integer>();
 			stlst = EqualPares.get(what);
 			for (int st : stlst) {
 				if( st == in ) {
-					flag1 = 1;
+					keyWhatContainsIn = true;
 				}
 			}				
 		}		
 		if(EqualPares.containsKey(in))
-		{
-			
-			if( flag1 == 0){
+		{		
+			if( keyWhatContainsIn == false){
 				States = EqualPares.get(in);
 				EqualPares.remove(in);				
 				for (int st : States) {
 					if( st == what ) {
-						flag2 = 1;
+						keyInContainsWhat = true;
 					}
 				}				
-				if(flag2 == 0){
+				if(keyInContainsWhat == false){
 					States.add(what);		
 				}				
 				EqualPares.put(in, States);
@@ -180,136 +149,96 @@ public class Minimization {
 		}
 		else 
 		{		
-			if( flag1 == 0){
+			if( keyWhatContainsIn == false){
 				//States = new ArrayList<Integer> ();
 				States.add(what);
 				EqualPares.put(in, States);
 			}			
 		}		
-	}
-	public void addInEqualPares(int in, int what) {
+	}	
+	
+	private static void addOneInNewFront(int in, int what) {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
-		int flag2 = 0;
-		int flag1 = 0;
-		if(EqualPares.containsKey(what)) {
-			ArrayList<Integer> stlst = new ArrayList<Integer>();
-			stlst = EqualPares.get(what);
-			for (int st : stlst) {
-				if( st == in ) {
-					flag1 = 1;
-				}
-			}				
-		}		
-		if(EqualPares.containsKey(in))
-		{
-			
-			if( flag1 == 0){
-				States = EqualPares.get(in);
-				EqualPares.remove(in);				
-				for (int st : States) {
-					if( st == what ) {
-						flag2 = 1;
-					}
-				}				
-				if(flag2 == 0){
-					States.add(what);		
-				}				
-				EqualPares.put(in, States);
-			}	
-		}
-		else 
-		{		
-			if( flag1 == 0){
-				//States = new ArrayList<Integer> ();
-				States.add(what);
-				EqualPares.put(in, States);
-			}			
-		}		
-	}
-	public void addOneInNewFront(int in, int what) {
-		ArrayList<Integer> States = new ArrayList<Integer> ();		
-		int flag2 = 0;
-		int flag1 = 0;
+		boolean keyInContainsWhat = false;
+		boolean keyWhatContainsIn = false;
 		if(NewFront.containsKey(what)) {
 			ArrayList<Integer> stlst = new ArrayList<Integer>();
 			stlst = NewFront.get(what);
 			for (int st : stlst) {
 				if( st == in ) {
-					flag1 = 1;
+					keyWhatContainsIn = true;
 				}
 			}				
-		}	
-		
+		}		
 		if(NewFront.containsKey(in))
-		{
-			
-			if( flag1 == 0){
+		{		
+			if( keyWhatContainsIn == false){
 				States = NewFront.get(in);
 				NewFront.remove(in);				
 				for (int st : States) {
 					if( st == what ) {
-						flag2 = 1;
+						keyInContainsWhat = true;
 					}
 				}				
-				if(flag2 == 0){
-					States.add(what);					
-				}
+				if(keyInContainsWhat == false){
+					States.add(what);		
+				}				
 				NewFront.put(in, States);
 			}	
 		}
 		else 
 		{		
-			if( flag1 == 0){
+			if( keyWhatContainsIn == false){
 				//States = new ArrayList<Integer> ();
 				States.add(what);
 				NewFront.put(in, States);
 			}			
 		}		
 	}
-	public void addOneInNextFront(int in, int what) {
+	
+	private static void addOneInNextFront(int in, int what) {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
-		int flag2 = 0;
-		int flag1 = 0;
+		boolean keyInContainsWhat = false;
+		boolean keyWhatContainsIn = false;
 		if(NextFront.containsKey(what)) {
 			ArrayList<Integer> stlst = new ArrayList<Integer>();
 			stlst = NextFront.get(what);
 			for (int st : stlst) {
 				if( st == in ) {
-					flag1 = 1;
+					keyWhatContainsIn = true;
 				}
 			}				
 		}		
 		if(NextFront.containsKey(in))
-		{
-			
-			if( flag1 == 0){
+		{		
+			if( keyWhatContainsIn == false){
 				States = NextFront.get(in);
 				NextFront.remove(in);				
 				for (int st : States) {
 					if( st == what ) {
-						flag2 = 1;
+						keyInContainsWhat = true;
 					}
 				}				
-				if(flag2 == 0){
-					States.add(what);					
-				}
+				if(keyInContainsWhat == false){
+					States.add(what);		
+				}				
 				NextFront.put(in, States);
 			}	
 		}
 		else 
 		{		
-			if( flag1 == 0){
-				//States = new ArrayList<Integer> ();
+			if( keyWhatContainsIn == false){				
 				States.add(what);
 				NextFront.put(in, States);
 			}			
 		}		
 	}
-	public void BuildRev() {		
-		Set<Integer> allNodes = DFA.alfabett.keySet();	
+	
+	private static void BuildRev() {		
+		Set<Integer> allNodes = dFA.alfabett.keySet();	
 		for (int innode : allNodes) {
 			for (int fromnode : allNodes) {
-				ArrayList<Integer> Kids = DFA.getNextState(fromnode);
+				ArrayList<Integer> Kids = dFA.getNextState(fromnode);
 				if ( Kids != null ) {
 					for (Integer Kid : Kids) {
 						if (Kid == innode) {
@@ -320,7 +249,8 @@ public class Minimization {
 			}
 		}		
 	}
-	public void FrontResolve() {
+	
+	private static void FrontResolve() {
 		int flag = 0;
 		NextFront.clear();
 		Set<Integer> allNodes = NewFront.keySet();	
@@ -328,29 +258,23 @@ public class Minimization {
 			ArrayList<Integer> allvalues = NewFront.get(keynode);
 			for (int valnode : allvalues) {
 				if ( keynode == h ) {
-					if( revgraph.get(valnode) != null ){
-						for (int node1 : revgraph.get(valnode)) {
-							for (int node2 : DFA.alfabett.keySet()) {
-								flag = 0;
-								if(getNextSt(node2, DFA.alfabett.get(valnode).charAt(0)) != null) {
-									flag = 1;				
-								}	
-								if(flag == 0) {
+					if( revgraph.graph.get(valnode) != null ){
+						for (int node1 : revgraph.graph.get(valnode)) {
+							for (int node2 : dFA.alfabett.keySet()) {															
+								if(dFA.getNextState(node2, dFA.alfabett.get(valnode).charAt(0)).size()== 0) {
 									addOneInNextFront(node1, node2);
-									addOneInPares(node1, node2);
-									//System.out.print(NonEqualPares.size() + "\n");
+									addOneInPares(node1, node2);									
 								}
 							}
 						}
 					}
 				}
-				if (DFA.alfabett.get(keynode) == DFA.alfabett.get(valnode)) {
-					if( revgraph.get(keynode) != null && revgraph.get(valnode) != null ){
-						for (int node1 : revgraph.get(keynode)) {
-							for (int node2 : revgraph.get(valnode)) {
+				if (dFA.alfabett.get(keynode) == dFA.alfabett.get(valnode)) {
+					if( revgraph.graph.get(keynode) != null && revgraph.graph.get(valnode) != null ){
+						for (int node1 : revgraph.graph.get(keynode)) {
+							for (int node2 : revgraph.graph.get(valnode)) {
 								addOneInNextFront(node1, node2);
-								addOneInPares(node1, node2);
-								//System.out.print(NonEqualPares.size() + "\n");
+								addOneInPares(node1, node2);								
 							}
 						}
 					}
@@ -359,31 +283,35 @@ public class Minimization {
 		}
 		NewFront = NextFront;
 	}
-	public void delEqualStFromGraph() {			
+	
+	private static void delEqualStFromGraph() {			
 		for(int key : EqualPares. keySet()) {			
 			if(EqualPares.get(key).size() == 0) {
 				continue;
 			}
 			for(int val : EqualPares.get(key)) {
-				for(int grkey :DFA.alfabett.keySet()) {
-					if(DFA.graph.get(grkey) != null) {
-						for(int grval : DFA.graph.get(grkey)) {
+				for(int grkey :dFA.alfabett.keySet()) {
+					if(dFA.graph.get(grkey) != null) {
+						for(int grval : dFA.graph.get(grkey)) {
 							if(grval == val) {
-								DFA.removeOne(grkey, grval);
+								dFA.removeOne(grkey, grval);
 								addOneWithoutRep(grkey,key);
 								break;
 							}
 						}
 					}	
 				}
-				for(int arrow : DFA.graph.get(val)) {
+				
+				for(int arrow : dFA.graph.get(val)) {
 					addOneWithoutRep(key,arrow);
 				}
-				DFA.graph.remove(val);
+				dFA.graph.remove(val);
+				dFA.alfabett.remove(val);
 			}			
 		}	
 	}
-	public void transClose() {
+	
+	private static void transClose() {
 		int maxclass = 0;
 		for(int key : EqualPares. keySet()) {			
 			if(EqualPares.get(key).size() == 0) {
@@ -426,12 +354,13 @@ public class Minimization {
 			}
 		}
 	}
-	public void getEqualPares() {
+	
+	private static void getEqualPaires() {
 		ArrayList<Integer> States = new ArrayList<Integer> ();		
-		for(int key : DFA.alfabett.keySet() ) {
-			for(int val : DFA.alfabett.keySet() ) {
-				if(key != val) {
-					addInEqualPares(key, val);
+		for(int key : dFA.alfabett.keySet() ) {
+			for(int val : dFA.alfabett.keySet() ) {
+				if(key != val && key != 0 && val != 0) {
+					addOneInEqualPares(key, val);
 				}	
 			}
 		}
@@ -469,7 +398,17 @@ public class Minimization {
 			}			
 		}		
 	}
-	public Graph minimizeDFA() 	{	
+	
+	public static Graph minimizeDFA(Graph nFA) 	{		
+		dFA = new Graph();
+		revgraph = new Graph();
+		NonEqualPares = new HashMap<Integer, ArrayList<Integer>>();
+		NewFront = new HashMap<Integer, ArrayList<Integer>>();
+		NextFront = new HashMap<Integer, ArrayList<Integer>>();
+		EqualPares = new HashMap<Integer, ArrayList<Integer>>();
+		classes = new HashMap<Integer, Integer>();
+		
+		dFA = nFA;	
 		h = MaxStId();
 		BuildRev();
 		FirstFront();
@@ -477,9 +416,9 @@ public class Minimization {
 		while(!NewFront.isEmpty()) {
 			FrontResolve();
 		}		
-		getEqualPares();
+		getEqualPaires();
 		transClose();
 		delEqualStFromGraph();		
-		return DFA;
+		return dFA;
 	}
 }

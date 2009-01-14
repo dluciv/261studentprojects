@@ -304,8 +304,7 @@ public class Graph {
 		NFA.determinateNFA(lexer);
 		return NFA;
 	}
-	public Graph buildDFAM(String regexp) {		
-		Minimization m = new Minimization(buildNFA(regexp));				
-		return m.minimizeDFA();
+	public Graph buildDFAM(String regexp) {			
+		return Minimization.minimizeDFA(buildNFA(regexp));
 	}	
 }
