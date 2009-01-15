@@ -18,11 +18,19 @@ public class StatisticTest {
     public StatisticTest() {
     }
     
-    // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
     // @Test
     // public void hello() {}
+    @Test
+    public void ClassicTest()
+    {
+        RegExTester a = new RegExTester();
+        Statistic stat = a.Match("(a|b)*abb", "abbbbbbbbbbbbabb", 5000);
+        assertTrue(stat.checkAnswersEquality());
+        assertEquals(true, stat.getAnswer());
+    }
+    
     @Test
     public void KliniTest()
     {
@@ -88,14 +96,5 @@ public class StatisticTest {
         Statistic stat = a.Match("(abcd)|(abcdd)|(abcddd)|(abcdddd)|(abcddddd)|(abcdddddd)", "abcdddddd", 5000);
         assertTrue(stat.checkAnswersEquality());
         assertEquals(true, stat.getAnswer());                
-    }
-    
-    @Test
-    public void ClassicTest()
-    {
-        RegExTester a = new RegExTester();
-        Statistic stat = a.Match("(a|b)*abb", "abbbbbbbbbbbbabb", 5000);
-        assertTrue(stat.checkAnswersEquality());
-        assertEquals(true, stat.getAnswer());                
-    }
+    }    
 }
