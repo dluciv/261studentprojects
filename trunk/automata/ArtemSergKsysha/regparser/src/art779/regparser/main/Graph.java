@@ -5,19 +5,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class Graph {
+public class Graph implements Cloneable{
     public static final int FIRST_STATE = 0;
     public static final int LAST_STATE = 1;
+    public static final int nextStateIndex = 3;
     public HashMap<Integer, String> alfabett = new HashMap<Integer, String>();
 	public HashMap<Integer, ArrayList<Integer>> graph = new HashMap<Integer, ArrayList<Integer>>();
 	private Lexer lexer;
-	public int nextStateIndex;
 	
-	Graph(){
+	
+	Graph(){		
 		alfabett.put(Graph.FIRST_STATE, "S");
-		alfabett.put(Graph.LAST_STATE, "F");
-		nextStateIndex = getlStateIndex()+1;
+		alfabett.put(Graph.LAST_STATE, "F");	
 	}
+	
+	public  Object clone() throws CloneNotSupportedException  {
+		Graph clone = ( Graph ) super.clone () ;		
+		return clone; 
+	}
+		
 	
 	public void addOneStrict(Integer node, Integer cur) {
 		ArrayList<Integer> list;
@@ -130,6 +136,17 @@ public class Graph {
 		preStateCount++;
 		return preStateCount;
 	}	
+	
+	int MaxStId(){
+		int id = 0;
+		Set<Integer> allNodes = alfabett.keySet();	
+		for (int innode : allNodes) {
+			if (innode > id) {
+				id = innode;
+			}
+		}		
+		return id;		
+	}
 	
 	public ArrayList<Integer> getNextState(int State, char ch) {
 		
@@ -305,6 +322,6 @@ public class Graph {
 		return NFA;
 	}
 	public Graph buildDFAM(String regexp) {			
-		return Minimization.minimizeDFA(buildNFA(regexp));
+		return Minimization.minimizeDFA(buildNFA(regexp));		
 	}	
 }
