@@ -20,7 +20,6 @@ public class PatternParser {
         if(!lexer.isEndOfLine())
             throw new ParserException(ParserException.WRONG_USING_OPERATORS); //bad parser        
         g.normalize();
-        System.out.println(g);
         return g;        
     }
     
