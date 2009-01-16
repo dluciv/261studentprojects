@@ -40,8 +40,23 @@ public class Graph implements Cloneable{
 			list.add(cur);
 		graph.put(node, list);
 		
+	}	
+	
+	public void addWithoutRep(int in, int what) {		
+		if(graph.containsKey(in))
+		{			
+			if(!graph.get(in).contains(what)) {
+				graph.get(in).add(what);		
+			}					
+		}
+		else 
+		{		
+			ArrayList<Integer> states = new ArrayList<Integer> ();
+			states.add(what);
+			graph.put(in, states);					
+		}		
 	}
-    
+	
 	public void mergeSequence(Graph mergeWith)
 	{
 		alfabett.putAll(mergeWith.alfabett);

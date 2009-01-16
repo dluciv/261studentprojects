@@ -7,130 +7,86 @@ import java.util.Set;
 public class Minimization {		
 	
 	Minimization(Graph nFA) {		
-		dFA = CloneGr(nFA);			
-		h = dFA.MaxStId() + 1;	//h - virtual state in minimizing algorithm			
+		try {			
+			dFA = (Graph) nFA.clone();
+		} catch ( CloneNotSupportedException e ) { 
+	    	e.printStackTrace () ; 
+	    }	
+		h = dFA.MaxStId() + 1;		
 		BuildRev();	
 	}
 	
 	private Graph dFA;
 	private Graph revgraph = new Graph();
-	private int h = 0;	
-	
-	private Graph CloneGr(Graph nFA) {
-		dFA = new Graph();
-		try { 
-			dFA = (Graph) nFA.clone();
-	    } catch ( CloneNotSupportedException e ) { 
-	    	e.printStackTrace () ; 
-	    }
-	    return dFA;
-	}
-	
+	private int h = 0;	//h - virtual state in minimizing algorithm		
+		
 	private HashMap<Integer, ArrayList<Integer>> FirstFront() {
 		HashMap<Integer, ArrayList<Integer>> NewFront = new HashMap<Integer, ArrayList<Integer>>();				
 		for (int innode : dFA.alfabett.keySet()) {			
 			if (innode != h ) {				
-				addOneInHash( h, innode, NewFront );
+				addInPairs( h, innode, NewFront );
 			}
 		}
 		return NewFront;
 	}
 	
-	private void addOneInRev(int in, int what) {
-		ArrayList<Integer> fromStates;
+	private void addInRev(int in, int what) {		
 		if(revgraph.graph.containsKey(in))
-		{
-			fromStates = revgraph.graph.get(in);
-			revgraph.graph.remove(in);
-			fromStates.add(what);
+		{			
+			revgraph.graph.get(in).add(what);
+			revgraph.graph.put(in, revgraph.graph.get(in));
 		}
 		else
 		{
-			fromStates = new ArrayList<Integer> ();
+			ArrayList<Integer> fromStates = new ArrayList<Integer> ();
 			fromStates.add(what);
-		}
-		revgraph.graph.put(in, fromStates);
+			revgraph.graph.put(in, fromStates);
+		}		
 	}
 	
 	private HashMap<Integer, ArrayList<Integer>> FirstNonEqualPairs() {
 		HashMap<Integer, ArrayList<Integer>> NonEqualPairs = new HashMap<Integer, ArrayList<Integer>>();			
 		for (int innode : dFA.alfabett.keySet()) {
 			if (innode != dFA.getFinalState() && innode != h) {
-				addOneInHash( dFA.getFinalState(), innode, NonEqualPairs);				
+				addInPairs( dFA.getFinalState(), innode, NonEqualPairs);				
 			}			
 		}
 		return NonEqualPairs;
 	}
 	
-	private boolean HashContainsPair(int a, int b, HashMap<Integer, ArrayList<Integer>> hash) {		
-		if(hash.containsKey(b)) {
-			ArrayList<Integer> stlst = new ArrayList<Integer>();
-			stlst = hash.get(b);
-			for (int st : stlst) {
-				if( st == a ) {
-					return true;
-				}
-			}				
+	private boolean HashContainsPair(int a, int b, HashMap<Integer, ArrayList<Integer>> hash) {			
+		if(hash.containsKey(b)) {			
+			if(hash.get(b).contains(a)) {
+				return true;
+			}								
 		}
-		if(hash.containsKey(a)) {
-			ArrayList<Integer> stlst = new ArrayList<Integer>();
-			stlst = hash.get(a);
-			for (int st : stlst) {
-				if( st == b ) {
-					return true;
-				}
-			}				
+		if(hash.containsKey(a)) {			
+			if(hash.get(a).contains(b)) {
+				return true;
+			}
 		}
 		return false;
 	}
 	
-	private  HashMap<Integer, ArrayList<Integer>> addOneInHash(int in, int what, HashMap<Integer, ArrayList<Integer>> hash) {
-		ArrayList<Integer> states;	
-		if ( !HashContainsPair(in, what, hash) ) {
-			if(hash.containsKey(in)) {
-				states = hash.get(in);
-				hash.remove(in);				
-				states.add(what);		
-				hash.put(in, states);
-				return hash;
+	private  HashMap<Integer, ArrayList<Integer>> addInPairs(int in, int what, HashMap<Integer, ArrayList<Integer>> pairs) {			
+		if ( !HashContainsPair(in, what, pairs) ) {
+			if(pairs.containsKey(in)) {				
+				pairs.get(in).add(what);
+				pairs.put(in, pairs.get(in));
+				return pairs;
 			}
-			if(hash.containsKey(what)) {
-				states = hash.get(what);
-				hash.remove(what);				
-				states.add(in);		
-				hash.put(what, states);
-				return hash;
+			if(pairs.containsKey(what)) {
+				pairs.get(what).add(in);
+				pairs.put(what, pairs.get(what));
+				return pairs;
 			}
-			states = new ArrayList<Integer> ();
+			ArrayList<Integer> states = new ArrayList<Integer> ();
 			states.add(what);
-			hash.put(in, states);			
+			pairs.put(in, states);			
 		}		
-		return hash;
+		return pairs;
 	}
 	
-	private void addOneWithoutRep(int in, int what) {
-		ArrayList<Integer> states = new ArrayList<Integer> ();		
-		boolean foundWhat = false;
-		if(dFA.graph.containsKey(in))
-		{			
-			states = dFA.graph.get(in);
-			dFA.graph.remove(in);				
-			for (int st : states) {
-				if( st == what ) {
-					foundWhat = true;
-				}
-			}				
-			if(!foundWhat){
-				states.add(what);		
-			}				
-			dFA.graph.put(in, states);				
-		}
-		else 
-		{		
-			states.add(what);
-			dFA.graph.put(in, states);					
-		}		
-	}		
 	
 	private void BuildRev() {		
 		Set<Integer> allNodes = dFA.alfabett.keySet();	
@@ -140,7 +96,7 @@ public class Minimization {
 				if ( Kids != null ) {
 					for (Integer Kid : Kids) {
 						if (Kid == innode) {
-							addOneInRev(innode, fromnode);
+							addInRev(innode, fromnode);
 						}
 					}
 				}	
@@ -160,8 +116,8 @@ public class Minimization {
 						for (int node1 : revgraph.graph.get(valnode)) {
 							for (int node2 : dFA.alfabett.keySet()) {															
 								if(dFA.getNextState(node2, dFA.alfabett.get(valnode).charAt(0)).size()== 0) {
-									addOneInHash(node1, node2, NextFront);
-									addOneInHash(node1, node2, NonEqualPairs);									
+									addInPairs(node1, node2, NextFront);
+									addInPairs(node1, node2, NonEqualPairs);									
 								}
 							}
 						}
@@ -171,8 +127,8 @@ public class Minimization {
 					if( revgraph.graph.get(keynode) != null && revgraph.graph.get(valnode) != null ){
 						for (int node1 : revgraph.graph.get(keynode)) {
 							for (int node2 : revgraph.graph.get(valnode)) {
-								addOneInHash(node1, node2, NextFront);
-								addOneInHash(node1, node2, NonEqualPairs);								
+								addInPairs(node1, node2, NextFront);
+								addInPairs(node1, node2, NonEqualPairs);								
 							}
 						}
 					}
@@ -188,7 +144,7 @@ public class Minimization {
 	
 	private void delEqualStFromGraph(HashMap<Integer, ArrayList<Integer>> EqualPairs) {		
 		for(int key : EqualPairs. keySet()) {			
-			if(EqualPairs.get(key).size() == 0) {
+			if(EqualPairs.get(key).isEmpty()) {
 				continue;
 			}
 			for(int val : EqualPairs.get(key)) {
@@ -197,14 +153,14 @@ public class Minimization {
 						for(int grval : dFA.graph.get(grkey)) {
 							if(grval == val) {
 								dFA.removeOne(grkey, grval);
-								addOneWithoutRep(grkey,key);
+								dFA.addWithoutRep(grkey,key);
 								break;
 							}
 						}
 					}	
 				}				
 				for(int arrow : dFA.graph.get(val)) {
-					addOneWithoutRep(key,arrow);
+					dFA.addWithoutRep(key,arrow);
 				}
 				dFA.graph.remove(val);
 				dFA.alfabett.remove(val);
@@ -212,23 +168,25 @@ public class Minimization {
 		}	
 	}
 	
+	//makes a transitive closing of pairs and builds classes of equal pairs
 	private HashMap<Integer, ArrayList<Integer>> transClose(HashMap<Integer, ArrayList<Integer>> EqualPairs) {
 		HashMap<Integer, Integer> classes = new HashMap<Integer, Integer>();
+		HashMap<Integer, ArrayList<Integer>> equalStates = (HashMap<Integer, ArrayList<Integer>>) EqualPairs.clone();
 		int maxclass = 0;
-		for(int key : EqualPairs. keySet()) {			
-			if(EqualPairs.get(key).size() == 0) {
+		for(int key : equalStates. keySet()) {			
+			if(equalStates.get(key).isEmpty()) {
 				continue;
 			}
 			if(classes.get(key) == null) {
 				maxclass += 1;
 				classes.put(key, maxclass);
 			}
-			for (int values : EqualPairs.get(key)) {				
-				for (int fkey : EqualPairs.keySet()) {
+			for (int values : equalStates.get(key)) {				
+				for (int fkey : equalStates.keySet()) {
 					if(classes.get(fkey) != null) {
 						continue;
 					}
-					for (int fvalues : EqualPairs.get(fkey)) {
+					for (int fvalues : equalStates.get(fkey)) {
 						if(key == fvalues || values == fvalues || values == fkey) {
 							classes.put(fkey, maxclass);
 						}
@@ -245,16 +203,16 @@ public class Minimization {
 					continue;
 				}
 				if(classes.get(key) == classes.get(key1)) {
-					addOneInHash(key, key1, EqualPairs);
+					addInPairs(key, key1, equalStates);
 					for(int element : EqualPairs.get(key1)) {
-						addOneInHash(key, element, EqualPairs);
+						addInPairs(key, element, equalStates);
 					}
-					EqualPairs.remove(key1);
+					equalStates.remove(key1);
 					classes.put(key1, h);
 				}
 			}
 		}
-		return EqualPairs;
+		return equalStates;
 	}
 	
 	private HashMap<Integer, ArrayList<Integer>> getEqualPairs(HashMap<Integer, ArrayList<Integer>> NonEqualPairs) {
@@ -263,7 +221,7 @@ public class Minimization {
 		for(int key : dFA.alfabett.keySet() ) {
 			for(int val : dFA.alfabett.keySet() ) {
 				if(key != val && key != 0 && val != 0) {
-					EqualPairs = addOneInHash(key, val, EqualPairs);
+					EqualPairs = addInPairs(key, val, EqualPairs);
 				}	
 			}
 		}
