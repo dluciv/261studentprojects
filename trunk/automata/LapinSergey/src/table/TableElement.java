@@ -1,6 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
  */
 
 package table;
@@ -11,10 +13,6 @@ import graph.*;
 import java.util.HashMap;
 import java.util.HashSet;
 
-/**
- *
- * @author lapin
- */
 public class TableElement {
     private Integer condition;
     private HashMap<Character, HashSet<Integer>> outgoing; 

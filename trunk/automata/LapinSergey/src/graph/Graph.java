@@ -1,3 +1,10 @@
+/**
+ *
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
+ */
+
 package graph;
 
 import Node.Node;
@@ -7,21 +14,14 @@ import Node.ArcSet;
 import parser.ParserMatcher;
 import java.util.HashSet;
 import java.util.Iterator;
+import statistic.MathModel;
 
-public class Graph {
+public class Graph implements MathModel{
 
     private HashSet<Node> starts;
     private HashSet<Node> ends;
     private HashSet<Node> all;
     
-//    public Graph(Node root) {
-//        starts = new HashSet<Node>();
-//        ends = new HashSet<Node>();
-//        all = new HashSet<Node>();
-//        starts.add(root);
-//        ends.add(root);
-//        all.add(root);                
-//    }
     public Graph() {
         starts = new HashSet<Node>();
         ends = new HashSet<Node>();

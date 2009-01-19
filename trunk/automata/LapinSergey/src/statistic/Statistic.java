@@ -1,20 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
  */
 
 package statistic;
 
-import graph.*;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
-/**
- *
- * @author lapin
- */
 public class Statistic {
     public HashMap<String, StatEntry> table;
     private String checking, checked;
@@ -33,6 +33,8 @@ public class Statistic {
                 return tmp;
         return null;
     }
+
+
     
     public boolean checkAnswersEquality()
     {
@@ -75,13 +77,10 @@ public class Statistic {
        table.put(str, entry);       
     }
     
-    public SortedSet<StatEntry> SortByCapasity()
+    public List<StatEntry> SortByCapasity()
     {
-        TreeSet<StatEntry> res = new TreeSet<StatEntry>(StatEntry.getCapasityComparator());        
-        for(String tmp : table.keySet())
-        {
-            res.add(table.get(tmp));
-        } 
+        ArrayList<StatEntry> res = new ArrayList<StatEntry>(table.values());
+        Collections.sort(res, StatEntry.getCapasityComparator());
         
         return res;
     }   
@@ -124,6 +123,17 @@ public class Statistic {
         Iterator<StatEntry> tmp  = entriesSet.iterator();
         return tmp.next().getAnswer();
     }*/
+
+    public String PrintWinners() {
+        String s = "";
+        s += checking + " " + checked + "\n";
+        for(StatEntry tmp : SortByCapasity())
+        {
+            s += findByEntry(tmp) + " " + tmp + "\n";
+        }
+
+        return s;
+    }
     
     @Override
     public String toString() {    

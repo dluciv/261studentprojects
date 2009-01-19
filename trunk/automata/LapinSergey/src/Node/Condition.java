@@ -1,15 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
  */
 
 package Node;
 import java.util.HashSet;
 
-/**
- *
- * @author lapin
- */
 public class Condition {
     public HashSet<Integer> condition;
     

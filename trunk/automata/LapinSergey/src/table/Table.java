@@ -1,6 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
  */
 
 package table;
@@ -13,9 +15,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import statistic.MathModel;
 
 
-public class Table {
+public class Table implements MathModel{
     private ArrayList<TableElement> all;
     private ArrayList<Character> symbols;
     private TableElement start;

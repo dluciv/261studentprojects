@@ -1,6 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
  */
 
 package parser;
@@ -14,10 +16,6 @@ import java.util.logging.Logger;
 import java.util.HashSet;
 import Node.Arc;
 
-/**
- *
- * @author lapin
- */
 public class ParserMatcher {   
     
     private static boolean TableMatchVisit(Table table, TableElement t, String str, int index)

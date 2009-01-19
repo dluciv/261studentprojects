@@ -1,16 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
  */
 
 package statistic;
 
 import java.util.Comparator;
 
-/**
- *
- * @author lapin
- */
 public class StatEntry {    
     private double networkcapasity;
     private boolean answer;
@@ -19,8 +17,7 @@ public class StatEntry {
     public static class CapasityComparator implements Comparator {
         public int compare(Object o1, Object o2) {
             return (int)((StatEntry)o1).networkcapasity - (int)((StatEntry)o2).networkcapasity;
-        }
-       
+        }       
     }
     
     public static CapasityComparator getCapasityComparator()
@@ -57,7 +54,7 @@ public class StatEntry {
     @Override
     public String toString() {    
         String s = new String();
-        s += "timeofcheck is " + networkcapasity + "\n";
+        s += "capasity is " + networkcapasity + "\n";
         s += "with answer: " + answer;        
         return s;
     }

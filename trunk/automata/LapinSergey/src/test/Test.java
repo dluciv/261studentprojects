@@ -2,20 +2,16 @@ package test;
 import statistic.StatEntry;
 import statistic.Statistic;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 /**
  *
- * @author lapin
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
  */
 public class Test {        
     public static void main(String[] args) {
         RegExTester a = new RegExTester();
-        Statistic stat = a.Match("(a|b)*abb", "abbbbbbbbbbbbabb", 5000);
+        Statistic stat = a.Match("(a|b)*abb", "abbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbabb", 5000);
         
         for(StatEntry tmp : stat.SortByCapasity())
         {

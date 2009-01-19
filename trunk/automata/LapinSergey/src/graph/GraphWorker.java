@@ -1,3 +1,10 @@
+/**
+ *
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
+ */
+
 package graph;
 
 import Node.Arc;
@@ -45,7 +52,6 @@ public class GraphWorker {
         res.markStart(start);
         res.markEnd(end);        
         
-        GraphWorker.fileForGraphviz(res, "a.txt");
         return res;
     }
 
@@ -99,67 +105,6 @@ public class GraphWorker {
         return res;                 
     }
     
-//    public static void normalize(Graph g){
-//        
-//        Node start = Node.getStartNode();
-//        Node end = Node.getEndNode();
-//        Vector<Node> toDelete = new Vector<Node>();
-//        
-//        g.addNode(start);
-//        g.addNode(end);
-//
-//        for(abstractNode n : g.getStarts())
-//        {            
-//            n.addIncomingNode(start);
-//            start.addOutgoingNode(n);
-//        }
-//        
-//        for(abstractNode n : g.getEnds())
-//        {            
-//            n.addOutgoingNode(end);
-//            end.addIncomingNode(n);
-//        }
-//        
-//        g.markAllStarts();
-//        g.markAllEnds();       
-//        
-//        for(abstractNode n : g.getAll())
-//        {            
-//            if(Node.isStartNode((Node)n) && !g.getStarts().contains(n) ||
-//               Node.isEndNode((Node)n) && !g.getEnds().contains(n))
-//            {
-//                toDelete.add((Node)n);                
-//            }                     
-//        }
-//        
-//        for (Node node : toDelete) {
-//            g.deleteNode(node);
-//        }
-//        makeClosure(g);
-//    }
-
-        
-//    public static void makeClosure(Graph g) {
-//        HashSet<Node> nodeToDelete = new HashSet<Node>();        
-//        fileForGraphviz(g, "a.txt");
-//        for(Node from : g.getAll())
-//        { 
-//            if(g.isStart(from))
-//                continue;
-//            for(Node to : from.getOutgoing().getBySymbol(Arc.EPSILON).getNodeSet())
-//            {
-//                from.shiftConnections(to);
-//                g.destroyConnection(from, to, Arc.EPSILON);                
-//                nodeToDelete.add(from);
-//                fileForGraphviz(g, "a.txt");
-//            }                                        
-//        }    
-//        for(Node tmp : nodeToDelete)
-//        {
-//            g.deleteNode(tmp);
-//        }  
-//    }
-
     private static Node getEqualed(HashSet<Node> v, Node n) {
         for (Node node : v) {
             if (node.equals(n)) {
@@ -353,7 +298,7 @@ public class GraphWorker {
         res.simplifyConditionNames();
         return res;
     }
-    
+
     public static Graph makeDeterministic(Graph g) {
         Graph res = new Graph();        
         HashSet<Condition> qUnMark = new HashSet<Condition>();
@@ -399,19 +344,6 @@ public class GraphWorker {
         res.simplifyConditionNames();
         return res;
     } 
-    
-//    public static Graph makeEpsilonClosure(Graph g) {
-//        Graph res = new Graph();        
-//        
-//        Node start = new Node(g.getStartNode());
-//        HashSet<Node> r = new HashSet<Node>();
-//        r.add(g.getStartNode());
-//        forDelete = epsilonClosure(g.getStartNode().getOutgoing().getBySymbol(Arc.EPSILON));
-//        res.addNode(start);
-//        res.markStart(start);
-//        
-//        
-//    } 
     
     public static boolean fileForGraphviz (Graph g, String fileName)
     {       

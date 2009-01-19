@@ -1,100 +1,95 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Lapin Sergey 261 group mat-mex
+ * Regular expression analysis
+ * 19.01.2009
  */
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import test.RegExTester;
 import statistic.Statistic;
-import statistic.StatEntry;
+import test.ConsoleStrings;
 
-/**
- *
- * @author lapin
- */
 public class StatisticTest {
 
     public StatisticTest() {
     }
     
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
-    @Test
-    public void ClassicTest()
+    private void AnswerFormTrue(String str, String regverb, String teststr, int num)
     {
+        System.out.println(str);
         RegExTester a = new RegExTester();
-        Statistic stat = a.Match("(a|b)*abb", "abbbbbbbbbbbbabb", 5000);
+        Statistic stat = a.Match(regverb, teststr, num);
+        System.out.println(stat.PrintWinners());
         assertTrue(stat.checkAnswersEquality());
         assertEquals(true, stat.getAnswer());
+    }
+
+    private void AnswerFormFalse(String str, String regverb, String teststr, int num)
+    {
+        System.out.println(str);
+        RegExTester a = new RegExTester();
+        Statistic stat = a.Match(regverb, teststr, num);
+        System.out.println(stat.PrintWinners());
+        assertTrue(stat.checkAnswersEquality());
+        assertEquals(false, stat.getAnswer());
+    }
+
+    @Test
+    public void TestOne()
+    {
+        AnswerFormTrue("TestOne\n", "(b|((ab*)a*)|a*|ab)*", "b", 5000);
+        ConsoleStrings.PrintBorder();
     }
     
     @Test
     public void KliniTest()
     {
-        RegExTester a = new RegExTester();
-        Statistic stat1 = a.Match("a*", "aaaa", 5000);
-        assertTrue(stat1.checkAnswersEquality());
-        assertEquals(true, stat1.getAnswer());
-        Statistic stat2 = a.Match("a*", "", 5000);
-        assertTrue(stat2.checkAnswersEquality());
-        assertEquals(true, stat2.getAnswer());
-        RegExTester b = new RegExTester();
-        Statistic stat3 = b.Match("a*", "aaaab", 5000);
-        assertTrue(stat3.checkAnswersEquality());
-        assertEquals(false, stat3.getAnswer());
+        AnswerFormTrue("KliniTest\n", "a*", "aaaa", 5000);
+        AnswerFormTrue("", "a*", "", 5000);
+        AnswerFormFalse("", "a*", "aaaab", 5000);
+        ConsoleStrings.PrintBorder();
     }
     
     @Test
     public void QuestionTest()
     {
-        RegExTester a = new RegExTester();
-        Statistic stat1 = a.Match("a?", "a", 5000);
-        assertTrue(stat1.checkAnswersEquality());
-        assertEquals(true, stat1.getAnswer());
-        Statistic stat2 = a.Match("a?", "", 5000);
-        assertTrue(stat2.checkAnswersEquality());
-        assertEquals(true, stat2.getAnswer());
-        Statistic stat3 = a.Match("a?", "aaa", 5000);
-        assertTrue(stat3.checkAnswersEquality());
-        assertEquals(false, stat3.getAnswer());
+        AnswerFormTrue("QuestionTest\n", "a?", "a", 5000);
+        AnswerFormTrue("", "a?", "", 5000);
+        AnswerFormFalse("", "a?", "aaa", 5000);
+        ConsoleStrings.PrintBorder();
     }
     
     @Test
     public void AdditionTest()
     {
-        RegExTester a = new RegExTester();
-        Statistic stat1 = a.Match("(a|b)", "a", 5000);
-        assertTrue(stat1.checkAnswersEquality());
-        assertEquals(true, stat1.getAnswer());
-        Statistic stat2 = a.Match("(a|b)", "b", 5000);
-        assertTrue(stat2.checkAnswersEquality());
-        assertEquals(true, stat2.getAnswer());        
-        Statistic stat3 = a.Match("(a|b)", "ab", 5000);
-        assertTrue(stat3.checkAnswersEquality());
-        assertEquals(false, stat3.getAnswer());
+        AnswerFormTrue("AdditionTest\n", "(a|b)", "a", 5000);
+        AnswerFormTrue("", "(a|b)", "b", 5000);
+        AnswerFormFalse("", "(a|b)", "ab", 5000);
+        ConsoleStrings.PrintBorder();
     }
-    
+
     @Test
     public void ProductionTest()
     {
-        RegExTester a = new RegExTester();
-        Statistic stat1 = a.Match("vjreijviorejirjvijirjeivjlkfdvjrietu", "vjreijviorejirjvijirjeivjlkfdvjrietu", 5000);
-        assertTrue(stat1.checkAnswersEquality());
-        assertEquals(true, stat1.getAnswer());
-        Statistic stat2 = a.Match("aaaaaaaaaabababbababababauwhudwhuahdwuabbab", "aaaaaaaaaababab", 5000);
-        assertTrue(stat2.checkAnswersEquality());
-        assertEquals(false, stat2.getAnswer());        
+        AnswerFormTrue("ProductionTest\n", "vjreijviorejirjvijirjeivjlkfdvjrietu", "vjreijviorejirjvijirjeivjlkfdvjrietu", 5000);
+        AnswerFormFalse("", "aaaaaaaaaabababbababababauwhudwhuahdwuabbab", "aaaaaaaaaababab", 5000);
+        ConsoleStrings.PrintBorder();
     }
     
     @Test
     public void RevertionTest()
     {
-        RegExTester a = new RegExTester();
-        Statistic stat = a.Match("(abcd)|(abcdd)|(abcddd)|(abcdddd)|(abcddddd)|(abcdddddd)", "abcdddddd", 5000);
-        assertTrue(stat.checkAnswersEquality());
-        assertEquals(true, stat.getAnswer());                
-    }    
+        AnswerFormTrue("RevertionTest\n", "(abcd)|(abcdd)|(abcddd)|(abcdddd)|(abcddddd)|(abcdddddd)", "abcdddddd", 5000);
+        ConsoleStrings.PrintBorder();
+    }
+
+    @Test
+    public void ClassicTest()
+    {
+        AnswerFormFalse("ClassicTest\n", "(a|b)*abb", "abababababbabababababbabababababababababababababababababbbbb", 5000);
+        AnswerFormTrue("ClassicTest\n", "(a|b)*abb", "aaaaaaaaaaaaabb", 5000);
+        ConsoleStrings.PrintBorder();
+    }
 }
