@@ -16,20 +16,24 @@ public class Tape {
     public static final String terminalSym = "T";
     public static final String infinitySym = " ";
     
-    Tape(String[] tape_r)
+    Tape(ArrayList<String> tape_r)
     {
     	fillTape(tape_r);
     }
 
 
     
-    public void fillTape(String[] tape_r){
-    	for (int i = 0; i < tape_r.length; i++) {
-    		tape.add(tape_r[i]);
-		}
+    public void fillTape(ArrayList<String> tape_r){
+    	for (String st : tape_r) {
+    		tape.add(st);
+		}    	  		
 	}
     
-	public void moveRight(){
+    public int getPointer(){
+		return pointer;
+	}
+    
+    public void moveRight(){
 		pointer ++;
 	}
 	
@@ -54,6 +58,10 @@ public class Tape {
 	@Override
 	public String toString() {
 		return tape.toString();
+	}
+	
+	public ArrayList<String> gettape() {
+		return tape;
 	}
 	
     public LinkedList<String> getAlphabett(){

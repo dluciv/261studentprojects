@@ -54,12 +54,7 @@ public class Rules {
 	
 	public RuleAction getAct(String State, String Sym)
 	{
-		/*
-		RuleKey vt = new RuleKey(State,Sym);
-		return rules.get(vt);
-		equals
-		hashcode
-		*///*
+		
 		
 		for (RuleKey vt : rules.keySet()) {
 			if(vt.getState().equals(State))

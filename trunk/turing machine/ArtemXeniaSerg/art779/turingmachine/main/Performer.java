@@ -7,49 +7,41 @@
 
 package art779.turingmachine.main;
 
-import java.util.LinkedList;
+import java.util.*;
 
 public class Performer {
+	private boolean isConsole = true;//equals "true" if console application is run and "false" if GUI is run
 	private Tape tape;
 	private Rules rules;
 	private int iterationsCount = 0;
 	private int limIterationsCount = 9999;
 	
-	public Performer(Tape tape,Rules rules)
+	public Performer(Tape tape,Rules rules,boolean console)
 	{
+		this.isConsole = console;
 		this.tape = tape;
 		this.rules = rules;
 
 	}
 
-	public boolean isRulesFitAlphabet()
-	{	
-		LinkedList<String> alphabett = tape.getAlphabett();
-		for (String alpha : alphabett) {
-			if(!rules.hasConversionForAlpha(alpha))
-				return false;
-		}	
-		return true;
-	}
 	
 	public int getIterationsCount(){
 		return iterationsCount;
 	}
 
 	public void execute()
-	{
-
+	{		
 		String theState = rules.sState;
 		String theSym = tape.curSym();
-
+		if (!isConsole)				
+			GUIinterphase.addRow(tape.gettape(),theState,theSym,tape.getPointer());
 		while(!theState.equals(rules.fState) && iterationsCount <= limIterationsCount)
-		{
-			
+		{					
 			iterationsCount++;
 			if(iterationsCount == limIterationsCount)
 				System.out.println("limit if iterations is reached");
 
-			
+
 			RuleAction act = rules.getAct(theState, theSym);
 			try {
 				theState = act.getState();
@@ -67,17 +59,14 @@ public class Performer {
 					tape.moveLeft();
 					break;
 			}
-			theSym = tape.curSym();
+			theSym = tape.curSym();			
+			
+			
+			if (!isConsole)				
+				GUIinterphase.addRow(tape.gettape(),theState,theSym,tape.getPointer());			
 		}
-	}
-	
-	public void run() throws BadDataException
-	{
-		if(isRulesFitAlphabet())
-			execute();
-		else{
-			throw new BadDataException();
-		}
-	}
+		if (!isConsole)		
+			GUIinterphase.addDelimRow();		
+	}	
 
 }
