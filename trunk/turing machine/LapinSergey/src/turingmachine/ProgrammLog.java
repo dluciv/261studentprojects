@@ -37,6 +37,16 @@ public class ProgrammLog {
         Object res[][] = new Object[wholeTape.size()][6];
         int i = 0;
         for(CurrentState tmprule : wholeTape){
+            if(tmprule == null)
+            {
+                res[i][0] = "There are no such rule - reject";
+                res[i][1] = "";
+                res[i][2] = "";
+                res[i][3] = "";
+                res[i][4] = "";
+                res[i][5] = "";
+                return res;
+            }
             res[i] = tmprule.createRuleInfo();
             i++;
         }

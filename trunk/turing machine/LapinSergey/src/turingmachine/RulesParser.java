@@ -69,6 +69,11 @@ public class RulesParser {
                 res.setState(tmp.getChildNodes().item(0).getNodeValue());
             }
             if(nodename.equals("symbol")){
+                if(tmp.getChildNodes().item(0).getNodeValue() == null){
+                     res.setSymbol(null);
+                     break;
+                }
+
                 res.setSymbol(tmp.getChildNodes().item(0).getNodeValue().charAt(0));
             }            
         }
@@ -87,6 +92,11 @@ public class RulesParser {
                 res.setState(tmp.getChildNodes().item(0).getNodeValue());
             }
             if(nodename.equals("symbol")){
+                if(tmp.getChildNodes().item(0) == null){
+                     res.setSymbol(null);
+                     break;
+                }
+
                 res.setSymbol(tmp.getChildNodes().item(0).getNodeValue().charAt(0));
             }
             if(nodename.equals("move")){
