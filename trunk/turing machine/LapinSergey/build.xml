@@ -1,0 +1,42 @@
+<!DOCTYPE project []>
+
+<!-- This build.xml file is used for packaging AppbuilderOO Java
+Framework and JUnit tests. -->
+
+<project name="TM" default="compile" basedir="."  >
+
+  <!--  source folder. -->
+  <property name="sourcedir" value="src"/>
+  <!--Framework Java classes folder. -->
+  <property name="classesdir" value="lib"/>
+
+  <!-- Task for cleaning all the existing build locations. -->
+  <target name="clean" description="Cleaning existing folders.">
+    <echo message="Cleaning existing build folders....." />
+    <delete dir="${classesdir}" />
+    <echo message="Cleaning complete." />
+  </target>
+
+  <!-- Task for init all the existing build locations. -->
+  <target name="init" description="Creating target build folders.">
+    <echo message="Creating build folders." />
+    <mkdir dir="${classesdir}" />
+    <echo message="Creation build f olders complete." />
+  </target>
+
+  <!-- Compiling the source code. -->
+  <target name="compile" depends="clean,init" description="Compiles the source code">
+    <echo message="Compiling the Source......" />
+
+    <javac srcdir="${sourcedir}" 
+        nowarn="on"
+        destdir="${classesdir}"
+        encoding="utf8">
+            <classpath>
+                <pathelement location="ext/swing-layout-1.0.3.jar" />
+            </classpath>
+    </javac>
+    <echo message="Compilation complete." />
+  </target>
+
+</project>
