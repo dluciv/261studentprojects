@@ -1,0 +1,46 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package turingmachine;
+import java.util.Vector;
+
+/**
+ *
+ * @author Administrator
+ */
+public class ProgrammLog {
+    public Vector<CurrentState> wholeTape = new Vector<CurrentState>();
+
+    public void addState(CurrentState tmp)
+    {        
+        wholeTape.add(tmp);
+    }
+
+    public String getString()
+    {
+        String res = "";
+        for(CurrentState tmp : wholeTape)
+        {
+            if(tmp == null)
+            {
+                res += "There are no such rule - reject" + "\n";
+                return res;
+            }
+            res += tmp.getString() + "\n";
+        }
+        return res;
+    }
+
+    public Object[][] createTableInfo(){
+        Object res[][] = new Object[wholeTape.size()][6];
+        int i = 0;
+        for(CurrentState tmprule : wholeTape){
+            res[i] = tmprule.createRuleInfo();
+            i++;
+        }
+        return res;
+    }
+
+}
