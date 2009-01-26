@@ -97,7 +97,6 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         readTestsButton = new javax.swing.JButton();
         readRulesButton = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jToggleButton2 = new javax.swing.JToggleButton();
         jToggleButton1 = new javax.swing.JToggleButton();
@@ -253,13 +252,6 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jCheckBox1.setText("Использоавать универсальную машину");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
-
         jToggleButton2.setText("Запустить на тестах из файла");
         jToggleButton2.setEnabled(false);
         jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -312,10 +304,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .add(jPanel7Layout.createSequentialGroup()
                         .add(5, 5, 5)
                         .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jCheckBox1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                     .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 229, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(19, Short.MAX_VALUE))
             .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel7Layout.createSequentialGroup()
                     .add(90, 90, 90)
@@ -332,9 +323,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .add(jPanel7Layout.createSequentialGroup()
                         .add(84, 84, 84)
                         .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(jCheckBox1)
-                        .add(18, 18, 18)
+                        .add(59, 59, 59)
                         .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -487,10 +476,6 @@ public class MainFrame extends javax.swing.JFrame {
         jComboBox1.setModel(new DefaultComboBoxModel(tmps));
 }//GEN-LAST:event_jToggleButton2ActionPerformed
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-}//GEN-LAST:event_jCheckBox1ActionPerformed
-
     private void readRulesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readRulesButtonActionPerformed
         jFileChooser1.resetChoosableFileFilters();
         FilterForXML filter = new FilterForXML();
@@ -575,7 +560,6 @@ public class MainFrame extends javax.swing.JFrame {
     }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JFrame jFrame1;

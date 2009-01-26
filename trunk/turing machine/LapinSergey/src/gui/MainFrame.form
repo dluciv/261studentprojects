@@ -141,11 +141,10 @@
                               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jCheckBox1" alignment="0" pref="242" max="32767" attributes="1"/>
                           <Component id="jComboBox1" alignment="0" min="-2" pref="229" max="-2" attributes="0"/>
                           <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace pref="19" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
@@ -167,9 +166,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
                               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
                               <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -364,14 +361,6 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox1">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="&#x418;&#x441;&#x43f;&#x43e;&#x43b;&#x44c;&#x437;&#x43e;&#x430;&#x432;&#x430;&#x442;&#x44c; &#x443;&#x43d;&#x438;&#x432;&#x435;&#x440;&#x441;&#x430;&#x43b;&#x44c;&#x43d;&#x443;&#x44e; &#x43c;&#x430;&#x448;&#x438;&#x43d;&#x443;"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox1ActionPerformed"/>
-              </Events>
-            </Component>
             <Container class="javax.swing.JPanel" name="jPanel2">
 
               <Layout>
