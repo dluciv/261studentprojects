@@ -21,33 +21,26 @@
 			<state>1</state>
 			<read>_</read>
 			<next>2</next>
-			<write>_</write>
+			<write>1</write>
 			<move>R</move>
 		</rule>
 		<rule>
 			<state>2</state>
 			<read>1</read>
+			<next>2</next>
+			<write>1</write>
+			<move>R</move>
+		</rule>
+		<rule>
+			<state>2</state>
+			<read>_</read>
 			<next>3</next>
 			<write>_</write>
 			<move>L</move>
 		</rule>
 		<rule>
-			<state>2</state>
-			<read>_</read>
-			<next>4</next>
-			<write>_</write>
-			<move>L</move>
-		</rule>
-		<rule>
 			<state>3</state>
-			<read>_</read>
-			<next>1</next>
-			<write>1</write>
-			<move>H</move>
-		</rule>
-		<rule>
-			<state>4</state>
-			<read>_</read>
+			<read>1</read>
 			<next>4</next>
 			<write>_</write>
 			<move>L</move>
@@ -56,7 +49,7 @@
 			<state>4</state>
 			<read>1</read>
 			<next>5</next>
-			<write>1</write>
+			<write>_</write>
 			<move>L</move>
 		</rule>
 		<rule>
