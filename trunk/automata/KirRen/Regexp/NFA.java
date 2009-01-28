@@ -26,6 +26,7 @@ public class NFA implements IFiniteStateMachine {
         NFA nfa = new NFA();
         nfa.first = nfa.newState();
         nfa.fin = nfa.newState();
+		//System.out.println(c+": "+nfa.first+", "+nfa.fin);
         nfa.map.get(nfa.first).put(c, nfa.fin);
         return nfa;
     }

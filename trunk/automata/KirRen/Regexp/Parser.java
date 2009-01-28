@@ -22,8 +22,10 @@ public class Parser {
         alphabet = new HashSet<Character>();
         for (int i = 0; i < regexp.length(); i++) {
             Character c = regexp.charAt(i);
-            if ((c != '*') & (c != '(') & (c != ')') & (c != '|') & (c != '?'))
+            if ((c != '*') & (c != '(') & (c != ')') & (c != '|') & (c != '?')) {
                 alphabet.add(c);
+				//System.out.println("Added to alphabet: "+c);
+			}
         }
     }
 
