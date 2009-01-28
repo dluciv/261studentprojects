@@ -1,10 +1,14 @@
 package Regexp;
 
+/**
+ * @author Renat Akhmedyanov
+ */
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
 
-public class NFA {
+public class NFA implements IFiniteStateMachine {
     HashMap<Integer, Transitions> map = new HashMap<Integer, Transitions>();
     int first = -1, fin = -1;
     static char EMPTY = 0;
@@ -80,7 +84,7 @@ public class NFA {
     private boolean checkHelper(String test, int pos, int state, int level) {
         // Without this level check the following test isn't working
         //   simpleTest("(b|((ab*)a*)|a*|ab)*", "b", true);
-        if (level > 5000) return false;
+        if (level > 500) return false;
         if (pos < test.length()) {
             for (Transition t: map.get(state).trans) {
                 if (t.c == test.charAt(pos)) {

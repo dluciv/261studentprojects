@@ -1,5 +1,9 @@
 package Regexp;
 
+/**
+ * @author Renat Akhmedyanov
+ */
+
 import java.util.Vector;
 import java.util.HashSet;
 

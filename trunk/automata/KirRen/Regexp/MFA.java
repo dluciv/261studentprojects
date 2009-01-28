@@ -1,5 +1,9 @@
 package Regexp;
 
+/**
+ * @author Renat Akhmedyanov
+ */
+
 import java.util.HashSet;
 import java.util.Vector;
 import java.util.HashMap;
@@ -10,12 +14,12 @@ class MFAState {
     Transitions trans = new Transitions();
 }
 
-class MFA {
+class MFA implements IFiniteStateMachine {
     HashMap<Integer, MFAState> map = new HashMap<Integer, MFAState>();
     int first = -1;
     HashSet<Integer> fins = new HashSet<Integer>();
 
-    static public MFA buildMFA(DFA dfa, HashSet<String> alphabet) {
+    static public MFA buildMFA(DFA dfa, HashSet<Character> alphabet) {
         MFA mfa = new MFA();
 
         // initial set of groups
@@ -73,7 +77,7 @@ class MFA {
         return mfa;
     }
 
-    static private Vector<HashSet<Integer> > splitGroups(Vector<HashSet<Integer> > groups, DFA dfa, HashSet<String> alphabet) {
+    static private Vector<HashSet<Integer> > splitGroups(Vector<HashSet<Integer> > groups, DFA dfa, HashSet<Character> alphabet) {
         Vector<HashSet<Integer> > newGroups = new Vector<HashSet<Integer> >();
         for (HashSet<Integer> group: groups) {
             HashSet<Integer> processed = new HashSet<Integer>();
@@ -95,8 +99,8 @@ class MFA {
         return newGroups;
     }
 
-    static private boolean dfaStatesEquivalent(int state1, int state2, DFA dfa, Vector<HashSet<Integer> > groups, HashSet<String> alphabet) {
-        for (String cmd: alphabet) {
+    static private boolean dfaStatesEquivalent(int state1, int state2, DFA dfa, Vector<HashSet<Integer> > groups, HashSet<Character> alphabet) {
+        for (Character cmd: alphabet) {
             int leadTo1 = dfa.leadsTo(state1, cmd);
             int leadTo2 = dfa.leadsTo(state2, cmd);
             for (HashSet<Integer> group: groups) {

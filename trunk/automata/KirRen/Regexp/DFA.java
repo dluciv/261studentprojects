@@ -1,5 +1,9 @@
 package Regexp;
 
+/**
+ * @author Renat Akhmedyanov
+ */
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -9,13 +13,13 @@ class DFAState {
     Transitions trans = new Transitions();
 }
 
-class DFA {
+class DFA implements IFiniteStateMachine {
     static int BAD_STATE = -1;
     HashMap<Integer, DFAState> map = new HashMap<Integer, DFAState>();
     int first = -1;
     HashSet<Integer> fins = new HashSet<Integer>();
 
-    public static DFA buildDFA(NFA nfa, HashSet<String> alphabet) {
+    public static DFA buildDFA(NFA nfa, HashSet<Character> alphabet) {
         DFA dfa = new DFA();
 
         HashSet<Integer> firstSet = new HashSet<Integer>();
@@ -28,8 +32,8 @@ class DFA {
             if (currentDFAState == null) break;
             
             currentDFAState.marked = true;
-            for (String cmd: alphabet) {
-                HashSet<Integer> newStateSet = getReachable(cmd.charAt(0), currentDFAState.nfaStatesSet, nfa);
+            for (Character cmd: alphabet) {
+                HashSet<Integer> newStateSet = getReachable(cmd, currentDFAState.nfaStatesSet, nfa);
                 newStateSet = getEClosure(newStateSet, nfa);
                 if (!newStateSet.isEmpty()) {
                     int dfaToState = dfa.searchState(newStateSet);
@@ -37,7 +41,7 @@ class DFA {
                         dfaToState = dfa.newDFAState();
                         dfa.map.get(dfaToState).nfaStatesSet = newStateSet;
                     }
-                    currentDFAState.trans.put(cmd.charAt(0), dfaToState);
+                    currentDFAState.trans.put(cmd, dfaToState);
                 }
             }
         }
@@ -112,10 +116,10 @@ class DFA {
         return output;
     }
 
-    public int leadsTo(int state, String cmd) {
+    public int leadsTo(int state, char cmd) {
         DFAState s = map.get(state);
         for (Transition t: s.trans.trans) {
-            if (t.c == cmd.charAt(0))
+            if (t.c == cmd)
                 return t.to;
         }
         return BAD_STATE;

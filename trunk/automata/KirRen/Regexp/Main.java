@@ -1,5 +1,9 @@
 package Regexp;
 
+/**
+ * @author Renat Akhmedyanov
+ */
+
 public class Main {
 
     static void simpleTest(String regexp, String test, boolean should) throws ParserException {

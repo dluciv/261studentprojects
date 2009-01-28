@@ -1,9 +1,13 @@
 package Regexp;
 
+/**
+ * @author Renat Akhmedyanov
+ */
+
 import java.util.HashSet;
 
 public class Parser {
-    HashSet<String> alphabet;
+    HashSet<Character> alphabet;
     String regexp;
     int pos;
     static char EOL = 0;
@@ -15,11 +19,11 @@ public class Parser {
     }
 
     private void fillAlphabet() {
-        alphabet = new HashSet<String>();
+        alphabet = new HashSet<Character>();
         for (int i = 0; i < regexp.length(); i++) {
-            char c = regexp.charAt(i);
+            Character c = regexp.charAt(i);
             if ((c != '*') & (c != '(') & (c != ')') & (c != '|') & (c != '?'))
-                alphabet.add(""+c);
+                alphabet.add(c);
         }
     }
 
@@ -38,7 +42,7 @@ public class Parser {
     }
 
     public boolean isLetter(char symb) {
-        return alphabet.contains("" + symb);
+        return alphabet.contains(symb);
     }
 
     public NFA parse() throws ParserException {
