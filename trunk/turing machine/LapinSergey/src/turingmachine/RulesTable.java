@@ -1,16 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Lapin Sergey 261group
  */
 
 package turingmachine;
 import java.util.HashSet;
 import java.util.Vector;
 
-/**
- *
- * @author Administrator
- */
 public class RulesTable {
     public HashSet<Rule> rules = new HashSet<Rule>();
 

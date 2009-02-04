@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package turingmachine;
 import java.util.Vector;
 
 /**
  *
- * @author Administrator
+ * @author Lapin Sergey 261group
  */
 public class CurrentState {
     public Vector<Character> tape;

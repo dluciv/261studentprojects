@@ -2,7 +2,7 @@ package turingmachine;
 
 /**
  *
- * @author Кирилл
+ * @author Кирилл & Lapin Sergey 261group
  */
 import java.util.*;
 import java.io.*;

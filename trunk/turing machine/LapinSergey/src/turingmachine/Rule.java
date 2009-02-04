@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Lapin Sergey 261group
  */
-
 package turingmachine;
 
 import java.util.Vector;
 
-/**
- *
- * @author Administrator
- */
 public class Rule {
     private InitialCondition initCondition;
     private Action act;
