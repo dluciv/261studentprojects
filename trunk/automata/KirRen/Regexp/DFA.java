@@ -13,7 +13,7 @@ class DFAState {
     Transitions trans = new Transitions();
 }
 
-class DFA implements IFiniteStateMachine {
+public class DFA {
     static int BAD_STATE = -1;
     HashMap<Integer, DFAState> map = new HashMap<Integer, DFAState>();
     int first = -1;

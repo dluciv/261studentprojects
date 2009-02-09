@@ -1,5 +1,7 @@
 package Regexp;
 
+import java.io.*;
+
 /**
  * @author Renat Akhmedyanov
  */
@@ -54,9 +56,29 @@ public class Main {
             MFA mfa = MFA.buildMFA(dfa, parser.alphabet);
             //System.out.println(nfa.produceDotty());
             //System.out.println(dfa.produceDotty());
+            String res = nfa.produceDotty();
             System.out.println(nfa.produceDotty());
+
+            FileOutputStream fout = new FileOutputStream(new File("./res.txt"));
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(fout, "cp1251"));
+            pw.print(res);
+            pw.close();
+            fout.close();
+
         } catch (ParserException e) {
             System.out.println("Error: " + e.message);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 }

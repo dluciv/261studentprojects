@@ -8,13 +8,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
 
-public class NFA implements IFiniteStateMachine {
+public class NFA  {
     HashMap<Integer, Transitions> map = new HashMap<Integer, Transitions>();
     int first = -1, fin = -1;
-    static char EMPTY = 0;
+    public static char EMPTY = 0;
 
     // this state will be uniq for all NFA, so we can easily combine several NFAs
     static int nextState = 1;
+
+    public HashMap<Integer,Transitions> getMap ()
+    {
+        return map;
+    }
 
     private int newState() {
         map.put(nextState, new Transitions());

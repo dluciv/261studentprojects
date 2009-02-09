@@ -7,7 +7,7 @@ package Regexp;
 import java.util.HashSet;
 
 public class Parser {
-    HashSet<Character> alphabet;
+    public HashSet<Character> alphabet;
     String regexp;
     int pos;
     static char EOL = 0;

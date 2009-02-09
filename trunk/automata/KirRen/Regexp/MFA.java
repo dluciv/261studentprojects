@@ -14,7 +14,7 @@ class MFAState {
     Transitions trans = new Transitions();
 }
 
-class MFA implements IFiniteStateMachine {
+public class MFA  {
     HashMap<Integer, MFAState> map = new HashMap<Integer, MFAState>();
     int first = -1;
     HashSet<Integer> fins = new HashSet<Integer>();
