@@ -1,8 +1,10 @@
-package Regexp;
+package regexp;
 
 /**
  * @author Renat Akhmedyanov
  */
+
+import gui.IFACheckable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,7 +15,8 @@ class DFAState {
     Transitions trans = new Transitions();
 }
 
-public class DFA {
+public class DFA implements IFACheckable
+{
     static int BAD_STATE = -1;
     HashMap<Integer, DFAState> map = new HashMap<Integer, DFAState>();
     int first = -1;
@@ -140,4 +143,12 @@ public class DFA {
         }
         return fins.contains(state);
     }
+    public String checkToSttring(String word)
+    {
+        if (check(word))
+            return "Слово принадлежит языку";
+        else
+            return "Слово НЕ принадлежит языку";
+    }
+
 }

@@ -1,14 +1,17 @@
-package Regexp;
+package regexp;
 
 /**
  * @author Renat Akhmedyanov
  */
 
+import gui.IFACheckable;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
 
-public class NFA  {
+public class NFA implements IFACheckable
+{
     HashMap<Integer, Transitions> map = new HashMap<Integer, Transitions>();
     int first = -1, fin = -1;
     public static char EMPTY = 0;
@@ -120,4 +123,42 @@ public class NFA  {
         }
         return false;
     }
+    public  Vector<Character> getVectorCharFromMap()
+    {
+        Vector<Character> res = new Vector<Character>();
+
+        for (int i: map.keySet())
+        {
+            for(Character c:map.get(i).getAllChars())
+            {
+                if ( c == NFA.EMPTY )
+                    c = '.';
+
+                if ( !res.contains(c))
+                {
+                    res.add(c);
+                }
+            }
+        }
+        return res;
+    }
+
+    public  Vector<Character> getVectorCharFromMapThithoutE()
+    {
+        Vector<Character> res = new Vector<Character>();
+
+        for (int i: map.keySet())
+        {
+            for(Character c:map.get(i).getAllChars())
+            {
+                if ( c != NFA.EMPTY && !res.contains(c))
+                {
+                    res.add(c);
+                }
+            }
+        }
+        return res;
+    }
+
+
 }

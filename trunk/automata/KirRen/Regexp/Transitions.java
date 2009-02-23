@@ -1,4 +1,4 @@
-package Regexp;
+package regexp;
 
 /**
  * @author Renat Akhmedyanov

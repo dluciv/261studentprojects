@@ -1,8 +1,10 @@
-package Regexp;
+package regexp;
 
 /**
  * @author Renat Akhmedyanov
  */
+
+import gui.IFACheckable;
 
 import java.util.HashSet;
 import java.util.Vector;
@@ -14,7 +16,8 @@ class MFAState {
     Transitions trans = new Transitions();
 }
 
-public class MFA  {
+public class MFA implements IFACheckable
+{
     HashMap<Integer, MFAState> map = new HashMap<Integer, MFAState>();
     int first = -1;
     HashSet<Integer> fins = new HashSet<Integer>();
@@ -153,4 +156,5 @@ public class MFA  {
         }
         return fins.contains(state);
     }
+
 }
