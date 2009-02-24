@@ -48,7 +48,7 @@ public class TestWindow extends JFrame
     private Vector<AbstractAction> changeAction;
     private RegExpDataList expList;
 
-    public TestWindow(String dotPath, String texPath) throws HeadlessException
+    public TestWindow(String dotPath, String texPath, String xmlPath) throws HeadlessException
     {
         setTitle("Mulya");
 
@@ -74,7 +74,7 @@ public class TestWindow extends JFrame
         JPanel pane = (JPanel)getContentPane();
         try
         {
-            expList = new RegExpDataList();
+            expList = new RegExpDataList(xmlPath);
         }
         catch (IOException e)
         {
@@ -279,7 +279,7 @@ public class TestWindow extends JFrame
                     fout.close();
 
                     String command = "dot.exe ./nfa.dot -T gif -o nfa.gif";
-                    Process p = runtime.exec(dotPath + File.separator + command);
+                    Process p = runtime.exec(dotPath + command);
 
                     try
                     {
@@ -315,7 +315,7 @@ public class TestWindow extends JFrame
                     fout.close();
 
                     String command = "dot.exe ./dfa.dot -T gif -o dfa.gif";
-                    Process p = runtime.exec(dotPath + File.separator + command);
+                    Process p = runtime.exec(dotPath +  command);
 
                     try
                     {
@@ -352,7 +352,7 @@ public class TestWindow extends JFrame
                     fout.close();
 
                     String command = "dot.exe ./mfa.dot -T gif -o mfa.gif";
-                    Process p = runtime.exec(dotPath + File.separator + command);
+                    Process p = runtime.exec(dotPath  + command);
 
                     try
                     {
@@ -793,7 +793,7 @@ public class TestWindow extends JFrame
 
         testDataLab.get("test1").add(0,new JLabel("Результаты тестов по пропускной способности для слова из языка."));
         testDataLab.get("test2").add(0,new JLabel("Результаты тестов по пропускной способности для слова не из языка."));
-        testDataLab.get("test3").add(0,new JLabel("Результаты тестов по пропускной способности на откат ДКА."));
+        testDataLab.get("test3").add(0,new JLabel("Результаты тестов по пропускной способности на откат НКА."));
         testDataLab.get("test4").add(0,new JLabel("Результаты тестов на попадание случайного слова в язык."));
 
         String tmpStr;
@@ -815,13 +815,26 @@ public class TestWindow extends JFrame
 
     public static void main(String[] args)
     {
-        String[] newArgs = new String[]{"",""};
-        if (args.length != 0)
+        String[] newArgs = new String[]{"","",""};
+
+        if ( args.length > 0)
         {
-            newArgs[0] = args[0] + File.separator;
-            newArgs[1] = args[1] + File.separator;
+            newArgs[0] = args[0] + (( !args[0].endsWith(File.separator) )? File.separator : "");
         }
-        TestWindow mw = new TestWindow(newArgs[0], newArgs[1]);
+
+        if (args.length > 1 )
+        {
+
+            newArgs[1] = args[1] + (( !args[1].endsWith(File.separator) )? File.separator : "");
+        }
+
+        if (args.length  >2 )
+        {
+
+        newArgs[2] = args[2] + (( !args[2].endsWith(File.separator) )? File.separator : "");
+        }
+
+        TestWindow mw = new TestWindow(newArgs[1], newArgs[2], newArgs[0]);
         mw.setVisible(true);
     }
 

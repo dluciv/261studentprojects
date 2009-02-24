@@ -21,10 +21,15 @@ import java.io.*;
 public class RegExpDataList
 {
     private Vector<RegExpData> regExps = new Vector<RegExpData>();
-    private String fileName = "./261studentprojects\\automata\\KirRen\\gui\\regexp.xml";
+    private String fileName;
 
-    public RegExpDataList() throws IOException
+    public RegExpDataList(String path) throws IOException
     {
+        if (path != "")
+            fileName = path + "regexp.xml";
+        else
+            fileName = "./gui/regexp.xml";
+
         InputStream is = new FileInputStream(fileName);
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
