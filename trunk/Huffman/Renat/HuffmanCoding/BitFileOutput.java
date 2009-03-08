@@ -17,7 +17,7 @@ public class BitFileOutput
 		this.file = new FileOutputStream(filename);
 	}
 	
-	public void write(String bits) throws BitFileException, IOException
+	public void writeBits(String bits) throws BitFileException, IOException
 	{
 		char b;
 		for (int i=0; i<bits.length(); i++)

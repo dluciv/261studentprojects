@@ -11,4 +11,8 @@ public class BitFileException extends Exception
     BitFileException(String message) {
         this.message = message;
     }
+    
+    BitFileException() {
+        this.message = "";
+    }
 }

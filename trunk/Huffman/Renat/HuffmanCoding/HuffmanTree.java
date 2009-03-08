@@ -110,20 +110,6 @@ public class HuffmanTree
 		return this.right;
 	}
 	
-	public String out()
-	{
-		return "'"+(char)this.b+"': "+this.weight;
-	}
-	
-	public String outTree()
-	{
-		if (this.b == -1)
-			return "("+this.left.outTree()+", "+this.right.outTree()+"):"+this.mark;
-		else
-			return "'"+(char)this.b+"':"+this.mark;
-			//return "'"+(char)this.b+"'";
-	}
-	
 	public void incMark()
 	{
 		this.mark++;
@@ -158,38 +144,29 @@ public class HuffmanTree
 			
 			if (left != null && left.getMark() < 2)
 			{
-				//System.out.println("left");
-				//System.out.println(this.outTree());
 				left.incMark();
 				parents[h] = cur;
 				h++;
 				cur = left;
-				//out += cur.getMark() == 1 ? "0" : "1";
 				out += "0";
 				if (cur.getChar() != -1)
 					this.alphabet += (char) (cur.getChar());
 			}
 			else if (right != null && right.getMark() < 2)
 			{
-				//System.out.println("right");
-				//System.out.println(this.outTree());
 				right.incMark();
 				parents[h] = cur;
 				h++;
 				cur = right;
-				//out += cur.getMark() == 1 ? "0" : "1";
 				out += "0";
 				if (cur.getChar() != -1)
 					this.alphabet += (char) (cur.getChar());
 			}
 			else if ((left == null && right == null) || (cur.getMark() < 2 && h > 0 && parents[h] != null))
 			{
-				//System.out.println("up");
-				//System.out.println(this.outTree());
 				cur.incMark();
 				h--;
 				cur = parents[h];
-				//out += cur.getMark() == 1 ? "0" : "1";
 				out += "1";
 			}
 			else
@@ -208,10 +185,22 @@ public class HuffmanTree
 	{
 		String traverse = this.traverse();
 		output.writeInt((int) (traverse.length()/4) + 1, 8);
-		output.write(traverse);
+		output.writeBits(traverse);
 		output.flush();
 		output.writeString(this.alphabet);
-		output.flush();
+	}
+	
+	public String out()
+	{
+		return "'"+(char)this.b+"': "+this.weight;
+	}
+	
+	public String outTree()
+	{
+		if (this.b == -1)
+			return "("+this.left.outTree()+", "+this.right.outTree()+"):"+this.mark;
+		else
+			return "'"+(char)this.b+"':"+this.mark;
 	}
 }
 

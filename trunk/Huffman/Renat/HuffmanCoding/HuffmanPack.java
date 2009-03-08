@@ -20,7 +20,6 @@ public class HuffmanPack
 	public void add(int b)
 	{
 		this.size++;
-		if (b < 0) b += 256;
 		if (this.list[b] == null)
 			this.list[b] = new HuffmanTree(b, 1);
 		else
@@ -85,10 +84,10 @@ public class HuffmanPack
 		output.writeInt(this.size, 32); // 32 bits for size, max 4GB
 	}
 	
-	public void process(int b, BitFileOutput output) throws IOException, BitFileException
+	public String getCode(int b) throws IOException, BitFileException
 	{
-		if (b < 0) b += 256;
-		output.write(this.code[b]);
+		
+		return this.code[b];
 	}
 	
 	public void out()

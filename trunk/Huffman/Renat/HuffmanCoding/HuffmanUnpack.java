@@ -22,7 +22,7 @@ public class HuffmanUnpack
 		//System.out.println(this.tree.outTree());
 	}
 	
-	public boolean add(char c, FileOutputStream fos) throws HuffmanUnpackException, IOException
+	public String getSymbol(char c) throws HuffmanUnpackException, IOException, BitFileException
 	{
 		if (c == '0')
 		{
@@ -43,12 +43,16 @@ public class HuffmanUnpack
 		
 		if (this.cur.getChar() != -1)
 		{
-			fos.write((char) this.cur.getChar());
+			String out = "" + (char) this.cur.getChar();
 			this.cur = this.tree;
 			this.size--;
+			return out;
 		}
 		
-		return this.size > 0;
+		if (this.size == 0)
+			throw new BitFileException();
+		
+		return "";
 	}
 }
 

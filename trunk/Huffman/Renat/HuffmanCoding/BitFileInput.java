@@ -17,16 +17,16 @@ public class BitFileInput
 		this.file = new FileInputStream(filename);
 	}
 	
-	public String read(int bits) throws IOException
+	public String readBits(int bits) throws IOException, BitFileException
 	{
 		if (this.buf.length() < bits)
 		{
 			int toread = (int) Math.ceil((double)(bits - this.buf.length()) / 8);
 			byte[] bytes = new byte[toread];
-			this.file.read(bytes);
+			int length = this.file.read(bytes);
 			int b, i, j;
 			String s;
-			for (i=0; i<bytes.length; i++)
+			for (i=0; i<length; i++)
 			{
 				b = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
 				s = "";
@@ -39,15 +39,18 @@ public class BitFileInput
 			}
 		}
 		
+		if (this.buf.length() < bits)
+			throw new BitFileException();
+		
 		String out = this.buf.substring(0, bits);
 		this.buf = this.buf.substring(bits);
 		
 		return out;
 	}
 	
-	public int readInt(int bits) throws IOException
+	public int readInt(int bits) throws IOException, BitFileException
 	{
-		String b = this.read(bits);
+		String b = this.readBits(bits);
 		int out = 0;
 		for (int i=0; i<bits; i++)
 		{
@@ -70,9 +73,9 @@ public class BitFileInput
 		return out;
 	}
 	
-	public void flush() throws IOException
+	public void flush() throws IOException, BitFileException
 	{
-		this.read(this.buf.length() % 8);
+		this.readBits(this.buf.length() % 8);
 	}
 	
 	public void close() throws IOException

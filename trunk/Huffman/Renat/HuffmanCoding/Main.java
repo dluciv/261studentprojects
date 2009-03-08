@@ -14,74 +14,76 @@ public class Main
 	{
 		CommandLineParser parser = new CommandLineParser();
 		CommandLineAction action = parser.parse(args);
+		BitFileInput input;
+		BitFileOutput output;
 		
 		switch (action.getAction())
 		{
 			case CommandLineParser.PACK:
-				HuffmanPack huffman = new HuffmanPack();
-				
-				FileInputStream input = new FileInputStream(action.getInput()); 
+				input = new BitFileInput(action.getInput());
+				output = new BitFileOutput(action.getOutput());
+			
+				HuffmanPack hp = new HuffmanPack();
 				
 				byte[] bytes = new byte[1];
 				int length = 0;
 				
-				while (length != -1)
+				try
 				{
-					if (length > 0)
-					{
-						huffman.add(bytes[0]);
-					}
-					
-					length = input.read(bytes, 0, 1);
+					while (true)
+						hp.add(input.readInt(8));
 				}
+				catch (BitFileException bfe) {}
 				
 				//huffman.out();
-				huffman.buildTree();
+				hp.buildTree();
 				//huffman.outTree();
-				huffman.constructCode();
+				hp.constructCode();
 				//huffman.outCode();
 				
 				input.close();
-				input = new FileInputStream(action.getInput()); 
+				input = new BitFileInput(action.getInput()); 
 				
-				BitFileOutput output = new BitFileOutput(action.getOutput());
+				hp.writeInfo(output);
 				
-				huffman.writeInfo(output);
-				
-				length = 0;
-				String out;
-				while (length != -1)
+				try
 				{
-					if (length > 0)
-						huffman.process(bytes[0], output);
-					
-					length = input.read(bytes, 0, 1);
+					while (true)
+						output.writeBits(hp.getCode(input.readInt(8)));
 				}
+				catch (BitFileException bfe) {}
 				
-				output.flush();
-				
+				input.flush();
 				input.close();
 				output.flush();
 				output.close();
 			break;
 			
 			case CommandLineParser.UNPACK:
-				BitFileInput bfi = new BitFileInput(action.getInput());
-				FileOutputStream fos = new FileOutputStream(action.getOutput());
+				input = new BitFileInput(action.getInput());
+				output = new BitFileOutput(action.getOutput());
+			
+				int letters = input.readInt(8);
 				
-				int letters = bfi.readInt(8);
+				String treeString = input.readBits((letters-1) * 4);
+				String alphabet = input.readString(letters);
+				input.flush();
+				int size = input.readInt(32);
 				
-				String treeString = bfi.read((letters-1) * 4);
-				String alphabet = bfi.readString(letters);
-				bfi.flush();
-				int size = bfi.readInt(32);
+				HuffmanUnpack hu = new HuffmanUnpack(treeString, alphabet, size);
 				
-				HuffmanUnpack h = new HuffmanUnpack(treeString, alphabet, size);
+				try
+				{
+					while (true) {
+						output.writeString(hu.getSymbol(input.readBits(1).charAt(0)));
+					}
+				}
+				catch (BitFileException bfi) {}
 				
-				while (h.add(bfi.read(1).charAt(0), fos)) {}
-				
-				bfi.close();
-				fos.close();
+				input.flush();
+				input.close();
+				output.flush();
+				output.close();
 			break;
 		}
 	}
