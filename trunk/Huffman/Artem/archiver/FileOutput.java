@@ -6,17 +6,17 @@ import java.io.IOException;
 public class FileOutput {
 
 	private FileOutputStream fileStream;
-	
+
 	public FileOutput(String fileName) throws IOException
 	{
 		File file = new File(fileName);
 		if (file.exists())
 			file.delete();
-			
+
 		if(file.createNewFile())
 			fileStream = new FileOutputStream(file);
 	}
-	
+
 	public void write(byte[] data) throws IOException
 	{
 		fileStream.write(data);
@@ -25,12 +25,16 @@ public class FileOutput {
 	{
 		fileStream.write(data);
 	}
-	
-	
+	public void write(String data) throws IOException
+	{
+        for (int i = 0; i < data.length(); i++)
+            write((byte)data.charAt(i));
+	}
+
 	public void clean() throws IOException
 	{
 		this.fileStream.flush();
 		this.fileStream.close();
 	}
-	
+
 }
