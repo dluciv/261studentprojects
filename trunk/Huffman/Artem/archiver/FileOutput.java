@@ -31,7 +31,7 @@ public class FileOutput {
             write((byte)data.charAt(i));
 	}
 
-	public void clean() throws IOException
+	public void flush() throws IOException
 	{
 		this.fileStream.flush();
 		this.fileStream.close();

@@ -12,4 +12,5 @@ package archiver;
 public class TwoString {
 	   public String str1;
 	   public String str2;
+	   public int b;
 }

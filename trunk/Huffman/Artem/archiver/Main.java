@@ -50,26 +50,14 @@ public class Main {
 			buf = fis.read();
 			h.setTreeLeaveWeight(buf);
 		}
-		fis.clean();
-	}
-	public static void growTree(Huffman h,String fisName) throws IOException{
-		FileInput fis = new FileInput(fisName);
-		byte[] buf = new byte[1];
-		while(buf.length>0){
-			buf = fis.read();
-			h.growTree();
-		}
-		fis.clean();
-        //h.sortTree();
+		fis.flush();
+		h.makeWeights();
 	}
 
     public static void writeCodesToFile(Huffman h,FileOutput fos) throws IOException{
-		for (int valByte = 0; valByte < h.code.length; valByte++) {
-            String bitCode = h.code[valByte];
-            if(bitCode!=null){
-                fos.write((byte)valByte);
-                fos.write((byte)h.getWeight(valByte));
-            }
+		for (ItemWeight iw : h.itemWeightList) {
+                fos.write((byte)iw.key);
+                fos.write((byte)iw.newWeight);
 		}
         fos.write((byte)0);
         fos.write((byte)0);
@@ -78,9 +66,10 @@ public class Main {
 		FileInput fis = new FileInput(fisName);
 		byte[] buf = new byte[1];
 		String lineBits = "";
+		buf = fis.read();
 		while(buf.length > 0){
-			buf = fis.read();
-			String wordBits = h.coder(buf);
+			String wordBits = h.codeToBits(buf[0]);
+			//System.out.println(buf[0]+" - "+wordBits);
 			lineBits += wordBits;
             //System.out.println(lineBits+" ( "+ lineBits.length()+" ) ");
 			if(lineBits.length() > 8){
@@ -90,6 +79,7 @@ public class Main {
                 //System.out.println(wordBits+" - "+writeByte);
 				fos.write(writeByte);
 			}
+			buf = fis.read();
 		}
         if(lineBits.length() > 0){
             byte writeByte = getByteByBits(lineBits);
@@ -100,7 +90,7 @@ public class Main {
             fos.write(lwlByte);
         }else 
             fos.write((byte)0);
-		fis.clean();
+		fis.flush();
 	}
 
 	public static String getWholeBitCode(Huffman h,String fisName) throws IOException{
@@ -109,98 +99,98 @@ public class Main {
 		String wordBits = "";
         buf = fis.read();
 		while(buf.length>0){
-			wordBits += h.coder(buf);
+			wordBits += h.codeToBits(buf[0]);
             buf = fis.read();
 		}
-        fis.clean();
+        fis.flush();
         return wordBits;
 	}
 
 	public static void retrieveCodes(FileInput fis, Huffman h) throws IOException{
-        int readBytes = 2;
+		int readBytes = 2;
 		byte[] codes = new byte[readBytes];
         codes = fis.read(readBytes);
        
         while(codes[0]!=0 && codes[1]!=0){
-            h.weights[codes[0]] = codes[1];
+			ItemWeight iw = new ItemWeight();
+			iw.key = codes[0];
+			iw.newWeight = codes[1];
+			h.itemWeightList.add(iw);
             codes = fis.read(readBytes);
         }
 	}
 
     public static void printHuffmanData(Huffman h){
-        //System.out.println("byte - weight - bitcode - value");
-		for (int valByte = 0; valByte < h.code.length; valByte++) {
-            String bitCode = h.code[valByte];
-            if(bitCode!=null){
-                /*
-                System.out.println(valByte+" - "+ h.getWeight(valByte)
-                        + " - "+ bitCode
-                        + " - " + (char)valByte);*/
-            }
-		}
+        System.out.println("key - oldWeight - newWeight - char - code");
+		for (ItemWeight iw : h.itemWeightList)
+			System.out.println(iw.key+" - "+iw.oldWeight+" - "+iw.newWeight+" - "
+					+(char)iw.key+" - "+h.codes.get(iw.key)+" ; ");
     }
 
 	public static void archiveFile(String fisName) throws IOException{
 		Huffman h = new Huffman();
-
-		//	делаем кода хаффмана
+		//	делаем коды хаффмана
 		setTreeLeaveWeight(h,fisName);
-		growTree(h,fisName);
-		h.makeCode();
-        printHuffmanData(h);
-        System.out.println(getWholeBitCode(h,fisName));
+		h.makeTree();
+		h.makeCodes();	
+        //printHuffmanData(h);
+        //System.out.println(getWholeBitCode(h,fisName));
 
 		//	записываем кодированные данные в потоке
         String fosName = fisName+".huf";
 		FileOutput fos = new FileOutput(fosName);
 		writeCodesToFile(h, fos);
 		writeCodedDataToFile(h,fisName,fos);
-		fos.clean();
+		
+		fos.flush();
 
 		System.out.println(fisName+" has been archivated to "+fosName);
+         /* */
 	}
-
-	public static void unarchiveFile(String fisName) throws IOException{
+	public static String getBitcodetextConvention(String uncodeBits) {
+		String endBits = uncodeBits.substring(uncodeBits.length()-8,uncodeBits.length());
+        byte lastWordLen = getByteByBits(endBits);
+		uncodeBits = uncodeBits.substring(0, uncodeBits.length()-8);
+        int cutLen = 8-lastWordLen;
+		uncodeBits = uncodeBits.substring(0, uncodeBits.length()-cutLen);
+		return uncodeBits;
+	}
+	public static void extractFile(String fisName) throws IOException{
 		FileInput fis = new FileInput(fisName+".huf");
 		Huffman h = new Huffman();
         // воссоздаем структуру хаффмана
         retrieveCodes(fis, h);
-        h.growTree();
-        h.makeCode();
-		printHuffmanData(h);
-
-        // в потоке читаем, декодируем и записываем в файл
+		h.makeTree();
+		h.makeCodes();
+		//printHuffmanData(h);
+        
+		// в потоке читаем, декодируем и записываем в файл
         FileOutput fos = new FileOutput(fisName+".unhuf");  // разархивируем в ...
-        byte[] buf = fis.read();
-        String uncodeBits = "";
+		BitDecoder bd = new BitDecoder(h);
+		byte[] buf = fis.read();
 		while(fis.lenLeft()>1){
-            uncodeBits += getBitsByByte(buf[0]);
-            if(uncodeBits.length()>8){
-                TwoString ts = h.slowDecoder(uncodeBits);
-                uncodeBits = ts.str1;
-                String word = ts.str2;
-                fos.write(word);
-            }
-            buf = fis.read();
+			bd.addBits(getBitsByByte(buf[0]));
+			fos.write(bd.decodeBits());
+			buf = fis.read();
 		}
-        // считываем концовку файла, отрезаем пустые биты, завершаем запись файла
-		while(buf.length > 0){
+		String uncodeBits = "";
+ 		while(buf.length > 0){
             uncodeBits += getBitsByByte(buf[0]);
             buf = fis.read();
 		}
-        fis.clean();
-        byte lastWordLen = getByteByBits(uncodeBits.substring(uncodeBits.length()-8,uncodeBits.length()));
-        int cutLen = 8;
-        if(lastWordLen > 0)
-            cutLen += 8 - lastWordLen;
-        uncodeBits = uncodeBits.substring(0, uncodeBits.length()-cutLen);
-        fos.write(h.fastDecoder(uncodeBits));
-        fos.clean();
-
+        fis.flush();
+		
+		uncodeBits = getBitcodetextConvention(uncodeBits);
+		bd.addBits(uncodeBits);
+		
+		while(!bd.isAllDecoded())
+			fos.write(bd.decodeBits());
+        fos.flush();
+		
         System.out.println(fisName+".huf"+" has been unarchivated to "+fisName+".unhuf");
 	}
 
-//unarchive
+
 	public static void main(String[] args) throws IOException {
 		//testBBConversions();
 
@@ -209,7 +199,7 @@ public class Main {
 		archiveFile(fisName);
 
         /*  возвращаем исходный файл * */
-        unarchiveFile(fisName);
+        extractFile(fisName);
 
         System.out.println("ok!");
 

@@ -35,10 +35,11 @@ public class FileInput {
 
 	public int lenLeft() throws IOException
 	{
+		//System.out.println("lenLeft "+fileStream.available());
 		return fileStream.available();
 	}
 
-	public void clean() throws IOException
+	public void flush() throws IOException
 	{
 		this.fileStream.close();
 	}

@@ -1,109 +1,147 @@
 package archiver;
 
-public class Huffman {
-	public static final int ALPHABETSIZE = 256;
-	Tree[] tree= new Tree[ALPHABETSIZE]; // рабочий массив деревьев
-	int weights[] = new int[ALPHABETSIZE];  // веса символов
-	public String[] code = new String[ALPHABETSIZE]; // коды Хаффмана
+import java.util.ArrayList;
+import java.util.HashMap;
 
-	private int getLowestTree(int used) { // ищем самое "легкое" дерево
-		int min=0;
-		for (int i=1; i<used; i++)
-			if (tree[i].weight < tree[min].weight )
-				min = i;
-			return min;
+
+
+public class Huffman {
+	Tree tree= new Tree(); // дерево Хаффмана
+	public HashMap<Integer,String> codes = new HashMap<Integer, String>();
+	ArrayList<ItemWeight> itemWeightList = new ArrayList<ItemWeight>();
+
+	public void printCodes(){
+		System.out.println("codes");
+		for (ItemWeight iw : itemWeightList)
+			System.out.println(iw.key+" - "+codes.get(iw.key));
+	}
+
+	public int getWeight(int key){
+		for (ItemWeight iw : itemWeightList)
+			if(iw.key == key)
+				return iw.newWeight;
+		return 0;
 	}
 	public void setTreeLeaveWeight( byte[] data ){
-		for (int i=0; i<data.length; i++) 		// считаем веса символов
-		{
-			weights[data[i]]++;
-		}
-		/*
-		for (int i=0; i<data.length; i++)
-		{
-			System.out.println(data[i]+" - "+weights[data[i]]);
-		}
-		*/
-	}
-	public int[] getWeights( ){
-			return weights;
-	}
-	public int getWeight( int key ){
-			return weights[key];
-    }
-	public void growTree( ) { 		// растим дерево
-												//заполняем массив из "листовых" деревьев
-		int used = 0;							//с использованными символами
-		for (int c=0; c < ALPHABETSIZE; c++) {
-			int w = weights[c];
-			if (w != 0) tree[used++] = new Tree(c, w, true);
-		}
-		while (used > 1) {						// парами сливаем легкие ветки
-			int min = getLowestTree( used );	// ищем 1 ветку
-			int weight0 = tree[min].weight;
-			Tree temp = new Tree();				// создаем новое дерево
-			temp.child0 = tree[min];			// и прививаем 1 ветку
-			tree[min] = tree[--used]; 			// на место 1 ветки кладем
-												// последнее дерево в списке
-			min = getLowestTree( used );		// ищем 2 ветку и
-			temp.child1 = tree[min]; 			// прививаем ее к нов.дер.
-			temp.weight = weight0 + tree[min].weight;		// считаем вес нов.дер.
-			tree[min] = temp;					// нов.дер. кладем на место 2 ветки
-		} 										// все! осталось 1 дерево Хаффмана
-	}
-/*
-	public void sortTree( ) {
-        sortTree(tree[0]);
-	}
-	public void sortTree(Tree curTree) {
-        if(curTree.leaf)
-            s.o((char)curTree.character+"");
-        else{
-            sortTree(curTree.child0);
-            sortTree(curTree.child1);
-            }
-	}
-*/
 
-
-
-	public void makeCode() {					// запускаем вычисление кодов Хаффмана
-		tree[0].traverse( "", this);
-	}
-
-	public String coder( byte[] data ) { 		// кодирует данные строкой из 1 и 0
-		String str = "";
-		for (int i=0; i<data.length; i++)
-			str += code[data[i]];
-		return str;
-	}
-
-	public String fastDecoder(String data) {
-		String str="";								// проверяем в цикле данные на вхождение
-		while(data.length() > 0){
-			for (int c=0; c < ALPHABETSIZE; c++) {
-                if(null!=code[c]){
-                    if (data.startsWith(code[c])){
-                        data = data.substring(code[c].length(), data.length());
-                        str += (char)c;
-                    }
-                }
+		for (int i=0; i<data.length; i++){
+			Boolean found = false;
+			for (ItemWeight iw : itemWeightList) {
+				if(iw.key == data[i]){
+					iw.oldWeight++;
+					found = true;
+				}
+			}
+			if(!found){
+				ItemWeight iw = new ItemWeight();
+				iw.key = data[i];
+				iw.oldWeight = 1;
+				iw.newWeight = 0;
+				itemWeightList.add(iw);
 			}
 		}
-		return str;
+	}
+	public void makeWeights(){
+		QuickSorter qs = new QuickSorter(itemWeightList);
+		itemWeightList = qs.sort();
+		int curNewWeight = 1;
+		long curOldWeight = 1;
+		for (ItemWeight iw : itemWeightList) {
+			if(iw.oldWeight > curOldWeight){
+				curOldWeight = iw.oldWeight;
+				curNewWeight++;
+			}
+			iw.newWeight = curNewWeight;
+		}
+	}
+
+
+	public ArrayList<Tree> getListOfTrees(){
+		ArrayList<Tree> trees = new ArrayList<Tree>();
+		int j=0;
+		for (int i=0; i < itemWeightList.size(); i++){
+			if(itemWeightList.get(i).newWeight > 0){
+				Tree tTree = new Tree();
+				tTree.weight = itemWeightList.get(i).newWeight;
+				tTree.character = itemWeightList.get(i).key;
+				tTree.leaf = true;
+				trees.add(tTree);
+			}
+		}
+		return trees;
+	}
+
+	public Tree getSmallestTree(ArrayList<Tree> trees){
+		int smallesWeight = 255;
+		int smallestTreeIndex = 0;
+		for (int i=0; i < trees.size(); i++){
+			if(smallesWeight >= trees.get(i).weight){
+				smallesWeight = trees.get(i).weight;
+				smallestTreeIndex = i;
+			}
+		}
+		Tree smallestTree = trees.get(smallestTreeIndex);
+		trees.remove(smallestTreeIndex);
+		return smallestTree;
+	}
+	public void makeTree( ){
+		ArrayList<Tree> trees = getListOfTrees();
+		while (trees.size() > 1){
+			Tree theSmallestTree = getSmallestTree(trees);
+			Tree secondSmallestTree = getSmallestTree(trees);
+			Tree newNode = new Tree();
+			newNode.leaf = false;
+			newNode.weight = theSmallestTree.weight + secondSmallestTree.weight;
+			newNode.child0 = theSmallestTree;
+			newNode.child1 = secondSmallestTree;
+			trees.add(newNode);
+
+		}
+		tree = trees.get(0);
+	}
+
+	public void makeCode(Tree node, String codeStr){
+		if(node.leaf){
+			//System.out.println(node.character+" - "+codeStr);
+			codes.put(node.character, codeStr);
+			//codes.put(3,"001");
+			//System.out.println(codes.get(3));
+		}else{
+			if(node.child0!= null)
+				makeCode(node.child0, codeStr+"0");
+			if(node.child1!= null)
+				makeCode(node.child1, codeStr+"1");
+		}
+    }
+	public void makeCodes(){
+		makeCode(tree, "");
     }
 
-	public TwoString slowDecoder(String data) {
-        TwoString ts = new TwoString();
-		String str="";
-        for (int c=0; c < ALPHABETSIZE; c++) {
-            if(null!=code[c]){
-                if (data.startsWith(code[c])){
-                    data = data.substring(code[c].length(), data.length());
-                    str += (char)c;
-                }
-            }
-        }
+	public String codeToBits( byte data ) {
+		String str = "";
+		//System.out.print(data + " " + codes.get((int)data));
+		str += codes.get((int)data);
+		return str;
+	}
+
+	public TwoString decodeBits(String data) {
+		//System.out.println("decodeBits");
+		//System.out.println(data);
+		Tree curNode = tree;
+		int p = 0;
+		while(!curNode.leaf && data.length()>=p+1){
+			if(data.charAt(p)=='0')
+				curNode = curNode.child0;
+			else curNode = curNode.child1;
+			p++;
+		}
+		String str;
+		if(curNode.leaf){
+			data = data.substring(p, data.length());
+			str = (char)curNode.character+"";
+		}else str = "";
+
+		TwoString ts = new TwoString();
         ts.str1 = data;
         ts.str2 = str;
 		return ts;
