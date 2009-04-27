@@ -4,8 +4,12 @@ import java.io.IOException;
 
 public class Main {
 	public static int  readBytes = 1;
+	private static String log = "";
 
-	public static byte getByteByBits(String bits)
+	public String getLog(){
+		return log;
+	}
+	public static byte convertBitsToByte(String bits)
 	{
 		int value = 0;
 		if(bits!=null)
@@ -36,9 +40,9 @@ public class Main {
 	public static void testBBConversions() {
 		byte byt = 3;
 		System.out.println(getBitsByByte(byt));
-		System.out.println(getByteByBits(getBitsByByte(byt)) );
-		System.out.println(getBitsByByte(getByteByBits(getBitsByByte(byt))) );
-		System.out.println(getByteByBits(getBitsByByte(getByteByBits(getBitsByByte(byt)))) );
+		System.out.println(convertBitsToByte(getBitsByByte(byt)) );
+		System.out.println(getBitsByByte(convertBitsToByte(getBitsByByte(byt))) );
+		System.out.println(convertBitsToByte(getBitsByByte(convertBitsToByte(getBitsByByte(byt)))) );
 
 	}
 
@@ -75,14 +79,14 @@ public class Main {
 			if(lineBits.length() > 8){
 				wordBits = lineBits.substring(0, 8);
 				lineBits = lineBits.substring(8);
-				byte writeByte = getByteByBits(wordBits);
+				byte writeByte = convertBitsToByte(wordBits);
                 //System.out.println(wordBits+" - "+writeByte);
 				fos.write(writeByte);
 			}
 			buf = fis.read();
 		}
         if(lineBits.length() > 0){
-            byte writeByte = getByteByBits(lineBits);
+            byte writeByte = convertBitsToByte(lineBits);
             //System.out.println(lineBits+" - "+writeByte);
             fos.write(writeByte);
             // записываем длину последнего "слова" в дополнительный последний байт
@@ -119,7 +123,14 @@ public class Main {
             codes = fis.read(readBytes);
         }
 	}
-
+    public static String getHuffmanData(Huffman h){
+		String str ="";
+		str += "key - oldWeight - newWeight - char - code\n";
+		for (ItemWeight iw : h.itemWeightList)
+			str += iw.key+" - "+iw.oldWeight+" - "+iw.newWeight+" - "
+					+(char)iw.key+" - "+h.codes.get(iw.key)+" ; \n";
+		return str;
+    }
     public static void printHuffmanData(Huffman h){
         System.out.println("key - oldWeight - newWeight - char - code");
 		for (ItemWeight iw : h.itemWeightList)
@@ -133,23 +144,18 @@ public class Main {
 		setTreeLeaveWeight(h,fisName);
 		h.makeTree();
 		h.makeCodes();	
-        //printHuffmanData(h);
-        //System.out.println(getWholeBitCode(h,fisName));
-
+		log += getHuffmanData(h);
 		//	записываем кодированные данные в потоке
         String fosName = fisName+".huf";
-		FileOutput fos = new FileOutput(fosName);
+		FileOutput fos = new FileOutput(fisName+".huf");
 		writeCodesToFile(h, fos);
-		writeCodedDataToFile(h,fisName,fos);
-		
+		writeCodedDataToFile(h,fisName,fos);		
 		fos.flush();
-
-		System.out.println(fisName+" has been archivated to "+fosName);
-         /* */
+		log += fisName+" has been archivated to "+fosName+"\n";
 	}
 	public static String getBitcodetextConvention(String uncodeBits) {
 		String endBits = uncodeBits.substring(uncodeBits.length()-8,uncodeBits.length());
-        byte lastWordLen = getByteByBits(endBits);
+        byte lastWordLen = convertBitsToByte(endBits);
 		uncodeBits = uncodeBits.substring(0, uncodeBits.length()-8);
         int cutLen = 8-lastWordLen;
 		uncodeBits = uncodeBits.substring(0, uncodeBits.length()-cutLen);
@@ -186,8 +192,8 @@ public class Main {
 		while(!bd.isAllDecoded())
 			fos.write(bd.decodeBits());
         fos.flush();
-		
-        System.out.println(fisName+".huf"+" has been unarchivated to "+fisName+".unhuf");
+
+		log += fisName+".huf"+" has been unarchivated to "+fisName+".unhuf\n";
 	}
 
 
@@ -200,8 +206,9 @@ public class Main {
 
         /*  возвращаем исходный файл * */
         extractFile(fisName);
+		System.out.println(log);
 
-        System.out.println("ok!");
+        //System.out.println("ok!");
 
 
 	}
