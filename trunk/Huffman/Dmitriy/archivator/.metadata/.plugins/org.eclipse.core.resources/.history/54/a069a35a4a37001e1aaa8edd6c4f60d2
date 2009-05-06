@@ -1,0 +1,206 @@
+package dk.archivator;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Vector;
+
+public class Dearchivator {
+
+	private File outFile;
+	private Vector<Integer> symbols;
+	private Vector<Integer> base;
+	private DataList offs;
+	private DataList t;
+	private HashMap<Integer, Integer> codes;
+	private int restBits;
+	private int maxCodeLength;
+
+	public Dearchivator(String filePath, File inFile) {
+		filePath += ".dearc";
+		symbols = new Vector<Integer>();
+		codes = new HashMap<Integer, Integer>();
+		outFile = new File(filePath);
+
+	}
+
+	public void writeFile(File inFile) {
+		try {
+			FileInputStream in = new FileInputStream(inFile);
+			FileOutputStream out = new FileOutputStream(outFile);
+			int codeLength = 0;
+			int controlSum = 0;
+			int counter = 0;
+			int c = 0;
+			restBits = in.read(); // read restBits
+			maxCodeLength = in.read(); // read maxCodeLength
+			t = new DataList(maxCodeLength, 0);
+			base = new Vector<Integer>();
+			offs = new DataList(maxCodeLength + 1, -1);
+			base.add(1); // -1 = ?
+			// while read table
+			while (controlSum != Archivator.FREQUENCY_SIZE) {
+				codeLength = in.read();
+				counter = in.read();
+				controlSum += counter;
+				if (codeLength != 0) {
+					for (int i = controlSum - counter; i < controlSum; i++) {
+						t.addData(codeLength - 1);
+						symbols.add(i);
+						codes.put(i, codeLength);
+					}
+				}
+			}
+
+			for (int i = 1; i <= maxCodeLength; i++) {
+				base.add(base.get(i - 1) * 2 - t.getData(i - 1));
+			}
+
+			symbols = qSort(symbols);
+
+			int code = -1;
+
+			for (int i = 0; i < symbols.size(); i++) {
+				code = codes.get(symbols.get(i));
+				if (i == 0) {
+					offs.putData(code, i);
+				} else if (i != 0 && code != codes.get(symbols.get(i - 1))) {
+					offs.putData(code, i);
+				}
+			}
+
+			int length = 1;
+			Vector<Integer> bits = toBit(in.read());
+			System.out.println("bits " + bits);
+			int tmpByte = bits.get(0);
+			int i = 1;
+			System.out.println("Symbols " + symbols);
+			System.out.println("RestBits" + restBits);
+			System.out.println("MaxCodeSize" + maxCodeLength);
+			System.out.println("codes " + codes);
+			System.out.println("t " + t);
+			System.out.println("base " + base);
+			System.out.println("offs " + offs);
+			
+			while (true) {
+
+				if (tmpByte >= base.get(length)) {
+					out.write(symbols.get(offs.getData(length) + tmpByte
+							- base.get(length)));
+					System.out.println(symbols.get(offs.getData(length)
+							+ tmpByte - base.get(length)));
+
+					length = 0;
+					tmpByte = 0;
+				}
+
+				if (i > 7) {
+					i = i % 8;
+					c = in.read();
+					System.out.println("c " + toBit(c));
+					bits = toBit(c);
+					if (in.available() == 0) {		
+						break;
+					}		
+				}
+				
+				tmpByte = (tmpByte << 1) + bits.get(i);
+				length++;
+				i++;						
+			}
+			
+			//READ LAST BYTE
+			for(int j = 0; j < restBits; j++){
+				tmpByte = (tmpByte << 1) + bits.get(i);
+				length++;
+				i++;
+				if (tmpByte >= base.get(length)) {
+					out.write(symbols.get(offs.getData(length) + tmpByte
+							- base.get(length)));
+					System.out.println(symbols.get(offs.getData(length)
+							+ tmpByte - base.get(length)));
+
+					length = 0;
+					tmpByte = 0;
+				}
+			}
+			
+			in.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Vector<Integer> toBit(int c) {
+		Vector<Integer> tmpBits = new Vector<Integer>();
+		while (c != 0) {
+			tmpBits.add(0, c % 2);
+			c = c / 2;
+		}
+		for (int i = tmpBits.size(); i < 8; i++) {
+			tmpBits.add(0, 0);
+		}
+		return tmpBits;
+	}
+
+	private Vector<Integer> qSort(Vector<Integer> sort) {
+		Integer tmp = sort.get(0);
+		int size = sort.size();
+		Vector<Integer> smallers = new Vector<Integer>();
+		Vector<Integer> biggers = new Vector<Integer>();
+		for (int i = 1; i < size; i++) {
+			Integer tmp2 = sort.get(i);
+			if (!compareTwoSymbols(tmp2, tmp)) {
+				smallers.add(tmp2);
+			} else
+				biggers.add(tmp2);
+		}
+
+		if (smallers.size() == 0 && biggers.size() == 0) {
+			Vector<Integer> n = new Vector<Integer>();
+			n.add(tmp);
+			return n;
+		} else if (smallers.size() == 0)
+			return add_to_end(tmp, qSort(biggers));
+		else if (biggers.size() == 0)
+			return add(qSort(smallers), tmp);
+		else
+			return concat(add(qSort(smallers), tmp), qSort(biggers));
+
+	}
+
+	private Vector<Integer> add(Vector<Integer> list1, Integer tmp) {
+		list1.add(tmp);
+		return list1;
+	}
+
+	private Vector<Integer> add_to_end(Integer tmp, Vector<Integer> list1) {
+		list1.add(0, tmp);
+		return list1;
+	}
+
+	private Vector<Integer> concat(Vector<Integer> list1, Vector<Integer> list2) {
+		for (int i = 0; i < list2.size(); i++) {
+			list1.add(list2.get(i));
+		}
+		return list1;
+	}
+
+	private boolean compareTwoSymbols(int symbFirst, int symbSecond) {
+		int codeFirst = codes.get(symbFirst);
+		int codeSecond = codes.get(symbSecond);
+		if (codeFirst < codeSecond) {
+			return true;
+		} else if (codeFirst > codeSecond) {
+			return false;
+		} else {
+			if (symbFirst > symbSecond) {
+				return true;
+			} else
+				return false;
+		}
+	}
+}

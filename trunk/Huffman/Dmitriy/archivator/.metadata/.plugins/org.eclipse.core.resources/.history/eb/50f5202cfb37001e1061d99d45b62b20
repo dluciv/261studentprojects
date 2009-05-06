@@ -1,0 +1,31 @@
+package dk.archivator;
+
+import java.io.File;
+import java.io.IOException;
+
+/*
+ *        http://www.255.ru/index.php?newsid=968 <----- алгоритмы взяты оттуда
+ */
+
+public class Main {
+
+	private static String ARCHIVATE_IN_FILEPATH = 
+		"C:\\Documents and Settings\\Дима\\Рабочий стол\\123.txt";
+	private static String ARCHIVATE_OUT_FILEPATH = 
+		"C:\\Documents and Settings\\Дима\\Рабочий стол\\123.dk90";
+	private static String DEARCHIVATE_IN_FILEPATH = 
+		"C:\\Documents and Settings\\Дима\\Рабочий стол\\123.dk90";
+	private static String DEARCHIVATE_OUT_FILEPATH = 
+		"C:\\Documents and Settings\\Дима\\Рабочий стол\\123";
+
+	public static void main(String args[]) throws IOException {
+
+		Archivator a = new Archivator(ARCHIVATE_IN_FILEPATH, ARCHIVATE_OUT_FILEPATH);
+
+		File inFile = new File(
+				"C:\\Documents and Settings\\Дима\\Рабочий стол\\123.dk90");
+
+		Dearchivator d = new Dearchivator(DEARCHIVATE_IN_FILEPATH, DEARCHIVATE_OUT_FILEPATH);
+	}
+
+}
