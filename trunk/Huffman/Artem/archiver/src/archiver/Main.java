@@ -47,7 +47,7 @@ public class Main {
 	}
 
 
-	public static void setTreeLeaveWeight(Huffman h,String fisName) throws IOException{
+	public static void setTreeLeaveWeight(HuffmanCoder h,String fisName) throws IOException{
 		FileInput fis = new FileInput(fisName);
 		byte[] buf = new byte[1];
 		while(buf.length>0){
@@ -58,15 +58,15 @@ public class Main {
 		h.makeWeights();
 	}
 
-    public static void writeCodesToFile(Huffman h,FileOutput fos) throws IOException{
-		for (ItemWeight iw : h.itemWeightList) {
+    public static void writeCodesToFile(HuffmanCoder h,FileOutput fos) throws IOException{
+		for (HuffmanChar iw : h.itemWeightList) {
                 fos.write((byte)iw.key);
                 fos.write((byte)iw.newWeight);
 		}
         fos.write((byte)0);
         fos.write((byte)0);
 	}
-	public static void writeCodedDataToFile(Huffman h,String fisName,FileOutput fos) throws IOException{
+	public static void writeCodedDataToFile(HuffmanCoder h,String fisName,FileOutput fos) throws IOException{
 		FileInput fis = new FileInput(fisName);
 		byte[] buf = new byte[1];
 		String lineBits = "";
@@ -97,7 +97,7 @@ public class Main {
 		fis.flush();
 	}
 
-	public static String getWholeBitCode(Huffman h,String fisName) throws IOException{
+	public static String getWholeBitCode(HuffmanCoder h,String fisName) throws IOException{
         FileInput fis = new FileInput(fisName);
 		byte[] buf = new byte[1];
 		String wordBits = "";
@@ -110,36 +110,36 @@ public class Main {
         return wordBits;
 	}
 
-	public static void retrieveCodes(FileInput fis, Huffman h) throws IOException{
+	public static void retrieveCodes(FileInput fis, HuffmanCoder h) throws IOException{
 		int readBytes = 2;
 		byte[] codes = new byte[readBytes];
         codes = fis.read(readBytes);
        
         while(codes[0]!=0 && codes[1]!=0){
-			ItemWeight iw = new ItemWeight();
+			HuffmanChar iw = new HuffmanChar();
 			iw.key = codes[0];
 			iw.newWeight = codes[1];
 			h.itemWeightList.add(iw);
             codes = fis.read(readBytes);
         }
 	}
-    public static String getHuffmanData(Huffman h){
+    public static String getHuffmanData(HuffmanCoder h){
 		String str ="";
 		str += "key - oldWeight - newWeight - char - code\n";
-		for (ItemWeight iw : h.itemWeightList)
+		for (HuffmanChar iw : h.itemWeightList)
 			str += iw.key+" - "+iw.oldWeight+" - "+iw.newWeight+" - "
 					+(char)iw.key+" - "+h.codes.get(iw.key)+" ; \n";
 		return str;
     }
-    public static void printHuffmanData(Huffman h){
+    public static void printHuffmanData(HuffmanCoder h){
         System.out.println("key - oldWeight - newWeight - char - code");
-		for (ItemWeight iw : h.itemWeightList)
+		for (HuffmanChar iw : h.itemWeightList)
 			System.out.println(iw.key+" - "+iw.oldWeight+" - "+iw.newWeight+" - "
 					+(char)iw.key+" - "+h.codes.get(iw.key)+" ; ");
     }
 
 	public static void archiveFile(String fisName) throws IOException{
-		Huffman h = new Huffman();
+		HuffmanCoder h = new HuffmanCoder();
 		//	делаем коды хаффмана
 		setTreeLeaveWeight(h,fisName);
 		h.makeTree();
@@ -163,7 +163,7 @@ public class Main {
 	}
 	public static void extractFile(String fisName) throws IOException{
 		FileInput fis = new FileInput(fisName+".huf");
-		Huffman h = new Huffman();
+		HuffmanCoder h = new HuffmanCoder();
         // воссоздаем структуру хаффмана
         retrieveCodes(fis, h);
 		h.makeTree();

@@ -1,23 +1,25 @@
 package archiver;
 
+import com.sun.java.swing.plaf.windows.WindowsTreeUI.CollapsedIcon;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 
 
-public class Huffman {
-	Tree tree= new Tree(); // дерево Хаффмана
+public class HuffmanCoder {
+	HuffmanTree tree= new HuffmanTree(); // дерево Хаффмана
 	public HashMap<Integer,String> codes = new HashMap<Integer, String>();
-	ArrayList<ItemWeight> itemWeightList = new ArrayList<ItemWeight>();
+	ArrayList<HuffmanChar> itemWeightList = new ArrayList<HuffmanChar>();
 
 	public void printCodes(){
 		System.out.println("codes");
-		for (ItemWeight iw : itemWeightList)
+		for (HuffmanChar iw : itemWeightList)
 			System.out.println(iw.key+" - "+codes.get(iw.key));
 	}
 
 	public int getWeight(int key){
-		for (ItemWeight iw : itemWeightList)
+		for (HuffmanChar iw : itemWeightList)
 			if(iw.key == key)
 				return iw.newWeight;
 		return 0;
@@ -26,14 +28,14 @@ public class Huffman {
 
 		for (int i=0; i<data.length; i++){
 			Boolean found = false;
-			for (ItemWeight iw : itemWeightList) {
+			for (HuffmanChar iw : itemWeightList) {
 				if(iw.key == data[i]){
 					iw.oldWeight++;
 					found = true;
 				}
 			}
 			if(!found){
-				ItemWeight iw = new ItemWeight();
+				HuffmanChar iw = new HuffmanChar();
 				iw.key = data[i];
 				iw.oldWeight = 1;
 				iw.newWeight = 0;
@@ -42,11 +44,12 @@ public class Huffman {
 		}
 	}
 	public void makeWeights(){
-		QuickSorter qs = new QuickSorter(itemWeightList);
-		itemWeightList = qs.sort();
+
+		Collections.sort(itemWeightList);
+
 		int curNewWeight = 1;
 		long curOldWeight = 1;
-		for (ItemWeight iw : itemWeightList) {
+		for (HuffmanChar iw : itemWeightList) {
 			if(iw.oldWeight > curOldWeight){
 				curOldWeight = iw.oldWeight;
 				curNewWeight++;
@@ -56,12 +59,12 @@ public class Huffman {
 	}
 
 
-	public ArrayList<Tree> getListOfTrees(){
-		ArrayList<Tree> trees = new ArrayList<Tree>();
+	public ArrayList<HuffmanTree> getListOfTrees(){
+		ArrayList<HuffmanTree> trees = new ArrayList<HuffmanTree>();
 		int j=0;
 		for (int i=0; i < itemWeightList.size(); i++){
 			if(itemWeightList.get(i).newWeight > 0){
-				Tree tTree = new Tree();
+				HuffmanTree tTree = new HuffmanTree();
 				tTree.weight = itemWeightList.get(i).newWeight;
 				tTree.character = itemWeightList.get(i).key;
 				tTree.leaf = true;
@@ -71,7 +74,7 @@ public class Huffman {
 		return trees;
 	}
 
-	public Tree getSmallestTree(ArrayList<Tree> trees){
+	public HuffmanTree getSmallestTree(ArrayList<HuffmanTree> trees){
 		int smallesWeight = 255;
 		int smallestTreeIndex = 0;
 		for (int i=0; i < trees.size(); i++){
@@ -80,16 +83,16 @@ public class Huffman {
 				smallestTreeIndex = i;
 			}
 		}
-		Tree smallestTree = trees.get(smallestTreeIndex);
+		HuffmanTree smallestTree = trees.get(smallestTreeIndex);
 		trees.remove(smallestTreeIndex);
 		return smallestTree;
 	}
 	public void makeTree( ){
-		ArrayList<Tree> trees = getListOfTrees();
+		ArrayList<HuffmanTree> trees = getListOfTrees();
 		while (trees.size() > 1){
-			Tree theSmallestTree = getSmallestTree(trees);
-			Tree secondSmallestTree = getSmallestTree(trees);
-			Tree newNode = new Tree();
+			HuffmanTree theSmallestTree = getSmallestTree(trees);
+			HuffmanTree secondSmallestTree = getSmallestTree(trees);
+			HuffmanTree newNode = new HuffmanTree();
 			newNode.leaf = false;
 			newNode.weight = theSmallestTree.weight + secondSmallestTree.weight;
 			newNode.child0 = theSmallestTree;
@@ -100,7 +103,7 @@ public class Huffman {
 		tree = trees.get(0);
 	}
 
-	public void makeCode(Tree node, String codeStr){
+	public void makeCode(HuffmanTree node, String codeStr){
 		if(node.leaf){
 			//System.out.println(node.character+" - "+codeStr);
 			codes.put(node.character, codeStr);
@@ -127,7 +130,7 @@ public class Huffman {
 	public TwoString decodeBits(String data) {
 		//System.out.println("decodeBits");
 		//System.out.println(data);
-		Tree curNode = tree;
+		HuffmanTree curNode = tree;
 		int p = 0;
 		while(!curNode.leaf && data.length()>=p+1){
 			if(data.charAt(p)=='0')

@@ -12,9 +12,9 @@ package archiver;
 public class BitDecoder {
 	private String bits = "";
 	private boolean empty;
-	Huffman h;
+	HuffmanCoder h;
 
-	public BitDecoder(Huffman huf){
+	public BitDecoder(HuffmanCoder huf){
 		empty = false;
 		h = huf;
 		//h.printIws();
