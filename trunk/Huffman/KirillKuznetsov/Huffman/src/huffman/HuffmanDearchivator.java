@@ -73,59 +73,6 @@ public class HuffmanDearchivator {
         minMaxLengths[1] = maxLength;
         return minMaxLengths;
     }
-
-//    private void unpack(DataInputStream reader, String newFile, Encoder hEncoder) throws IOException {
-//        DataOutputStream writer = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(newFile)));
-//
-//        int currSymbol, code, readed, length, base, firstSymbol, lastByte;
-//
-//        HashMap<Integer, Integer> firstLeafNums = hEncoder.getFirstLeafsNums(getMinMaxLengths()[0], getMinMaxLengths()[1]);
-//        readed = reader.read();
-//        ArrayList<Integer> buffer = hEncoder.toBin(readed, 8);
-//
-//        ArrayList<Integer> sortedSymbols = getSymbs();//символы отсортированные по длине кода и алфавиту
-//        while (reader.available() > 0 || !buffer.isEmpty()) {
-//            if (buffer.isEmpty()) {
-//                readed = reader.read();
-//                if (reader.available() == 1) {
-//                    lastByte = reader.read();
-//                    if (lastByte == 0) {
-//                        buffer = hEncoder.toBin(readed, 8);
-//                    } else {
-//                        buffer = hEncoder.toBin(readed, lastByte);
-//                    }
-//                } else {
-//                    buffer = hEncoder.toBin(readed, 8);
-//                }
-//            }
-//            code = buffer.get(0);
-//            buffer.remove(0);
-//            length = 1;
-//            while (code < firstLeafNums.get(length)) {
-//                if (buffer.isEmpty()) {
-//                    readed = reader.read();
-//                    if (reader.available() == 1) {
-//                        lastByte = reader.read();
-//                        if (lastByte == 0) {
-//                            buffer = hEncoder.toBin(readed, 8);
-//                        } else {
-//                            buffer = hEncoder.toBin(readed, lastByte);
-//                        }
-//                    } else {
-//                        buffer = hEncoder.toBin(readed, 8);
-//                    }
-//                }
-//                code = code * 2 + buffer.get(0);
-//                length += 1;
-//                buffer.remove(0);
-//            }
-//            base = firstLeafNums.get(length);
-//            firstSymbol = offs(length, hEncoder);
-//            currSymbol = sortedSymbols.get(firstSymbol + code - base);
-//            writer.write(currSymbol);
-//        }
-//        writer.close();
-//    }
     private int offs(int lvl, Encoder hEncoder) {
         int a = symbols();
         for (int i = lvl; i > 0; --i) {
