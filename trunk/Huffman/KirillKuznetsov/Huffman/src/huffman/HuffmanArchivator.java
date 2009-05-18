@@ -9,36 +9,45 @@ import java.util.*;
 
 public class HuffmanArchivator {
 
-    private Tree[] alphabet = new Tree[256];
-    public static char EOT = '$';//end-of-table symbol
+    protected Tree[] alphabet = new Tree[256];
+    protected static char EOT = '$';//end-of-table symbol
+    protected DataInputStream reader;
+    protected DataOutputStream writer;
+    protected File newFile, oldFile;
+    protected Encoder hEncoder ;
+    protected OutputBits  output;
 
-    public void archivateH(String oldFile, String newFile) throws IOException {
-        File compressed = new File(newFile);
-
-        getAlphabet(oldFile);
-        growTree();
-        Encoder hEncoder = new Encoder(alphabet);
-        hEncoder.encode();
-        alphabet = hEncoder.getAlphabet();
-        hEncoder.printAllCodes();
-        compressed.createNewFile();
-        compress(oldFile, compressed, hEncoder.getCodeLengths());
+    HuffmanArchivator (String oldFile, String newFile) throws IOException{
+        this.newFile = new File(newFile);
+        this.oldFile = new File(oldFile);
+        reader = new DataInputStream(new BufferedInputStream(new FileInputStream(this.oldFile)));
+        writer = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(this.newFile)));
+        output = new OutputBits(writer);
     }
 
-    private void getAlphabet(String oldFile) {
-        try {
-            DataInputStream rStream = new DataInputStream(
-                    new BufferedInputStream(new FileInputStream(new File(oldFile))));
+    public void archivateH() throws IOException {
+        getAlphabet();
+        growTree();
+        hEncoder = new Encoder(alphabet);
+        hEncoder.encode();
+        alphabet = hEncoder.getAlphabet();
+        //hEncoder.printAllCodes();
+        newFile.createNewFile();
+        compress(hEncoder.getCodeLengths());
+    }
+    private void resetReader() throws IOException {
+        reader.close();
+        reader = new DataInputStream(new BufferedInputStream(new FileInputStream(this.oldFile)));
+    }
 
+    private void getAlphabet() throws IOException {
             for (short i = 0; i <= 255; ++i) {
                 alphabet[i] = new Tree(i, 0);
             }
-            while (rStream.available() != 0) {
-                ++(alphabet[rStream.read()].freq);
+            while (reader.available() != 0) {
+                ++(alphabet[reader.read()].freq);
             }
-            rStream.close();
-        } catch (IOException ie) {
-        }
+            resetReader();
     }
 
     private void growTree() {
@@ -62,76 +71,39 @@ public class HuffmanArchivator {
         }
     }
 
-    private void compress(String oldFile, File newFile, int[] codeLengths) throws IOException {
-        int crntByte = 0;
-        int crntBit;
-
-        List<Integer> code = new ArrayList<Integer>();
-        List<Integer> tail = new ArrayList<Integer>();
-
-        DataOutputStream writer = new DataOutputStream(
-                new BufferedOutputStream(new FileOutputStream(newFile)));
-        DataInputStream reader = new DataInputStream(
-                new BufferedInputStream(new FileInputStream(new File(oldFile))));
-
+    private void compress( int[] codeLengths) throws IOException {
+        int crntByte = 0, codeLength;
         writeCodeTable(writer, codeLengths);
-        while (reader.available() != 0 || tail.size() > 8) {
-            if (tail.size() != 0) {
-                code.addAll(tail);
-                tail.clear();
+        while (reader.available() != 0) {
+            crntByte = reader.read();
+            codeLength = alphabet[crntByte].code.size();
+            for(int i = 0;i < codeLength; ++i){
+                output.writeBit(alphabet[crntByte].code.get(i));
             }
-            if (code.size() < 8) {
-                code.addAll(alphabet[reader.read()].code);
-            }
-            if (code.size() >= 8) {
-                for (byte i = 0; i <= 7; ++i) {
-                    crntBit = code.get(i);
-                    crntByte = crntByte * 2 + crntBit;
-                }
-                writer.write(crntByte);
-                crntByte = 0;
-                tail.addAll(code.subList(8, code.size()));
-            } else {
-                tail.addAll(code);
-            }
-            code.clear();
         }
-
-        for (byte i = 0; i < tail.size(); ++i) {
-            crntByte = crntByte * 2 + tail.get(i);
-        }
-        if (tail.isEmpty()) {
-            writer.write(8);//последний байт - число "значящих битов " в предпоследнем байте
-        } else {
-            writer.write(crntByte);
-            writer.write(tail.size());//последний байт - число "значящих битов " в предпоследнем байте
-        }
+        output.lastBits();
         reader.close();
         writer.close();
     }
 
-    //записывает в файл таблицу кодов ( RLA )
+    /*
+     * записывает в файл таблицу кодов ( RLE )
+     * */
     private void writeCodeTable(DataOutputStream write, int[] codeLength) throws IOException {
         int currLength = codeLength[0];
         int counter = 1;
         for (int i = 1; i < 256; ++i) {
             if (codeLength[i] != currLength) {
-                write.writeInt(currLength);
-                write.writeChar('-');
-                System.out.print(currLength + "-" + counter + ";");
-                write.writeInt(counter);
-                write.writeChar(';');
+                write.write(currLength);
+                write.write(counter - 1);
                 currLength = codeLength[i];
                 counter = 1;
             } else {
                 counter++;
             }
         }
-        write.writeInt(currLength);
-        write.writeChar('-');
-        write.writeInt(counter);
-        write.writeChar(EOT);
-        System.out.print(currLength + "-" + counter + ";");
+        write.write(currLength);
+        write.write(counter - 1);
 
     }
 }

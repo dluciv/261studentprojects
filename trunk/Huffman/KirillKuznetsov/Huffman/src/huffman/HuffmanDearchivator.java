@@ -1,5 +1,7 @@
 package huffman;
 
+
+
 /**
  *
  * @author Кирилл
@@ -7,48 +9,38 @@ package huffman;
 import java.util.*;
 import java.io.*;
 
-public class HuffmanDearchivator {
+public class HuffmanDearchivator extends HuffmanArchivator {
 
     HashMap<Integer, ArrayList<Integer>> codeTable = new HashMap<Integer, ArrayList<Integer>>();
     int[] codeLength = new int[256];
-    Tree[] alphabet = new Tree[256];
+    InputBits input;
 
-    HuffmanDearchivator() {
-        for (int i = 0; i < 256; ++i) {
-            alphabet[i] = new Tree(i, 0);
-        }
+    HuffmanDearchivator(String oldFIle, String newFile) throws IOException{
+        super(oldFIle, newFile);
+        input = new InputBits(reader);
+        for(int i = 0; i < 256; ++i)
+            alphabet[i] = new Tree( i, 0);
+        hEncoder = new Encoder(alphabet);
     }
 
-    public void dearchivateH(String oldFile, String newFile) throws IOException {
-        File unpacked = new File(newFile);
-        unpacked.createNewFile();
-        DataInputStream reader = new DataInputStream(new BufferedInputStream(new FileInputStream(new File(oldFile))));
+    public void dearchivateH() throws IOException {
         parseTable(reader);
-        Encoder hEncoder = new Encoder(alphabet);
         hEncoder.setCodeLengths(codeLength);
         hEncoder.encodeWithLengths(getMinMaxLengths()[0], getMinMaxLengths()[1]);
-        hEncoder.printAllCodes();
-        unpack(reader, newFile, hEncoder);
-    //upack(oldFile, compressed);
+        unpack();
     }
 
     //восстанавливает длины кодов символов из записанной таблицы
     private void parseTable(DataInputStream reader) throws IOException {
-        char next = ' ';
-        int length;
-        int symbolsNum;
-        int symbol = 0;
-        while (next != HuffmanArchivator.EOT) {
-            length = reader.readInt();
-            reader.readChar();
-            symbolsNum = reader.readInt();
+        int length, symbolsNum, symbol = 0;
+        while (symbol != 256) {
+            length = reader.read();
+            symbolsNum = reader.read() + 1;
             for (int i = 0; i < symbolsNum; ++i) {
                 codeLength[symbol] = length;
                 ++symbol;
             }
-            next = reader.readChar();
         }
-        printCodeLengthsTable();
     }
 
     private void printCodeLengthsTable() {
@@ -73,7 +65,7 @@ public class HuffmanDearchivator {
         minMaxLengths[1] = maxLength;
         return minMaxLengths;
     }
-    private int offs(int lvl, Encoder hEncoder) {
+    private int offs(int lvl) {
         int a = symbols();
         for (int i = lvl; i > 0; --i) {
             a -= hEncoder.symbolsWithCodeLength(i);
@@ -107,55 +99,27 @@ public class HuffmanDearchivator {
         return sortedSymbols;
     }
 
-    private void unpack(DataInputStream reader, String newFile, Encoder hEncoder) throws IOException {
-        DataOutputStream writer = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(newFile)));
-        int readed,lastByte,currSymbol, code, length, base, firstSymbol;
-        ArrayList<Integer> buffer  = new ArrayList<Integer>();
+    private void unpack() throws IOException {
+        int currSymbol, code, length, base, firstSymbol;
         HashMap<Integer, Integer> firstLeafNums = hEncoder.getFirstLeafsNums(getMinMaxLengths()[0], getMinMaxLengths()[1]);
         ArrayList<Integer> sortedSymbols = getSymbs();//символы отсортированные по длине кода и алфавиту
 
-        readed = reader.read();
-        if (reader.available() == 1) {
-            lastByte = reader.read();
-            buffer =hEncoder.toBin(readed, lastByte);
-            
-        } else {
-            buffer = hEncoder.toBin(readed, 8);
-        }
-        while (reader.available() > 0 || !buffer.isEmpty()) {
-        if (buffer.isEmpty()) {
-                buffer = fillBuffer(hEncoder, reader);
-            }
-            code = buffer.get(0);
-            buffer.remove(0);
+        while (true) {
+            code = input.readBit();
+            if(code == -1)
+                break;
             length = 1;
-            while (code < firstLeafNums.get(length)) {
-                if (buffer.isEmpty()) {
-                    buffer = fillBuffer(hEncoder, reader);
-                }
-                code = code * 2 + buffer.get(0);
-                length += 1;
-                buffer.remove(0);
+            while(code < firstLeafNums.get(length)){
+                code <<= 1;
+                code += input.readBit();
+                length++;
             }
             base = firstLeafNums.get(length);
-            firstSymbol = offs(length, hEncoder);
+            firstSymbol = offs(length);
             currSymbol = sortedSymbols.get(firstSymbol + code - base);
             writer.write(currSymbol);
         }
         writer.close();
-    }
-
-
-    private ArrayList<Integer> fillBuffer(Encoder hEncoder, DataInputStream reader) throws IOException {
-        int readed, lastByte;
-        readed = reader.available();
-        readed = reader.read();
-        if (reader.available() == 1) {
-            lastByte = reader.read();
-            return hEncoder.toBin(readed, lastByte);
-        } else {
-            return hEncoder.toBin(readed, 8);
-        }
     }
 }
 

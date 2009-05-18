@@ -9,16 +9,16 @@ import java.io.*;
 public class Archivator {
 
     static public void archivate(String file, String newFile) throws IOException {
-        File oldFile = new File(file);
-        if (oldFile.exists()) {
+        File oldFileTest = new File(file);
+        if (oldFileTest.exists()) {
             DataInputStream rStream = new DataInputStream(
-                    new BufferedInputStream(new FileInputStream(new File(file))));
+                    new BufferedInputStream(new FileInputStream(oldFileTest)));
             if (rStream.available() == 0) {
-                File archFile = new File(newFile);
+                File archFile = oldFileTest;
                 archFile.createNewFile();
             } else {
-                HuffmanArchivator packman = new HuffmanArchivator();
-                packman.archivateH(file, newFile);
+                HuffmanArchivator packman = new HuffmanArchivator( file, newFile);
+                packman.archivateH();
             }
         } else {
             throw new FileNotFoundException();
@@ -31,13 +31,11 @@ public class Archivator {
         if (oldFile.exists()) {
             DataInputStream reader = new DataInputStream(
                     new BufferedInputStream(new FileInputStream(new File(file))));
-
             if (reader.available() == 0) {
                 File archFile = new File(newFile);
             } else {
-                reader.close();
-                HuffmanDearchivator unpackman = new HuffmanDearchivator();
-                unpackman.dearchivateH(file, newFile);
+               HuffmanDearchivator unpackman = new HuffmanDearchivator(file, newFile);
+               unpackman.dearchivateH();
             }
         } else {
             throw new FileNotFoundException();

@@ -35,10 +35,10 @@ public class Encoder {
 
     public void encodeWithLengths(int minLength,int maxLength) {
         HashMap<Integer, Integer> firstLeafs = getFirstLeafsNums(minLength, maxLength);
+        ArrayList<Boolean> currCode = new ArrayList<Boolean>();
         for (int i = minLength; i <= maxLength; ++i) {
             TreeSet<Short> symbols = getSymbolsWithCodeLength(i);
             if (symbols.size() != 0) {
-                ArrayList<Integer> currCode = new ArrayList<Integer>();
                 int currLeafNum = firstLeafs.get(i);
                 currCode = toBin(firstLeafs.get(i), i);
                 alphabet[symbols.first()].code = currCode;
@@ -85,15 +85,15 @@ public class Encoder {
     }
 
     //перевод числа в двоичное
-    public ArrayList<Integer> toBin(int num, int length) {
-        ArrayList<Integer> binCode = new ArrayList<Integer>();
+    public ArrayList<Boolean> toBin(int num, int length) {
+        ArrayList<Boolean> binCode = new ArrayList<Boolean>();
         while (num != 0) {
-            binCode.add(0, num % 2);
+            binCode.add(0, num % 2 == 1);
             num = num / 2;
         }
         if (binCode.size() < length) {
             for (int i = binCode.size(); i < length; i++) {
-                binCode.add(0, 0);
+                binCode.add(0, false);
             }
         }
 

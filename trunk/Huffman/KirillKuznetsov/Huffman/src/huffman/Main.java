@@ -15,11 +15,25 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        if (args.length == 3) {
-            if (args[0].equals("/a")) {
-                Archivator.archivate(args[1], args[2]);
-            } else if (args[0].equals("/d")) {
-                Archivator.dearchivate(args[1], args[2]);
+        if (args.length == 4) {
+            if (args[0].equals("c")) {
+                if(args[1].equals("huf"))
+                Archivator.archivate(args[2], args[3]);
+                else if(args[1].equals("arc")){
+
+                } else{
+                    printHelp();
+                    throw new IOException("wrong method");
+                }
+            } else if (args[0].equals("x")) {
+                if(args[1].equals("huf"))
+                Archivator.dearchivate(args[2], args[3]);
+                else if(args[1].equals("arc")){
+
+                } else {
+                    printHelp();
+                    throw new IOException("wrong method");
+                }
             } else {
                 printHelp();
             }
@@ -29,7 +43,10 @@ public class Main {
     }
 
     public static void printHelp() {
-        System.out.println("to archivate: \"/a file_to_compress name_for_compressed_file\"");
-        System.out.println("to dearchivate: \"/d file_to_unpack name_for_unpacked_file\"");
+        System.out.println("MyArchivator Copyright (c)2009 Kirill Kuznetsov");
+        System.out.println("How to use: java -jar [path to Archivator.jar] <command> <compression method> <input file> <output file>");//выполнение через java компилятор
+        System.out.println("commands:\n c - to compress input file to output file\n x - to extract input file to output file");
+        System.out.println("coding methods:\n huf - Huffman coding method\n arc - Arithmetic coding method ");
+
     }
 }

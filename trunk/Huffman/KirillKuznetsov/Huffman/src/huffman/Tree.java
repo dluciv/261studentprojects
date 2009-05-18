@@ -7,7 +7,7 @@ public class Tree implements Comparable<Tree> {
     Tree left;
     Tree right;
     Tree parent;
-    ArrayList<Integer> code = new ArrayList<Integer>();
+    ArrayList<Boolean> code = new ArrayList<Boolean>();
     int num;
 
     static int EMPTY = -1;
@@ -19,7 +19,6 @@ public class Tree implements Comparable<Tree> {
     Tree(int symbol, long freq) {
         this.freq = freq;
         this.symbol = symbol;
-        //System.out.println(symbol + " - " + freq);
     }
 
     Tree(Tree first, Tree second) {
