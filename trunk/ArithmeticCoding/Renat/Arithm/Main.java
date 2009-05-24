@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 public class Main {
 	public static void main(String[] args) throws Exception {
 		Arithm ar = new Arithm();
-		ar.pack("films.table", "packed");
+		ar.pack("file", "packed");
 		ar.unpack("packed", "unpacked");
 	}
 }
