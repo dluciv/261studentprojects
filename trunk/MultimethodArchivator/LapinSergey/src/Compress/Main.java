@@ -30,15 +30,18 @@ public class Main {
 
 
 
-         ArrayList<Byte> alphabet = new ArrayList<Byte>();
+//         ArrayList<Byte> alphabet = new ArrayList<Byte>();
 //         alphabet.add((byte)-128);
-         alphabet.add((byte)127);
-         MakeFileOnAlphabet(sourse_arithm, alphabet, 10000000);
+//         alphabet.add((byte)127);
+//         alphabet.add((byte)-126);
 
 //        MakeFileWithSymbolsDoubling(sourse_haffman, MakeUniformAlphabet(), 3);
 //        MakeFileWithSymbolsDoubling(sourse_arithm, MakeUniformAlphabet(), 3);
         MakeRandomizeFile(sourse_haffman, 300);
-        //MakeRandomizeFile(sourse_arithm, 30000);
+//        MakeRandomizeFile(sourse_arithm, 2);
+        MakeRandomizeFile(sourse_arithm, 30000);
+
+//        MakeFileOnAlphabet(sourse_arithm, alphabet, 00);
 
         Coder input_haffman = new Coder();
         Coder output_haffman = new Coder();

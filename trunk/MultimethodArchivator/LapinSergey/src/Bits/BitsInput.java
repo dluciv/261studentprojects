@@ -38,16 +38,11 @@ public class BitsInput {
 		int b = _stream.read();
         int size = 8;
 
-        if(_stream.lenLeft() < 8)
-        {
-            size = _stream.lenLeft();
-        }
-		
-		if (b == -1) {
+        if (b == -1) {
 			throw new IOException();
 		}
 		
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < 8; i++) {
 			_buf[i] = b >> (7 - i) == 1;
 			if (_buf[i]) {
 				b -= 1 << (7 - i);
