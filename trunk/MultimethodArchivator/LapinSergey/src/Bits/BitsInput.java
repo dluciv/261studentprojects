@@ -4,7 +4,8 @@ import Compress.FileInput;
 import java.io.IOException;
 
 /**
- * @author Lapa
+ *
+ * @author Lapin Sergey
  */
 public class BitsInput {
 	private FileInput _stream = null;
@@ -36,7 +37,6 @@ public class BitsInput {
 	
 	private void readbyte() throws IOException {
 		int b = _stream.read();
-        int size = 8;
 
         if (b == -1) {
 			throw new IOException();

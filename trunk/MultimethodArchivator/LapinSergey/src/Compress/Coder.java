@@ -9,14 +9,10 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sound.midi.SysexMessage;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Lapa
- * Date: 07.03.2009
- * Time: 10:05:02
- * To change this template use File | Settings | File Templates.
+ *
+ * @author Lapin Sergey
  */
 public class Coder {
     HashMap<Byte, Integer> frequency = new HashMap<Byte, Integer>();

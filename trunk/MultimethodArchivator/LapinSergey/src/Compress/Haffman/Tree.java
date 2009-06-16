@@ -1,16 +1,12 @@
 package Compress.Haffman;
 
 import Bits.Bits;
-import Compress.*;
 import Compress.Dictionary;
 import java.util.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Lapa
- * Date: 07.03.2009
- * Time: 10:07:00
- * To change this template use File | Settings | File Templates.
+ *
+ * @author Lapin Sergey
  */
 public class Tree{
     TreeElement root;

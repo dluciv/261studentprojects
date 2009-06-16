@@ -1,23 +1,14 @@
 package Compress;
 
 import Bits.Bits;
-import Bits.BitsInput;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Lapa
- * Date: 06.04.2009
- * Time: 3:04:34
- * To change this template use File | Settings | File Templates.
+ *
+ * @author Lapin Sergey
  */
 public class Dictionary {
     public HashMap<Byte, Bits> direct_dictionary = new HashMap<Byte, Bits>();

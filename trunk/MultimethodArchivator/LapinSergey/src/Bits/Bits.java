@@ -3,10 +3,8 @@ package Bits;
 import java.util.ArrayList;
 
 /**
- * Haffman coding.
- * User: Lapa
- * Date: 06.04.2009
- * Time: 2:42:10
+ *
+ * @author Lapin Sergey
  */
 public class Bits
 {
@@ -261,5 +259,4 @@ public class Bits
     public static int byteArrayToInt(byte[] b) {
         return (b[0] << 24) + ((b[1] & 0xFF) << 16) + ((b[2] & 0xFF) << 8) + (b[3] & 0xFF);
     }
-
 }

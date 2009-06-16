@@ -1,17 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Compress;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  *
- * @author Administrator
+ * @author Lapin Sergey
  */
 public class Main {
     public static final int EOF = 256;
@@ -22,7 +16,7 @@ public class Main {
     static String packed_haffman = workspace + new String("Хаффман - кодированный.txt");
     static String unpacked_haffman = workspace + new String("Хаффман - декодированный.txt");
 
-    static String sourse_arithm = workspace + new String("Арифметическое коддирование - изначальный.txt");
+    static String source_arithm = workspace + new String("Арифметическое коддирование - изначальный.txt");
     static String packed_arithm = workspace + new String("Арифметическое коддирование - кодированный.txt");
     static String unpacked_arithm = workspace + new String("Арифметическое коддирование - декодированный.txt");
 
@@ -36,12 +30,12 @@ public class Main {
 //         alphabet.add((byte)-126);
 
 //        MakeFileWithSymbolsDoubling(sourse_haffman, MakeUniformAlphabet(), 3);
-//        MakeFileWithSymbolsDoubling(sourse_arithm, MakeUniformAlphabet(), 3);
+//        MakeFileWithSymbolsDoubling(source_arithm, MakeUniformAlphabet(), 3);
         MakeRandomizeFile(sourse_haffman, 300);
-//        MakeRandomizeFile(sourse_arithm, 2);
-        MakeRandomizeFile(sourse_arithm, 30000);
+//        MakeRandomizeFile(source_arithm, 2);
+        MakeRandomizeFile(source_arithm, 30000);
 
-//        MakeFileOnAlphabet(sourse_arithm, alphabet, 00);
+//        MakeFileOnAlphabet(source_arithm, alphabet, 00);
 
         Coder input_haffman = new Coder();
         Coder output_haffman = new Coder();
@@ -55,12 +49,12 @@ public class Main {
         Coder input_arithm = new Coder();
         Coder output_arithm = new Coder();
 
-        input_arithm.CalcFrequency(sourse_arithm);
+        input_arithm.CalcFrequency(source_arithm);
 
-        input_arithm.CodeArith(sourse_arithm, packed_arithm);
+        input_arithm.CodeArith(source_arithm, packed_arithm);
         output_arithm.DecodeArith(packed_arithm, unpacked_arithm);
 
-        System.out.println(CompareFiles(sourse_arithm, unpacked_arithm));
+        System.out.println(CompareFiles(source_arithm, unpacked_arithm));
     }
 
     public static void MakeRandomizeFile(String filename, int sizeinbytes) throws IOException
@@ -106,7 +100,7 @@ public class Main {
     {
         FileOutput fileout = new FileOutput(filename);
         int i = 0;
-        while(sizeinbytes-- != 0){
+        for(int j = 0; j < sizeinbytes; j++){
             Integer rand = i % alphabet.size();
             fileout.write(alphabet.get(rand));
             i++;
@@ -133,8 +127,8 @@ public class Main {
         }
         int size = filein.lenLeft();
         while(size-- != 0){
-            Byte frst = filein.readOneByte();
-            Byte scnd = fileout.readOneByte();
+            byte frst = filein.readOneByte();
+            byte scnd = fileout.readOneByte();
             if(frst != scnd){
                 return false;
             }

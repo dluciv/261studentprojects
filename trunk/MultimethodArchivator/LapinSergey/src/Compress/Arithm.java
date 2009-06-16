@@ -3,13 +3,13 @@ package Compress;
 import Bits.Bits;
 import Bits.BitsInput;
 import Bits.BitsOutput;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * @author LapinSergey
+ *
+ * @author Lapin Sergey
  */
 public class Arithm {
 	public static final int BITS      = 24;

@@ -5,7 +5,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Lapa
+ * @author Lapin Sergey
  */
 public class BitsOutput {
     private FileOutput _stream = null;

@@ -3,11 +3,8 @@ package Compress.Haffman;
 import java.util.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Lapa
- * Date: 23.03.2009
- * Time: 1:37:24
- * To change this template use File | Settings | File Templates.
+ *
+ * @author Lapin Sergey
  */
 public class TreeElement implements Cloneable{
     private Integer weight;

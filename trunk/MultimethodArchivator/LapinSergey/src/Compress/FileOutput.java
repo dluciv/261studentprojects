@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ *
+ * @author Lapin Sergey
+ */
 public class FileOutput {
 	private DataOutputStream fileStream;
 
