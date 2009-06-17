@@ -45,24 +45,42 @@ public class B_Tree<N extends iRecord>{
             this.index = index;
         }
     }
+    
+    public B_Tree UnderTree(int i){
+        B_Tree res = new B_Tree(Current_comparator, tree_degree, workspaceFile); 
+        B_Tree_Node tmp = new B_Tree_Node(tree_degree, (Integer)root.child.get(i));
+        Disk_Read(tmp, (N)root.keyset.get(0));
+        res.root = tmp;
+        return res;
+    }
+    
+    public String toString()
+    {
+        String res = "";
+        res += root + " <- root" + "\n";    
+        for(int i = 0; i < root.child.size(); i++){
+            res += "child " + String.valueOf(i) + ":\n";
+            res += UnderTree(i).toString();
+        }       
+        return res;
+    }
 
     public KnotInfo B_Tree_Search(B_Tree_Node x, N key)
     {
         int i = 0;
-        while(i <= x.keyset.size() && Current_comparator.compare(key, x.keyset.get(i)) < 0){
+        while(i < x.keyset.size() && Current_comparator.compare(key, x.keyset.get(i)) > 0){
             i++;
         }
-        if(i <= x.keyset.size() && Current_comparator.compare(key, x.keyset.get(i)) == 0){
+        if(i < x.keyset.size() && Current_comparator.compare(key, x.keyset.get(i)) == 0){
             return new KnotInfo(x, i);
         }
         if(x.child.isEmpty()){
             return null;
         } else {
-            B_Tree_Node x_child = new B_Tree_Node(tree_degree, i);
+            B_Tree_Node x_child = new B_Tree_Node(tree_degree, (Integer)x.child.get(i));
             Disk_Read(x_child, key);
-            B_Tree_Search(x, key);
-        }
-        return null;
+            return B_Tree_Search(x_child, key);
+        }        
     }
     
     public void B_Tree_Split_Child(B_Tree_Node x, int i, B_Tree_Node y)
@@ -71,6 +89,7 @@ public class B_Tree<N extends iRecord>{
         for(int j = 0; j < tree_degree - 1; j++){
             z.keyset.add(y.keyset.get(j + tree_degree));
         }
+        y.keyset.removeAll(z.keyset);
         
         if(!y.child.isEmpty()){
             for(int j = 0; j < tree_degree; j++){
@@ -79,7 +98,8 @@ public class B_Tree<N extends iRecord>{
         }
         
         x.child.add(i, z.index_in_share_pull);
-        x.keyset.add(i - 1, y.keyset.get(tree_degree));
+        x.keyset.add(i - 1, y.keyset.get(tree_degree - 1));
+        y.keyset.removeAll(x.keyset);
         
         Disk_Write(y);
         Disk_Write(x);
@@ -114,12 +134,12 @@ public class B_Tree<N extends iRecord>{
                 i--;
             }
             i++;
-            B_Tree_Node x_child = new B_Tree_Node(tree_degree, ((Integer)x.child.get(i)).intValue());
+            B_Tree_Node x_child = new B_Tree_Node(tree_degree, ((Integer)x.child.get(i - 1)).intValue());
 
             Disk_Read(x_child, key);
             if(x_child.keyset.size() == 2 * tree_degree - 1){
                 B_Tree_Split_Child(x, i, x_child);
-                if(Current_comparator.compare(key, x.keyset.get(i)) < 0){
+                if(Current_comparator.compare(key, x.keyset.get(i - 1)) < 0){
                     i++;
                 }
             }

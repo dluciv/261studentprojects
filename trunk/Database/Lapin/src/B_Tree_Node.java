@@ -7,10 +7,21 @@ import java.util.ArrayList;
  */
 
 public class B_Tree_Node<N extends iRecord>{
+    int oldsize, newsize;
     int degree;
     ArrayList<N> keyset = new ArrayList<N>();
     ArrayList<Integer> child = new ArrayList<Integer>();
     int index_in_share_pull;
+
+    @Override
+    public String toString() {
+        String res = "keys:";
+        for(N tmp : keyset){
+            res += tmp.toString() + " ";
+        }
+        res += "end";
+        return res;
+    }
 
     public B_Tree_Node(int deg, int index) {
         degree = deg;

@@ -20,10 +20,20 @@ public class Main {
         tree.B_Tree_Insert(CardSet.GenerateRandomCard());
         tree.B_Tree_Insert(CardSet.GenerateRandomCard());
         tree.B_Tree_Insert(CardSet.GenerateRandomCard());
+        System.out.println(tree);
         tree.B_Tree_Insert(CardSet.GenerateRandomCard());
+        System.out.println(tree);
         tree.B_Tree_Insert(CardSet.GenerateRandomCard());
+        System.out.println(tree);
+        tree.B_Tree_Insert(CardSet.GenerateRandomCard());
+        System.out.println(tree);
+        tree.B_Tree_Insert(CardSet.GenerateRandomCard());
+        System.out.println(tree);
+        tree.B_Tree_Insert(CardSet.GenerateRandomCard());
+        System.out.println(tree);
         Card a = CardSet.GenerateRandomCard();
         tree.B_Tree_Insert(a);
+        System.out.println(tree);
         B_Tree_Node b = new B_Tree_Node(1, 1);        
         B_Tree.KnotInfo r = tree.B_Tree_Search(tree.root, a);
     }

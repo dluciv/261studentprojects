@@ -1,7 +1,4 @@
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,6 +50,13 @@ public class Card implements iRecord{
         
 		return out;
 	}
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+
 
     public int getRecordSize() {
 		return CARD_SIZE;
