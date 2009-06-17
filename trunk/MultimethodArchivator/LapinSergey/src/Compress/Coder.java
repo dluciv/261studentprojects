@@ -52,7 +52,7 @@ public class Coder {
         dic = a.CalcDictionary(0);
 
         FileOutput output = new FileOutput(out);
-//   закодировать словарь в РЛЕ
+//      закодировать словарь в РЛЕ
         Depth dp = a.CalcDepth();
         System.out.println(dp);
         for(Byte tmp : dic.MakeDepthRLE(dp.date)){
