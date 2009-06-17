@@ -17,6 +17,14 @@ public class HuffmanCoder {
 		for (HuffmanChar iw : itemWeightList)
 			System.out.println(iw.key+" - "+codes.get(iw.key));
 	}
+    public String getHuffmanData(){
+		String str ="";
+		str += "key - oldWeight - newWeight - char - code\n";
+		for (HuffmanChar iw : itemWeightList)
+			str += iw.key+" - "+iw.oldWeight+" - "+iw.newWeight+" - "
+					+(char)iw.key + " - " + codes.get(iw.key)+" ; \n";
+		return str;
+    }
 
 	public int getWeight(int key){
 		for (HuffmanChar iw : itemWeightList)
@@ -124,6 +132,12 @@ public class HuffmanCoder {
 		String str = "";
 		//System.out.print(data + " " + codes.get((int)data));
 		str += codes.get((int)data);
+		return str;
+	}
+	public String codeToBits( byte[] data ) {
+		String str = "";
+		for (byte b : data)
+			str += codeToBits(b);
 		return str;
 	}
 

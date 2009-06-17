@@ -6,8 +6,6 @@ import java.io.InputStream;
 
 public class FileInput {
 	private InputStream fileStream;
-	private static int  readBytes = Main.readBytes;
-
 
 	public FileInput(String fileName) throws IOException
 	{
