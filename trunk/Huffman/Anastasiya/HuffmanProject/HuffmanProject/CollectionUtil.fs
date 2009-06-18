@@ -38,3 +38,19 @@ let addNodeToStage (d : Dictionary< int, (int* 'a list)>)(stage : int) =
 let addCollection (d : Dictionary <'a, 'b>) (collection : seq<'a* 'b>) = 
     Seq.fold (fun (d :Dictionary<'a , 'b>) ((val1, val2) : ('a* 'b)) -> d.Add(val1, val2) 
                                                                         d) d collection            
+                                                                        
+                                                                        
+// Аналог инструкции take. Почему-то я ее не нашла в классе List    
+let takeFromList (num : int) (l : 'a list) = 
+    Seq.take num l
+    |> Seq.fold (fun res el -> el :: res) []       
+
+
+// Возвращает список без num первых элементов        
+let rec removeFirstElements (num : int) (lst : 'a list) = 
+    match num, lst with
+    | n, l when n <= 0 -> l
+    | n, (x :: xs) -> removeFirstElements(n - 1) xs
+    | n, [] -> []
+
+                                                                        

@@ -42,6 +42,14 @@
   <ItemGroup>
     <Compile Include="Tutorial.fs" />
     <Compile Include="CollectionUtil.fs" />
+    <Compile Include="HuffmanTree.fsi" />
+    <Compile Include="HuffmanTree.fs" />
+    <Compile Include="CanonicalHuffmanTreeConverter.fsi" />
+    <Compile Include="CanonicalHuffmanTreeConverter.fs" />
+    <Compile Include="ConvertingUtils.fsi" />
+    <Compile Include="ConvertingUtils.fs" />
+    <Compile Include="RLE.fs" />
+    <Compile Include="ListBuffer.fs" />
     <Compile Include="NewMain.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\FSharp\1.0\Microsoft.FSharp.Targets" />
