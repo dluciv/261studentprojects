@@ -7,8 +7,8 @@ package archiver;
 
 import java.io.IOException;
 
-
 public class HuffmanFileCompressor {
+	
 	public void setTreeLeaveWeight(HuffmanCoder h,String fisName) throws IOException{
 		FileInput fis = new FileInput(fisName);
 		byte[] buf = new byte[1];
@@ -28,17 +28,18 @@ public class HuffmanFileCompressor {
         fos.write((byte)0);
         fos.write((byte)0);
 	}
+
 	public void writeCodedDataToFile(HuffmanCoder h,String fisName,FileOutput fos) throws IOException{
 		FileInput fis = new FileInput(fisName);
 		int readlen = 256;
 		byte[] buf = new byte[readlen];
 		String lineBits = "";
+		int maxLenLeft = fis.lenLeft();
+
 		buf = fis.read(readlen);
 		while(buf.length > 0){
 			String wordBits = h.codeToBits(buf);
 			lineBits += wordBits;
-
-
 			byte[] writeByte = new byte[lineBits.length()/8];
 			int i = 0;
 			while(lineBits.length() > 8){

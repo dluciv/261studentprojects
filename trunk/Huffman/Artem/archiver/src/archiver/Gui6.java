@@ -28,11 +28,13 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class Gui6 extends javax.swing.JFrame {
 	private File theInputFile;
-	//private static Gui6 g;
+	//public BoundedRangeModel mProgressBarModel;
 
     /** Creates new form Gui6 */
     public Gui6() {
         initComponents();
+		
+
 		this.setTitle("Архиватор студенческий");
 		// Set icon
 		Image icon = Toolkit.getDefaultToolkit().getImage("box_plus.png");
@@ -91,9 +93,9 @@ public class Gui6 extends javax.swing.JFrame {
         });
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
+        okButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                okButtonMouseClicked(evt);
             }
         });
 
@@ -203,11 +205,23 @@ public class Gui6 extends javax.swing.JFrame {
 		setRfp();
 	}//GEN-LAST:event_updRfp
 
-	private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+	private void rfpTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rfpTextFieldActionPerformed
+		// TODO add your handling code here:
+	}//GEN-LAST:event_rfpTextFieldActionPerformed
+
+	private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+		buttonOkPresed();
+	}//GEN-LAST:event_okButtonMouseClicked
+
+	private void buttonOkPresed(){
 		String fn1 = sfpTextField.getText();
 		String fn2 = rfpTextField.getText();
 		theInputFile = new File(fn1);
-		
+
+
+
+
+
 		if(null!=theInputFile){
 			String mess = "";
 			if(theInputFile.getName().endsWith(".huff")){
@@ -224,9 +238,10 @@ public class Gui6 extends javax.swing.JFrame {
 			else{
 				if(acComboBox.getSelectedIndex() == 0){
 					mess = "Выполняем сжатие Хаффмана файла " ;
-					HuffmanFileCompressor hfc = new HuffmanFileCompressor();
+					//HuffmanFileCompressor hfc = new HuffmanFileCompressor();
+					HuffmanFileCompressorThread hfct = new HuffmanFileCompressorThread();
 					try {
-						hfc.compressFile(fn1, fn2);
+						hfct.run(fn1,fn2);
 					} catch (IOException ex) {
 						Logger.getLogger(Gui6.class.getName()).log(Level.SEVERE, null, ex);
 					}
@@ -237,16 +252,13 @@ public class Gui6 extends javax.swing.JFrame {
 			JOptionPane.showMessageDialog(this, "Операция успешно завершена");
 		}else
 			JOptionPane.showMessageDialog(this, "Вначале выберите файл");
-	}//GEN-LAST:event_okButtonActionPerformed
-
-	private void rfpTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rfpTextFieldActionPerformed
-		// TODO add your handling code here:
-	}//GEN-LAST:event_rfpTextFieldActionPerformed
+	}
 
     /**
     * @param args the command line arguments
     */
     public static void main(String args[]) {
+
 				try {
 					String s = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
 					//s = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
@@ -266,6 +278,8 @@ public class Gui6 extends javax.swing.JFrame {
                 new Gui6().setVisible(true);
             }
         });
+		
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
