@@ -1,4 +1,8 @@
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
+
 
 public interface iRecord {	
 	public int getRecordSize();
@@ -11,4 +15,6 @@ public interface iRecord {
 
     @Override
     String toString ();
+
+    ArrayList<Comparator> AvaliableOrders();
 }

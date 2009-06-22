@@ -1,28 +1,44 @@
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Administrator
  */
 public class CardSet{
+    static int i = 3;
     static NameComparator name_comparator = new NameComparator();
     static SonameComparator soname_comparator = new SonameComparator();
     static ThirdNameComparator third_namecomparator = new ThirdNameComparator();
     static AddressComparator address_comparator = new AddressComparator();
     static PhoneComparator phone_comparator = new PhoneComparator();
-    static SexComparator sex_comparator = new SexComparator();   
+    static SexComparator sex_comparator = new SexComparator();    
+
+    private CardSet()
+    {
+    }    
+
+    static public ArrayList<String> GenerateNames1()
+    {
+        ArrayList<String> names = new ArrayList<String>();
+        names.add(new String("Carlos"));
+        names.add(new String("Fedor"));
+        names.add(new String("Andersen"));
+        names.add(new String("Bolita"));
+        names.add(new String("Lolo"));
+        names.add(new String("Monica"));
+        names.add(new String("@lferd0g"));
+        names.add(new String("Hue"));
+        names.add(new String("Hornblower"));
+        names.add(new String("Horatio"));
+        names.add(new String("Swety"));
+        names.add(new String("Bob"));
+        return names;
+    }
 
     static public ArrayList<String> GenerateNames()
     {
@@ -113,7 +129,7 @@ public class CardSet{
         return res;
     }
 
-    static public Card GenerateRandomCard()
+    static public Card GenerateRandomCard1()
     {
         try {
             ArrayList<String> names = GenerateNames();
@@ -132,5 +148,24 @@ public class CardSet{
             System.out.println("Bad name set");
             return null;
         }
-    }      
+    }
+
+    static public Card GenerateRandomCard()
+    {
+        try {
+        String tmp = String.valueOf(i++);
+        ArrayList<String> names = GenerateNames();
+        boolean sex;
+        if (((int) Double.doubleToLongBits(Math.random()) % 1) == 0) {
+            sex = true;
+        } else {
+            sex = false;
+        }
+        
+            return new Card(tmp, names.get(random_index(names.size())), names.get(random_index(names.size())), names.get(random_index(names.size())), names.get(random_index(names.size())), sex);
+        } catch (Card.CreateCardException ex) {
+            Logger.getLogger(CardSet.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }

@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +16,7 @@ import java.util.logging.Logger;
 public class Card implements iRecord{
     public static final int FIELD_SIZE    = 50;
     public static final int CARD_SIZE     = FIELD_SIZE * 5 + 1;
-    private static final byte NULL_SYMBOL = (byte)'_';
+    private static final byte NULL_SYMBOL = (byte)'_';    
 
     private String name;
     private String soname;
@@ -103,6 +105,17 @@ public class Card implements iRecord{
             Logger.getLogger(Card.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+
+    public ArrayList<Comparator> AvaliableOrders() {
+        ArrayList<Comparator> res = new ArrayList<Comparator>();
+        res.add(CardSet.name_comparator);
+        res.add(CardSet.soname_comparator);
+        res.add(CardSet.third_namecomparator);
+        res.add(CardSet.phone_comparator);
+        res.add(CardSet.address_comparator);
+        res.add(CardSet.sex_comparator);
+        return res;
     }
 
     class CreateCardException extends Exception {
