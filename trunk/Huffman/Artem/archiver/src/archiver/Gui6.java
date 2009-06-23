@@ -218,10 +218,6 @@ public class Gui6 extends javax.swing.JFrame {
 		String fn2 = rfpTextField.getText();
 		theInputFile = new File(fn1);
 
-
-
-
-
 		if(null!=theInputFile){
 			String mess = "";
 			if(theInputFile.getName().endsWith(".huff")){
@@ -233,9 +229,15 @@ public class Gui6 extends javax.swing.JFrame {
 					Logger.getLogger(Gui6.class.getName()).log(Level.SEVERE, null, ex);
 				}
 			}
-			if(theInputFile.getName().endsWith(".arithm"))
+			if(theInputFile.getName().endsWith(".arithm")){
 				mess = "Выполняем декодирование по Арифметическому алгоритму файла " ;
-			else{
+				ArithmeticFileDecoder d = new ArithmeticFileDecoder();
+				try {
+					d.decodeData(fn2, fn1);
+				} catch (IOException ex) {
+					Logger.getLogger(Gui6.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}else{
 				if(acComboBox.getSelectedIndex() == 0){
 					mess = "Выполняем сжатие Хаффмана файла " ;
 					//HuffmanFileCompressor hfc = new HuffmanFileCompressor();
@@ -245,8 +247,16 @@ public class Gui6 extends javax.swing.JFrame {
 					} catch (IOException ex) {
 						Logger.getLogger(Gui6.class.getName()).log(Level.SEVERE, null, ex);
 					}
-				}else if(acComboBox.getSelectedIndex() == 1)
+				}else if(acComboBox.getSelectedIndex() == 1){
 					mess = "Выполняем арифметичекое сжатие файла " ;
+					ArithmeticFileCoder a = new ArithmeticFileCoder();
+					try {
+						a.encodeData(fn1, fn2);
+					} catch (IOException ex) {
+						Logger.getLogger(Gui6.class.getName()).log(Level.SEVERE, null, ex);
+					}
+
+				}
 			}
 			//JOptionPane.showMessageDialog(this, mess+theInputFile.getName());
 			JOptionPane.showMessageDialog(this, "Операция успешно завершена");

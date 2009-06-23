@@ -16,7 +16,6 @@ import java.util.Collections;
 public class ArithmeticCoder {
 	public ArrayList<ArithmeticChar> chars = new ArrayList<ArithmeticChar>();
 	public int factor = 10;
-	public String encodedDataBuffer = "";
 	
 	public void printChars( ){
 		System.out.println("chars:");
@@ -77,16 +76,5 @@ public class ArithmeticCoder {
 		return resultinterval;
 	}
 	
-	public ArithmeticCharInterval getScaledInterval( ArithmeticCharInterval sourceinterval ){
-		encodedDataBuffer = "";
-		int a = (int) (sourceinterval.a * factor);
-		int b = (int) (sourceinterval.b * factor);
-		while( 0 == ( a - b ) ){
-			encodedDataBuffer += a;
-			sourceinterval.scale(a, factor);
-			a = (int) (sourceinterval.a * factor);
-			b = (int) (sourceinterval.b * factor);
-		}
-		return sourceinterval;
-	}
+
 }

@@ -27,8 +27,11 @@ public class FileOutput {
 	}
 	public void write(String data) throws IOException
 	{
-        for (int i = 0; i < data.length(); i++)
-            write((byte)data.charAt(i));
+		byte[] bytes = new byte[data.length()];
+		for (int i = 0; i < data.length(); i++) {
+			bytes[i] = (byte) data.charAt(i);
+		}
+		write(bytes);
 	}
 
 	public void flush() throws IOException
