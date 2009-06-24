@@ -6,71 +6,58 @@ package mydbse;
  */
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.io.RandomAccessFile;
 
 public class Searcher {
 
-    private BufferedReader reader;
-//    private BufferedWriter writer;
+    private RandomAccessFile reader;
     private BTree index = new BTree();
-    private String baseFile;
     private int keyType = -1;
-    private static String FOLDER = "D:\\DB\\";
+    private static int LINE_SIZE = 27;
 
     Searcher() {
     }
 
     Searcher(String fileName) throws IOException {
-        baseFile = fileName;
-        reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(FOLDER + fileName))));
-//        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(index)));
+        reader = new RandomAccessFile(fileName, "r");
     }
 
     public void makeIndex() throws IOException {
         int i = 1;
+        long left = reader.length();
         String key;
 
         index = new BTree();
-        refreshReader();
-        while (reader.ready()) {
+        reader.seek(0);
+        while (left > 0 ) {
             key = reader.readLine();
+            left -= LINE_SIZE;
             Record newKey = new Record(key, i, keyType);
             index.addKey(newKey);
             ++i;
+//            index.getRoot().printTree(0);
+//            System.out.println();
         }
-        reader.close();
-//        System.out.println(i);
         index = index.getRoot();
+        
     }
 
-    public ArrayList<Integer> search(String from, String to, int n) throws IOException{
+    public ArrayList<Integer> search(String from, String to) throws IOException {
         ArrayList<Integer> lines;
         Record rFrom = new Record(from),
-               rTo = new Record(to);
-
-        lines = index.find(rFrom,rTo);
+                rTo = new Record(to);
+        long begin = System.nanoTime();
+        lines = index.find(rFrom, rTo);
+        System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin));
         return lines;
     }
 
-    public void showNthLine(int  n) throws IOException {
-            refreshReader();
-            for (int i = 1; i < n; ++i) {
-                reader.readLine();
-            }
-            System.out.println(reader.readLine());
+    public void showNthLine(int n) throws IOException {
+        reader.seek((n-1) * LINE_SIZE);
+        System.out.println(reader.readLine());
     }
 
-    private void refreshReader() throws FileNotFoundException{
-        reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(FOLDER + baseFile))));
-    }
-
-   public void setKeyType(int newKeyType){
+    public void setKeyType(int newKeyType) {
         keyType = newKeyType;
     }
-
-//    public void searchKey(String key) throws IOException{
-//        TreeSet<Integer> lines = index.findRecord(key);
-//        showRecords(lines);
-//    }
-
 }

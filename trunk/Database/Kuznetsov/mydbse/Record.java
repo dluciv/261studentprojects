@@ -10,7 +10,6 @@ public class Record implements Comparable<Record> {
     private String key;
     private ArrayList<Integer> line_num = new ArrayList<Integer>();
     static public int SURNAME = 0, TEL = 1;
-    //static private int SURNAME_FIElD_LENGTH = 15;
 
     Record() {
     }
