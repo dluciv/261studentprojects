@@ -1,9 +1,10 @@
-
 import java.util.ArrayList;
 import java.util.Comparator;
 
-
-
+/**
+ *
+ * @author Lapin Sergey
+ */
 public interface iRecord {	
 	public int getRecordSize();
 

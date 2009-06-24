@@ -1,12 +1,8 @@
-
-
 import java.util.ArrayList;
 
 /**
- * Haffman coding.
- * User: Lapa
- * Date: 06.04.2009
- * Time: 2:42:10
+ *
+ * @author Lapin Sergey
  */
 public class Bits
 {

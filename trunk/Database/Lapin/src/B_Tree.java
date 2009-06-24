@@ -238,8 +238,6 @@ public class B_Tree<N extends iRecord>{
         } else {
             B_Tree_Insert_Nonfull(r, key, offset);
         }
-
-        System.out.println(this);
     }
 
     public void B_Tree_Insert_Nonfull(B_Tree_Node x, N key, int offset)
@@ -309,7 +307,6 @@ public class B_Tree<N extends iRecord>{
             return;
         }
         try {
-
             res.keyset = ReadKeysFromWorkspace(res, key);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(B_Tree.class.getName()).log(Level.SEVERE, null, ex);
