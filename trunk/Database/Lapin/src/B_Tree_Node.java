@@ -15,7 +15,7 @@ public class B_Tree_Node<N extends iRecord>{
     ArrayList<Integer> offsets_in_workspace = new ArrayList<Integer>();
     ArrayList<B_Tree_Node<N>> child = new ArrayList<B_Tree_Node<N>>();
 
-    // загрузить если Disk_Read от данного узла, дети остаются незагруженными
+    // загрузить если Disk_Read от данного узла дети остаются незагруженными
     ArrayList<N> keyset = new ArrayList<N>();
 
     public B_Tree_Node(int deg, int index) {

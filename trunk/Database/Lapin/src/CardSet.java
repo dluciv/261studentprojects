@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Administrator
+ * @author Lapin Sergey
  */
 public class CardSet{
     static int i = 3;
