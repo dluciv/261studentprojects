@@ -1,7 +1,15 @@
 package archiver;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+/**
+ *
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
+ */
 
 public class FileOutput {
 

@@ -1,14 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package archiver;
 
 /**
  *
- * @author Admin
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
  */
+
 public class BitDecoder {
 	private String bits = "";
 	private boolean empty;

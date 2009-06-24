@@ -1,16 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package archiver;
 
 import java.io.IOException;
 
 /**
  *
- * @author Admin
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
  */
+
 public class ArithmeticFileCoder extends ArithmeticCoder {
 
 	public String encodedDataBuffer = "";
@@ -22,7 +20,7 @@ public class ArithmeticFileCoder extends ArithmeticCoder {
 		int b = (int) (sourceinterval.b * localfactor);
 		while( 0 == ( a - b ) ){
 			encodedDataBuffer += a;
-			sourceinterval.scale(a, factor);
+			sourceinterval.scaleup();
 			a = (int) (sourceinterval.a * localfactor);
 			b = (int) (sourceinterval.b * localfactor);
 		}
@@ -34,7 +32,7 @@ public class ArithmeticFileCoder extends ArithmeticCoder {
 			fos.write((byte)ch.key);
 			fos.write((byte)ch.weight);
 		}
-        fos.write((byte)0);
+		fos.write((byte)0);
 		fos.write((byte)0);
 	}
 	

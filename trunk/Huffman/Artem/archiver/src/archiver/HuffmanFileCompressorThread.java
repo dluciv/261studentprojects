@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package archiver;
 
 import java.io.IOException;
@@ -11,8 +6,11 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Admin
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
  */
+
 public class HuffmanFileCompressorThread extends Thread  {
 
 	public FileInput fis;
@@ -45,7 +43,7 @@ public class HuffmanFileCompressorThread extends Thread  {
 
 			// скольно процентов выполнено
 			System.out.println( getPercantage(maxLenLeft,fis.lenLeft())+"" );
-            try {
+			try {
 				sleep(2);
 			} catch (InterruptedException e) {
 				System.out.println( "Exception: " + e.toString() );
@@ -53,9 +51,8 @@ public class HuffmanFileCompressorThread extends Thread  {
 
 		}
 	}
-		
-	public void run(String fisName,String fosName) throws IOException {
 
+	public void run(String fisName,String fosName) throws IOException {
 		HuffmanCoder h = new HuffmanCoder();
 		HuffmanFileCompressor hfc = new HuffmanFileCompressor();
 		//	делаем коды хаффмана
@@ -69,8 +66,8 @@ public class HuffmanFileCompressorThread extends Thread  {
 		writeCodedDataToFile(h,fisName,fos);
 		fos.flush();
 		//log += fisName+" has been archivated to "+fosName+"\n";
-
 	}
+
 	public static void main(String args[]) {
 		HuffmanFileCompressorThread thread = new HuffmanFileCompressorThread();
 		thread.start();

@@ -1,14 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package archiver;
 
 /**
  *
- * @author Admin
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
  */
+
 public class ArithmeticCharInterval {
 	public float a = 0;
 	public float b = 0;
@@ -23,6 +21,10 @@ public class ArithmeticCharInterval {
 		a = a * factor - c;
 		b = b * factor - c;
 		if(a>=b)System.out.println("error: ArithmeticCharInterval.scale: a<=b");
+	}
+	public void scaleup(){
+		a = Float.valueOf("0."+String.valueOf(a).substring(3));
+		b = Float.valueOf("0."+String.valueOf(b).substring(3));
 	}
 
 	public boolean isEmpty(){

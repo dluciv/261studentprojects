@@ -1,8 +1,17 @@
 package archiver;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+/**
+ *
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
+ */
+
 
 public class FileInput {
 	private InputStream fileStream;

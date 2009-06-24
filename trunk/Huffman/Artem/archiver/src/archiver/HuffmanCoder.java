@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-
+/**
+ *
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
+ */
 
 public class HuffmanCoder {
 	HuffmanTree tree= new HuffmanTree(); // дерево Хаффмана
@@ -17,14 +22,14 @@ public class HuffmanCoder {
 		for (HuffmanChar iw : itemWeightList)
 			System.out.println(iw.key+" - "+codes.get(iw.key));
 	}
-    public String getHuffmanData(){
+	public String getHuffmanData(){
 		String str ="";
 		str += "key - oldWeight - newWeight - char - code\n";
 		for (HuffmanChar iw : itemWeightList)
 			str += iw.key+" - "+iw.oldWeight+" - "+iw.newWeight+" - "
 					+(char)iw.key + " - " + codes.get(iw.key)+" ; \n";
 		return str;
-    }
+	}
 
 	public int getWeight(int key){
 		for (HuffmanChar iw : itemWeightList)
@@ -51,8 +56,8 @@ public class HuffmanCoder {
 			}
 		}
 	}
-	public void makeWeights(){
 
+	public void makeWeights(){
 		Collections.sort(itemWeightList);
 
 		int curNewWeight = 1;
@@ -65,7 +70,6 @@ public class HuffmanCoder {
 			iw.newWeight = curNewWeight;
 		}
 	}
-
 
 	public ArrayList<HuffmanTree> getListOfTrees(){
 		ArrayList<HuffmanTree> trees = new ArrayList<HuffmanTree>();
@@ -123,10 +127,10 @@ public class HuffmanCoder {
 			if(node.child1!= null)
 				makeCode(node.child1, codeStr+"1");
 		}
-    }
+	}
 	public void makeCodes(){
 		makeCode(tree, "");
-    }
+	}
 
 	public String codeToBits( byte data ) {
 		String str = "";
@@ -159,8 +163,8 @@ public class HuffmanCoder {
 		}else str = "";
 
 		TwoString ts = new TwoString();
-        ts.str1 = data;
-        ts.str2 = str;
+		ts.str1 = data;
+		ts.str2 = str;
 		return ts;
 	}
 }

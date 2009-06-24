@@ -1,80 +1,93 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package archiver;
 
 import java.io.IOException;
 
 /**
  *
- * @author Admin
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
  */
-public class ArithmeticFileDecoder extends ArithmeticCoder {
 
-	public String cutedFloatStringBuffer = "";
-	public ArithmeticCharInterval getScaledInterval( ArithmeticCharInterval sourceinterval, String num){
-		cutedFloatStringBuffer = num;
-		//int localfactor = factor;
+public class ArithmeticFileDecoder extends ArithmeticCoder {
+	public boolean cutOneFlag = false;
+	public int digitsCuted = 0;
+	public ArithmeticCharInterval getScaledInterval( ArithmeticCharInterval sourceinterval){
+		digitsCuted = 0;
 		int localfactor = 10;
 		int a = (int) (sourceinterval.a * localfactor);
 		int b = (int) (sourceinterval.b * localfactor);
 		while( 0 == ( a - b ) ){
-			cutedFloatStringBuffer = cutedFloatStringBuffer.substring(1);
-			sourceinterval.scale(a, factor);
+			digitsCuted++;
+			sourceinterval.scaleup();
 			a = (int) (sourceinterval.a * localfactor);
 			b = (int) (sourceinterval.b * localfactor);
 		}
-		cutedFloatStringBuffer = "0." + cutedFloatStringBuffer;
 		return sourceinterval;
 	}
 
-	public float getNewF(FileInput fis,int readlen) throws IOException{
+	public String saveStoF(String stbf){
+		if('0'==stbf.charAt(stbf.length()-1)){
+			stbf+="1";
+			cutOneFlag = true;
+		}
+		return stbf;
+	}
+	public float getNewF(FileInput fis,float f) throws IOException{
 		// дополняем число до readlen знаков после запятой
 		byte[] buf;
-		if( cutedFloatStringBuffer.length() < readlen+2 ){
-			buf = fis.read( (readlen+2) - cutedFloatStringBuffer.length() );
-			return Float.valueOf( cutedFloatStringBuffer+getStringFromBytes(buf) );
+		if( digitsCuted > 0 ){
+			buf = fis.read(digitsCuted);
+			if(cutOneFlag){digitsCuted++;cutOneFlag=false;}
+			System.out.println((char)buf[0]);
+			
+			String stbf = saveStoF(getStringFromBytes(buf));
+			System.out.println(stbf);
+			System.out.println("0."+String.valueOf(f).substring(2+digitsCuted)+stbf);
+
+			f = Float.valueOf("0."+String.valueOf(f).substring(2+digitsCuted)+stbf);
+			digitsCuted = 0;
 		}
-		else return Float.valueOf( cutedFloatStringBuffer );
+		return f;
 	}
 	
 	public void getCharsTable(FileInput fis) throws IOException{
 		int readBytes = 2;
 		byte[] codes = new byte[readBytes];
-        codes = fis.read(readBytes);
-
-        while(codes[0]!=0 && codes[1]!=0){
+		codes = fis.read(readBytes);
+	
+		while(codes[0]!=0 && codes[1]!=0){
 			ArithmeticChar ch = new ArithmeticChar();
 			ch.key = codes[0];
 			ch.weight = codes[1];
 			chars.add(ch);
-            codes = fis.read(readBytes);
-        }
+			codes = fis.read(readBytes);
+		}
 		signChars();
 		//printChars();
 	}
 
 	public String getStringFromBytes(byte[] buf){
 		String str = "";
-		for (byte b : buf)
+		for (byte b : buf){
 			str += (char)b;
+		}
 		return str;
 	}
 
 	public void decodeData(String fisName,String fosName) throws IOException{
 		FileInput fis = new FileInput(fisName);
-		// востанавливаем таблицу символов
+		// востанавливаем таблицу символов\
 		getCharsTable(fis);
 		// скорость потокового чтения из файла
-		int readlen = 8;
+		int readlen = 7;
 
 		// получаем первый кусок кодированного числа
 		byte[] buf = fis.read(readlen);
-		float f = Float.valueOf("0."+getStringFromBytes(buf));
+		float f = Float.valueOf(saveStoF("0."+getStringFromBytes(buf)));
+		System.out.println(f);
 		// открываем файл на запись в потоке
-		FileOutput fos = new FileOutput(fosName);
+		//FileOutput fos = new FileOutput(fosName);
 		// получаем первый промежуток для текущего числа
 		String res = "";
 		ArithmeticCharInterval curinterval = new ArithmeticCharInterval();
@@ -82,38 +95,48 @@ public class ArithmeticFileDecoder extends ArithmeticCoder {
 			if(f > (float)ch.bound_low / factor && f < (float)ch.bound_high / factor){
 				curinterval.a = (float)ch.bound_low / factor;
 				curinterval.b = (float)ch.bound_high / factor;
-				curinterval.print((char)ch.key+"");
+				//curinterval.print((char)ch.key+"");
 				//curinterval = getScaledInterval(curinterval);
 				res += (char)ch.key;
-				fos.write(res);
-				res = "";
+				//fos.write(res);res = "";
 				break;
 			}
 		}
 		
+		
 		// продолжаем считывать данные, пересчитывая промежуток и число пока не еоф
 		while(fis.lenLeft() > 0){
+			//System.out.println(fis.lenLeft()+" lenLeft");
 			// подбираем промежуток из таблицы, в который входит число
 			for (ArithmeticChar ch : chars) {
 				ArithmeticCharInterval tinterval = getNextInterval((byte)ch.key, curinterval);
 				if(f > tinterval.a && f < tinterval.b){
-					System.out.println(f);
 					curinterval = tinterval;
-					curinterval = getScaledInterval(curinterval,String.valueOf(f).substring(2));
-					curinterval.print((char)ch.key+"");
+					curinterval.print("before scale,f "+f);
+					curinterval = getScaledInterval(curinterval);
+					f = getNewF(fis, f);
+					curinterval.print("after scale,f "+f);
+
+					if(digitsCuted > 0){
+						//System.out.println(digitsCuted+"dc");
+						//System.out.println(String.valueOf(f).substring(2+digitsCuted));
+					}
+					//System.out.println(cutedFloatStringBuffer);
+					//curinterval.print((char)ch.key+"");
 					res += (char)ch.key;
-					fos.write(res);
-					res = "";
+					//fos.write(res);
+					//res = "";
 					break;
 				}
 			}
-			// дополняем число до readlen знаков после запятой
-			f = getNewF(fis, readlen);
+			fis.read();
+			// дополняем число до numlen знаков после запятой
 			
 		}
 		System.out.println(res);
 		fis.flush();
-		fos.flush();
+		//fos.flush();
+		/* */
 	}
 
 	public static void main(String[] args) throws IOException {

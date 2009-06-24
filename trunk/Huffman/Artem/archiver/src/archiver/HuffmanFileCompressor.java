@@ -1,14 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package archiver;
 
 import java.io.IOException;
 
+/**
+ *
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
+ */
+
 public class HuffmanFileCompressor {
-	
+
 	public void setTreeLeaveWeight(HuffmanCoder h,String fisName) throws IOException{
 		FileInput fis = new FileInput(fisName);
 		byte[] buf = new byte[1];
@@ -20,13 +22,13 @@ public class HuffmanFileCompressor {
 		h.makeWeights();
 	}
 
-    public void writeHuffmanCodesToFile(HuffmanCoder h,FileOutput fos) throws IOException{
+	public void writeHuffmanCodesToFile(HuffmanCoder h,FileOutput fos) throws IOException{
 		for (HuffmanChar iw : h.itemWeightList) {
-                fos.write((byte)iw.key);
-                fos.write((byte)iw.newWeight);
+			fos.write((byte)iw.key);
+			fos.write((byte)iw.newWeight);
 		}
-        fos.write((byte)0);
-        fos.write((byte)0);
+		fos.write((byte)0);
+		fos.write((byte)0);
 	}
 
 	public void writeCodedDataToFile(HuffmanCoder h,String fisName,FileOutput fos) throws IOException{
@@ -52,16 +54,17 @@ public class HuffmanFileCompressor {
 			buf = fis.read(readlen);
 		}
 
-        if(lineBits.length() > 0){
-            byte writeByte = BitCoder.convertBitsToByte(lineBits);
-            fos.write(writeByte);
-            // записываем длину последнего "слова" в дополнительный последний байт
-            byte lwlByte = (byte)lineBits.length();
-            fos.write(lwlByte);
-        }else
-            fos.write((byte)0);
+		if(lineBits.length() > 0){
+			byte writeByte = BitCoder.convertBitsToByte(lineBits);
+			fos.write(writeByte);
+			// записываем длину последнего "слова" в дополнительный последний байт
+			byte lwlByte = (byte)lineBits.length();
+			fos.write(lwlByte);
+		}else
+			fos.write((byte)0);
 		fis.flush();
 	}
+
 	public void compressFile(String fisName,String fosName) throws IOException{
 		HuffmanCoder h = new HuffmanCoder();
 		//	делаем коды хаффмана
@@ -77,4 +80,5 @@ public class HuffmanFileCompressor {
 		fos.flush();
 		//log += fisName+" has been archivated to "+fosName+"\n";
 	}
+
 }

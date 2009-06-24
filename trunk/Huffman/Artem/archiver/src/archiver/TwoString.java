@@ -1,16 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package archiver;
 
 /**
  *
- * @author Admin
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
  */
+
 public class TwoString {
-	   public String str1;
-	   public String str2;
-	   public int b;
+	public String str1;
+	public String str2;
+	public int b;
 }

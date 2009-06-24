@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package archiver;
 
 import java.io.IOException;
@@ -11,8 +6,11 @@ import java.util.Collections;
 
 /**
  *
- * @author Admin
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
  */
+
 public class ArithmeticCoder {
 	public ArrayList<ArithmeticChar> chars = new ArrayList<ArithmeticChar>();
 	public int factor = 10;
