@@ -61,6 +61,7 @@ public class B_Tree<N extends iRecord>{
            return UnderTree(0).CalcIndexes(left, right);
        }
 
+       // если мы находимся в листе возвращаем пересечение ключей листа и исходного интервала
        if(root.child.isEmpty()){
            ArrayList<Integer> tmp = new ArrayList<Integer>();
            for(int i = 0; i < root.keyset.size(); i++){
@@ -100,6 +101,60 @@ public class B_Tree<N extends iRecord>{
        if(isfirst)
             res.addAll(UnderTree(i).CalcIndexes(left, right));
 
+       return res;
+    }
+
+    ArrayList<Integer> FindMinIndex(N left, N right) throws IOException
+    {
+       Disk_Read(root, own_key);
+       // если левая граница правее последнего ключа берём крайнее правое поддерево
+       if(Current_comparator.compare(left, root.keyset.get(root.keyset.size() - 1)) > 0){
+           if(root.child.isEmpty()){
+               ArrayList<Integer> tmp = new ArrayList<Integer>();
+               return tmp;
+           }
+           return UnderTree(root.keyset.size()).FindMinIndex(left, right);
+       }
+
+       // если правая граница левее последнего ключа берём крайнее левое поддерево
+       if(Current_comparator.compare(right, root.keyset.get(0)) < 0){
+           if(root.child.isEmpty()){
+               ArrayList<Integer> tmp = new ArrayList<Integer>();
+               return tmp;
+           }
+           return UnderTree(0).FindMinIndex(left, right);
+       }
+
+       if(root.child.isEmpty()){
+           ArrayList<Integer> tmp = new ArrayList<Integer>();
+           for(int i = 0; i < root.keyset.size(); i++){
+                if(Current_comparator.compare(left, root.keyset.get(i)) > 0){
+                    continue;
+                }
+                if(Current_comparator.compare(right, root.keyset.get(i)) < 0){
+                    return tmp;
+                }
+                tmp.add((Integer)root.offsets_in_workspace.get(i));
+                return tmp;
+           }
+           return tmp;
+       }
+
+       ArrayList<Integer> res = new ArrayList<Integer>();
+
+       for(int i = 0; i < root.keyset.size(); i++){
+           if(Current_comparator.compare(left, root.keyset.get(i)) > 0){
+               continue;
+           }
+           res = UnderTree(i).FindMinIndex(left, right);
+           if(res.isEmpty()){
+               res.add((Integer)root.keyset.get(i));
+               return res;
+           }
+           ArrayList<Integer> finres = new ArrayList<Integer>();
+           finres.add((Integer)res.get(0));
+           return finres;
+       }
        return res;
     }
 

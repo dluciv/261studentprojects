@@ -7,10 +7,10 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Administrator
+ * @author Lapin Sergey
  */
 public class CardSet{
-    static int i = 3;
+    static int i = 0;
     static NameComparator name_comparator = new NameComparator();
     static SonameComparator soname_comparator = new SonameComparator();
     static ThirdNameComparator third_namecomparator = new ThirdNameComparator();
