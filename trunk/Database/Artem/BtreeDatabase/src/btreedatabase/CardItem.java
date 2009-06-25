@@ -7,8 +7,11 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Lapin Sergey
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
  */
+
 public class CardItem implements BasicItem{
     public static final int FIELD_SIZE    = 64;
     public static final int CARD_SIZE     = FIELD_SIZE * 5 + 1;

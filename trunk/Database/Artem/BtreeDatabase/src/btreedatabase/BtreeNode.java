@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Lapin Sergey
+ * @author Artem Mironov
+ * @copyright 2009 Artem Mironov
+ * @license GNU/GPL v2
  */
 
-// все узлы хранятся в оперативной памяти но ArrayList<N> keyset загружается
-// только по требованию Disk_Read и затем выгружается на диск с помощью Disk_Write
+
 public class BtreeNode<N extends BasicItem>{
     // эти данные всегда загружены
     boolean isLoaded = false;
@@ -46,56 +47,4 @@ public class BtreeNode<N extends BasicItem>{
         isLoaded = false;
     }
 
-/*    public byte[] serialize() {
-        byte[] out = new byte[getRecordSize()];
-        int cursor = 0;
-        int record_size = keyset.get(0).getRecordSize();
-
-        out[cursor] = (byte)(keyset.size() + Byte.MIN_VALUE);
-        cursor++;
-
-        for (int i = 0; i < keyset.size(); i++) {
-            byte [] record = keyset.get(i).serialize();
-            System.arraycopy(record, 0, out, cursor, record_size);
-            cursor += record_size;
-        }
-
-        out[cursor] = (byte)(child.size() + Byte.MIN_VALUE);
-        cursor++;
-
-        for (int i = 0; i < child.size(); i++) {
-            byte [] record = Bits.intToByteArray(child.get(i));            
-            System.arraycopy(record, 0, out, cursor, 4);
-            cursor += 4;
-        }
-        
-        return out;
-    }*/
-
-/*    public void unserialize(byte[] data, N key) {
-        int cursor = 0;
-        int keyset_size = data[cursor] - Byte.MIN_VALUE;
-
-        cursor++;
-
-        for (int i = 0; i < keyset_size; i++) {
-            byte [] record = new byte[key.getRecordSize()];
-            System.arraycopy(data, cursor, record, 0, key.getRecordSize());
-            iRecord obj = key.Instance();
-            obj.unserialize(record);
-            keyset.add((N)obj);
-            cursor += key.getRecordSize();
-        }
-
-        int child_size = data[cursor] - Byte.MIN_VALUE;
-        cursor++;
-
-        for (int i = 0; i < child_size; i++) {
-            byte [] record = new byte[4];
-            System.arraycopy(data, cursor, record, 0, 4);
-            Integer obj = Bits.byteArrayToInt(record);
-            child.add(obj);
-            cursor += 4;
-        }
-  }*/
 }
