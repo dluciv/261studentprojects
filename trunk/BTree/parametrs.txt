@@ -1,0 +1,3 @@
+request tree.out stdin stdout
+request tree.out request.in log.out
+load data.in tree.out

@@ -1,0 +1,4 @@
+Request 1: count is 0
+Request 2: list is {null}
+Request 3: list is {[ g, b, 6], [ h, b, 7], [ i, b, 8]}
+Request 4: first null
