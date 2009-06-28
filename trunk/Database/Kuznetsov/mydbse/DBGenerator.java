@@ -67,6 +67,9 @@ public class DBGenerator {
         }
         return telNum;
     }
+    private void printHelp(){
+        System.out.println("How to use: java -jar <DBGenerator.jar_path> <surnamesFile_path> <new_database_file_path> <number_of_records>");
+    }
 
     
 

@@ -14,6 +14,7 @@ public class BTree {
     private BTree parent;
     private static int ORDER = 16;
     private static int INIT = -1;
+    private static String INIT_PREV_KEY = "                                0";
 
     BTree() {
     }
@@ -113,16 +114,19 @@ public class BTree {
             }
         }
         return keys.size();
-
     }
 
-    public ArrayList<Integer> find(Record from, Record to) {
+    public ArrayList<Integer> find(Record from, Record to, int keyType) {
         
         ArrayList<Integer> lines = new ArrayList<Integer>();
-        Record key, prevKey = new Record("");
+        Record key, prevKey;
         BTree child;
         int lastProperChild = INIT;
 
+        if(keyType == Record.SURNAME)
+            prevKey = new Record(" ",keyType);
+        else
+            prevKey = new Record("0",keyType);
         if (leaf) {
             for (Record k : keys) {
                 if (k.compareTo(to) <= 0 && k.compareTo(from) >= 0) {
@@ -136,7 +140,7 @@ public class BTree {
                 if (key.compareTo(to) <= 0 && key.compareTo(from) >= 0) {
                     if (key.compareTo(from) > 0) {
                         child = children.get(i);
-                        lines.addAll(child.find(from, to));
+                        lines.addAll(child.find(from, to, keyType));
                     }
                     lines.addAll(key.getLineNums());
                     if (key.compareTo(to) < 0) {
@@ -144,7 +148,7 @@ public class BTree {
                     }
                 } else if (key.compareTo(to) > 0 && prevKey.compareTo(from) < 0) {
                     child = children.get(i);
-                    lines.addAll(child.find(from, to));
+                    lines.addAll(child.find(from, to, keyType));
                     return lines;
                 } else if (key.compareTo(to) > 0) {
                     return lines;
@@ -152,23 +156,23 @@ public class BTree {
                 prevKey = key;
             }
             if (lastProperChild != INIT) {
-                lines.addAll(children.get(lastProperChild).find(from, to));
+                lines.addAll(children.get(lastProperChild).find(from, to, keyType));
             }
         }
         return lines;
     }
 
-    public ArrayList<Integer> findRecord(String k) {
-        Record req = new Record(k);
-        BTree node = findNode(req);
-
-        for (Record nodeKey : node.keys) {
-            if (nodeKey.compareTo(req) == 0) {
-                return nodeKey.getLineNums();
-            }
-        }
-        return new ArrayList<Integer>();
-    }
+//    public ArrayList<Integer> findRecord(String k) {
+//        Record req = new Record(k);
+//        BTree node = findNode(req);
+//
+//        for (Record nodeKey : node.keys) {
+//            if (nodeKey.compareTo(req) == 0) {
+//                return nodeKey.getLineNums();
+//            }
+//        }
+//        return new ArrayList<Integer>();
+//    }
 
     public void printTree(int n) {
         int lastChild = 0;
