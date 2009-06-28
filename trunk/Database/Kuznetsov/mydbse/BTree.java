@@ -14,7 +14,6 @@ public class BTree {
     private BTree parent;
     private static int ORDER = 16;
     private static int INIT = -1;
-    private static String INIT_PREV_KEY = "                                0";
 
     BTree() {
     }
@@ -32,8 +31,6 @@ public class BTree {
         BTree cNode = root.findNode(newKey);
         cNode.addKeyToNode(newKey, new BTree());
         root = getRoot();
-//        root.printTree(0);
-//        System.out.println();
     }
 
     public void addKeyToNode(Record newKey, BTree right) {
@@ -162,17 +159,6 @@ public class BTree {
         return lines;
     }
 
-//    public ArrayList<Integer> findRecord(String k) {
-//        Record req = new Record(k);
-//        BTree node = findNode(req);
-//
-//        for (Record nodeKey : node.keys) {
-//            if (nodeKey.compareTo(req) == 0) {
-//                return nodeKey.getLineNums();
-//            }
-//        }
-//        return new ArrayList<Integer>();
-//    }
 
     public void printTree(int n) {
         int lastChild = 0;
@@ -180,13 +166,13 @@ public class BTree {
         if (this.leaf) {
             for (int i = 0; i < keys.size(); ++i) {
                 System.out.print(n + " - ");
-                System.out.println(keys.get(i).getKey());
+                System.out.println(keys.get(i).getCKey());
             }
         } else {
             for (int i = 0; i < keys.size(); ++i) {
                 children.get(i).printTree(n + 1);
                 System.out.print(n + " - ");
-                System.out.println(keys.get(i).getKey());
+                System.out.println(keys.get(i).getCKey());
                 lastChild = i + 1;
             }
             children.get(lastChild).printTree(n + 1);

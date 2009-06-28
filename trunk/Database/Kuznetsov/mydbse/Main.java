@@ -5,7 +5,6 @@ package mydbse;
  * @author Kirill Kuznetsov
  */
 import java.io.*;
-import java.util.ArrayList;
 
 public class Main {
 

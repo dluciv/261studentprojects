@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Record implements Comparable<Record> {
 
-    private cKey key;
+    private ComparableKey key;
     private ArrayList<Integer> line_num = new ArrayList<Integer>();
     static public int SURNAME = 0, TEL = 1;
 
@@ -32,9 +32,6 @@ public class Record implements Comparable<Record> {
         }
     }
 
-//    Record(String key){
-//        this.key = key;
-//    }
 
     public int compareTo(Record k) {
         return this.key.compareTo(k.key);
@@ -45,7 +42,7 @@ public class Record implements Comparable<Record> {
         return line_num;
     }
 
-    public cKey getKey(){
+    public ComparableKey getCKey(){
         return key;
     }
 

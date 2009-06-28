@@ -36,8 +36,6 @@ public class Searcher {
             Record newKey = new Record(key, i, keyType);
             index.addKey(newKey);
             ++i;
-//            index.getRoot().printTree(0);
-//            System.out.println();
         }
         index = index.getRoot();
 
