@@ -6,12 +6,17 @@ open System.Collections.Generic
 let addToDictionary (d : Dictionary<'a, int>)(key : 'a) = 
     if d.ContainsKey key
         then 
-            let old = d.[key]
-            let res = d.Remove key
-            d.Add (key ,old + 1)
+            d.[key] <- d.[key] + 1
         else
             d.Add (key, 1)
             
+let addToDictionaryNum (d : Dictionary<'a, 'b>) (addFun : ('b -> 'b -> 'b))(key : 'a) (num : 'b)= 
+    if d.ContainsKey key
+        then 
+            d.[key] <- addFun d.[key] num
+        else
+            d.Add (key, num)
+    d
             
 let addToStage (d : Dictionary< int, (int* 'a list)>)(value : 'a) (stage : int) = 
     if d.ContainsKey stage 

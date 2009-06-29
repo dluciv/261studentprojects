@@ -12,10 +12,11 @@ let expandByStage (tree : 'a HuffmanTree.Tree)=
     let rec expand_ (d : Dictionary<int, (int* 'a list)>) (stage : int) (tree_ : 'a HuffmanTree.Tree) = 
         match tree_ with 
         |HuffmanTree.NullTree -> d
-        |HuffmanTree.TreeLeaf x ->  CollectionUtil.addToStage d x stage
-        |HuffmanTree.TreeNode (x, y) -> expand_ (expand_ (CollectionUtil.addNodeToStage d stage) (stage + 1) y) (stage + 1) x
+        |HuffmanTree.TreeLeaf x ->  CollectionUtil.addToStage d x (stage + 1)
+        |HuffmanTree.TreeNode (x, y) -> expand_ (expand_ (CollectionUtil.addNodeToStage d stage) (stage) y) (stage) x
                             
-    expand_  (new Dictionary<int, (int *'a list)>()) 1 tree   
+    expand_  (new Dictionary<int, (int *'a list)>()) 0 tree 
+    |> LangUtils.print_all      
     
     
 // "Нумерует" "дерево", учитывая то, что оно каноническое. По сути, берет словарь с распределением
