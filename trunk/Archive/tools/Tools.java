@@ -1,16 +1,31 @@
 package tools;
 
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 public class Tools {
+	public static final int BUF = 4096;
 	public static final int HAFFMAN = 0;
 	public static final int ARIFMET = 1;
-	static public int[] counter(byte[] arg) {
-		double u = Math.PI;
+	static public int[] counter(FileSt in) throws IOException {
+		double u = Math.PI;		
 		int[] res = new int[256];
-		for (int i = 0; i < arg.length; i++) {	
-			res[arg[i] & 0xFF]++;
+		byte arg[] = new byte[4096];
+		
+		int len= 0;
+		while ((len = in.read(arg)) > 0) {
+			for (int i = 0; i < len; i++) {	
+				res[arg[i] & 0xFF]++;
+			}
 		}
+		in.refresh();		
 		return res;
 	}
 	static public int kcount(int freq, int count) {
@@ -40,26 +55,51 @@ public class Tools {
 		}
 		return k;
 	}
-	public static int readForward(int pos, byte[] data) {
+	public static int readForward(FileSt in) throws IOException {
 		int value = 0;
-		for (int i = pos * 4; i < (pos + 1) * 4; i++) {
+		byte[] data = new byte[4];
+		in.read(data);
+		for (int i = 0; i < 4; i++) {
 			value <<= 8;
 			value |= data[i] & 0xFF;
 		}
 		return value;
 	}
-	public static int readBack(int pos, byte[] data) {
+	public static int readBack(FileSt in) throws IOException {
 		int value = 0;
-		for (int i = (pos + 1) * 4 - 1; i >= pos * 4; i--) {
-			value <<= 8;
-			value |= data[i] & 0xFF;
-		}
-		return value;
-	}
-	public static void write(int number, ArrayList<Byte> collect) {
+		byte[] data = new byte[4];
+		in.read(data);
 		for (int i = 3; i >= 0; i--) {
-			collect.add((byte)((number >> (8 * i)) & 0xFF));
-		}		
+			value <<= 8;
+			value |= (data[i] & 0xFF) << 8 ;
+		}
+		return value;
+	}
+	public static void reverse(String arg0, String arg1) throws IOException {
+		RandomAccessFile raf = new RandomAccessFile(arg0, "rws");
+		FileOutputStream out = new FileOutputStream(arg1);
+		long size = raf.length();
+		byte[] buffer = new byte[BUF];
+		
+		for (long i = size / BUF * BUF; i >= 0; i -= BUF) {
+			int len = raf.read(buffer, 0, BUF);
+			for (int j = 0; j < len / 2; j++) {
+				buffer[j] ^= buffer[len - 1 - j];
+				buffer[len - 1 - j] ^= buffer[j]; 
+				buffer[j] ^= buffer[len - 1 - j];
+			}
+			out.write(buffer, 0, len);
+		}
+		
+		out.close();
+	}
+	
+	public static void write(int number, OutputStream out) throws IOException {
+		byte[] u = new byte[4];
+		for (int i = 3; i >= 0; i--) {
+			u[i] = (byte)((number >> (8 * i)) & 0xFF);
+		}	
+		out.write(u);
 	}
 
 }

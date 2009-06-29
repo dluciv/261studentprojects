@@ -1,16 +1,22 @@
 package arithmet;
 
+
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+
+import tools.FileSt;
 import tools.Tools;
 
 public class Decoder {
 	
-	static final int sizeAdvInfo = 259 * 4;
-	static final int positionOfName = 0;
-	static final int positionOfSize = 1;
-	static final int positionOfShift = 2;
-	static final int positionOfTable = 3;
+	static final int addInfo = 259 * 4;
+	public static final int BUF = 4096;
 	
-	
+	ByteOutputStream result;
 	
 	int[] A;
 	int[] Q;
@@ -35,34 +41,51 @@ public class Decoder {
 		}
 		return 0;
 	}
-	public byte[] decode(byte[] in) {
-		if (in.length < Decoder.sizeAdvInfo) {
-			return in;
+	public void decode(FileSt in, OutputStream out) throws IOException {
+		int available = in.available();
+		if (available < Decoder.addInfo) {
+			byte[] buffer= new byte[available];
+			in.read(buffer);
+			out.write(buffer);
+			return;
 		}
-		int size = Tools.readBack(positionOfSize, in);
-		byte[] result = new byte[size];
+		int type = Tools.readForward(in);
+		int size = Tools.readForward(in);
+		result = new ByteOutputStream();
 		
-		int shift = (in.length - sizeAdvInfo) * 8 - Tools.readBack(positionOfShift, in);
+		int shift = (available - addInfo) * 8 - Tools.readForward(in);
 		A = new int[256];
 		for (int i = 0; i < 256; i++) {
-			A[i] = Tools.readBack(i + positionOfTable, in);
+			A[i] = Tools.readForward(in);
 		}
 		Q = Tools.GetQ(A);
 		k = Tools.GetK(A);
 		
 		int curPos = 0;
-		int curByte = sizeAdvInfo;
+		int curByte = addInfo;
 		int resPos = 0;
 		
-		while (shift != (in.length - sizeAdvInfo) * 8) {
-			while (shift > curPos) {
-				curPos += 8;
-				accumulate(in[curByte++]);			
+		int len = 0;
+		byte[] buffer = new byte[BUF];
+		
+		while ((len = in.read(buffer)) > 0 && shift != (available - addInfo) * 8) {
+			for (int i = 0; i < len; i++) {
+				while (shift > curPos) {
+					curPos += 8;
+					accumulate(buffer[i]);			
+				}
+				while (shift <= curPos) {
+					byte ans = decode(curPos - shift);
+					result.write(ans);
+					shift += k[ans & 0xFF];
+				}
 			}
-			byte ans = decode(curPos - shift);
-			result[resPos++] = ans;
-			shift += k[ans & 0xFF];
-		}
-		return result;
+			if (result.getCount() > BUF) {
+				out.write(result.getBytes(),0,result.getCount());
+				result.reset();
+			}
+		}		
+		out.write(result.getBytes(),0,result.getCount());
+		result.reset();
 	}
 }
