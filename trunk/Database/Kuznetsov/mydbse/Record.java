@@ -6,47 +6,55 @@ package mydbse;
  */
 import java.util.ArrayList;
 
-public class Record implements Comparable<Record> {
-
-    private ComparableKey key;
+public class Record {
     private ArrayList<Integer> line_num = new ArrayList<Integer>();
-    static public int SURNAME = 0, TEL = 1;
+    static public final int SURNAME = 0,  TEL = 1;
+    private String sn;
+    private String tel;
 
-    Record() {
+    Record(String sn, String tel) {
+        this.sn = sn;
+        this.tel = tel;
     }
 
-    Record(String record, int num, int field) {
-        if (field == SURNAME) {
-        int i = record.indexOf(' ');
-            key = new Surname(record.substring(0, i));
-        } else {
-            key = new Tel( record.substring(19));
-        }
+    Record(String line, int num) {
+        int i = line.indexOf(' ');
+        sn = line.substring(0, i);
+        tel = line.substring(19);
         line_num.add(num);
     }
-    Record(String record, int field) {
-        if (field == SURNAME) {
-            key = new Surname(record);
+    Record(String line){
+        String[] args = line.split(":");
+        if(args.length == 1){
+            this.sn = args[0];
+            this.tel = args[0];
         } else {
-            key = new Tel(record);
+            this.sn = args[0];
+            this.tel = args[1];
         }
     }
 
-
-    public int compareTo(Record k) {
-        return this.key.compareTo(k.key);
-         
-    }
-
-    public ArrayList<Integer> getLineNums(){
+    public ArrayList<Integer> getLineNums() {
         return line_num;
     }
 
-    public ComparableKey getCKey(){
-        return key;
+    public void addToLineNums(ArrayList<Integer> newNums) {
+        line_num.addAll(newNums);
     }
 
-    public void addToLineNums( ArrayList<Integer> newNums){
-        line_num.addAll(newNums);
+    public String getTel() {
+        return tel;
+    }
+
+    public String getSN() {
+        return sn;
+    }
+
+    public void setTel(String tel){
+        this.tel = tel;
+    }
+
+    public void setSN(String sn){
+        this.sn = sn;
     }
 }

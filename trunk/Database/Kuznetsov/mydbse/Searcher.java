@@ -8,12 +8,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.io.RandomAccessFile;
 import java.util.ListIterator;
+import java.util.Comparator;
 
 public class Searcher {
 
     private RandomAccessFile reader;
-    private BTree index = new BTree();
-    private int keyType = -1;
+    private BTree index;
     private static int LINE_SIZE = 27;
 
     Searcher() {
@@ -23,17 +23,17 @@ public class Searcher {
         reader = new RandomAccessFile(fileName, "r");
     }
 
-    public void makeIndex() throws IOException {
+    public void makeIndex(Comparator c) throws IOException {
         int i = 1;
         long left = reader.length();
         String key;
 
-        index = new BTree();
+        index = new BTree(c);
         reader.seek(0);
         while (left > 0) {
             key = reader.readLine();
             left -= LINE_SIZE;
-            Record newKey = new Record(key, i, keyType);
+            Record newKey = new Record(key, i);
             index.addKey(newKey);
             ++i;
         }
@@ -43,10 +43,10 @@ public class Searcher {
 
     public void search(String from, String to, int number) throws IOException {
         ArrayList<Integer> lines;
-        Record rFrom = new Record(from, keyType),
-                rTo = new Record(to, keyType);
+        Record rFrom = new Record(from),
+                rTo = new Record(to);
         long begin = System.nanoTime();
-        lines = index.find(rFrom, rTo, keyType);
+        lines = index.find(rFrom, rTo);
         System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n" +
                 "Press Enter to watch results.\nType \"q\" to stop watching.");
         showRecords(lines, number);
@@ -68,9 +68,4 @@ public class Searcher {
         reader.seek((n - 1) * LINE_SIZE);
         System.out.println(reader.readLine());
     }
-
-    public void setKeyType(int newKeyType) {
-        keyType = newKeyType;
-    }
-
 }

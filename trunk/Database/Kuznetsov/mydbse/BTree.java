@@ -5,23 +5,27 @@ package mydbse;
  * @author Kirill Kuznetsov
  */
 import java.util.ArrayList;
-
+import java.util.Comparator;
 public class BTree {
 
     private ArrayList<Record> keys = new ArrayList<Record>();
     private ArrayList<BTree> children = new ArrayList<BTree>();
     private boolean leaf = true;
     private BTree parent;
-    private static int ORDER = 16;
-    private static int INIT = -1;
+    private Comparator<Record> c;
+    private static final int ORDER = 16;
+    private static final int INIT = -1;
+    private static Record prevKey = new Record("","0");
 
-    BTree() {
+    BTree(Comparator<Record> c) {
+        this.c = c;
     }
 
-    BTree(Record k) {
+    BTree(Record k, Comparator<Record> c) {
         keys.add(k);
-        children.add(new BTree());
-        children.add(new BTree());
+        children.add(new BTree(c));
+        children.add(new BTree(c));
+        this.c = c;
     }
 
     public void addKey(Record newKey) {
@@ -29,7 +33,7 @@ public class BTree {
 
         root = getRoot();
         BTree cNode = root.findNode(newKey);
-        cNode.addKeyToNode(newKey, new BTree());
+        cNode.addKeyToNode(newKey, new BTree(c));
         root = getRoot();
     }
 
@@ -38,9 +42,9 @@ public class BTree {
 
 
         if (children.isEmpty()) {
-            children.add(new BTree());
+            children.add(new BTree(c));
         }
-        if (pos > 0 && keys.get(pos - 1).compareTo(newKey) == 0) {
+        if (pos > 0 && c.compare(keys.get(pos - 1),newKey) == 0) {
             keys.get(pos - 1).addToLineNums(newKey.getLineNums());
         } else {
             keys.add(pos, newKey);
@@ -55,13 +59,12 @@ public class BTree {
 
     private void split() {
         
-        BTree brother = new BTree();
-        Record midKey = new Record();
-        midKey = this.keys.get(ORDER / 2);
+        BTree brother = new BTree(c);
+        Record midKey = this.keys.get(ORDER / 2);///cv
 
         share(brother);
         if (parent == null) {
-            BTree newRoot = new BTree();
+            BTree newRoot = new BTree(c);
             parent = newRoot;
             parent.leaf = false;
             parent.children.add(this);
@@ -96,7 +99,7 @@ public class BTree {
         int lastKey = keys.size() - 1;
         for (int i = 0; i <= lastKey; ++i) {
             curr = keys.get(i);
-            if (r.compareTo(curr) <= 0) {
+            if (c.compare(r,curr) <= 0) {
                 return children.get(i).findNode(r);
             }
         }
@@ -106,79 +109,78 @@ public class BTree {
     private int findPos(Record newKey) {
 
         for (int i = 0; i < keys.size(); ++i) {
-            if (newKey.compareTo(keys.get(i)) < 0) {
+            if (c.compare(newKey,keys.get(i)) < 0) {
                 return i;
             }
         }
         return keys.size();
     }
 
-    public ArrayList<Integer> find(Record from, Record to, int keyType) {
+    public ArrayList<Integer> find(Record from, Record to) {
         
         ArrayList<Integer> lines = new ArrayList<Integer>();
-        Record key, prevKey;
+        Record key;
         BTree child;
         int lastProperChild = INIT;
 
-        if(keyType == Record.SURNAME)
-            prevKey = new Record(" ",keyType);
-        else
-            prevKey = new Record("0",keyType);
         if (leaf) {
             for (Record k : keys) {
-                if (k.compareTo(to) <= 0 && k.compareTo(from) >= 0) {
+                if (c.compare(k,to) <= 0 && c.compare(k,from) >= 0) {
                     lines.addAll(k.getLineNums());
                 }
             }
         } else {
             for (int i = 0; i < keys.size(); ++i) {
                 key = keys.get(i);
+                if(key.getSN().compareTo("K") >= 0 && key.getTel().compareTo("1500000")<=0){
+                    int a = 1;
+                }
                 lastProperChild = i + 1;
-                if (key.compareTo(to) <= 0 && key.compareTo(from) >= 0) {
-                    if (key.compareTo(from) > 0) {
+                if (c.compare(key,to) <= 0 && c.compare(key,from) >= 0) {
+                    if (c.compare(key,from) > 0) {
                         child = children.get(i);
-                        lines.addAll(child.find(from, to, keyType));
+                        lines.addAll(child.find(from, to));
                     }
                     lines.addAll(key.getLineNums());
-                    if (key.compareTo(to) < 0) {
+                    if (c.compare(key,to) < 0) {
                         lastProperChild = i + 1;
                     }
-                } else if (key.compareTo(to) > 0 && prevKey.compareTo(from) < 0) {
+                } else if (c.compare(key,to) > 0 && c.compare(prevKey, from) < 0) {
                     child = children.get(i);
-                    lines.addAll(child.find(from, to, keyType));
+                    lines.addAll(child.find(from, to));
                     return lines;
-                } else if (key.compareTo(to) > 0) {
+                } else if (c.compare(key,to) > 0) {
                     return lines;
                 }
                 prevKey = key;
             }
             if (lastProperChild != INIT) {
-                lines.addAll(children.get(lastProperChild).find(from, to, keyType));
+                lines.addAll(children.get(lastProperChild).find(from, to));
             }
         }
         return lines;
     }
 
 
-    public void printTree(int n) {
-        int lastChild = 0;
-
-        if (this.leaf) {
-            for (int i = 0; i < keys.size(); ++i) {
-                System.out.print(n + " - ");
-                System.out.println(keys.get(i).getCKey());
-            }
-        } else {
-            for (int i = 0; i < keys.size(); ++i) {
-                children.get(i).printTree(n + 1);
-                System.out.print(n + " - ");
-                System.out.println(keys.get(i).getCKey());
-                lastChild = i + 1;
-            }
-            children.get(lastChild).printTree(n + 1);
-        }
-
-    }
+//    public void printTree(int n) {
+//        int lastChild = 0;
+//
+//        if (this.leaf) {
+//            for (int i = 0; i < keys.size(); ++i) {
+//                System.out.print(n + " - ");
+//                System.out.println(keys.get(i).getCKey());
+//            }
+//        } else {
+//            for (int i = 0; i < keys.size(); ++i) {
+//                children.get(i).printTree(n + 1);
+//                System.out.print(n + " - ");
+//                System.out.println(keys.get(i).getCKey());
+//                lastChild = i + 1;
+//            }
+//            children.get(lastChild).printTree(n + 1);
+//        }
+//
+//    }
 
     private int getKeysNum() {
         int n = 0;

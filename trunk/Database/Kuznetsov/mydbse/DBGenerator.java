@@ -23,7 +23,7 @@ public class DBGenerator {
 
     public static void generate(int recordsNum, BufferedWriter writer, BufferedReader reader) throws FileNotFoundException, IOException {
         setSurnames(reader);
-        setInitials();
+        //setInitials();
         for (int i = 0; i < recordsNum; ++i) {
             writeRecord(writer);
         }
@@ -54,7 +54,7 @@ public class DBGenerator {
         for (int i = record.length(); i <= 14; ++i) {
             record += " ";
         }
-        record += INITIALS.get(generator.nextInt(23)) + "."+ INITIALS.get(generator.nextInt(23)) + ".";
+        //record += INITIALS.get(generator.nextInt(23)) + "."+ INITIALS.get(generator.nextInt(23)) + ".";
         record += genTelNum();
         record += "\n";
         writer.write(record);
