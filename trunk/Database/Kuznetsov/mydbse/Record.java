@@ -20,7 +20,7 @@ public class Record {
     Record(String line, int num) {
         int i = line.indexOf(' ');
         sn = line.substring(0, i);
-        tel = line.substring(19);
+        tel = line.substring(15);
         line_num.add(num);
     }
     Record(String line){

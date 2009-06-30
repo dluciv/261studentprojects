@@ -14,7 +14,7 @@ public class Searcher {
 
     private RandomAccessFile reader;
     private BTree index;
-    private static int LINE_SIZE = 27;
+    private static int LINE_SIZE = 23;
 
     Searcher() {
     }
