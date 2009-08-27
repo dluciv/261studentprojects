@@ -86,15 +86,15 @@ public class Util {
         return result;
     }
 
-    public static void cutTail(Vector<Key> list) {
-        Vector<Key> tail = tail(list);
+    public static void cutFirstHalf(Vector<Key> list) {
+        Vector<Key> tail = firstHalf(list);
         for(int i =0; i < tail.size(); i++){
             list.removeElement(tail.get(i));
         }
     }
-    public static Vector<Key> tail(Vector<Key> list) {
+    public static Vector<Key> firstHalf(Vector<Key> list) {
         Vector<Key> result = new Vector<Key>();
-        for(int i =list.size() / 2;i < list.size(); i++){
+        for(int i =0;i < list.size() / 2; i++){
             result.add(list.get(i));
         }
         return result;

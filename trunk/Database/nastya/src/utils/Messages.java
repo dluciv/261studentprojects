@@ -9,13 +9,14 @@ package utils;
  */
 public class Messages {
     public static final String WRONG_NUMBER_OF_CARDS = "Введите количество записей для генрации";
+    public static final String WRONG_NUMBER_OF_KEYS = "Введите количество ключей для генрации";
     public static final String ERROR = "Ошибка!";
     public static final String ATTENTION = "Внимание!";
     public static final String GENERATION_FAILED = "Возникли проблемы при генерации базы.";
     public static final String GENERATION_SUCCEDED = "База данных успешно сгенерирована!";
     public static final String PARSING_FAILED = "Возникли проблемы при загрузке базы.";
-    public static final String PARSING_SUCCEDED = "База данных успешно загружена!";
 
+    public static final String PARSING_SUCCEDED = "База данных успешно загружена!";
     public static final String UNEXPECTED_END_OF_FILE = "Неожиданный конец файла";
     public static final String ERROR_READING_DATA = "Ошибка чтения файла";
 }

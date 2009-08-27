@@ -1,4 +1,4 @@
-package gui.tree;
+package gui.tests;
 
 import tree.Address;
 
@@ -7,10 +7,10 @@ import tree.Address;
  *         Date: 22.08.2009
  *         Time: 20:38:44
  */
-public class FileAddress extends Address {
+public class TestAddress extends Address {
     private long value;
 
-    public FileAddress(long value) {
+    public TestAddress(long value) {
         this.value = value;
     }
 

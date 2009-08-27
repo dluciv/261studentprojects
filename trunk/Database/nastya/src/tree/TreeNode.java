@@ -14,6 +14,7 @@ public class TreeNode extends TreeElement {
     private Vector<Key> list;
     private int capacity;
     private TreeNode link;
+    private TreeNode linkFrom = null;
 
     protected TreeNode root;
 
@@ -51,10 +52,11 @@ public class TreeNode extends TreeElement {
             // причем ссылка от каждого ключа является таким блоком.
             // Это обусловлено строением дерева
             boolean found = false;
-            for (Key listKey : list) {
-                if (key.compareTo(listKey) <= 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (key.compareTo(list.get(i)) <= 0) {
                     found = true;
-                    ((TreeNode) listKey.getLink()).add(key, address);
+                    ((TreeNode) list.get(i).getLink()).add(key, address);
+                    break;
                 }
             }
             if (!found) {
@@ -68,7 +70,7 @@ public class TreeNode extends TreeElement {
             }
         } else {
             if (!list.contains(key)) {
-                //Если такой ключ еще отсутствует
+                //Если такой ключ еще отсутствует, начинается "обратная"(вверх по дереву) операция вставки
                 TreeLeaf leaf = new TreeLeaf();
                 leaf.add(address);
                 key.setLink(leaf);
@@ -85,59 +87,62 @@ public class TreeNode extends TreeElement {
     }
 
     private void addKey(Key key) {
+
         // Добавляем элемент(с сортировкой)
         list.add(key);
         Collections.sort(list);
         if (list.size() > capacity) {
-            //Разбиваем блок на два (на самом деле, просто отсоединяем вторую часть)
-            Vector<Key> part2 = Util.tail(list);
-            Util.cutTail(list);
-            //Они сортированы. Берем последний индекс "остатка"
-            if(root == null){
-                root =new TreeNode(capacity, null);
-            }
-            TreeNode rest = new TreeNode(capacity, root, part2);
-            root.setLink(rest);
-            rest.setLink(link);
-            link = null;
+            //Разбиваем блок на два (на самом деле, просто отсоединяем первую часть в отдельный список)
+            Vector<Key> newList = Util.firstHalf(list);
+            Util.cutFirstHalf(list);
 
-            Key newKey = list.lastElement().clone();
-            newKey.setLink(this);
+            //Если нам необходимо создать новый корень (то есть мы добрались до вершины и вершину надо расщепить)
+            boolean rootWasNull = false;
+            if (root == null) {
+                root = new TreeNode(capacity, null);
+                // это понадобится позже. флаг, указывающий на то, что произошло образование нового корня
+                rootWasNull = true;
+            }
+
+            //Оба новых списка отсортированы. Берем последний индекс "нового" списка. На самом деле, тут подвох.
+            // если посмотреть в вики, берется нижний индекс второй части. но картинка обратная
+            //TODO что за фигня
+            //Итак, создаем новый ключ и "цепляем" к нему новый список
+            Key newKey = newList.lastElement().clone();
+            TreeNode newNode = new TreeNode(capacity, root, newList);
+            newKey.setLink(newNode);
+            // Связано с тем, что у нас не только есть "дети", но и "родители". Для всех
+            // элементов дочерних во вновь сгенерированном блоке элементов необходимо сделать "родителем"
+            //этот самый новый блок, иначе родителем останется "старый" блок (this) и будут
+            // ошибки
+            for(int i = 0; i < newList.size(); i++){
+                if(newList.get(i).getLink() instanceof TreeNode){
+                    ((TreeNode)newList.get(i).getLink()).setRoot(newNode);
+                }
+            }
+
+            if (!haveChildrenNodes()) {
+                if(linkFrom != null){
+                    linkFrom.setLink(newNode);
+                    newNode.setLinkFrom(linkFrom);
+                }
+                newNode.setLink(this);
+                linkFrom = newNode;
+            }
+
+            // Добавляем к корневому элементу новый ключ
             root.addKey(newKey);
-//            root =
-//            Key newKey = list.lastElement().clone();
-//            newKey.setLink(this);
-////                System.out.println("newKey = " + newKey);
-//            //Берем "родительский элемент" и присоединяем к нему вновь получившийся
-//            // блок.
-//            System.out.println("part2 = " + part2);
-//            if (root == null) {
-//                Vector<Key> keys = new Vector<Key>();
-//                keys.add(newKey);
-//
-//                TreeNode newRoot = new TreeNode(capacity, null, keys);
-//                TreeNode newNode = new TreeNode(capacity, newRoot, part2);
-//                newNode.setLink(link);
-//                link = null;
-//                newRoot.setLink(newNode);
-//                setRoot(newRoot);
-//            } else {
-//
-//                TreeNode newNode = new TreeNode(capacity, root, part2);
-//                newNode.setLink(link);
-//                link = null;
-//                root.setLink(newNode);
-//                root.addKey(newKey, address);
-//
-//
-//            }
+            // Не забываем, что если образовался новый корень, то надо "старый" список, то есть обчиканный
+            // текущий элемент надо добавить в новый корень как "список бОльших элементов"
+            if (rootWasNull) {
+                root.setLink(this);
+           }
 
         }
     }
 
 
-
-    private boolean haveChildrenNodes() {
+    public boolean haveChildrenNodes() {
         for (Key key : list) {
             if (key.getLink() != null && key.getLink() instanceof TreeNode) {
                 return true;
@@ -160,11 +165,15 @@ public class TreeNode extends TreeElement {
         return list.size();
     }
 
-    public Key get(int i){
+    public Key get(int i) {
         return list.get(i);
     }
 
     public TreeElement getLink() {
         return link;
+    }
+
+    public void setLinkFrom(TreeNode linkFrom) {
+        this.linkFrom = linkFrom;
     }
 }
