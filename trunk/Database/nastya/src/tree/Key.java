@@ -1,5 +1,7 @@
 package tree;
 
+import java.io.Serializable;
+
 /**
  * Представляет собой ключ, пригодный для использования в B+дереве.
  * Ключ должен иметь ссылку на некоторый элемент дерева, иметь правила сравнения
@@ -18,7 +20,7 @@ package tree;
  * @see tree.TreeNode
  * @see tree.TreeLeaf
  */
-public abstract class Key implements Comparable, Cloneable {
+public abstract class Key implements Comparable, Cloneable, Serializable {
     //ссылка на элемент дерева
     protected TreeElement link;
 

@@ -20,4 +20,9 @@ public class Messages {
     public static final String PARSING_SUCCEDED = "База данных успешно загружена!";
     public static final String UNEXPECTED_END_OF_FILE = "Неожиданный конец файла";
     public static final String ERROR_READING_DATA = "Ошибка чтения файла";
+    public static final String PLEASE_CHOOSE_FILE_DB = "Необходимо выбрать файл с базой.";
+    public static final String PLEASE_CHOOSE_FILE_INDEX = "Необходимо выбрать файл для сохранения индеса.";
+    public static final String ERROR_NO_FILE_DB = "Указанный файл базы не найден(1)";
+    public static final String ERROR_IO_DB = "Произошла ошибка работы с файловой системой \nпри попытке чтения базы(2)";
+    public static final String ERROR_IO_INDEX = "Произошла ошибка работы с файловой системой\nпри попытке создания индекса(3)";
 }

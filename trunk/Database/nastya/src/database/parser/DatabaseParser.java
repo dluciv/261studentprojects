@@ -6,6 +6,7 @@ import dbentities.Sex;
 
 import java.util.Vector;
 import java.io.*;
+import java.nio.ByteBuffer;
 
 import utils.Messages;
 
@@ -33,15 +34,17 @@ public class DatabaseParser {
     public Vector<Card> parse(String filename) throws ParserException {
         Vector<Card> data = new Vector<Card>();
         time = 0l;
-        BufferedReader reader = null;
+        FileInputStream reader = null;
         try {
             while (true) {
-                reader = new BufferedReader(new FileReader(filename));
+                reader = new FileInputStream(new File(filename));
                 try {
                     parseServiceInformation(reader);
                     while (true) {
+                        long filePosition  = reader.getChannel().position();
                         long startTime = System.nanoTime();
                         Card card = readNextCard(reader);
+                        card.setFilePosition(filePosition);
                         time += System.nanoTime() - startTime;
                         data.add(card);
                     }
@@ -71,8 +74,8 @@ public class DatabaseParser {
         }
     }
 
-    private void parseServiceInformation(BufferedReader reader) throws IOException {
-        char information[] = new char[5];
+    private void parseServiceInformation(FileInputStream reader) throws IOException {
+        byte information[] = new byte[5];
         reader.read(information);
         nameLength = information[0];
         nameMiddleLength = information[1];
@@ -82,7 +85,7 @@ public class DatabaseParser {
     }
 
 
-    private Card readNextCard(BufferedReader reader) throws IOException, ParserException, EOFException {
+    private Card readNextCard(FileInputStream reader) throws IOException, ParserException, EOFException {
         String name = readData(reader, nameLength, true);
         String middleName = readData(reader, nameMiddleLength, false);
         String lastName = readData(reader, nameLastLength, false);
@@ -93,9 +96,9 @@ public class DatabaseParser {
         return new Card(name, lastName, middleName, sex, phone, address);
     }
 
-    private String readData(BufferedReader reader, int length, boolean eofAccepted) throws IOException, ParserException, EOFException {
-        char buffer[] = new char[length];
-        int code = reader.read(buffer, 0, length);
+    private String readData(FileInputStream reader, int length, boolean eofAccepted) throws IOException, ParserException, EOFException {
+        ByteBuffer buffer = ByteBuffer.allocate(length);
+        int code = reader.getChannel().read(buffer);
         if (code == -1) {
             if (eofAccepted) {
                 throw new EOFException();
@@ -105,7 +108,7 @@ public class DatabaseParser {
         } else if (code != length) {
             throw new ParserException(Messages.ERROR_READING_DATA);
         }
-        return String.valueOf(buffer).trim();
+        return new String(buffer.array());
     }
 
     public long getTime() {

@@ -1,5 +1,7 @@
 package tree;
 
+import java.io.Serializable;
+
 /**
  * Представляет собой B+ дерево. Реализовано на основании <a href = http://en.wikipedia.org/wiki/B%2Btree>B+Tree</a>
  *
@@ -10,7 +12,7 @@ package tree;
  *
  *
  */
-public class BPlusTree<D extends IndexableData> {
+public class BPlusTree<D extends IndexableData> implements Serializable{
     private TreeNode root;
     private int capacity;
 

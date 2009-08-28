@@ -4,10 +4,12 @@ import tree.Key;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
-import java.io.File;
+import java.io.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.Vector;
+
+import database.parser.ParserException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,7 +51,7 @@ public class Util {
         chooser.setSelectedFile(new File(defaultName));
         chooser.setFileFilter(new FileFilter() {
             public boolean accept(File f) {
-                if(f.isDirectory()) return true;
+                if (f.isDirectory()) return true;
                 Pattern pattern = Pattern.compile(filterPattern);
                 Matcher matcher = pattern.matcher(f.getName());
                 return matcher.matches();
@@ -81,7 +83,7 @@ public class Util {
             result = s + "c " + ms + "мс " + mks + "мкс";
         } else if (ms > 0) {
             result = ms + "мс " + mks + "мкс";
-        }else{
+        } else {
             result = mks + "мкс";
         }
         return result;
@@ -89,15 +91,34 @@ public class Util {
 
     public static void cutFirstHalf(Vector<Key> list) {
         Vector<Key> tail = firstHalf(list);
-        for(int i =0; i < tail.size(); i++){
+        for (int i = 0; i < tail.size(); i++) {
             list.removeElement(tail.get(i));
         }
     }
+
     public static Vector<Key> firstHalf(Vector<Key> list) {
         Vector<Key> result = new Vector<Key>();
-        for(int i =0;i < list.size() / 2; i++){
+        for (int i = 0; i < list.size() / 2; i++) {
             result.add(list.get(i));
         }
         return result;
+    }
+
+    public static void serialize(Object object, File choosedFile) throws IOException {
+        ObjectOutput out = new ObjectOutputStream(new FileOutputStream(choosedFile));
+        out.writeObject(object);
+        out.close();
+    }
+
+    public static void processParserErrors(ParserException exc, JPanel panel) {
+        if(exc.getCause() instanceof FileNotFoundException){
+            JOptionPane.showMessageDialog(panel, Messages.ERROR_NO_FILE_DB, Messages.ERROR, JOptionPane.ERROR_MESSAGE);
+        }else if(exc.getCause() instanceof IOException){
+            JOptionPane.showMessageDialog(panel, Messages.ERROR_IO_DB, Messages.ERROR, JOptionPane.ERROR_MESSAGE);
+        }else if(exc.getCause() instanceof NullPointerException){
+            JOptionPane.showMessageDialog(panel, Messages.ERROR_IO_DB, Messages.ERROR, JOptionPane.ERROR_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(panel, exc.getMessage(), Messages.ERROR, JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

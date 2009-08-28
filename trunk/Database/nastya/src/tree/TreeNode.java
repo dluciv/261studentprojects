@@ -4,6 +4,7 @@ import utils.Util;
 
 import java.util.Vector;
 import java.util.Collections;
+import java.io.Serializable;
 
 /**
  * @author nastya
