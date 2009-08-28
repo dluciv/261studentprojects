@@ -5,10 +5,7 @@ import dbentities.Card;
 import dbentities.Sex;
 
 import java.util.Vector;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 import utils.Messages;
 
@@ -20,11 +17,11 @@ import utils.Messages;
  * To change this template use File | Settings | File Templates.
  */
 public class DatabaseParser {
-    private int nameLength = DatabaseConstants.DEFAULT_NAME_LENGTH;
-    private int nameLastLength = DatabaseConstants.DEFAULT_LAST_NAME_LENGTH;
-    private int nameMiddleLength = DatabaseConstants.DEFAULT_MIDDLE_NAME_LENGTH;
-    private int addressLength = DatabaseConstants.DEFAULT_ADDRESS_LENGTH;
-    private int phoneLength = DatabaseConstants.DEFAULT_PHONE_LENGTH;
+    private int nameLength;
+    private int nameLastLength;
+    private int nameMiddleLength;
+    private int addressLength;
+    private int phoneLength;
     private int sexLength = DatabaseConstants.DEFAULT_SEX_LENGTH;
 
     private long time = 0l;
@@ -41,6 +38,7 @@ public class DatabaseParser {
             while (true) {
                 reader = new BufferedReader(new FileReader(filename));
                 try {
+                    parseServiceInformation(reader);
                     while (true) {
                         long startTime = System.nanoTime();
                         Card card = readNextCard(reader);
@@ -72,6 +70,17 @@ public class DatabaseParser {
             }
         }
     }
+
+    private void parseServiceInformation(BufferedReader reader) throws IOException {
+        char information[] = new char[5];
+        reader.read(information);
+        nameLength = information[0];
+        nameMiddleLength = information[1];
+        nameLastLength= information[2];
+        phoneLength= information[3];
+        addressLength= information[4];
+    }
+
 
     private Card readNextCard(BufferedReader reader) throws IOException, ParserException, EOFException {
         String name = readData(reader, nameLength, true);

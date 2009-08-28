@@ -35,6 +35,7 @@ public class DatabaseGenerator {
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new FileWriter(fileName));
+            writeServiceInformation(writer);
             for (int i = 0; i < cardsCount; i++) {
                 Random r = new Random();
                 Sex sex = generateSex(r);
@@ -59,6 +60,16 @@ public class DatabaseGenerator {
         }
     }
 
+    private void writeServiceInformation(BufferedWriter writer) throws IOException {
+        //TODO !!!! даункаст, однако
+        writer.write((char)nameLength);
+        writer.write((char)nameMiddleLength);
+        writer.write((char)nameLastLength);
+        writer.write((char)phoneLength);
+        writer.write((char)addressLength);
+    }
+
+
     private void writeAddress(BufferedWriter writer) throws IOException {
         String address = RandomAddressGenerator.generate();
         address = equalize(address, addressLength);
@@ -69,7 +80,7 @@ public class DatabaseGenerator {
         Random r = new Random();
         String phone = "";
         for (int i = 0; i < phoneLength; i++) {
-            phone += r.nextInt(9);
+            phone += r.nextInt(10);
         }
         writer.write(phone);
     }
@@ -113,7 +124,7 @@ public class DatabaseGenerator {
     }
 
     private Sex generateSex(Random r) {
-        int result = r.nextInt(2);
+        int result = r.nextInt(3);
         switch (result) {
             case 0:
                 return Sex.MALE;
