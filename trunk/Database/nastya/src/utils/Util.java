@@ -49,6 +49,7 @@ public class Util {
         chooser.setSelectedFile(new File(defaultName));
         chooser.setFileFilter(new FileFilter() {
             public boolean accept(File f) {
+                if(f.isDirectory()) return true;
                 Pattern pattern = Pattern.compile(filterPattern);
                 Matcher matcher = pattern.matcher(f.getName());
                 return matcher.matches();
