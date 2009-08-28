@@ -46,7 +46,7 @@ public class TestingIndexForm {
 
     private void onGenerateBySelection() {
         root.removeAllChildren();
-        BTree<TestData> bPlusTree = new BTree<TestData>(3);
+        BPlusTree<TestData> bPlusTree = new BPlusTree<TestData>(3);
         String selected = log.getSelectedText();
         if(selected == null || selected.trim().isEmpty()) return;
         StringTokenizer tokenizer = new StringTokenizer(selected, "\n");
@@ -83,10 +83,10 @@ public class TestingIndexForm {
         return panel1;
     }
 
-    public void fill(BTree bTree) {
-        DefaultMutableTreeNode root1 = new DefaultMutableTreeNode(bTree.getRoot());
+    public void fill(BPlusTree bPlusTree) {
+        DefaultMutableTreeNode root1 = new DefaultMutableTreeNode(bPlusTree.getRoot());
         root.add(root1);
-        add(root1, bTree.getRoot());
+        add(root1, bPlusTree.getRoot());
     }
 
     private void add(DefaultMutableTreeNode root, TreeElement element) {
@@ -123,7 +123,7 @@ public class TestingIndexForm {
         }
         root.removeAllChildren();
         log.setText("START LOGGING\n");
-        BTree<TestData> bPlusTree = new BTree<TestData>(3);
+        BPlusTree<TestData> bPlusTree = new BPlusTree<TestData>(3);
         for (int i = 0; i < number; i++) {
             bPlusTree.add(generateNewRandomElement(number));
         }
