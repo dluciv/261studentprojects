@@ -5,5 +5,5 @@ package tree;
  *         Date: 22.08.2009
  *         Time: 20:18:53
  */
-public class Address {
+public class UsableData {
 }

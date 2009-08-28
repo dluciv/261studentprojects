@@ -5,7 +5,7 @@ package tree;
  *         Date: 22.08.2009
  *         Time: 19:12:08
  */
-public interface Keyable<K extends Key, A extends Address> {
+public interface IndexableData<K extends Key, A extends UsableData> {
     public K extractKey();
-    public A extractAddress();
+    public A extractUsableData();
 }

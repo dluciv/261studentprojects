@@ -45,7 +45,7 @@ public class TreeNode extends TreeElement {
     }
 
 
-    public void add(Key key, Address address) {
+    public void add(Key key, UsableData usableData) {
         if (key == null) return;
         if (haveChildrenNodes()) {
             //В дереве всегда есть list.size() + 1  дочерний блок,
@@ -55,7 +55,7 @@ public class TreeNode extends TreeElement {
             for (int i = 0; i < list.size(); i++) {
                 if (key.compareTo(list.get(i)) <= 0) {
                     found = true;
-                    ((TreeNode) list.get(i).getLink()).add(key, address);
+                    ((TreeNode) list.get(i).getLink()).add(key, usableData);
                     break;
                 }
             }
@@ -66,20 +66,20 @@ public class TreeNode extends TreeElement {
                 //"дети", так как на самом нижнем уровне
                 //необходима ссылка на соседний, на том же уровне, блок
                 if (link == null) link = new TreeNode(capacity);
-                link.add(key, address);
+                link.add(key, usableData);
             }
         } else {
             if (!list.contains(key)) {
                 //Если такой ключ еще отсутствует, начинается "обратная"(вверх по дереву) операция вставки
                 TreeLeaf leaf = new TreeLeaf();
-                leaf.add(address);
+                leaf.add(usableData);
                 key.setLink(leaf);
                 addKey(key);
             } else {
                 //Просто в список данных, соответствующих ключу добавляем,
                 // уже существующему в списке, добавляем те данные, которые
                 // соответствуют добавляемому ключу
-                ((TreeLeaf) list.get(list.indexOf(key)).getLink()).add(address);
+                ((TreeLeaf) list.get(list.indexOf(key)).getLink()).add(usableData);
 
             }
 

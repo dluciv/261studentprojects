@@ -8,16 +8,16 @@ import java.util.Vector;
  *         Time: 3:57:24
  */
 public class TreeLeaf extends TreeElement{
-    private Vector<Address> filePointers;
+    private Vector<UsableData> filePointers;
 
 
 
     public TreeLeaf(){
-        filePointers = new Vector<Address>();
+        filePointers = new Vector<UsableData>();
     }
 
-    public void add(Address address){
-        filePointers.add(address);
+    public void add(UsableData usableData){
+        filePointers.add(usableData);
     }
 
     public void add(TreeLeaf treeLeaf) {
