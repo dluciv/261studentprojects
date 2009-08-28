@@ -10,6 +10,7 @@ package utils;
 public class Messages {
     public static final String WRONG_NUMBER_OF_CARDS = "Введите количество записей для генрации";
     public static final String WRONG_NUMBER_OF_KEYS = "Введите количество ключей для генрации";
+    public static final String WRONG_CAPACITY = "Введите размер узла дерева";
     public static final String ERROR = "Ошибка!";
     public static final String ATTENTION = "Внимание!";
     public static final String GENERATION_FAILED = "Возникли проблемы при генерации базы.";

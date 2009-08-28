@@ -26,6 +26,7 @@ public class TestingIndexForm {
     private JButton btnGenerate;
     private JTextArea log;
     private JButton btnGenerateSelection;
+    private JTextField tfCapacity;
     DefaultMutableTreeNode root;
 
     public TestingIndexForm() {
@@ -36,7 +37,7 @@ public class TestingIndexForm {
             }
         });
 
-        btnGenerateSelection.addActionListener(new ActionListener(){
+        btnGenerateSelection.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onGenerateBySelection();
             }
@@ -45,15 +46,32 @@ public class TestingIndexForm {
     }
 
     private void onGenerateBySelection() {
+        int capacity = -1;
+        try {
+            capacity = Integer.valueOf(tfCapacity.getText().trim());
+        } catch (NumberFormatException e) {
+
+        }
+        if (capacity == -1) {
+            JOptionPane.showMessageDialog(panel1, Messages.WRONG_CAPACITY, Messages.ERROR, JOptionPane.ERROR_MESSAGE);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    tfCapacity.requestFocus();
+                }
+            });
+            return;
+        }
+
+
         root.removeAllChildren();
         BPlusTree<TestData> bPlusTree = new BPlusTree<TestData>(3);
         String selected = log.getSelectedText();
-        if(selected == null || selected.trim().isEmpty()) return;
+        if (selected == null || selected.trim().isEmpty()) return;
         StringTokenizer tokenizer = new StringTokenizer(selected, "\n");
-        while(tokenizer.hasMoreTokens()){
+        while (tokenizer.hasMoreTokens()) {
             TestData newData = generateElement(tokenizer.nextToken());
-            if(newData != null){
-            bPlusTree.add(newData);
+            if (newData != null) {
+                bPlusTree.add(newData);
             }
         }
         fill(bPlusTree);
@@ -62,13 +80,13 @@ public class TestingIndexForm {
 
     private TestData generateElement(String s) {
         int element = -1;
-        try{
+        try {
             element = Integer.parseInt(s);
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
 
         }
-        if(element > -1){
-            return new TestData(element, (long)element);
+        if (element > -1) {
+            return new TestData(element, (long) element);
         }
         return null;
     }
@@ -120,10 +138,34 @@ public class TestingIndexForm {
         }
         if (number == -1) {
             JOptionPane.showMessageDialog(panel1, Messages.WRONG_NUMBER_OF_KEYS, Messages.ERROR, JOptionPane.ERROR_MESSAGE);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    tfKeyCount.requestFocus();
+                }
+            });
+            return;
         }
+
+        int capacity = -1;
+        try {
+            capacity = Integer.valueOf(tfCapacity.getText().trim());
+        } catch (NumberFormatException e) {
+
+        }
+        if (capacity == -1) {
+            JOptionPane.showMessageDialog(panel1, Messages.WRONG_CAPACITY, Messages.ERROR, JOptionPane.ERROR_MESSAGE);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    tfCapacity.requestFocus();
+                }
+            });
+            return;
+        }
+
+
         root.removeAllChildren();
         log.setText("START LOGGING\n");
-        BPlusTree<TestData> bPlusTree = new BPlusTree<TestData>(3);
+        BPlusTree<TestData> bPlusTree = new BPlusTree<TestData>(capacity);
         for (int i = 0; i < number; i++) {
             bPlusTree.add(generateNewRandomElement(number));
         }
