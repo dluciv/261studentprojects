@@ -1,13 +1,13 @@
 package gui.tests;
 
-import tree.Keyable;
+import tree.IndexableData;
 
 /**
  * @author nastya
  *         Date: 22.08.2009
  *         Time: 20:44:32
  */
-public class TestData implements Keyable<TestKey, TestAddress> {
+public class TestData implements IndexableData<TestKey, TestUsableData> {
     private int a;
     private long b;
 
@@ -20,7 +20,7 @@ public class TestData implements Keyable<TestKey, TestAddress> {
         return new TestKey(null, a);
     }
 
-    public TestAddress extractAddress() {
-        return new TestAddress(b);
+    public TestUsableData extractUsableData() {
+        return new TestUsableData(b);
     }
 }

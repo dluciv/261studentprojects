@@ -1,6 +1,11 @@
 package tree;
 
 /**
+ * Представляет собой ключ, пригодный для использования в B+дереве.
+ * Ключ должен иметь ссылку на некоторый элемент дерева, иметь правила сравнения
+ * и метод для создания "такого же" ключа, только с пустой ссылкой (это необходимо для генерации
+ * ключей более верхних кровней)
+ *
  * <b>ВАЖНО</b>
  * <ul><li>должен быть переопределен метод equals(Object o)</li>
  * <li>неплохо, если определен метод hashCode()</li></ul>
@@ -8,8 +13,13 @@ package tree;
  * @author nastya
  *         Date: 22.08.2009
  *         Time: 16:11:51
+ * @see tree.BPlusTree
+ * @see tree.TreeElement
+ * @see tree.TreeNode
+ * @see tree.TreeLeaf
  */
 public abstract class Key implements Comparable, Cloneable {
+    //ссылка на элемент дерева
     protected TreeElement link;
 
     protected Key(TreeElement link) {
@@ -24,6 +34,10 @@ public abstract class Key implements Comparable, Cloneable {
         this.link = link;
     }
 
+    /**
+     * Создает новый объект, идентичный текущему
+     * @return идентичный текущему ключ
+     */
     public abstract Key clone();
 
 

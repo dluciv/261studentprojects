@@ -10,7 +10,7 @@ import java.util.Collections;
  *         Date: 21.08.2009
  *         Time: 3:56:42
  */
-public class TreeNode extends TreeElement {
+public class TreeNode implements TreeElement {
     private Vector<Key> list;
     private int capacity;
     private TreeNode link;

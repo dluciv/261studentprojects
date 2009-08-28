@@ -1,16 +1,16 @@
 package gui.tests;
 
-import tree.Address;
+import tree.UsableData;
 
 /**
  * @author nastya
  *         Date: 22.08.2009
  *         Time: 20:38:44
  */
-public class TestAddress extends Address {
+public class TestUsableData implements UsableData {
     private long value;
 
-    public TestAddress(long value) {
+    public TestUsableData(long value) {
         this.value = value;
     }
 

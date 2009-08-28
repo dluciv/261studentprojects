@@ -1,9 +1,12 @@
 package tree;
 
 /**
+ * Маркер, сигнализирующий о том, что данный объект предназначен для хранения данных в дереве
+ * Предназначен исключительно для удобства
+ *
  * @author nastya
  *         Date: 22.08.2009
  *         Time: 20:18:53
  */
-public class UsableData {
+public interface UsableData {
 }

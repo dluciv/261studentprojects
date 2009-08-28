@@ -1,19 +1,35 @@
 package tree;
 
 /**
+ * Представляет собой B+ дерево. Реализовано на основании <a href = http://en.wikipedia.org/wiki/B%2Btree>B+Tree</a>
+ *
  * @author nastya
  *         Date: 21.08.2009
  *         Time: 3:52:39
+ * @see tree.IndexableData
+ *
+ *
  */
 public class BPlusTree<D extends IndexableData> {
     private TreeNode root;
     private int capacity;
 
+    /**
+     * Создает дерево с определенной "вместимостью" узлов
+     * @param capacity максимальное количество ключей в одном "блоке"
+     */
     public BPlusTree(int capacity) {
         this.capacity = capacity;
+        //Создаем "голову" дерева
         root = new TreeNode(capacity);
     }
 
+    /**
+     * Добавляет в дерево некоторые данные, создавая для них ключ. Информация, добавляемая в дерево, определяется
+     * самим типом данных
+     *
+     * @param data объект, данные о котором необходимо добавить в дерево
+     */
     public void add(D data){
         Key key = data.extractKey();
         UsableData usableData = data.extractUsableData();
