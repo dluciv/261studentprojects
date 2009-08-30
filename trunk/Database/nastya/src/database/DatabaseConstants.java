@@ -10,7 +10,7 @@ import java.util.HashMap;
 import dbentities.Sex;
 
 /**
- * Created by IntelliJ IDEA.
+ * Набор констант, общих для всей базы
  * User: nastya
  * Date: 21.08.2009
  * Time: 1:24:29
@@ -28,6 +28,11 @@ public class DatabaseConstants {
     private static final String DEFAULT_DB_SEX_FEMALE_VALUE = "1";
     private static final String DEFAULT_DB_SEX_UNKNOWN_VALUE = "2";
 
+    /**
+     * Конвертирует пол из enum'а в представление в базе
+     * @param sex пол
+     * @return символ, кодирующий пол в файле базы
+     */
     public static String getIdBySex(Sex sex){
         switch (sex) {
             case FEMALE:
@@ -40,6 +45,11 @@ public class DatabaseConstants {
         return DatabaseConstants.DEFAULT_DB_SEX_UNKNOWN_VALUE;
     }
 
+    /**
+     * Декодирует пол из представления в файле базы в представление приложения
+     * @param id символ, представляющий пол в файле базы
+     * @return пол в представлении приложения
+     */
     public static Sex getSexById(String id){
         if(id == null) return Sex.UNKNOWN;
         if(id.equals(DEFAULT_DB_SEX_FEMALE_VALUE)){

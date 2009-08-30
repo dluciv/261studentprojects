@@ -12,16 +12,18 @@ import java.io.IOException;
 import database.generator.DatabaseGenerator;
 import database.generator.GeneratorException;
 import database.index.IndexBuilder;
+import database.index.DatabaseKey;
+import database.index.AddressData;
 import database.parser.ParserException;
 import tree.BPlusTree;
 import dbentities.Card;
 
 /**
- * Created by IntelliJ IDEA.
- * User: nastya
+ * Форма, где можно сгенерировать базу и построить индекс по ней
+ * @author nastya
  * Date: 20.08.2009
  * Time: 23:35:05
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GenerationForm {
     private JTextField tfCardsCount;
@@ -86,15 +88,16 @@ public class GenerationForm {
             return;
         }
         try {
-            BPlusTree<Card> tree = IndexBuilder.generateIndex(chDatabase.getChoosedFile().getAbsolutePath(), capacity);
+            BPlusTree<Card, DatabaseKey, AddressData> tree = IndexBuilder.generateIndex(chDatabase.getChoosedFile().getAbsolutePath(), capacity);
 
             Util.serialize(tree, chIndex.getChoosedFile());
+            JOptionPane.showMessageDialog(panel, Messages.GENERATION_IDX_SUCCEDED, Messages.ATTENTION, JOptionPane.INFORMATION_MESSAGE);
         } catch (ParserException e) {
             Util.processParserErrors(e, panel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(panel, Messages.ERROR_IO_INDEX, Messages.ERROR, JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
         }
+
     }
 
     private void onGenerate() {
@@ -128,11 +131,11 @@ public class GenerationForm {
                 try {
                     generator.generate(absolutePath, cardsCount);
                 } catch (GeneratorException e) {
-                    JOptionPane.showMessageDialog(panel, Messages.GENERATION_FAILED, Messages.ERROR, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(panel, Messages.GENERATION_DB_FAILED, Messages.ERROR, JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                JOptionPane.showMessageDialog(panel, Messages.GENERATION_SUCCEDED, Messages.ATTENTION, JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(panel, Messages.GENERATION_DB_SUCCEDED, Messages.ATTENTION, JOptionPane.INFORMATION_MESSAGE);
 
                 btnGenerate.setEnabled(true);
             }
@@ -145,8 +148,8 @@ public class GenerationForm {
     }
 
     private void createUIComponents() {
-        chDatabase = new FileChoosingForm("���� ���� ������: ", panel, false, DEFAULT_DB_NAME, DEFAULT_DB_PATTERN, DEFAULT_DB_PATTERN_DESCRIPTION); 
-        chIndex = new FileChoosingForm("���� ��� �������:  ", panel, true, DEFAULT_INDEX_NAME, DEFAULT_INDEX_PATTERN, DEFAULT_INDEX_PATTERN_DESCRIPTION); 
+        chDatabase = new FileChoosingForm("Файл базы данных: ", panel, false, DEFAULT_DB_NAME, DEFAULT_DB_PATTERN, DEFAULT_DB_PATTERN_DESCRIPTION);
+        chIndex = new FileChoosingForm("Файл для индекса:  ", panel, true, DEFAULT_INDEX_NAME, DEFAULT_INDEX_PATTERN, DEFAULT_INDEX_PATTERN_DESCRIPTION); 
     }
 
 }

@@ -4,6 +4,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
 /**
+ * Модель столбцов таблицы для предстваления списка карточек базы данных
  * @author nastya
  *         Date: 21.08.2009
  *         Time: 2:28:31

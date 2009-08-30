@@ -4,11 +4,11 @@ import tree.IndexableData;
 import tree.UsableData;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Sergey
+ * Данные, содержащие адрес записи. Эти данные используются как листья дерева
+ *
+ * @author Sergey
  * Date: 28.08.2009
  * Time: 14:01:00
- * To change this template use File | Settings | File Templates.
  */
 public class AddressData implements UsableData{
     long address;

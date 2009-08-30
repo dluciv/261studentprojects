@@ -8,11 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Sergey
+ * Вспомогательная форма, представляющая собой панель для выбора файла
+ * @author nastya
  * Date: 28.08.2009
  * Time: 14:43:05
- * To change this template use File | Settings | File Templates.
  */
 public class FileChoosingForm extends JComponent{
     private JPanel panel;

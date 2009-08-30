@@ -3,14 +3,14 @@ package tree;
 import java.io.Serializable;
 
 /**
- * Представляет собой ключ, пригодный для использования в B+дереве.
- * Ключ должен иметь ссылку на некоторый элемент дерева, иметь правила сравнения
- * и метод для создания "такого же" ключа, только с пустой ссылкой (это необходимо для генерации
- * ключей более верхних кровней)
+ * РџСЂРµРґСЃС‚Р°РІР»СЏРµС‚ СЃРѕР±РѕР№ РєР»СЋС‡, РїСЂРёРіРѕРґРЅС‹Р№ РґР»СЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РІ B+РґРµСЂРµРІРµ.
+ * РљР»СЋС‡ РґРѕР»Р¶РµРЅ РёРјРµС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РЅРµРєРѕС‚РѕСЂС‹Р№ СЌР»РµРјРµРЅС‚ РґРµСЂРµРІР°, РёРјРµС‚СЊ РїСЂР°РІРёР»Р° СЃСЂР°РІРЅРµРЅРёСЏ
+ * Рё РјРµС‚РѕРґ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ "С‚Р°РєРѕРіРѕ Р¶Рµ" РєР»СЋС‡Р°, С‚РѕР»СЊРєРѕ СЃ РїСѓСЃС‚РѕР№ СЃСЃС‹Р»РєРѕР№ (СЌС‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ РґР»СЏ РіРµРЅРµСЂР°С†РёРё
+ * РєР»СЋС‡РµР№ Р±РѕР»РµРµ РІРµСЂС…РЅРёС… РєСЂРѕРІРЅРµР№)
  *
- * <b>ВАЖНО</b>
- * <ul><li>должен быть переопределен метод equals(Object o)</li>
- * <li>неплохо, если определен метод hashCode()</li></ul>
+ * <b>Р’РђР–РќРћ</b>
+ * <ul><li>РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїРµСЂРµРѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ equals(Object o)</li>
+ * <li>РЅРµРїР»РѕС…Рѕ, РµСЃР»Рё РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ hashCode()</li></ul>
  *
  * @author nastya
  *         Date: 22.08.2009
@@ -20,9 +20,11 @@ import java.io.Serializable;
  * @see tree.TreeNode
  * @see tree.TreeLeaf
  */
+
 public abstract class Key implements Comparable, Cloneable, Serializable {
-    //ссылка на элемент дерева
+    //СЃСЃС‹Р»РєР° РЅР° СЌР»РµРјРµРЅС‚ РґРµСЂРµРІР°
     protected TreeElement link;
+    protected TreeNode<? extends Key, ? extends UsableData> container;
 
     protected Key(TreeElement link) {
         this.link = link;
@@ -37,10 +39,16 @@ public abstract class Key implements Comparable, Cloneable, Serializable {
     }
 
     /**
-     * Создает новый объект, идентичный текущему
-     * @return идентичный текущему ключ
+     * РЎРѕР·РґР°РµС‚ РЅРѕРІС‹Р№ РѕР±СЉРµРєС‚, РёРґРµРЅС‚РёС‡РЅС‹Р№ С‚РµРєСѓС‰РµРјСѓ
+     * @return РёРґРµРЅС‚РёС‡РЅС‹Р№ С‚РµРєСѓС‰РµРјСѓ РєР»СЋС‡
      */
     public abstract Key clone();
 
+    public TreeNode<? extends Key, ? extends UsableData> getContainer() {
+        return container;
+    }
 
+    public void setContainer(TreeNode<? extends Key, ? extends UsableData> container) {
+        this.container = container;
+    }
 }

@@ -6,11 +6,11 @@ import utils.Util;
 import java.util.Random;
 
 /**
- * Created by IntelliJ IDEA.
- * User: nastya
+ * Предоставляет методы для генерации случайной фамилии
+ *
+ * @author nastya
  * Date: 20.08.2009
  * Time: 20:36:52
- * To change this template use File | Settings | File Templates.
  */
 public class RandomLastNameGenerator {
     private static String[] maleLastNames = {"Селяков", "Пуговкин", "Тыковкин", "Варенье", "Кириллов",
@@ -33,6 +33,11 @@ public class RandomLastNameGenerator {
             "Билан", "Поросенкова", "Свинтусова", "Йохохо", "Винуградова", "Демидович", "Фриш"};
 
 
+    /**
+     * Генерирует случайную фамилию согласно выбранному полу
+     * @param sex пол, для которого генерируется фамилия
+     * @return фамилию
+     */
     public static String generate(Sex sex) {
         String result = "";
         Random r = new Random();
@@ -50,6 +55,10 @@ public class RandomLastNameGenerator {
         return result;
     }
 
+    /**
+     * Максимальная длина фамилии среди всех имеющихся. Используется для генерации базы
+     * @return максимальная длина поля фамилии
+     */
     public static int maxLength(){
         int maleLength = Util.maxElement(maleLastNames);
         int femaleLength = Util.maxElement(femaleLastNames);

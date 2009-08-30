@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
 
 /**
+ * Модель таблицы для предоставления списка карточек из базы данных
  * @author nastya
  *         Date: 21.08.2009
  *         Time: 2:34:22
@@ -47,5 +48,9 @@ public class CardTableModel extends AbstractTableModel {
 
     public void setData(Vector<Card> data) {
         this.data = data;
+    }
+
+    public Card getData(int selected) {
+        return data.get(selected);
     }
 }

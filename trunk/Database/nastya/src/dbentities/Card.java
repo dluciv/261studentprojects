@@ -8,20 +8,32 @@ import database.index.DatabaseKey;
 import database.index.AddressData;
 
 /**
- * Created by IntelliJ IDEA.
- * User: nastya
+ * Представляет собой запись в базе данных. Эта запись может добавляться в дерево
+ * @author nastya
  * Date: 20.08.2009
  * Time: 20:13:17
- * To change this template use File | Settings | File Templates.
+ *
+ * @see tree.BPlusTree
+ * @see tree.Key
+ * @see tree.IndexableData
+ * @see tree.UsableData
+ * @see database.index.DatabaseKey
+ * @see database.index.AddressData
+ *
  */
-public class Card implements IndexableData {
+public class Card implements IndexableData<DatabaseKey, AddressData> {
+    //Поля базы
     private String name;
     private String lastName;
     private String middleName;
     private Sex sex;
     private String phone;
     private String address;
+    // позиция начала записи в файле. Хранится для индексирования
     private long filePosition;
+    // Длина записи в байтах. Необходима при чтении для определения
+    // позиции следующих записей в файле
+    private long byteLength;
 
     public Card(String name, String lastName, String middleName, Sex sex,
                 String phone, String address) {
@@ -82,34 +94,24 @@ public class Card implements IndexableData {
         this.address = address;
     }
 
-//    public int compareTo(Object o) {
-//        if (o == null) return -1;
-//        if (o.getClass() != getClass()) return -1;
-//        Card card = (Card) o;
-//        int lastNameCompare = Util.compare(lastName, card.lastName);
-//        int nameCompare = Util.compare(name, card.name);
-//        int middleNameCompare = Util.compare(middleName, card.middleName);
-//        int phoneCompare = Util.compare(phone, card.phone);
-//        if(lastNameCompare != 0){
-//            return lastNameCompare;
-//        }else if(nameCompare != 0){
-//            return nameCompare;
-//        }else if(middleNameCompare != 0){
-//            return middleNameCompare;
-//        }else{
-//            return phoneCompare;
-//        }
-
-    //    }
-    public Key extractKey() {
-        return new DatabaseKey(lastName, name, middleName, null);
-    }
-
-    public UsableData extractUsableData() {
-        return new AddressData(filePosition);
-    }
 
     public void setFilePosition(long filePosition) {
         this.filePosition = filePosition;
     }
+
+    public void setByteLength(long byteLength) {
+        this.byteLength = byteLength;
+    }
+
+    public long getByteLength() {
+        return byteLength;
+    }
+    public DatabaseKey extractKey() {
+        return new DatabaseKey(new Condition(lastName, name, middleName), null);
+    }
+
+    public AddressData extractUsableData() {
+        return new AddressData(filePosition);
+    }
+
 }

@@ -2,30 +2,32 @@ package database.index;
 
 import tree.Key;
 import tree.TreeElement;
+import dbentities.Condition;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Sergey
+ * РљР»СЋС‡ РґРµСЂРµРІР°, РёСЃРїРѕР»СЊР·СѓРµРјС‹Р№ РїСЂРё СЂР°Р±РѕС‚Рµ СЃ С‚РµРєСѓС‰РµР№ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…
+ *
+ * @author nastya
  * Date: 28.08.2009
  * Time: 14:02:10
- * To change this template use File | Settings | File Templates.
+ *
  */
-public class DatabaseKey extends Key {
+public class DatabaseKey extends Key{
 
-    private String lastName;
-    private String name;
-    private String middleName;
+    Condition condition;
 
-    public DatabaseKey(String lastName, String name, String middleName, TreeElement link) {
+    public DatabaseKey(Condition condition, TreeElement link) {
         super(link);
-        this.lastName = lastName;
-        this.name = name;
-        this.middleName = middleName;
+        this.condition = condition;
+    }
+
+    public DatabaseKey(Condition condition) {
+        this(condition, null);
     }
 
 
     public Key clone() {
-        return new DatabaseKey(lastName, name, middleName, link);
+        return new DatabaseKey(condition.clone(), link);
     }
 
     public int compareTo(Object o) {
@@ -33,13 +35,11 @@ public class DatabaseKey extends Key {
         if(o.getClass() != getClass()) return 1;
         DatabaseKey k = (DatabaseKey)o;
 
-        // Сравниваем в порядке фамилия-имя-отчество
-        int compareLastNames = lastName == null ? 1 : lastName.compareTo(k.lastName);
-        int compareNames = name == null ? 1 : name.compareTo(k.name);
-        int compareMiddleNames = middleName == null ? 1 : middleName.compareTo(k.middleName);
+        return condition == null ? -1 : condition.compareTo(k.condition);
+    }
 
-        if(compareLastNames != 0) return compareLastNames;
-        if(compareNames != 0) return compareNames;
-        return compareMiddleNames;
+    @Override
+    public String toString() {
+        return "DatabaseKey(" + condition + ")";
     }
 }

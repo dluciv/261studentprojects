@@ -5,11 +5,11 @@ import utils.Util;
 import dbentities.Sex;
 
 /**
- * Created by IntelliJ IDEA.
- * User: nastya
+ * Предоставляет методы для генерации случайного отчества
+ *
+ * @author nastya
  * Date: 20.08.2009
  * Time: 20:49:51
- * To change this template use File | Settings | File Templates.
  */
 public class RandomMiddleNameGenerator {
     private static String[] maleMiddleNames = {"Иванович", "Степанович", "Львович", "Сидорович", "Константинович", "Федорович",
@@ -23,6 +23,11 @@ public class RandomMiddleNameGenerator {
             "Филипповна", "Аристарховна", "Адольфовна", "Иосифна", "Пантелеймоновна", "Лаврентьевна", "Еремеевна", "Вадимовна",
             "Владимировна", "Святославовна", "Олеговна", "Артемовна"};
 
+    /**
+     * Генерирует случайное отчество согласно выбранному полу
+     * @param sex пол, для которого генерируется отчество
+     * @return отчество
+     */
     public static String generate(Sex sex) {
         String result = "";
         Random r = new Random();
@@ -41,6 +46,10 @@ public class RandomMiddleNameGenerator {
         return result;
     }
 
+    /**
+     * Максимальная длина отчестве среди всех имеющихся. Используется для генерации базы
+     * @return максимальная длина поля отчества
+     */
     public static int maxLength(){
         int maleLength = Util.maxElement(maleMiddleNames);
         int femaleLength = Util.maxElement(femaleMiddleNames);

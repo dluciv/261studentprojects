@@ -4,9 +4,16 @@ import tree.Key;
 import tree.TreeElement;
 
 /**
+ * Ключ для тестовых данных, которые можно занести в B+дерево, реализованное в пакете
+ * <code>tree</code>.  Используется для демонстрации работы дерева в соответствующей вкладке
+ *
  * @author nastya
  *         Date: 22.08.2009
  *         Time: 20:39:23
+ * @see tree.IndexableData
+ * @see tree.Key
+ * @see tree.UsableData
+ * @see tree.BPlusTree
  */
 public class TestKey extends Key {
     private int value;

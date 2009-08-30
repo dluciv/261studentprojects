@@ -4,11 +4,12 @@ import java.util.Random;
 import utils.Util;
 
 /**
- * Created by IntelliJ IDEA.
- * User: nastya
+ * Предоставляет методы для генерации случайного адреса
+ *
+ * @author nastya
  * Date: 20.08.2009
  * Time: 21:04:35
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class RandomAddressGenerator {
     private static String[] streets = {"Средний проспект", "Ул. Трех Чертей", "Ул. Красных Фортов",
@@ -30,19 +31,24 @@ public class RandomAddressGenerator {
     public static final String ROOM_STRING = " кв. ";
 
 
+    /**
+     * Генерирует случайный адрес
+     * @return строку-адрес
+     */
     public static String generate() {
         Random r = new Random();
         return streets[((int) (r.nextFloat() * (streets.length - 1)))] + HOUSE_STRING +
                 r.nextInt(MAX_HOUSE) + ROOM_STRING + r.nextInt(MAX_ROOM);
     }
 
+    /**
+     * Максимальная длина адреса среди всех имеющихся. Используется для генерации базы
+     * @return максимальная длина поля адреса
+     */
     public static int maxLength(){
-        int length = findMaxLength(streets);
+        int length = Util.maxElement(streets);
         length += HOUSE_STRING.length() + ROOM_STRING.length() + String.valueOf(MAX_HOUSE).length() + String.valueOf(MAX_ROOM).length();
         return length;
     }
 
-    private static int findMaxLength(String[] streets) {
-        return Util.maxElement(streets);
-    }
 }

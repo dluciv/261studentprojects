@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import gui.tests.TestData;
+import gui.tests.TestKey;
+import gui.tests.TestUsableData;
 
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -15,6 +17,8 @@ import java.awt.event.ActionEvent;
 import utils.Messages;
 
 /**
+ * Форма для демнстрации работы дерева
+ * 
  * @author nastya
  *         Date: 22.08.2009
  *         Time: 23:04:17
@@ -64,7 +68,7 @@ public class TestingIndexForm {
 
 
         root.removeAllChildren();
-        BPlusTree<TestData> bPlusTree = new BPlusTree<TestData>(3);
+        BPlusTree<TestData, TestKey, TestUsableData> bPlusTree = new BPlusTree<TestData, TestKey, TestUsableData>(3);
         String selected = log.getSelectedText();
         if (selected == null || selected.trim().isEmpty()) return;
         StringTokenizer tokenizer = new StringTokenizer(selected, "\n");
@@ -92,7 +96,7 @@ public class TestingIndexForm {
     }
 
     private void createUIComponents() {
-        root = new DefaultMutableTreeNode("���������������� ������");
+        root = new DefaultMutableTreeNode("Тестовое дерево");
         tree = new JTree(root);
         tree.setShowsRootHandles(true);
     }
@@ -110,10 +114,10 @@ public class TestingIndexForm {
     private void add(DefaultMutableTreeNode root, TreeElement element) {
         if (element instanceof TreeNode) {
             TreeNode node = (TreeNode) element;
-            for (int i = 0; i < node.listSize(); i++) {
-                DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(node.get(i));
+            for (int i = 0; i < node.keyCount(); i++) {
+                DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(node.getKey(i));
                 root.add(treeNode);
-                Key key = node.get(i);
+                Key key = node.getKey(i);
                 add(treeNode, key.getLink());
             }
             if (node.haveChildrenNodes()) {
@@ -165,7 +169,7 @@ public class TestingIndexForm {
 
         root.removeAllChildren();
         log.setText("START LOGGING\n");
-        BPlusTree<TestData> bPlusTree = new BPlusTree<TestData>(capacity);
+        BPlusTree<TestData, TestKey, TestUsableData> bPlusTree = new BPlusTree<TestData, TestKey, TestUsableData>(capacity);
         for (int i = 0; i < number; i++) {
             bPlusTree.add(generateNewRandomElement(number));
         }

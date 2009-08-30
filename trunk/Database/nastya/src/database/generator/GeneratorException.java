@@ -1,11 +1,12 @@
 package database.generator;
 
 /**
- * Created by IntelliJ IDEA.
- * User: nastya
+ * Какая-либо ошибка при генерации базы
+ *
+ * @author nastya
  * Date: 20.08.2009
  * Time: 22:25:47
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GeneratorException extends Exception{
 
