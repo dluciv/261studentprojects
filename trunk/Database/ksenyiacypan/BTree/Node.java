@@ -1,15 +1,14 @@
+/**
+* BTree
+* Ksenyia Cypan (c) 2009
+*/
+
 package BTree;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-
-/**
-*
-* @author ksenyiacypan
-*/
-
 
 public class Node implements Externalizable {
 	
@@ -26,7 +25,7 @@ public class Node implements Externalizable {
 		keys = new Key[2 * btree.getB() - 1];
 		childs = new Node[2 * btree.getB()];
 	}
-	public Key stitch(Key key) {
+	public Key stitch(Key key) { //прошивка
 		Key cur = key;
 		int i;
 		for (i = n - 1; i >= 0; i--) {
@@ -55,7 +54,7 @@ public class Node implements Externalizable {
 			return childs[i].search(k);
 		}
 	}*/
-	public Key searchAtLeast(Key k) {
+	public Key searchAtLeast(Key k) { //найти первый ключ, не меньшее, чем к
 		int i;
 		for (i = 0; i < n && k.compareTo(keys[i]) > 0; i++);			
 		if (i < n && keys[i].equals(k)) {
@@ -67,7 +66,7 @@ public class Node implements Externalizable {
 			return childs[i].searchAtLeast(k);
 		}
 	}
-	public void split(int kp) {
+	public void split(int kp) { //делит две вершины на две
 		Node y = childs[kp];
 		Node z = new Node(btree);
 		int B = btree.getB();
@@ -102,7 +101,7 @@ public class Node implements Externalizable {
 			}
 		}
 	}
-	public void insertNonfull(Key k) {
+	public void insertNonfull(Key k) { //вставляет к в текущее поддерево
 		if (childs[0] == null) {
 			int i;
 			for (i = n - 1; i >= 0 && k.compareTo(keys[i]) <= 0; i--) {
@@ -125,7 +124,7 @@ public class Node implements Externalizable {
 			childs[i].insertNonfull(k);
 		}
 	}
-	Key getKey(int num) {
+	Key getKey(int num) { //возвр ключ с номером нум
 		if (num >= keyc) {
 			return null;
 		}
@@ -143,7 +142,7 @@ public class Node implements Externalizable {
 			return keys[num];
 		}		
 	}
-	int countTo(Key k) {		
+	int countTo(Key k) {		//считает сколько ключей до ключа к
 		int i;
 		for (i = n - 1; i >= 0 && k.compareTo(keys[i]) <= 0; i--);
 		int res = i + 1;
@@ -156,7 +155,7 @@ public class Node implements Externalizable {
 		return res + (childs[i + 1] == null ? 0 : childs[i + 1].countTo(k));
 	}
 	
-	void setChild(int pos, Node r) {
+	void setChild(int pos, Node r) { //вставляет вершину р на позицию поз
 		if (childs[pos] == null) {
 			childs[pos] = r;
 			keyc += r.keyc;

@@ -1,12 +1,12 @@
+/**
+* BTree
+* Ksenyia Cypan (c) 2009
+*/
+
 package Main;
 
 import java.io.PrintWriter;
 import java.util.Random;
-
-/**
-*
-* @author ksenyiacypan
-*/
 
 
 public class Generate {

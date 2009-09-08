@@ -1,13 +1,14 @@
+/**
+* BTree
+* Ksenyia Cypan (c) 2009
+*/
+
 package Cards;
 
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-/**
-*
-* @author ksenyiacypan
-*/
 
 
 import BTree.Value;

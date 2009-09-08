@@ -1,14 +1,14 @@
+/**
+* BTree
+* Ksenyia Cypan (c) 2009
+*/
+
 package BTree;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-
-/**
-*
-* @author ksenyiacypan
-*/
 
 public class  BTree implements Externalizable {
 	
@@ -48,10 +48,10 @@ public class  BTree implements Externalizable {
 	Key getKey(int num) {
 		return root.getKey(num);
 	}
-	public int countBetween(Key a, Key b) {
+	public int countBetween(Key a, Key b) { //количество м\у двумя кл
 		return root.countTo(b) - root.countTo(a);
 	}
-	public BList listBetween(Key a, Key b) {
+	public BList listBetween(Key a, Key b) { //возвр индексы произв. длины
 		Key A = root.searchAtLeast(a);
 		
 		if (compare(a,b) > 0) {
@@ -59,7 +59,7 @@ public class  BTree implements Externalizable {
 		}
 		return new BList(A, countBetween(a, b));
 	}
-	public BList listBetween(Key a, Key b, int n) {
+	public BList listBetween(Key a, Key b, int n) { //возвр индексы ограниченой длины
 		Key A = root.searchAtLeast(a);
 		if (compare(A, b) > 0) {
 			return new BList(null, 0);

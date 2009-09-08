@@ -1,3 +1,8 @@
+/**
+* BTree
+* Ksenyia Cypan (c) 2009
+*/
+
 package BTree;
 
 import java.io.Externalizable;
@@ -7,14 +12,9 @@ import java.io.ObjectOutput;
 
 import Cards.CardManager;
 
-/**
-*
-* @author ksenyiacypan
-*/
-
 
 public class Key implements Comparable, Externalizable {
-	Value val;
+	public Value val;
 	BTree btree;
 	Key next;	
 

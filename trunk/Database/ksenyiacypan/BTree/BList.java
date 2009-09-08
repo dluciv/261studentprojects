@@ -1,9 +1,9 @@
-package BTree;
+/**
+* BTree
+* Ksenyia Cypan (c) 2009
+*/
 
-  /**
-  *
-  * @author ksenyiacypan
-  */
+package BTree;
 
 import java.util.Iterator;
 

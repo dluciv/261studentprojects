@@ -1,12 +1,11 @@
+/**
+* BTree
+* Ksenyia Cypan (c) 2009
+*/
+
 package BTree;
 
 import java.io.Externalizable;
-
-/**
-*
-* @author ksenyiacypan
-*/
-
 
 public interface Value extends Externalizable {
 	

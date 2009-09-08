@@ -1,3 +1,8 @@
+/**
+* BTree
+* Ksenyia Cypan (c) 2009
+*/
+
 package Main;
 
 import java.io.BufferedReader;
@@ -15,18 +20,24 @@ import java.util.StringTokenizer;
 import BTree.BList;
 import BTree.BTree;
 import BTree.Key;
-import BTree.Manager;
 import Cards.Card;
 import Cards.CardManager;
-
-/**
-*
-* @author ksenyiacypan
-*/
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
+
+    public static void main(String[] args) {
+        try {
+            main1(args);
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+	public static void main1(String[] args) throws IOException, ClassNotFoundException {
 		
 		
 		if (args.length == 0) {
@@ -86,14 +97,21 @@ public class Main {
 			}			
 			for (int x = 1;; x++) {
 				String temp = br.readLine();
-				if (temp == null) {
+
+                if (temp == null) {
 					break;
 				}
+
 				StringTokenizer st = new StringTokenizer(temp);
-				String type = st.nextToken();
+                
+				if (!st.hasMoreTokens())
+                    continue;
+
+                String type = st.nextToken();
 				if (type.equals("exit")) {
 					break;
 				}
+
 				String sA = st.nextToken();
 				int A = Integer.parseInt(st.nextToken());
 				Key kA = new Key(new Card(A, "", sA), tree);
@@ -131,7 +149,23 @@ public class Main {
 						k = null;
 					}
 					out.println("Request " + x + ": first " + k);
-				} 
+				} else if (type.equals("sumphone")) {
+                    BList b = tree.listBetween(kA, kB);
+                    Key cur = null;
+					int j = 0;
+                    
+                    for (cur = b.getStart (); b.hasNext(); cur = b.next()) {
+                       BList b1 = tree.listBetween(cur, kB);
+                       for (Key cur2 = b1.next (); b1.hasNext (); cur2 = b1.next()) {
+                        if ((new CardManager()).compare2(cur.val, cur2.val) == 0) {
+                               j++;
+                               out.println (j + ": " + cur + " & " + cur2);
+                           }
+
+                       }
+                    }
+
+                 }
 			}
 			out.close();
 			br.close();
