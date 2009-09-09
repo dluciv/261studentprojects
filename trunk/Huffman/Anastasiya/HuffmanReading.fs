@@ -5,8 +5,8 @@ open System.Collections
 open System.Collections.Generic
 
 
-let READER_BUFFER_SIZE = 2
 let LISTBUFFER_SIZE = 1
+let READER_BUFFER_SIZE = 2
 
 
 
@@ -75,6 +75,7 @@ let decodeFile (reader : BinaryReader) (writer : FileStream) (d : Dictionary<int
                                                                              then el.Key.Length
                                                                              else max ) 0 d
 
+    // Подсчитывает количество "верных" битов в последнем байте
     let lastByte = 
       match (readLastByteSize reader) with
         | 8 -> LangUtils.BYTE_SIZE
@@ -84,6 +85,7 @@ let decodeFile (reader : BinaryReader) (writer : FileStream) (d : Dictionary<int
     let mutable byteSequence = [];
     let mutable currentSequence = [];
     let mutable decodedBytes = [];
+    // Сам процесс декодирования
     while (readedBytes.Length > 0) do
       for bt in readedBytes do
         byteSequence <- byteSequence @ ListBinaryConversion.constructNumber (LangUtils.BYTE_SIZE, (int)bt) []
@@ -109,40 +111,14 @@ let decodeFile (reader : BinaryReader) (writer : FileStream) (d : Dictionary<int
               
       
               
-      
-        
-    
+// Декодирует архив    
 let decodeArchive (archiveName : string) (resultName : string)= 
     using(new BinaryReader(File.Open(archiveName, FileMode.Open)))
       (fun reader -> using (new FileStream(resultName, FileMode.Create)) 
                        (fun writer ->readRLE reader
                                      |> decodeFile reader  writer))
        
-let testEquals (reader1 : BinaryReader) (reader2 : BinaryReader) = 
-    let mutable readedBytes1 = reader1.ReadBytes(READER_BUFFER_SIZE)
-    let mutable readedBytes2 = reader2.ReadBytes(READER_BUFFER_SIZE)
-    let mutable equals = true;
-    let rec listEquals (list1 : byte list) (list2 : byte list) =
-        match list1, list2 with
-        | x::xs, y::ys when x = y -> listEquals xs ys
-        | [], [] -> true
-        | _, _ -> false
-      
-    let rec arrayEquals (array1 : byte []) (array2 : byte []) = 
-        listEquals (List.of_array array1) (List.of_array  array2)
-    
-    while(equals && readedBytes1.Length > 0 && readedBytes2.Length = readedBytes1.Length) do
-      if arrayEquals readedBytes1 readedBytes2
-        then readedBytes1 <- reader1.ReadBytes(READER_BUFFER_SIZE)
-             readedBytes2 <- reader2.ReadBytes(READER_BUFFER_SIZE)
-        else equals <- false
-    equals && readedBytes2.Length = readedBytes1.Length
 
-let fileEquals  (filename : string) (decodedName : string) = 
-    using(new BinaryReader(File.Open(filename, FileMode.Open)))
-        (fun reader -> using(new BinaryReader(File.Open(decodedName, FileMode.Open)))
-                          (fun reader2 -> testEquals reader reader2))
-
-       
+// Кодирует файл в архив       
 let makeArchive input output = 
     readAndBuildTree input output (new Dictionary<byte HuffmanTree.Tree, int>())

@@ -4,6 +4,7 @@ open System.Collections.Generic
 open System.IO
 
 let BYTE_SIZE = 8
+let READER_BUFFER_SIZE = 2
 
 let first (tuple : ('a* 'b)) = 
   match tuple with
@@ -32,6 +33,12 @@ let takeFromNth (n : int) (lst : 'a list) =
     
   take_ lst n
   
+let takeLast (lst : 'a list) = 
+  takeFromNth (List.length lst - 1) lst
+  |> (fun ((x :: xs) : 'a list) -> x) 
+  
+let toList a = a :: []  
+  
 let rec tenPower (pow : int) = 
     match pow with
     |0 -> 1L
@@ -44,85 +51,68 @@ let intListToByteList (l : int list) =
       List.fold (fun lst el -> ((byte)el ) :: lst) [] l
       |> List.rev
   
-//let print (lst : 'a list) = 
-//  printf "\nLIST: \n"
-//  List.fold (fun r el -> print_any el
-//                         printf "\t"
-//                         0) 0 lst
-//  printf "\n"
-//  lst
-//  
-  
-  
-//let print_all an = 
-//    printf "\n"
-//    print_any an
-//    printf "\n"
-//    an 
-//let print1 (lst : 'a list) = 
-//  List.fold (fun r el -> print_any el
-//                         printf " "
-//                         0) 0 lst
-//  lst
-//  
-//let printSeq (s : 'a seq) = 
-//  Seq.fold (fun r el ->  print_any el
-//                         printf "\t"
-//                         0) 0 s
-//  printf "\n"
-//  s  
-//  
-//  
-  
-//let printSeqOfList (s : ('b* 'a list) seq) = 
-//  Seq.fold (fun r el ->  printf "("
-//                         print_any (first el)
-//                         printf ", "
-//                         print_any (second el)
-//                         printf ")\t"
-//                         0) 0 s
-//  printf "\n"
-//  s    
-//  
-//  
-//let printDicOfList (s : Dictionary<'b, 'a list>) = 
-//  Seq.fold (fun r (el : KeyValuePair<'b, 'a list>) ->  printf "("
-//                                                       print_any el.Key
-//                                                       printf ", "
-//                                                       print_any el.Value
-//                                                       printf ")\t"
-//                                                       0) 0 s
-//  printf "\n"
-//  s      
-//  
-//let printDicOfList1 (s : Dictionary<'b list, 'a>) = 
-//  Seq.fold (fun r (el : KeyValuePair<'b list, 'a>) ->  printf "("
-//                                                       print_any el.Key
-//                                                       printf ", "
-//                                                       print_any el.Value
-//                                                       printf ")\t"
-//                                                       0) 0 s
-//  printf "\n"
-//  s        
-//  
-//  
-//  
 
-//let printLst (lst : 'a list) = 
-//    List.fold(fun a b -> print_any b
-//                         printf "::"
-//                         a) () lst
-//
-//let printPair ((count,  lst) : (int * 'a list)) = 
-//    print_any count
-//    printf ", "
-//    printLst lst
-//  
-//let printDic (d : Dictionary<int, (int * 'a list)>) = 
-//    printf "\start printing dict: "  
-//    Seq.fold (fun a (kv : KeyValuePair<int, (int * 'a list)>) -> print_any kv.Key
-//                                                                 printf ": "
-//                                                                 printPair kv.Value
-//                                                                 printf "; " 
-//                                                                 a) () d
-//    
+let rec uintToBytes (v : uint32) num  res= 
+  match num with
+  | 4 -> res
+  | x -> res @ [((byte)(v >>> (8 * x)))]
+         |> uintToBytes v (x + 1)
+         
+let constructInt (l : byte list)= 
+  List.fold (fun res nxt -> (res <<< 8) + (int)nxt) 0 l
+
+let constructUint32 (l : byte list)= 
+  List.fold (fun res nxt -> (res <<< 8) + (uint32)nxt) 0u l
+
+let constructInt16 (l : byte list)= 
+  List.fold (fun res nxt -> (res <<< 8) + (int16)nxt) 0s l
+        
+let convertToBits (lst : byte list) = 
+    let rec byteToBits (bt : byte) num (res : int list) = 
+        match num with
+        | 0 -> res
+        | x ->byteToBits (bt >>> 1) (x - 1) (int(bt / 2uy) :: res)
+    let rec convert (l : byte list) res = 
+        match l with
+        | [] -> res
+        | (x :: xs) -> byteToBits x 8 []
+                       |> (@) (convert xs res)
+    convert lst []
+    
+let rec addNullBytes lst = 
+    match List.length lst with
+    | x when x < 4 -> lst @ [0uy]
+                      |> addNullBytes 
+    | _ -> lst
+    
+// Проверяет совпадение байтов из потоков
+let testEquals (reader1 : BinaryReader) (reader2 : BinaryReader) = 
+    let mutable readedBytes1 = reader1.ReadBytes(READER_BUFFER_SIZE)
+    let mutable readedBytes2 = reader2.ReadBytes(READER_BUFFER_SIZE)
+    let mutable equals = true;
+    let mutable readedCount = 0;
+    let rec listEquals (list1 : byte list) (list2 : byte list) =
+        match list1, list2 with
+        | x::xs, y::ys when x = y -> listEquals xs ys
+        | [], [] -> true
+        | _, _ -> false
+      
+    let rec arrayEquals (array1 : byte []) (array2 : byte []) = 
+        listEquals (List.of_array array1) (List.of_array  array2)
+    
+    while(equals && readedBytes1.Length > 0 && readedBytes2.Length = readedBytes1.Length) do
+      if arrayEquals readedBytes1 readedBytes2
+        then readedBytes1 <- reader1.ReadBytes(READER_BUFFER_SIZE)
+             readedBytes2 <- reader2.ReadBytes(READER_BUFFER_SIZE)
+             readedCount <- readedCount + readedBytes1.Length
+        else readedCount
+             |> Messages.notEqualsAt 
+             equals <- false
+    equals && readedBytes2.Length = readedBytes1.Length
+
+// Проверяет совпадение файлов   
+let fileEquals  (filename : string) (decodedName : string) = 
+    using(new BinaryReader(File.Open(filename, FileMode.Open)))
+        (fun reader -> using(new BinaryReader(File.Open(decodedName, FileMode.Open)))
+                          (fun reader2 -> testEquals reader reader2))
+    

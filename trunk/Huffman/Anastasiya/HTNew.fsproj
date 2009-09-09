@@ -30,7 +30,7 @@
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <StartArguments>-algorithm hf -in "G:\to_see\Tarja Turunen  - I Walk Alone.avi"   -out e:\result.txt -stat -action test</StartArguments>
+    <StartArguments>-algorithm ar -in e:\file.txt   -out e:\result.txt -stat -action test</StartArguments>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -41,16 +41,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.fs" />
     <Compile Include="Messages.fs" />
     <Compile Include="LangUtils.fs" />
+    <Compile Include="Interval.fs" />
     <Compile Include="CollectionUtil.fs" />
     <Compile Include="HuffmanTree.fs" />
     <Compile Include="ListBinaryConversion.fs" />
     <Compile Include="RLE.fs" />
     <Compile Include="ListBuffer.fs" />
     <Compile Include="CanonicalHuffmanAlgorithm.fs" />
-    <Compile Include="Main.fs" />
+    <Compile Include="HuffmanReading.fs" />
+    <Compile Include="BitBuffer.fs" />
+    <Compile Include="BitManager.fs" />
+    <Compile Include="ArifmeticReading.fs" />
     <Compile Include="CMLArgManager.fs" />
     <Compile Include="EntryPoint.fs" />
   </ItemGroup>

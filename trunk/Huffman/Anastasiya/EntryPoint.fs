@@ -6,18 +6,21 @@ let cmdArgs = System.Environment.GetCommandLineArgs()
 
 
     
-let secondOutput output =  output + "test";    
+let secondOutput output =  output + ".test";    
     
 let archive input output (alg : CMLArgManager.ArchiveType) (typ : CMLArgManager.ActionType)= 
     match alg, typ with
-    | CMLArgManager.Alrifmetic, CMLArgManager.Encode -> ()
-    | CMLArgManager.Alrifmetic, CMLArgManager.Decode -> ()
-    | CMLArgManager.Alrifmetic, CMLArgManager.Test -> ()
-    | CMLArgManager.Huffman, CMLArgManager.Encode  -> Main.makeArchive input output
-    | CMLArgManager.Huffman, CMLArgManager.Decode -> Main.decodeArchive input output
-    | CMLArgManager.Huffman, CMLArgManager.Test  -> Main.makeArchive input output
-                                                    Main.decodeArchive output (secondOutput output)
-                                                    Main.fileEquals input (secondOutput output)
+    | CMLArgManager.Alrifmetic, CMLArgManager.Encode -> ArifmeticReading.encodeArchive input output
+    | CMLArgManager.Alrifmetic, CMLArgManager.Decode -> ArifmeticReading.decodeArchive input output
+    | CMLArgManager.Alrifmetic, CMLArgManager.Test -> ArifmeticReading.encodeArchive input output
+                                                      ArifmeticReading.decodeArchive output (secondOutput output)
+                                                      LangUtils.fileEquals input (secondOutput output)
+                                                      |> Messages.testResult
+    | CMLArgManager.Huffman, CMLArgManager.Encode  -> HuffmanReading.makeArchive input output
+    | CMLArgManager.Huffman, CMLArgManager.Decode -> HuffmanReading.decodeArchive input output
+    | CMLArgManager.Huffman, CMLArgManager.Test  -> HuffmanReading.makeArchive input output
+                                                    HuffmanReading.decodeArchive output (secondOutput output)
+                                                    LangUtils.fileEquals input (secondOutput output)
                                                     |> Messages.testResult
                                                     
 let analize input output = ((double)(new FileInfo(output)).Length / (double)(new FileInfo(input)).Length)

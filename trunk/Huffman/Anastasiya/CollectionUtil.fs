@@ -60,3 +60,27 @@ let rec removeFirstElements (num : int) (lst : 'a list) =
     | n, [] -> []
 
                                                
+// Определяет верхнюю границу самого "верхнего" интервала в словаре. 
+let dicLength (d : Dictionary<byte, uint32 Interval.Interval>) = 
+    Seq.sortBy (fun (pair : KeyValuePair<byte, uint32 Interval.Interval>) -> pair.Key) d
+    |> Seq.to_list
+    |> LangUtils.takeLast
+    |> (fun (pair : KeyValuePair<byte, uint32 Interval.Interval>) -> 
+         pair.Value
+         |> Interval.top<uint32>)
+                                               
+// Находит в словаре символ, которому соответствует интервал, в который попадает указанное число                                           
+let find  (dict : Dictionary<byte, uint32 Interval.Interval>) (value : uint32)  = 
+    Seq.fold (
+        fun result (pair : KeyValuePair<byte, uint32 Interval.Interval>) -> 
+        if Interval.inInteval value pair.Value
+          then pair.Key
+          else result) 0uy dict                                               
+          
+// Превращаетсловарь частот в словарь "интервалов частот".          
+let convertWeights (newDic : Dictionary<byte, uint32 Interval.Interval>) (dic : Dictionary<byte, uint32>)  =
+    Seq.sortBy (fun (pair : KeyValuePair<byte, uint32>) -> pair.Key) dic
+    |> Seq.fold (fun res (pair : KeyValuePair<byte, uint32>) -> newDic.Add(pair.Key, Interval.Interval(res, res + pair.Value))
+                                                                res + pair.Value) 0u
+    newDic
+          
