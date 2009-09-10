@@ -41,35 +41,42 @@ let close (filestream : FileStream) (Buffer(lngth, lst) as buf : BitBuffer) =
     filestream.Write(toWrite, 0, Array.length toWrite)
 
 let rec insert (filestream : FileStream) someBit  (Buffer(lngth, lst) as buf : BitBuffer) = 
-    print_any someBit
-    printf " "
     match List.length lst with
     | x when x >= lngth -> flush filestream buf
                            |> insert filestream someBit
-    | x -> Buffer(lngth, lst @ [someBit])
+    | x -> printf " {bit "
+           print_any someBit
+           printf "} "
+           Buffer(lngth, lst @ [someBit])
     
     
 // Сброс известных битов в файл и дозапись "следующих инфертированных"    
 let rec dumpFollowed (dumpBit : (byte -> BitBuffer -> BitBuffer)) bit followed b =
+  printf "[%d]" followed
   match followed, bit with
   | 0, _ -> b
   | x, 0uy -> dumpBit 1uy b
-              |> dumpFollowed dumpBit bit (x - 1)
+              |> dumpFollowed dumpBit 0uy (x - 1)
   | x, 1uy -> dumpBit 0uy b
-              |> dumpFollowed dumpBit bit (x - 1)
+              |> dumpFollowed dumpBit 1uy (x - 1)
       
 // Процесс сужения интервала (при декодировании)    
 let rec dump (Interval.Interval(low, top) as interv : uint32 Interval.Interval) (followed : int) 
   (dumpBit : (byte -> BitBuffer -> BitBuffer)) (buf : BitBuffer) = 
+    printf "\n ----- followed: %d interval: " followed
+    print_any interv
     match low, top with
-    |l, t when t < Interval.I_HALF ->  dumpBit 0uy buf
+    |l, t when t < Interval.I_HALF ->  printf "  (1) "
+                                       dumpBit 0uy buf
                                        |> dumpFollowed dumpBit 0uy followed
                                        |> dump (Interval.doubling interv) 0 dumpBit
-    |l, t when l >= Interval.I_HALF -> buf
+    |l, t when l >= Interval.I_HALF -> printf "  (2) "
+                                       buf
                                        |> dumpBit 1uy 
                                        |> dumpFollowed dumpBit 1uy followed
                                        |> dump (Interval.doubling (Interval.Interval(low - Interval.I_HALF, top - Interval.I_HALF))) 0 dumpBit
     |l, t when l >= Interval.I_FIRST_QUATR && t < Interval.I_THIRD_QUATR -> 
+        printf "  (3) "
         buf 
         |> dump (Interval.doubling (Interval.Interval(low - Interval.I_FIRST_QUATR, top - Interval.I_FIRST_QUATR))) (followed + 1) dumpBit
     |_, _ -> (interv, buf, followed)                                                          

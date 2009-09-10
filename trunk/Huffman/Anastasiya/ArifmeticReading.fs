@@ -6,7 +6,7 @@ open System.Collections.Generic
 let BUFFER_SIZE = 4
 
 // Кодирует бит, сжимает интервал и начинает процесс "сброса" стационарных символов в файл и махинаций с интервалом
-let encode (bt : byte) (interval : uint32 Interval.Interval) (dic : Dictionary<byte, float Interval.Interval>) = 
+let encode (bt : byte) (interval : uint32 Interval.Interval) (dic : Dictionary<byte, double Interval.Interval>) = 
     dic.[bt]
     |> Interval.contract interval 
     |> BitBuffer.dump 
@@ -14,7 +14,7 @@ let encode (bt : byte) (interval : uint32 Interval.Interval) (dic : Dictionary<b
     
     
 // Процесс чтения и кодирования
-let read (reader : BinaryReader) (filestream : FileStream) (dic : Dictionary<byte, float Interval.Interval>) =
+let read (reader : BinaryReader) (filestream : FileStream) (dic : Dictionary<byte, double Interval.Interval>) =
   let mutable readedbutes = reader.ReadBytes(BUFFER_SIZE)
   let mutable buf = BitBuffer.Buffer(BitBuffer.BIT_BUFFER_SIZE, [])
   let mutable currentInterval = Interval.initialInterval
@@ -24,12 +24,15 @@ let read (reader : BinaryReader) (filestream : FileStream) (dic : Dictionary<byt
   let encodeBit bit interval dict followed buffer = 
      encode bit interval dict followed (BitBuffer.insert filestream) buffer
      
-  let endEncoding (Interval.Interval(low, top) : uint32 Interval.Interval) followed (dumpBit : (byte -> BitBuffer.BitBuffer -> BitBuffer.BitBuffer)) buffer = 
+  let endEncoding (Interval.Interval(low, top) as i : uint32 Interval.Interval) followed (dumpBit : (byte -> BitBuffer.BitBuffer -> BitBuffer.BitBuffer)) buffer = 
      match low with
      | x when x < Interval.I_FIRST_QUATR -> dumpBit 0uy buffer
-                                            |> BitBuffer.dumpFollowed dumpBit 0uy followed
+                                            |> BitBuffer.dumpFollowed dumpBit 0uy (followed + 1)
      | _ -> dumpBit 1uy buffer
-            |> BitBuffer.dumpFollowed dumpBit 1uy followed
+            |> BitBuffer.dumpFollowed dumpBit 1uy (followed + 1)
+  let randomDicSymbol (d : Dictionary<byte, double Interval.Interval>) = 
+    Seq.hd d
+    |> (fun (pair : KeyValuePair<byte, double Interval.Interval>) -> pair.Key)
 
   while(readedbutes.Length > 0) do
     for bt in readedbutes do
@@ -38,6 +41,7 @@ let read (reader : BinaryReader) (filestream : FileStream) (dic : Dictionary<byt
       buf <- (fun ((a, b, c) : (uint32 Interval.Interval * BitBuffer.BitBuffer* int)) -> b) res
       followedBits <- (fun ((a, b, c) : (uint32 Interval.Interval * BitBuffer.BitBuffer* int)) -> c) res
     readedbutes <- reader.ReadBytes(BUFFER_SIZE)
+
   buf <- endEncoding currentInterval (followedBits + 1) (BitBuffer.insert filestream) buf
   BitBuffer.close filestream buf
   filestream.Flush()
@@ -57,25 +61,24 @@ let readInitialDictionary (reader : BinaryReader) =
 
 
 // Конкретно разбирает способы расширения(при декодировании) в зависимости от того, какой интервал на данную секунду         
-let rec dumpBits (nextBit : uint32) (value : uint32) (Interval.Interval(low, top) as interv : uint32 Interval.Interval) = 
+let rec dumpBits (manager : BitManager.BitManager) (value : uint32) (Interval.Interval(low, top) as interv : uint32 Interval.Interval) = 
     match low, top with
     | _, x when x < Interval.I_HALF ->
+        let res = BitManager.nextBit manager
         interv 
         |> Interval.doubling
-        |> dumpBits nextBit (2u * value)
+        |> dumpBits ((fun (a, b) -> b) res) (2u * value + uint32((fun (a, b) -> a) res))
     | x, _ when x >= Interval.I_HALF -> 
+        let res = BitManager.nextBit manager
         Interval.Interval(low - Interval.I_HALF, top - Interval.I_HALF)
         |> Interval.doubling
-        |> dumpBits nextBit (2u * (value - Interval.I_HALF) + nextBit)
-    | x, _ when x >= Interval.I_HALF -> 
-        Interval.Interval(low - Interval.I_HALF, top - Interval.I_HALF)
-        |> Interval.doubling
-        |> dumpBits nextBit (2u * (value - Interval.I_HALF) + nextBit)
+        |> dumpBits ((fun (a, b) -> b) res) (2u * (value - Interval.I_HALF) + uint32((fun (a, b) -> a) res))
     | x, y when x >= Interval.I_FIRST_QUATR && y < Interval.I_THIRD_QUATR -> 
+        let res = BitManager.nextBit manager
         Interval.Interval(low - Interval.I_FIRST_QUATR, top - Interval.I_FIRST_QUATR)
         |> Interval.doubling
-        |> dumpBits nextBit (2u * (value - Interval.I_FIRST_QUATR) + nextBit)
-    | _, _ -> (value, interv)
+        |> dumpBits ((fun (a, b) -> b) res) (2u * (value - Interval.I_FIRST_QUATR) + uint32((fun (a, b) -> a) res))
+    | _, _ -> (value, interv, manager)
 
 // Читает файл и декодирует      
 let decode reader (writer : FileStream)(readDict : (BinaryReader -> Dictionary<byte, uint32>))   =
@@ -84,20 +87,19 @@ let decode reader (writer : FileStream)(readDict : (BinaryReader -> Dictionary<b
     let dic = CollectionUtil.convertWeights (new Dictionary<byte, uint32 Interval.Interval>()) startDict
     let dicLength = CollectionUtil.dicLength dic
      
-                                      
     // Расширение интервала          
-    let resize (nextBit : uint32 ) ((value, interv) as pair  : (uint32 * uint32 Interval.Interval)) (decoded : byte) = 
+    let resize  ((value, interv, manager) as pair  : (uint32 * uint32 Interval.Interval * BitManager.BitManager)) (decoded : byte) = 
         dic.[decoded]
-        |> Interval.mult (1.0 / float(dicLength))
+        |> Interval.mult (1.0 / double(dicLength))
         |> Interval.contract interv
-        |> dumpBits nextBit value
+        |> dumpBits manager value
      
     // Находим символ и расширяем интервал              
-    let decodeSymbol ((value, interv) as pair  : (uint32 * uint32 Interval.Interval)) (w : byte -> byte) (nextBit : uint32)= 
-      uint32((float((value - Interval.low<uint32> interv) + 1u) * float(dicLength) - 1.0 )/ float(Interval.length interv) )
+    let decodeSymbol ((value, interv, manager) as pair  : (uint32 * uint32 Interval.Interval* BitManager.BitManager)) (w : byte -> byte) = 
+      uint32(((double((value - Interval.low<uint32> interv)) + 1.0) * double(dicLength) - 1.0 )/ Interval.length interv)
       |> CollectionUtil.find dic
       |> w
-      |> resize nextBit pair
+      |> resize pair
     
     let mutable cutrrentInterval = Interval.initialInterval
     let readedBytes = reader.ReadBytes((Interval.BIT_COUNT + 1) / 8)
@@ -108,17 +110,11 @@ let decode reader (writer : FileStream)(readDict : (BinaryReader -> Dictionary<b
     let writing bt = writer.WriteByte(bt)
                      bt
     let mutable manager = BitManager.empty reader
-    let nextBit =
-        let res = BitManager.nextBit manager
-        manager <- (fun (a, b) -> b) res
-        (fun (a, b) -> a) res
-        |> uint32
-        
     // Собственно сам алгоритм    
-    let mutable res = decodeSymbol (readedBytes, cutrrentInterval) writing nextBit
+    let mutable res = decodeSymbol (readedBytes, cutrrentInterval, manager) writing
     lengthCounter <- lengthCounter + 1u
     while(lengthCounter < dicLength) do
-      res <- decodeSymbol res writing nextBit 
+      res <- decodeSymbol res writing 
       lengthCounter <- lengthCounter + 1u
     writer.Flush()  
  

@@ -58,6 +58,9 @@ let rec uintToBytes (v : uint32) num  res=
   | x -> res @ [((byte)(v >>> (8 * x)))]
          |> uintToBytes v (x + 1)
          
+
+         
+         
 let constructInt (l : byte list)= 
   List.fold (fun res nxt -> (res <<< 8) + (int)nxt) 0 l
 
@@ -67,11 +70,12 @@ let constructUint32 (l : byte list)=
 let constructInt16 (l : byte list)= 
   List.fold (fun res nxt -> (res <<< 8) + (int16)nxt) 0s l
         
+
 let convertToBits (lst : byte list) = 
     let rec byteToBits (bt : byte) num (res : int list) = 
         match num with
         | 0 -> res
-        | x ->byteToBits (bt >>> 1) (x - 1) (int(bt / 2uy) :: res)
+        | x ->byteToBits (bt >>> 1) (x - 1) (int(bt % 2uy) :: res)
     let rec convert (l : byte list) res = 
         match l with
         | [] -> res

@@ -71,6 +71,8 @@ let dicLength (d : Dictionary<byte, uint32 Interval.Interval>) =
                                                
 // Находит в словаре символ, которому соответствует интервал, в который попадает указанное число                                           
 let find  (dict : Dictionary<byte, uint32 Interval.Interval>) (value : uint32)  = 
+    printf "find :"
+    print_any value
     Seq.fold (
         fun result (pair : KeyValuePair<byte, uint32 Interval.Interval>) -> 
         if Interval.inInteval value pair.Value

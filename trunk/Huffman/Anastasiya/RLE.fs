@@ -68,8 +68,6 @@ let readList32 (reader : BinaryReader) =
     while(readedBytes.Length = RLE32_SEGMENT) do
         result <- ((byte)readedBytes.[0], constructInt16 readedBytes) :: result
         readedCount <- readedCount + (constructInt16 readedBytes)
-        print_any readedBytes
-        print_any readedCount
         if readedCount < RLE32_LENGTH 
           then 
             readedBytes <- reader.ReadBytes(RLE32_SEGMENT)
@@ -102,8 +100,6 @@ let decompress32 (lst : (byte * int16) list) =
                                   then dic.Add(res, nxt) 
                                   else ()
                                 res + 1uy) 0uy 
-    LangUtils.printDic dic
-    printf "\n\n"
     dic         
             
 let decompress (lst : (int * int)  list) = 

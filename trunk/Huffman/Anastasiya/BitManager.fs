@@ -23,6 +23,6 @@ let rec nextBit (Manager(lst, reader) : BitManager) =
     | [] -> readNext reader
             |> notEmpty
             |> nextBit
-    | (x :: xs) -> (x, Manager(xs, reader))
+    | (x :: xs) ->(x, Manager(xs, reader))
     
 let construct reader lst = Manager(lst, reader)    
