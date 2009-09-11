@@ -1,3 +1,7 @@
 ФИО, email (в лексикографическом порядкке)
+
+Алексеев Илья Владимирович, alekseev1989@gmail.com
+Зольников Павел Евгеньевич, pasha.zolnikov@gmail.com
+
 Зольников Павел Евгеньевич, pasha.zolnikov@gmail.com
 Карымов Антон Вячеславович, antonkarymov@gmail.com
