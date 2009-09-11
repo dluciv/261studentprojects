@@ -1,0 +1,177 @@
+\documentclass{beamer}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,mathtext}
+\usepackage{cite,enumerate,float,indentfirst}
+\title{Курсовая работа: \\ \it Разработка АРМ "Администратор" для Медицинской Информационной Системы "Ариадна"}
+\author{Солодкая Анастасия Сергеевна, 261 гр.}
+\date{11 мая 2009}
+\institute{Санкт-Петербургский Государственный Университет \it Математико-Механический факультет}
+\usetheme{Warsaw}
+
+%%\usecolortheme{beaver}
+\ProvidesPackageRCS $Header: /cvsroot/latex-beamer/latex-beamer/themes/color/beamercolorthemebeaver.sty,v 1.2 2007/01/28 20:48:24 tantau Exp $
+
+
+\mode<presentation>
+
+\definecolor{darkred}{rgb}{0.8,0,0}
+
+\setbeamercolor{section in toc}{fg=black,bg=white}
+\setbeamercolor{alerted text}{fg=darkred!80!gray}
+\setbeamercolor*{palette primary}{fg=darkred!60!black,bg=gray!30!white}
+\setbeamercolor*{palette secondary}{fg=darkred!70!black,bg=gray!15!white}
+\setbeamercolor*{palette tertiary}{bg=darkred!80!black,fg=gray!10!white}
+\setbeamercolor*{palette quaternary}{fg=darkred,bg=gray!5!white}
+
+\setbeamercolor*{sidebar}{fg=darkred,bg=gray!15!white}
+
+\setbeamercolor*{palette sidebar primary}{fg=darkred!10!black}
+\setbeamercolor*{palette sidebar secondary}{fg=white}
+\setbeamercolor*{palette sidebar tertiary}{fg=darkred!50!black}
+\setbeamercolor*{palette sidebar quaternary}{fg=gray!10!white}
+
+%\setbeamercolor*{titlelike}{parent=palette primary}
+\setbeamercolor{titlelike}{parent=pallette primary,fg=darkred}
+\setbeamercolor{frametitle}{bg=gray!10!white}
+\setbeamercolor{frametitle right}{bg=gray!60!white}
+
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+
+\mode
+<all>
+ \setbeamercovered{transparent}
+\begin{document}
+\maketitle
+
+\section*{План}
+
+\begin{frame}
+  \transdissolve[duration=0.2]
+  \frametitle{О чем пойдет речь...}
+  \tableofcontents[pausesections]
+\end{frame}
+
+\section{Общие сведения}
+
+\subsection*{План}
+
+\begin{frame}
+  \transdissolve[duration=0.2]
+  \frametitle{О чем пойдет речь...}
+  \tableofcontents[currentsection]
+\end{frame}
+
+\subsection{Введение}
+
+\begin{frame}
+
+Данная работа была проведена в рамках разработки пакета программ, поставляемого  ООО "Решение" на рынок медицинских систем. Среди пользователей системы присутствтвует знаменитый Санкт-Петербургский "Первый Медицинский". Система взаимоействия поставляемых программ друг между другом довольно сложна, структура данных, хранящихся в базе  запутанна и нуждается в упорядочивании и некой системе, позволяющей легко управлять хранящимися общими сущностями человеку, слабо знакомому с общей внутренней структурой. К таким сущностям относятся пользователи, роли и рабочие места, права, параметры, информация о приложениях и многое другое. С этой целью в общем пакете поставляется приложение, позволяющее осуществлять требуемые действия с минимальными затратами со стороны пользователя.
+\end{frame}
+
+\subsection{Структура поставляемого пакета программ}
+
+\begin{frame}
+
+\begin{itemize}
+\item Система Отображения Информации (СОИ)
+
+\item {\bfМедицинские Информационные Системы (МИС Ариадна)}
+\begin{itemize}
+\item Общие приложения  {\tiny (ArmAdminReports, ArmViewer)}
+\item Справочная подсистема  {\tiny ({\textbf ArmAdministrator}, ArmAgrs, ArmPrices etc)}
+\item Регистрационная подсистема  {\tiny (ArmSchedule, ArmRegistry,  etc)}
+\item Медицинская подсистема {\tiny (ArmEndoscopy, ArmAmbDoctor,  etc)}
+\item Финансовая подсистема {\tiny (ArmFinance, ArmPayOffice,  etc)}
+\item Статистика  {\tiny (ArmStatAmb, ArmViewer)}
+\item Складская подсистема  {\tiny (ArmAdminReports, ArmStatStac,  etc)}
+\item Конверторы  {\tiny (ArmStorage, ArmApteka,  etc)}
+\end{itemize}
+
+\item Информационная система сбора платежей «НЕВОД»
+\item Торгово-финансовая система  «Vanity»
+\end{itemize}
+\end{frame}
+
+\subsection{Технические характеристики системы}
+
+\begin{frame}
+
+\begin{itemize}
+
+\item Технические характеристики системы:
+\begin{itemize}
+\item Система использует современные SQL ANSI-92 совместимые СУБД (Oracle 8i, MS SQLServer), обеспечивающие высокую надежность, высокую скорость работы, практически неограниченный объем базы данных, позволяющие хранить большие объемы информации в течение длительного промежутка времени и обеспечивать быстрый доступ к ним. Общий объем данных в историях лечения может достигать десятков миллионов записей.
+\item Система использует трехуровневую архитектуру клиент-сервер.
+\item Клиентские рабочие места разработаны на MS Visual C++, MFC и собственной интерфейсной библиотеке.
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+
+\section{Постановка задачи}
+
+\begin{frame}
+  \transdissolve[duration=0.2]
+  \frametitle{О чем пойдет речь...}
+  \tableofcontents[currentsection]
+\end{frame}
+
+\subsection{Описание приложения}
+
+\begin{frame}
+\begin{center}\bf\huge АРМ "Администратор"\end{center}
+Основная задача приложения - поддержание работы системы и безопасности информации. 
+\begin{itemize}
+\item Приложение призвано облегчить работу администраторов системы и снять основной груз 
+отслеживания внутрисистемных связей и обхода "подводных камней" базы данных с них. 
+\item СУБД: Oracle 8i
+\item Языки разработки: C++, Java; Oracle PL/SQL, SQL
+\end{itemize}
+\end{frame}
+
+\subsection{Общая постановка задачи}
+
+\begin{frame}
+Усовершенствовать текущую версию АРМ "Администратор", исправив имеющиеся ошибки, 
+а так же обеспечить новую функциональность, соответствующую текущим потребностям администратора. 
+Кроме того, необходимо предоставить более "современный" и привлекательный интерфейс, способный
+облегчить задачу пользователю. \\
+Активная версия АРМ "Администратор" написана на языке С++. Разработку необходимо провести
+с использованием Java SE, Oracle PL/SQL, SQL
+\end{frame}
+
+\section{Решение задачи}
+
+\begin{frame}
+  \transdissolve[duration=0.2]
+  \frametitle{О чем пойдет речь...}
+  \tableofcontents[currentsection]
+\end{frame}
+
+\subsection{Результаты}
+\begin{frame}
+\begin{itemize}
+\item Усовершенствован механизм работы с пользователями и рабочими местами. Внесена новая концепция ролей. 
+\item Изменена внутренняя структура организации прав и фильтров.
+\item Изменена внутренняя структура организации парамеров. Организована гибкая система назначения параметров на все приложения системы, позволяющая определить индивиуальные параметры для каждого пользователя, роли или рабочего места и определить их приоритеты.
+\item Разработан более привлекательный интерфейс, сокращающий количество открывающихся перед пользователем окон и позволяющий сделать наиболее простые действия в два щелчка мыши.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+Итак, 
+\begin{itemize}
+\item Работа над приложением не окончена. Ввиду постоянной смены требований и расширением возможностей общей системы МИС Ариадна, довольно часто появляются новые блоки функциональности, требующие 
+реализации.
+\item Работающие версии приложения установлены у двух заказчиков в Санкт-Петербурге и в Ставрополе. 
+\end{itemize}
+\end{frame}
+
+
+\end{document}
