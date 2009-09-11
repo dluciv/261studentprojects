@@ -1,0 +1,16 @@
+#summary First task: Regular Expressions and Automations
+
+= Regular Expressions =
+
+Subtasks:
+ * Automaton representation
+ * Automaton builder
+ * Automaton executor
+ * Visualizers
+  * Graphvis - graphical expressions
+  * TeX - tables printing
+ * Build determinized automaton
+
+= Antipattern =
+_Form first development_ : 
+"I like Visual Studio it helps me make applications without knowing what I am doing"

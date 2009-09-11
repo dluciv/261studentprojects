@@ -1,0 +1,27 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+Group consists of: 
+
+ * A.S. Solodkaya
+ * D.A. Kolyanov
+ * E.V. Volkova
+
+
+= Details =
+
+
+= TODO =
+
+ * write graph-walk
+ * write table-walk
+ * make parser
+ * make utilite for writing to tex-file
+
+
+ * ADD ALL COMMENTS AND JAVADOC TO OWN METHODS, CLASSES AND FILES.
+    http://java.sun.com/j2se/javadoc/writingdoccomments/
+
+ * FORMAT ALL YOUR CODE
+    http://java.sun.com/docs/codeconv/
+
