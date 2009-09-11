@@ -6,33 +6,31 @@ open System.Collections.Generic
 let BUFFER_SIZE = 4
 
 // Кодирует бит, сжимает интервал и начинает процесс "сброса" стационарных символов в файл и махинаций с интервалом
-let encode (bt : byte) (interval : uint32 Interval.Interval) (dic : Dictionary<byte, double Interval.Interval>) = 
+let encode (bt : byte) (interval : uint32 Interval.Interval) commonWeight (dic : Dictionary<byte, uint32 Interval.Interval>) = 
     dic.[bt]
-    |> Interval.contract interval 
+    |> Interval.contract commonWeight interval 
     |> BitBuffer.dump 
     
     
     
 // Процесс чтения и кодирования
-let read (reader : BinaryReader) (filestream : FileStream) (dic : Dictionary<byte, double Interval.Interval>) =
+let read (reader : BinaryReader) (filestream : FileStream) (dic : Dictionary<byte, uint32 Interval.Interval>) =
   let mutable readedbutes = reader.ReadBytes(BUFFER_SIZE)
   let mutable buf = BitBuffer.Buffer(BitBuffer.BIT_BUFFER_SIZE, [])
   let mutable currentInterval = Interval.initialInterval
   let mutable followedBits = 0
+  let commonWeight = CollectionUtil.commonWeight dic
   
   
   let encodeBit bit interval dict followed buffer = 
-     encode bit interval dict followed (BitBuffer.insert filestream) buffer
+     encode bit interval commonWeight dict followed (BitBuffer.insert filestream) buffer
      
   let endEncoding (Interval.Interval(low, top) as i : uint32 Interval.Interval) followed (dumpBit : (byte -> BitBuffer.BitBuffer -> BitBuffer.BitBuffer)) buffer = 
      match low with
      | x when x < Interval.I_FIRST_QUATR -> dumpBit 0uy buffer
                                             |> BitBuffer.dumpFollowed dumpBit 0uy (followed + 1)
      | _ -> dumpBit 1uy buffer
-            |> BitBuffer.dumpFollowed dumpBit 1uy (followed + 1)
-  let randomDicSymbol (d : Dictionary<byte, double Interval.Interval>) = 
-    Seq.hd d
-    |> (fun (pair : KeyValuePair<byte, double Interval.Interval>) -> pair.Key)
+            |> BitBuffer.dumpFollowed dumpBit 1uy followed
 
   while(readedbutes.Length > 0) do
     for bt in readedbutes do
@@ -90,13 +88,12 @@ let decode reader (writer : FileStream)(readDict : (BinaryReader -> Dictionary<b
     // Расширение интервала          
     let resize  ((value, interv, manager) as pair  : (uint32 * uint32 Interval.Interval * BitManager.BitManager)) (decoded : byte) = 
         dic.[decoded]
-        |> Interval.mult (1.0 / double(dicLength))
-        |> Interval.contract interv
+        |> Interval.div dicLength interv
         |> dumpBits manager value
      
     // Находим символ и расширяем интервал              
     let decodeSymbol ((value, interv, manager) as pair  : (uint32 * uint32 Interval.Interval* BitManager.BitManager)) (w : byte -> byte) = 
-      uint32(((double((value - Interval.low<uint32> interv)) + 1.0) * double(dicLength) - 1.0 )/ Interval.length interv)
+      uint32(((int64((value - Interval.low<uint32> interv)) + 1L) * int64(dicLength) - 1L )/ Interval.length interv)
       |> CollectionUtil.find dic
       |> w
       |> resize pair

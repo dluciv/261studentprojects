@@ -16,19 +16,18 @@ type 'a Interval = Interval of 'a * 'a
 
 let low<'a> (Interval(l, t) : 'a Interval) = l    
 let top<'a> (Interval(l, t) : 'a Interval) = t    
-let length (Interval(l, t) : uint32 Interval) = double(t - l) + 1.0
+let length (Interval(l, t) : uint32 Interval) = int64(t - l) + 1L
 let initialInterval = Interval(ZERO, TOP_VALUE)
 
-let contract (Interval(low1, top1) as i: uint32 Interval) (Interval(low2, top2) as i1 : double Interval) =
-    Interval(low1 + (uint32)(length i * low2), low1 + (uint32)(length i * top2 - 1.0))
+let contract (coomonWeight : uint32 ) (Interval(low1, top1) as i: uint32 Interval) (Interval(low2, top2) as i1 : uint32 Interval) =
+    Interval(low1 + uint32(length i * int64(low2)/ int64(coomonWeight)), low1 - 1u + uint32(length i * int64(top2)/int64(coomonWeight)))
     
 let doubling (Interval(low, top) : uint32 Interval) = 
     Interval(2u * low, 2u * top + 1u)
     
-let mult (value : double)(Interval(low, top) as i : uint32 Interval) =
-    Interval(value * (double low), value * (double top))  
-let div (value : double)(Interval(low, top) as i : uint32 Interval) =
-    Interval( value / (double low) ,value / (double top))  
+
+let div (commonWeight : uint32)(Interval(lc, tc) as current : uint32 Interval) (Interval(low, top) as symbol : uint32 Interval) =
+    Interval(uint32(int64(lc) + int64(low) * (length current)/ int64(commonWeight)),uint32(int64(lc) + int64(top) * (length current)/ int64(commonWeight))-1u)  
 
 let inInteval (value : uint32) (Interval(low, top) : uint32 Interval) = 
     low <= value && top > value
@@ -45,13 +44,14 @@ let makeIntervalDictionary  (d : Dictionary<byte, uint32>)=
     Seq.fold (fun result (pair : KeyValuePair<byte, uint32>) -> result + pair.Value) 0u   
                     
   let countCompressiveInterval (bt : byte) (dic : Dictionary<byte, uint32>) = 
-     let makeInterval (weight : uint32) = Interval((double)weight / (double)(countSummWeight dic), double(weight + dic.[bt]) / (double)(countSummWeight dic))
+     let makeInterval (weight : uint32) = Interval(weight, weight + dic.[bt])
      countSymbolWeight bt dic
      |> makeInterval
 
-  let convert (newDict : Dictionary<byte, double Interval>) (dict : Dictionary<byte, uint32>) = 
-    Seq.fold (fun (a : Dictionary<byte, double Interval>)  (pair : KeyValuePair<byte, uint32>) -> 
+  let convert (newDict : Dictionary<byte, uint32 Interval>) (dict : Dictionary<byte, uint32>) = 
+    Seq.fold (fun (a : Dictionary<byte, uint32 Interval>)  (pair : KeyValuePair<byte, uint32>) -> 
                 a.Add(pair.Key, countCompressiveInterval pair.Key dict)
                 a) newDict  dict   
 
-  convert (new Dictionary<byte, double Interval>()) d
+  convert (new Dictionary<byte, uint32 Interval>()) d
+  

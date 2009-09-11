@@ -16,23 +16,6 @@ let concatTree (t1 : 'a Tree) (t2 : 'a Tree) =
     |t, NullTree -> t
     |_, _ -> TreeNode (t1, t2)
     
-//// Печатает дерево в удобочитаемом виде. Возвращает исходное дерево.    
-//let rec printTree (tree : 'a Tree) = 
-//    let rec printNode t n = 
-//        match t with
-//        | NullTree -> printf("EMPTY\n")
-//        | TreeNode (x, y) ->  print_any(n)
-//                              printf(") ")
-//                              print_any("Node")
-//                              printf("\n")
-//                              printNode x (n + 1)
-//                              printNode y (n + 1)
-//        | TreeLeaf x -> print_any(n)
-//                        printf(") ")
-//                        print_any(x)
-//                        printf("\n")
-//    printNode tree 0 
-//    tree
 
 // Вставляет пару дерево-количество вхождений в аналогичный список с учетом сортировки а порядке 
 // увеличения количеств вхождений. 
@@ -64,7 +47,7 @@ let rec buildTree<'a> (l : ('a Tree* int) list) =
 let data (tree : 'a Tree) = 
   match tree with
   | TreeLeaf(d) -> d
-  | _ -> failwith "tree error"
+  | _ -> failwith Messages.internalTreeError
     
 
 

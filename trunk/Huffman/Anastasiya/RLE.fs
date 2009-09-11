@@ -51,8 +51,8 @@ let readList (reader : BinaryReader) =
             readedBytes <- [||]
     
     match readedCount with 
-    | c when c < STANDART_RLE_LENGTH && readedBytes.Length < STANDART_RLE_SEGMENT -> failwith "error reading dictionary (incomplete length)"
-    | c when c > STANDART_RLE_LENGTH -> failwith "error reading dictionary (more then 256)"
+    | c when c < STANDART_RLE_LENGTH && readedBytes.Length < STANDART_RLE_SEGMENT -> failwith Messages.errorReadingDictionary
+    | c when c > STANDART_RLE_LENGTH -> failwith Messages.errorReadingDictionary
     | c -> List.rev result;
     
 let readList32 (reader : BinaryReader) = 
@@ -75,8 +75,8 @@ let readList32 (reader : BinaryReader) =
             readedBytes <- [||]
     
     match readedCount with 
-    | c when c < RLE32_LENGTH && readedBytes.Length < RLE32_SEGMENT -> failwith "error reading dictionary (incomplete length)"
-    | c when c > RLE32_LENGTH -> failwith "error reading dictionary (more then 2048)"
+    | c when c < RLE32_LENGTH && readedBytes.Length < RLE32_SEGMENT -> failwith Messages.errorReadingDictionary
+    | c when c > RLE32_LENGTH -> failwith Messages.errorReadingDictionary
     | c -> List.rev result;
     
             

@@ -30,7 +30,7 @@
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <StartArguments>-algorithm ar -in e:\file.txt   -out e:\result.txt -stat -action test</StartArguments>
+    <StartArguments>-algorithm ar -in e:\file.txt   -out "E:\Documents and Settings\Admin\Мои документы\Visual Studio 2008\Projects\HTNew\HTNew\bin\Debug\res\tests\file.txt.ar" -stat -action test</StartArguments>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -41,7 +41,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.fs" />
     <Compile Include="Messages.fs" />
     <Compile Include="LangUtils.fs" />
     <Compile Include="Interval.fs" />

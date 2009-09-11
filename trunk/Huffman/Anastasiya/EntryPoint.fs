@@ -15,16 +15,32 @@ let archive input output (alg : CMLArgManager.ArchiveType) (typ : CMLArgManager.
     | CMLArgManager.Alrifmetic, CMLArgManager.Test -> ArifmeticReading.encodeArchive input output
                                                       ArifmeticReading.decodeArchive output (secondOutput output)
                                                       LangUtils.fileEquals input (secondOutput output)
-                                                      |> Messages.testResult
+                                                      |> Messages.testResult input (secondOutput output)
     | CMLArgManager.Huffman, CMLArgManager.Encode  -> HuffmanReading.makeArchive input output
     | CMLArgManager.Huffman, CMLArgManager.Decode -> HuffmanReading.decodeArchive input output
     | CMLArgManager.Huffman, CMLArgManager.Test  -> HuffmanReading.makeArchive input output
                                                     HuffmanReading.decodeArchive output (secondOutput output)
                                                     LangUtils.fileEquals input (secondOutput output)
-                                                    |> Messages.testResult
+                                                    |> Messages.testResult input (secondOutput output)
                                                     
 let analize input output = ((double)(new FileInfo(output)).Length / (double)(new FileInfo(input)).Length)
                            |> Messages.statistics
+
+let testInputNotEmpty input = 
+    if (new FileInfo(input)).Length = 0L
+      then
+        Messages.emptyInput
+        exit(0)
+      else
+        ()
+
+let testInputExists input = 
+    if (new FileInfo(input)).Exists 
+      then 
+        ()
+      else
+        Messages.inputNotExists input
+        exit(1)
                                                         
 let showStat input output (show : CMLArgManager.ShowStats) (action : CMLArgManager.ActionType) = 
     match show, action with
@@ -35,10 +51,10 @@ let showStat input output (show : CMLArgManager.ShowStats) (action : CMLArgManag
 
 let  main = 
     let param = CMLArgManager.parse cmdArgs
-    archive (CMLArgManager.getInputFileName param) (CMLArgManager.getOutputFileName param)
-      (CMLArgManager.getArchiveType param) (CMLArgManager.getActionType param)
-    showStat (CMLArgManager.getInputFileName param) (CMLArgManager.getOutputFileName param)
-      (CMLArgManager.isShowStats param) (CMLArgManager.getActionType param)
+    testInputExists param.inputFile
+    testInputNotEmpty param.inputFile
+    archive param.inputFile param.outputFile param.archiveType param.actionType
+    showStat param.inputFile param.outputFile param.showStat param.actionType
       
       
 main      

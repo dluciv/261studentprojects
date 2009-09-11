@@ -10,6 +10,7 @@ let empty reader = Manager([], reader)
 let readNext (reader : BinaryReader) = 
     let read = reader.ReadBytes(BUFFER_SIZE)
                |> List.of_array
+               |> List.rev
                |> LangUtils.convertToBits
 
     Manager(read, reader)

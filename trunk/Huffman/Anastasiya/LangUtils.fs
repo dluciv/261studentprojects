@@ -20,7 +20,8 @@ let take (n : int) (lst : 'a list)=
     match num, l with
     | 0, _ -> result
     | x, (y :: ys) when x > 0 -> take_ ys (x - 1) (result @ [y])
-    | _, _ -> failwith "internal error <take>"
+    | _, _ -> Messages.internalError "<take>"
+              |> failwith
     
   take_ lst n []
 
@@ -29,7 +30,8 @@ let takeFromNth (n : int) (lst : 'a list) =
     match num, l with
     |0, ys -> ys
     |x, (y :: ys) when x > 0 -> take_ ys (x - 1) 
-    |_, _ -> failwith "internal error <takeNth>"
+    |_, _ -> Messages.internalError "<takeFromNth>"
+             |> failwith
     
   take_ lst n
   

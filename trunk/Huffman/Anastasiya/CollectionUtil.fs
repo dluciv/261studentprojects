@@ -71,8 +71,6 @@ let dicLength (d : Dictionary<byte, uint32 Interval.Interval>) =
                                                
 // Находит в словаре символ, которому соответствует интервал, в который попадает указанное число                                           
 let find  (dict : Dictionary<byte, uint32 Interval.Interval>) (value : uint32)  = 
-    printf "find :"
-    print_any value
     Seq.fold (
         fun result (pair : KeyValuePair<byte, uint32 Interval.Interval>) -> 
         if Interval.inInteval value pair.Value
@@ -86,3 +84,9 @@ let convertWeights (newDic : Dictionary<byte, uint32 Interval.Interval>) (dic : 
                                                                 res + pair.Value) 0u
     newDic
           
+          
+let commonWeight (dic : Dictionary<byte, uint32 Interval.Interval>) = 
+  Seq.sortBy (fun (pair : KeyValuePair<byte, uint32 Interval.Interval>) -> -int(pair.Key)) dic
+  |> Seq.hd
+  |> fun (pair : KeyValuePair<byte, uint32 Interval.Interval>) -> pair.Value
+  |> Interval.top
