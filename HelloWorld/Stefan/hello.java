@@ -1,4 +1,7 @@
-
+/*
+	Hello World
+	Stefan Bojarovski (c) 2009
+*/
 public class hello {
 
 	/**
