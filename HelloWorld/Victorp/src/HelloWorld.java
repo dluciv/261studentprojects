@@ -1,3 +1,8 @@
+/*
+ * Hello, Java!
+ * Victor Polozov (c) 2009
+ */
+
 import java.lang.System;
 
 public class HelloWorld {
