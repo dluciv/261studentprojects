@@ -42,10 +42,8 @@ public class AstNode {
         if (type == TYPE_QUESTION)
             result+= "Mult(0 or 1)(" + subNodes[0].toString() + ")";
         
-        result += "->";
-        
         if (next != null)
-            result += next.toString();
+            result += "->" + next.toString();
         
         return result;
     }
