@@ -12,7 +12,9 @@ import java.text.ParseException;
  *
  * Current gramatics.
  * alp:=a,b,c,d,...,0,1,...9,\\,\., etc
- * var:=alp|var+var|(var)
+ * var:=alp|var+var|(var)|cycle
+ * node:=(var)|alp|cycle
+ * cycle:=node(*|+|?)
  */
 public class AstBuilder {
 
@@ -36,28 +38,30 @@ public class AstBuilder {
             prev.next = res;
         }
 
-
         if (currentPos >= regex.length) {
             return res;
         }
-        if (regex[currentPos] == ')')
+        if (regex[currentPos] == ')') {
             return prev;
+        }
 
 
         if (regex[currentPos] == '(') {
-
             currentPos++;
-            return parseBrackets(prev);
+            res = parseBrackets(prev);
+        } else if ((regex[currentPos] == '+') |
+                (regex[currentPos] == '*') |
+                (regex[currentPos] == '?')) {
+            res = parseCycle(prev);
         } else {
             res.type = AstNode.TYPE_SYMBOL;
             res.symbol = regex[currentPos];
-
-            currentPos++;
-            parseVar(res);
-
-
-            return res;
         }
+
+        currentPos++;
+        parseVar(res);
+
+        return res;
     }
 
     private AstNode parseBrackets(AstNode prev) throws ParseException {
@@ -73,17 +77,43 @@ public class AstBuilder {
         res.subNodes = new AstNode[1];
         res.subNodes[0] = parseVar(res);
 
+        if (regex[currentPos] != ')') {
+            throw new ParseException("Brackets error!", 0);
+        }
 
-
-         if (regex[currentPos] != ')')
-             throw new ParseException("Brackets error!", 0);
-        
-        currentPos++;
-        parseVar(res);
-        
         return res;
     }
-//    private static AstNode _parse(String regexp, AstNode prev)
+
+    private AstNode parseCycle(AstNode prev) throws ParseException {
+
+        AstNode res = new AstNode();
+        res.prev = prev;
+        if (prev != null) {
+            prev.next = res;
+        }
+
+        if (regex[currentPos] == '*') {
+            res.type = AstNode.TYPE_STAR;
+        } else if (regex[currentPos] == '+') {
+            res.type = AstNode.TYPE_PLUS;
+        } else if (regex[currentPos] == '?') {
+            res.type = AstNode.TYPE_QUESTION;
+        }
+
+        res.prev = prev.prev;
+
+        if (prev.prev != null) {
+            prev.prev.next = res;
+        }
+
+        res.subNodes = new AstNode[1];
+        res.subNodes[0] = prev;
+        prev.prev = res;
+        prev.next = new AstNode();
+
+        return res;
+    }
+    //    private static AstNode _parse(String regexp, AstNode prev)
 //            throws ParseException
 //    {
 //        AstNode res = new AstNode();
