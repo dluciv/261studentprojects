@@ -12,7 +12,7 @@ import java.text.ParseException;
  *
  * Current gramatics.
  * alp:=a,b,c,d,...,0,1,...9,\\,\., etc
- * var:=alp|var+var
+ * var:=alp|var+var|(var)
  */
 public class AstBuilder {
 
@@ -40,26 +40,48 @@ public class AstBuilder {
         if (currentPos >= regex.length) {
             return res;
         }
-//        if (regex[currentPos] == ')')
-//            return res;
-//
-//
-//        if (regex[currentPos] == '(')
-//        {
-//            currentPos++;
-//            parseBrackets();
-//        }
-//        else
+        if (regex[currentPos] == ')')
+            return prev;
 
-        res.type = AstNode.TYPE_SYMBOL;
-        res.symbol = regex[currentPos];
 
+        if (regex[currentPos] == '(') {
+
+            currentPos++;
+            return parseBrackets(prev);
+        } else {
+            res.type = AstNode.TYPE_SYMBOL;
+            res.symbol = regex[currentPos];
+
+            currentPos++;
+            parseVar(res);
+
+
+            return res;
+        }
+    }
+
+    private AstNode parseBrackets(AstNode prev) throws ParseException {
+
+        AstNode res = new AstNode();
+        res.prev = prev;
+        if (prev != null) {
+            prev.next = res;
+        }
+
+        res.type = AstNode.TYPE_GROUP;
+
+        res.subNodes = new AstNode[1];
+        res.subNodes[0] = parseVar(res);
+
+
+
+         if (regex[currentPos] != ')')
+             throw new ParseException("Brackets error!", 0);
+        
         currentPos++;
         parseVar(res);
-
+        
         return res;
-
-        //throw new ParseException("Brackets error!", 0);
     }
 //    private static AstNode _parse(String regexp, AstNode prev)
 //            throws ParseException

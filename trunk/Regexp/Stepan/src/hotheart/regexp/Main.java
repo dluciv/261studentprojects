@@ -19,7 +19,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-        AstBuilder builder = new AstBuilder("abcdefg(123718263)?hij");
+        AstBuilder builder = new AstBuilder("sdfsdf(123718263)123123123");
 
         AstNode root = builder.parse();
         
