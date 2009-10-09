@@ -6,6 +6,7 @@
 package hotheart.regexp;
 
 import hotheart.regexp.AST.*;
+import hotheart.regexp.AST.node.AbstractNode;
 import java.text.ParseException;
 
 
@@ -19,9 +20,9 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-        AstBuilder builder = new AstBuilder("sdfsdf(123718263)*123123123");
+        AstBuilder builder = new AstBuilder("sdfsdf(123718263)*123");
 
-        AstNode root = builder.parse();
+        AbstractNode root = builder.parse();
         
         System.out.println(root);
     }
