@@ -4,6 +4,11 @@
  */
 package hotheart.regexp.AST;
 
+import hotheart.regexp.AST.node.AbstractNode;
+import hotheart.regexp.AST.node.AndNode;
+import hotheart.regexp.AST.node.CycleNode;
+import hotheart.regexp.AST.node.GroupNode;
+import hotheart.regexp.AST.node.SymbolNode;
 import java.text.ParseException;
 
 /**
@@ -26,166 +31,103 @@ public class AstBuilder {
         currentPos = 0;
     }
 
-    public AstNode parse() throws ParseException {
-        return parseVar(null);
+    public AbstractNode parse() throws ParseException {
+        return parseVar();
     }
 
-    private AstNode parseVar(AstNode prev) throws ParseException {
-
-        AstNode res = new AstNode();
-        res.prev = prev;
-        if (prev != null) {
-            prev.next = res;
-        }
+    private AbstractNode parseVar() throws ParseException {
 
         if (currentPos >= regex.length) {
-            return res;
+            return null;
         }
         if (regex[currentPos] == ')') {
-            return prev;
+            return null;
         }
-
+        
+        AbstractNode left = null;
 
         if (regex[currentPos] == '(') {
             currentPos++;
-            res = parseBrackets(prev);
+            
+            left = parseBrackets();
+            
         } else if ((regex[currentPos] == '+') |
                 (regex[currentPos] == '*') |
                 (regex[currentPos] == '?')) {
-            res = parseCycle(prev);
+            
+            // Temp!
+            currentPos++;
+            return new CycleNode(null);
+            //res = parseCycle();
+            
         } else {
-            res.type = AstNode.TYPE_SYMBOL;
-            res.symbol = regex[currentPos];
+            left = new SymbolNode(regex[currentPos]);
         }
 
         currentPos++;
-        parseVar(res);
-
-        return res;
+        AbstractNode right = parseVar();
+        
+        if (right == null)
+            return left;
+        else if (right instanceof CycleNode)
+        {
+            return new AndNode(new CycleNode(left), parseVar());
+        }
+        else
+            return new AndNode(left, right);
     }
 
-    private AstNode parseBrackets(AstNode prev) throws ParseException {
+    private AbstractNode parseBrackets() throws ParseException {
 
-        AstNode res = new AstNode();
-        res.prev = prev;
-        if (prev != null) {
-            prev.next = res;
-        }
+//        GroupNode res = new GroupNode();
+//        
+//        AstNode res = new AstNode();
+//        res.prev = prev;
+//        if (prev != null) {
+//            prev.next = res;
+//        }
+//
+//        res.type = AstNode.TYPE_GROUP;
+//
+//        res.subNodes = new AstNode[1];
+//        res.subNodes[0] = parseVar(res);
 
-        res.type = AstNode.TYPE_GROUP;
-
-        res.subNodes = new AstNode[1];
-        res.subNodes[0] = parseVar(res);
-
+        AbstractNode inner = parseVar();
+        
         if (regex[currentPos] != ')') {
             throw new ParseException("Brackets error!", 0);
         }
 
-        return res;
+        return new GroupNode(inner);
     }
-
-    private AstNode parseCycle(AstNode prev) throws ParseException {
-
-        AstNode res = new AstNode();
-        res.prev = prev;
-        if (prev != null) {
-            prev.next = res;
-        }
-
-        if (regex[currentPos] == '*') {
-            res.type = AstNode.TYPE_STAR;
-        } else if (regex[currentPos] == '+') {
-            res.type = AstNode.TYPE_PLUS;
-        } else if (regex[currentPos] == '?') {
-            res.type = AstNode.TYPE_QUESTION;
-        }
-
-        res.prev = prev.prev;
-
-        if (prev.prev != null) {
-            prev.prev.next = res;
-        }
-
-        res.subNodes = new AstNode[1];
-        res.subNodes[0] = prev;
-        prev.prev = res;
-        prev.next = new AstNode();
-
-        return res;
-    }
-    //    private static AstNode _parse(String regexp, AstNode prev)
-//            throws ParseException
-//    {
+//
+//    private AstNode parseCycle(AstNode prev) throws ParseException {
+//
 //        AstNode res = new AstNode();
 //        res.prev = prev;
-//        if (prev != null)
+//        if (prev != null) {
 //            prev.next = res;
-//
-//        if (regexp.isEmpty())
-//        {
-//            res.type = AstNode.TYPE_END;
-//            return res;
 //        }
 //
-//        char symbol = regexp.charAt(0);
-//
-//        if (symbol == '(')
-//        {
-//            int brackets = 0;
-//            for(int i = 1; i < regexp.length(); i++)
-//            {
-//                if (regexp.charAt(i) == ')')
-//                {
-//                    brackets--;
-//                    if (brackets < 0)
-//                    {
-//                        res.type = AstNode.TYPE_GROUP;
-//                        res.subNodes = new AstNode[1];
-//                        res.subNodes[0] = _parse(regexp.substring(1, i-1), res);
-//
-//                        _parse(regexp.substring(i+1), res);
-//                        return res;
-//                    }
-//                }
-//
-//                if (regexp.charAt(i) == '(')
-//                {
-//                    brackets++;
-//                }
-//            }
-//
-//            throw new ParseException("Brackets error!", 0);
+//        if (regex[currentPos] == '*') {
+//            res.type = AstNode.TYPE_STAR;
+//        } else if (regex[currentPos] == '+') {
+//            res.type = AstNode.TYPE_PLUS;
+//        } else if (regex[currentPos] == '?') {
+//            res.type = AstNode.TYPE_QUESTION;
 //        }
-//        if ((symbol == '*')||(symbol == '+')||(symbol == '?'))
-//        {
-//            if (symbol == '*')
-//                res.type = AstNode.TYPE_STAR;
-//            else if (symbol == '+')
-//                res.type = AstNode.TYPE_PLUS;
-//            else if (symbol == '?')
-//                res.type = AstNode.TYPE_QUESTION;
 //
-//            res.prev = prev.prev;
+//        res.prev = prev.prev;
 //
-//            if(prev.prev != null)
-//                prev.prev.next = res;
-//
-//            res.subNodes = new AstNode[1];
-//            res.subNodes[0] = prev;
-//            prev.prev = res;
-//            prev.next = new AstNode();
-//
-//            _parse(regexp.substring(1), res);
-//
-//            return res;
+//        if (prev.prev != null) {
+//            prev.prev.next = res;
 //        }
-//        else
-//        {
-//            res.type = AstNode.TYPE_SYMBOL;
-//            res.symbol = symbol;
 //
-//            _parse(regexp.substring(1), res);
-//            return res;
-//        }
+//        res.subNodes = new AstNode[1];
+//        res.subNodes[0] = prev;
+//        prev.prev = res;
+//        prev.next = new AstNode();
+//
+//        return res;
 //    }
 }
