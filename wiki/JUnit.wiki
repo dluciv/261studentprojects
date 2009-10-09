@@ -1,0 +1,35 @@
+#summary JUnit instructions for eclipse.
+
+= Introduction =
+
+How to add JUnit tests to your eclipse application.
+
+= Details =
+
+Add reference to junit library
+  * jUnit library could be found in "ext/junit-4.7.jar" path of repository
+  * In Eclipse
+  ** Select Project->Properties->Java Build Path->Libraries
+  ** "Add External JARs"->"../../ext/junit-4.7.jar" (Path to junit-4.7.jar)
+
+Add some tests...
+
+Compile and run
+ * Run->Run Configurations
+ * Add New JUnit configuration
+ * Select "Run all tests in the selected project"
+ * Run
+
+== Example ==
+{{{
+import org.junit.*;
+import org.junit.Assert;
+
+public class Tests {
+	
+	@Test 
+	public void simpleAdd() {	     
+	    Assert.assertTrue((1+2) == (3));
+	}
+} 
+}}}
