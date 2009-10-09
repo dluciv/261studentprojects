@@ -43,38 +43,42 @@ public class AstBuilder {
         if (regex[currentPos] == ')') {
             return null;
         }
-        
+
         AbstractNode left = null;
 
         if (regex[currentPos] == '(') {
             currentPos++;
-            
+
             left = parseBrackets();
-            
+
         } else if ((regex[currentPos] == '+') |
                 (regex[currentPos] == '*') |
                 (regex[currentPos] == '?')) {
-            
+
             // Temp!
             currentPos++;
             return new CycleNode(null);
-            //res = parseCycle();
-            
+        //res = parseCycle();
+
         } else {
             left = new SymbolNode(regex[currentPos]);
         }
 
         currentPos++;
         AbstractNode right = parseVar();
-        
-        if (right == null)
-            return left;
-        else if (right instanceof CycleNode)
-        {
-            return new AndNode(new CycleNode(left), parseVar());
+
+        if (right instanceof CycleNode) {
+            if (((CycleNode) right).inner == null) {
+                left = new CycleNode(left);
+                right = parseVar();
+            }
         }
-        else
+
+        if (right == null) {
+            return left;
+        } else {
             return new AndNode(left, right);
+        }
     }
 
     private AbstractNode parseBrackets() throws ParseException {
@@ -93,7 +97,7 @@ public class AstBuilder {
 //        res.subNodes[0] = parseVar(res);
 
         AbstractNode inner = parseVar();
-        
+
         if (regex[currentPos] != ')') {
             throw new ParseException("Brackets error!", 0);
         }
