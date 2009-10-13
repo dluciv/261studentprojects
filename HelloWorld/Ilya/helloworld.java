@@ -1,8 +1,11 @@
 /* HelloWorld 
 ** Alekseev Ilya ©2009*/
 
-public class hello {
-public static void main (String[] args){
-	System.out.println ("Hello, World!!!");
-}
+
+import java.lang.System;
+
+public class Helloworld {
+	public static void main (String[] args){
+		System.out.println ("Hello, World!!!");
+	}
 }
