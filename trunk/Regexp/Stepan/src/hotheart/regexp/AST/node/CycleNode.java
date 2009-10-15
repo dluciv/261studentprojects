@@ -21,22 +21,34 @@ public class CycleNode extends AbstractNode {
         type = tp;
     }
 
+    private String getCycleSymbol()
+    {
+        if (type == STAR) {
+            return "*";
+        } else if (type == PLUS) {
+            return "+";
+        } else if (type == QUESTION) {
+            return "?";
+        }
+        else
+            return "";
+    }
+
     @Override
     public String toString() {
-        String res = "Cycle";
-
-        if (type == STAR) {
-            res += "*";
-        } else if (type == PLUS) {
-            res += "+";
-        } else if (type == QUESTION) {
-            res += "?";
-        }
+        String res = "Cycle" + getCycleSymbol();
 
         if (inner != null) {
             return res + "(" + inner.toString() + ")";
         } else {
             return res;
         }
+    }
+
+    @Override
+    public String getGraphVizString() {
+        String res = getGraphVizNodeString("Cycle" + getCycleSymbol());
+        res += getChildVizNodeString(inner);
+        return res;
     }
 }

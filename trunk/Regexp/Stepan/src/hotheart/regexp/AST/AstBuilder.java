@@ -38,7 +38,7 @@ public class AstBuilder {
             return null;
         }
 
-        if (regex[currentPos] == '|') {
+        if ((regex[currentPos] == '|') || (regex.length<=currentPos)) {
             currentPos++;
             return new OrNode(node, parseOr());
         } else {

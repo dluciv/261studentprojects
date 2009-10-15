@@ -20,4 +20,9 @@ public class SymbolNode extends AbstractNode {
     public String toString() {
         return "`" + Character.toString(symbol) + "`";
     }
+
+    @Override
+    public String getGraphVizString() {
+        return this.getGraphVizNodeString("`" + symbol + "`");
+    }
 }

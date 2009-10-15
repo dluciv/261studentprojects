@@ -21,4 +21,13 @@ public class OrNode extends AbstractNode {
     public String toString() {
         return "Or(" + left.toString() + ", " + right.toString() + ")";
     }
+
+    @Override
+    public String getGraphVizString() {
+        String res = getGraphVizNodeString("Or");
+        res += getChildVizNodeString(left);
+        res += getChildVizNodeString(right);
+        return res;
+    }
+
 }
