@@ -10,18 +10,33 @@ package hotheart.regexp.AST.node;
  */
 public class CycleNode extends AbstractNode {
 
+    public static final int STAR = 1;
+    public static final int PLUS = 2;
+    public static final int QUESTION = 3;
     public AbstractNode inner;
+    public int type;
 
-    public CycleNode(AbstractNode node) {
-        inner = node;
+    public CycleNode(AbstractNode inner, int tp) {
+        this.inner = inner;
+        type = tp;
     }
 
     @Override
     public String toString() {
+        String res = "Cycle";
+
+        if (type == STAR) {
+            res += "*";
+        } else if (type == PLUS) {
+            res += "+";
+        } else if (type == QUESTION) {
+            res += "?";
+        }
+
         if (inner != null) {
-            return "Cycle(" + inner.toString() + ")";
+            return res + "(" + inner.toString() + ")";
         } else {
-            return "Cycle";
+            return res;
         }
     }
 }
