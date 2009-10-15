@@ -20,14 +20,14 @@ public class Main {
             result += " - passed";
         } else {
             result += " - not passed";
-            }
+        }
 
         System.out.println(result);
         return  compare.matches();
-        }
+    }
 
     public static void main(String[] args){
         checkEmail ("AntonKarymov@yandex.ru");
-        }
+    }
 }
 
