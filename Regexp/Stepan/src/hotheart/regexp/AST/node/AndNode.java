@@ -21,4 +21,12 @@ public class AndNode extends AbstractNode {
     public String toString() {
         return "And(" + left.toString() + ", " + right.toString() + ")";
     }
+
+    @Override
+    public String getGraphVizString() {
+        String res = getGraphVizNodeString("And");
+        res += getChildVizNodeString(left);
+        res += getChildVizNodeString(right);
+        return res;
+    }
 }

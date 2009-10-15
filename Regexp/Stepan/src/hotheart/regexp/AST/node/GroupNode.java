@@ -20,4 +20,11 @@ public class GroupNode extends AbstractNode {
     public String toString() {
         return "Group(" + inner.toString() + ")";
     }
+
+    @Override
+    public String getGraphVizString() {
+        String res = getGraphVizNodeString("Group");
+        res += getChildVizNodeString(inner);
+        return res;
+    }
 }
