@@ -38,16 +38,20 @@ public class AstBuilder {
             return null;
         }
 
-        if ((regex[currentPos] == '|') || (regex.length<=currentPos)) {
+        if ((currentPos >= regex.length) || (regex[currentPos] == '|')) {
             currentPos++;
-            return new OrNode(node, parseOr());
+            AbstractNode  right =  parseOr();
+            if (right == null)
+                return node;
+            else
+                return new OrNode(node, right);
         } else {
             return node;
         }
     }
 
     public AbstractNode parse() throws ParseException {
-        return parseVar();
+        return parseOr();
     }
 
     private AbstractNode parseVar() throws ParseException {
