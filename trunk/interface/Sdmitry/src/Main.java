@@ -1,3 +1,7 @@
+/*
+ * interface example
+ * soldatov dmity©, 2009
+ */
 import interfacepkg.*;
 
 public class Main {
