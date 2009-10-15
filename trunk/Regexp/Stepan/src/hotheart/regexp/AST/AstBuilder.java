@@ -32,18 +32,16 @@ public class AstBuilder {
         currentPos = 0;
     }
 
-    public AbstractNode parseOr() throws ParseException
-    {
+    public AbstractNode parseOr() throws ParseException {
         AbstractNode node = parseVar();
-        if (node == null)
+        if (node == null) {
             return null;
+        }
 
         if (regex[currentPos] == '|') {
             currentPos++;
             return new OrNode(node, parseOr());
-        }
-        else
-        {
+        } else {
             return node;
         }
     }
@@ -76,10 +74,22 @@ public class AstBuilder {
                 (regex[currentPos] == '*') |
                 (regex[currentPos] == '?')) {
 
-            // Temp!
+            int type = 0;
+
+            if (regex[currentPos] == '*') {
+                type = CycleNode.STAR;
+            }
+            if (regex[currentPos] == '+') {
+                type = CycleNode.PLUS;
+            }
+            if (regex[currentPos] == '?') {
+                type = CycleNode.QUESTION;
+            }
+
             currentPos++;
-            return new CycleNode(null);
-        //res = parseCycle();
+
+
+            return new CycleNode(null, type);
 
         } else {
             left = new SymbolNode(regex[currentPos]);
@@ -89,8 +99,9 @@ public class AstBuilder {
         AbstractNode right = parseVar();
 
         if (right instanceof CycleNode) {
-            if (((CycleNode) right).inner == null) {
-                left = new CycleNode(left);
+            CycleNode cycle = (CycleNode) right;
+            if (cycle.inner == null) {
+                left = new CycleNode(left, cycle.type);
                 right = parseVar();
             }
         }
