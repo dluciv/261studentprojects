@@ -4,8 +4,7 @@
  */
 
 import java.lang.System;
-public class HellowWorld {
-
+public class Helloworld {
     public static void main(String[] args) {
             System.out.println("Hello, world!");
     }
