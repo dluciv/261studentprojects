@@ -20,7 +20,7 @@ public class Main {
           System.out.println(calculation(calculator1, NUMBER_ONE, NUMBER_THREE));
 
           System.out.println(calculation(calculator2, NUMBER_ONE, NUMBER_TWO));
-          System.out.println(calculation(calculator2, NUMBER_ONE, NUMBER_TWO));
+          System.out.println(calculation(calculator2, NUMBER_ONE, NUMBER_THREE));
     }
 
 }
