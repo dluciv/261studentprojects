@@ -9,6 +9,7 @@ import hotheart.regexp.AST.node.AndNode;
 import hotheart.regexp.AST.node.CycleNode;
 import hotheart.regexp.AST.node.GroupNode;
 import hotheart.regexp.AST.node.SymbolNode;
+import hotheart.regexp.AST.node.OrNode;
 import java.text.ParseException;
 
 /**
@@ -31,6 +32,22 @@ public class AstBuilder {
         currentPos = 0;
     }
 
+    public AbstractNode parseOr() throws ParseException
+    {
+        AbstractNode node = parseVar();
+        if (node == null)
+            return null;
+
+        if (regex[currentPos] == '|') {
+            currentPos++;
+            return new OrNode(node, parseOr());
+        }
+        else
+        {
+            return node;
+        }
+    }
+
     public AbstractNode parse() throws ParseException {
         return parseVar();
     }
@@ -41,6 +58,10 @@ public class AstBuilder {
             return null;
         }
         if (regex[currentPos] == ')') {
+            return null;
+        }
+
+        if (regex[currentPos] == '|') {
             return null;
         }
 
@@ -96,7 +117,7 @@ public class AstBuilder {
 //        res.subNodes = new AstNode[1];
 //        res.subNodes[0] = parseVar(res);
 
-        AbstractNode inner = parseVar();
+        AbstractNode inner = parseOr();
 
         if (regex[currentPos] != ')') {
             throw new ParseException("Brackets error!", 0);
