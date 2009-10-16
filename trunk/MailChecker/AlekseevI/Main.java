@@ -1,20 +1,19 @@
-
-import emailchecker.EmailChacker;
-
-
-
 /**
  *
- * @author Lii
+ * @author Alekseev Ilya
  */
+
+package EduAlekseev;
+
+
 public class Main {
 
-    /**
+   /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
 
-  System.out.println(EmailChacker.isEmail("mail@mail.org"));
+  System.out.println(EmailChecker.isEmail("mail@mail.org"));
     }
 
 }
