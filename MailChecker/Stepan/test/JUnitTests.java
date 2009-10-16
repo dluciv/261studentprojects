@@ -1,42 +1,33 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Unit Tests for Email checker by Korshakov Stepan
  */
 
 import hotheart.study.emailchecker.EMailChecker;
 import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
- *
- * @author HotHeart
+ * @author Korshakov Stepan
  */
 public class JUnitTests {
 
-    public JUnitTests() {
-    }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
     @Test
     public void validTest() {
-        Assert.assertTrue(EMailChecker.checkEMail("ex3ndr@inbox.ru"));
-        Assert.assertTrue(EMailChecker.checkEMail("korshakov.stepan@gmail.com"));
-        Assert.assertTrue(EMailChecker.checkEMail("a@b.cc"));
-        Assert.assertTrue(EMailChecker.checkEMail("yuri.gubanov@mail.ru"));
-        Assert.assertTrue(EMailChecker.checkEMail("my@domain.info"));
-        Assert.assertTrue(EMailChecker.checkEMail("my@domain.info"));
-        Assert.assertTrue(EMailChecker.checkEMail("yurik@hermitage.museum"));
+        Assert.assertTrue(EMailChecker.checkEmail("ex3ndr@inbox.ru"));
+        Assert.assertTrue(EMailChecker.checkEmail("korshakov.stepan@gmail.com"));
+        Assert.assertTrue(EMailChecker.checkEmail("a@b.cc"));
+        Assert.assertTrue(EMailChecker.checkEmail("yuri.gubanov@mail.ru"));
+        Assert.assertTrue(EMailChecker.checkEmail("my@domain.info"));
+        Assert.assertTrue(EMailChecker.checkEmail("my@domain.info"));
+        Assert.assertTrue(EMailChecker.checkEmail("yurik@hermitage.museum"));
     }
 
     @Test
     public void invalidTest() {
-        Assert.assertFalse(EMailChecker.checkEMail("a@b.c"));
-        Assert.assertFalse(EMailChecker.checkEMail("a..b@mail.ru"));
-        Assert.assertFalse(EMailChecker.checkEMail(".a@mail.ru"));
-        Assert.assertFalse(EMailChecker.checkEMail("yo@domain.domain"));
-        Assert.assertFalse(EMailChecker.checkEMail("1@mail.ru"));
+        Assert.assertFalse(EMailChecker.checkEmail("a@b.c"));
+        Assert.assertFalse(EMailChecker.checkEmail("a..b@mail.ru"));
+        Assert.assertFalse(EMailChecker.checkEmail(".a@mail.ru"));
+        Assert.assertFalse(EMailChecker.checkEmail("yo@domain.domain"));
+        Assert.assertFalse(EMailChecker.checkEmail("1@mail.ru"));
     }
 }
