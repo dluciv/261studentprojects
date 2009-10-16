@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="nt11" name="mailchecker.MailCheckerNegativeTest" tests="11" time="0.219" timestamp="2009-10-16T08:19:24">
+  <properties>
+    <property name="default.javac.source" value="1.6" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="libs.toplink.maven-pom" value="" />
+    <property name="javac.source" value="1.5" />
+    <property name="netbeans.system_http_proxy" value="star:3128" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.6.0_07\jre" />
+    <property name="test.src.dir" value="test" />
+    <property name="libs.jaxws21.src" value="" />
+    <property name="javadoc.version" value="false" />
+    <property name="libs.CopyLibs.classpath" value="C:\Program Files\NetBeans 6.1\java2\ant\extra\org-netbeans-modules-java-j2seproject-copylibstask.jar" />
+    <property name="libs.javac-api.src" value="" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.6.0_07\jre\lib\endorsed" />
+    <property name="libs.MySQLDriver.classpath" value="C:\Program Files\NetBeans 6.1\ide9\modules\ext\mysql-connector-java-5.1.5-bin.jar" />
+    <property name="libs.junit.maven-pom" value="" />
+    <property name="libs.PostgreSQLDriver.src" value="" />
+    <property name="src.dir" value="src" />
+    <property name="sun.java2d.noddraw" value="true" />
+    <property name="nbplatform.default.harness.dir" value="C:\Program Files\NetBeans 6.1/harness" />
+    <property name="debug-args-line" value="-Xdebug" />
+    <property name="netbeans.hash.code" value="unique=NBJDK_JAVA_JDK0f334bd1d-c930-4083-8c03-d559ff649225" />
+    <property name="build.sysclasspath" value="ignore" />
+    <property name="have.sources" value="true" />
+    <property name="includes" value="**" />
+    <property name="source.encoding" value="UTF-8" />
+    <property name="libs.jaxws21.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\activation.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\FastInfoset.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\http.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\api\jaxb-api.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\jaxb-impl.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\jaxb-xjc.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\api\jaxws-api.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\jaxws-rt.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\jaxws-tools.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\api\jsr173_api.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\api\jsr181-api.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\api\jsr250-api.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\api\saaj-api.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\saaj-impl.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\sjsxp.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\stax-ex.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\streambuffer.jar" />
+    <property name="libs.swing-app-framework.javadoc" value="C:\Program Files\NetBeans 6.1\java2\docs\appframework-1.0.3-doc.zip" />
+    <property name="sun.os.patch.level" value="Service Pack 3" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.version" value="1.6.0_07" />
+    <property name="libs.jaxb21.javadoc" value="" />
+    <property name="javac.debug" value="true" />
+    <property name="org.openide.major.version" value="IDE/1" />
+    <property name="run.classpath" value=":build/classes" />
+    <property name="libs.PostgreSQLDriver.maven-pom" value="" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="netbeans.autoupdate.variant" value="" />
+    <property name="libs.absolutelayout.javadoc" value="" />
+    <property name="libs.junit_4.maven-pom" value="" />
+    <property name="netbeans.buildnumber" value="200805300101" />
+    <property name="manifest.file" value="manifest.mf" />
+    <property name="libs.swing-app-framework.maven-pom" value="" />
+    <property name="user.name" value="m08tea2" />
+    <property name="manifest.available+main.class+mkdist.available" value="true" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.jnu.encoding" value="Cp1251" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="jdk.home" value="C:\Program Files\Java\jdk1.6.0_07" />
+    <property name="sun.awt.keepWorkingSetOnMinimize" value="true" />
+    <property name="ant.file.MailChecker" value="W:\NetBeansProjects\MailChecker\build.xml" />
+    <property name="netbeans.autoupdate.version" value="1.23" />
+    <property name="org.openide.TopManager" value="org.netbeans.core.NonGui" />
+    <property name="netbeans.dirs" value="C:\Program Files\NetBeans 6.1\nb6.1;C:\Program Files\NetBeans 6.1\ide9;C:\Program Files\NetBeans 6.1\java2;C:\Program Files\NetBeans 6.1\apisupport1;C:\Program Files\NetBeans 6.1\profiler3;C:\Program Files\NetBeans 6.1\gsf1;C:\Program Files\NetBeans 6.1\harness" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="javadoc.author" value="false" />
+    <property name="user.timezone" value="" />
+    <property name="netbeans.system_http_non_proxy_hosts" value="*.math.spbu.ru;;&lt;local&gt;" />
+    <property name="manifest.available" value="true" />
+    <property name="libs.spring-framework.maven-pom" value="" />
+    <property name="ant.file.MailChecker-impl" value="W:\NetBeansProjects\MailChecker\nbproject\build-impl.xml" />
+    <property name="libs.swing-layout.maven-pom" value="" />
+    <property name="libs.junit.javadoc" value="C:\Program Files\NetBeans 6.1\java2\docs\junit-3.8.2-api.zip" />
+    <property name="org.openide.specification.version" value="6.2" />
+    <property name="path.separator" value=";" />
+    <property name="version-output" value="java version &quot;1.6" />
+    <property name="libs.absolutelayout.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\AbsoluteLayout.jar" />
+    <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
+    <property name="file.encoding" value="Cp1251" />
+    <property name="dist.javadoc.dir" value="dist/javadoc" />
+    <property name="https.nonProxyHosts" value="*.math.spbu.ru|&lt;local&gt;*|localhost|127.0.0.1|nt11" />
+    <property name="libs.junit.src" value="" />
+    <property name="libs.jaxb21.maven-pom" value="" />
+    <property name="ant.file" value="W:\NetBeansProjects\MailChecker\build.xml" />
+    <property name="libs.junit_4.src" value="" />
+    <property name="netbeans.autoupdate.language" value="ru" />
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\m08tea2\LOCALS~1\Temp\" />
+    <property name="build.test.results.dir" value="build/test/results" />
+    <property name="user.language" value="ru" />
+    <property name="line.separator" value="
+" />
+    <property name="apple.laf.useScreenMenuBar" value="true" />
+    <property name="libs.absolutelayout.src" value="" />
+    <property name="javac.compilerargs" value="" />
+    <property name="jar.compress" value="false" />
+    <property name="javac.compilerargs.jaxws" value="" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="libs.javac-api.maven-pom" value="" />
+    <property name="javadoc.private" value="false" />
+    <property name="sun.desktop" value="windows" />
+    <property name="build.test.classes.dir" value="build/test/classes" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="jaxws.endorsed.dir" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\api" />
+    <property name="libs.MySQLDriver.javadoc" value="" />
+    <property name="netbeans.dynamic.classpath" value="C:\Program Files\NetBeans 6.1\platform8\core\core.jar;C:\Program Files\NetBeans 6.1\platform8\core\org-openide-filesystems.jar;C:\Program Files\NetBeans 6.1\platform8\core\locale\core_ja.jar;C:\Program Files\NetBeans 6.1\platform8\core\locale\core_pt_BR.jar;C:\Program Files\NetBeans 6.1\platform8\core\locale\core_zh_CN.jar;C:\Program Files\NetBeans 6.1\platform8\core\locale\org-openide-filesystems_ja.jar;C:\Program Files\NetBeans 6.1\platform8\core\locale\org-openide-filesystems_pt_BR.jar;C:\Program Files\NetBeans 6.1\platform8\core\locale\org-openide-filesystems_zh_CN.jar;C:\Program Files\NetBeans 6.1\nb6.1\core\org-netbeans-upgrader.jar;C:\Program Files\NetBeans 6.1\nb6.1\core\locale\core_nb.jar;C:\Program Files\NetBeans 6.1\nb6.1\core\locale\core_nb_ja.jar;C:\Program Files\NetBeans 6.1\nb6.1\core\locale\core_nb_pt_BR.jar;C:\Program Files\NetBeans 6.1\nb6.1\core\locale\core_nb_zh_CN.jar;C:\Program Files\NetBeans 6.1\nb6.1\core\locale\org-netbeans-upgrader_ja.jar;C:\Program Files\NetBeans 6.1\nb6.1\core\locale\org-netbeans-upgrader_pt_BR.jar;C:\Program Files\NetBeans 6.1\nb6.1\core\locale\org-netbeans-upgrader_zh_CN.jar" />
+    <property name="manifest.available+main.class" value="true" />
+    <property name="libs.beans-binding.javadoc" value="C:\Program Files\NetBeans 6.1\java2\docs\beansbinding-1.2.1-doc.zip" />
+    <property name="platform.active" value="default_platform" />
+    <property name="http.nonProxyHosts" value="*.math.spbu.ru|&lt;local&gt;*|localhost|127.0.0.1|nt11" />
+    <property name="libs.junit_4.javadoc" value="" />
+    <property name="libs.spring-framework.src" value="" />
+    <property name="netbeans.autoupdate.country" value="RU" />
+    <property name="libs.beans-binding.maven-pom" value="" />
+    <property name="javadoc.encoding" value="UTF-8" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="dist.jar" value="dist/MailChecker.jar" />
+    <property name="meta.inf.dir" value="src/META-INF" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="netbeans.home" value="C:\Program Files\NetBeans 6.1\platform8" />
+    <property name="javadoc.nonavbar" value="false" />
+    <property name="user.properties.file" value="C:\Documents and Settings\m08tea2\.netbeans\6.1\build.properties" />
+    <property name="libs.toplink.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\toplink\toplink-essentials.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\toplink\toplink-essentials-agent.jar" />
+    <property name="netbeans.importclass" value="org.netbeans.upgrade.AutoUpgrade" />
+    <property name="https.proxyPort" value="3128" />
+    <property name="libs.spring-framework.javadoc" value="" />
+    <property name="libs.CopyLibs.maven-pom" value="" />
+    <property name="build.generated.dir" value="build/generated" />
+    <property name="netbeans.home+have.tests" value="true" />
+    <property name="os.name" value="Windows XP" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="run.test.classpath" value=":build/classes:C:\Program Files\NetBeans 6.1\java2\modules\ext\junit-4.1.jar:build/test/classes" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="libs.CopyLibs.src" value="" />
+    <property name="libs.jaxb21.src" value="" />
+    <property name="org.openide.version" value="deprecated" />
+    <property name="libs.junit.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\junit-3.8.2.jar" />
+    <property name="libs.beans-binding.src" value="" />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.6.0_07\jre\bin;.;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;c:\watcom-1.3\binnt;c:\watcom-1.3\binw;c:\oracle\ora92\bin;c:\program files\oracle\jre\1.3.1\bin;c:\program files\oracle\jre\1.1.8\bin;c:\texmf\miktex\bin;c:\perl\bin;c:\progra~1\borland\cbuild~1\bin;c:\progra~1\borland\cbuild~1\projects\bpl;c:\inprise\vbroker\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\microsoft sql server\90\tools\binn\;c:\program files\microsoft sql server\80\tools\binn;C:\Program Files\MATLAB\R2009a\bin;C:\Program Files\MATLAB\R2009a\bin\win32;C:\Program Files\MATLAB\R2008a\bin;C:\Program Files\MATLAB\R2008a\bin\win32;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Java\jdk1.6.0_07\bin;C:\Program Files\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files\Microsoft Visual Studio\Common\Tools;C:\Program Files\Microsoft Visual Studio\VC98\bin;C:\FPC\2.0.2\bin\i386-Win32;C:\FPC\2.0.4\bin\i386-Win32" />
+    <property name="libs.PostgreSQLDriver.javadoc" value="" />
+    <property name="libs.toplink.javadoc" value="" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="basedir" value="W:\NetBeansProjects\MailChecker" />
+    <property name="javadoc.noindex" value="false" />
+    <property name="java.class.version" value="50.0" />
+    <property name="sun.awt.exception.handler" value="org.netbeans.core.startup.TopLogging$AWTHandler" />
+    <property name="javac.test.classpath" value=":build/classes:C:\Program Files\NetBeans 6.1\java2\modules\ext\junit-4.1.jar" />
+    <property name="ant.home" value="C:\Program Files\NetBeans 6.1\java2\ant" />
+    <property name="javadoc.splitindex" value="true" />
+    <property name="libs.toplink.src" value="" />
+    <property name="libs.javac-api.javadoc" value="" />
+    <property name="javadoc.preview" value="true" />
+    <property name="libs.MySQLDriver.maven-pom" value="" />
+    <property name="libs.CopyLibs.javadoc" value="" />
+    <property name="libs.PostgreSQLDriver.classpath" value="C:\Program Files\NetBeans 6.1\ide9\modules\ext\postgresql-8.3-603.jdbc3.jar" />
+    <property name="libs.junit_4.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\junit-4.1.jar" />
+    <property name="libs.jaxws21.maven-pom" value="" />
+    <property name="build.dir" value="build" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.6.0_07\jre\bin" />
+    <property name="libs.swing-app-framework.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\appframework-1.0.3.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\swing-worker-1.1.jar" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="user.variant" value="" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="javadoc.encoding.used" value="UTF-8" />
+    <property name="javadoc.windowtitle" value="" />
+    <property name="http.proxyPort" value="3128" />
+    <property name="https.proxyHost" value="star" />
+    <property name="run.jvmargs" value="" />
+    <property name="build.compiler.emacs" value="true" />
+    <property name="ant.project.name" value="MailChecker" />
+    <property name="libs.spring-framework.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\spring\commons-logging-1.1.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\spring\spring-2.5.jar" />
+    <property name="libs.swing-layout.classpath" value="C:\Program Files\NetBeans 6.1\platform8\modules\ext\swing-layout-1.0.3.jar" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="work.dir" value="W:\NetBeansProjects\MailChecker" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="javadoc.use" value="true" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.6.0_07\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext" />
+    <property name="os.version" value="5.1" />
+    <property name="excludes" value="" />
+    <property name="user.home" value="C:\Documents and Settings\m08tea2" />
+    <property name="libs.jaxb21.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\activation.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\api\jaxb-api.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\jaxb-impl.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\jaxb-xjc.jar;C:\Program Files\NetBeans 6.1\java2\modules\ext\jaxws21\api\jsr173_api.jar" />
+    <property name="org.xml.sax.driver" value="com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser" />
+    <property name="javax.xml.parsers.DocumentBuilderFactory" value="org.netbeans.core.startup.DOMFactoryImpl" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="libs.absolutelayout.maven-pom" value="" />
+    <property name="org.openide.TopManager.GUI" value="true" />
+    <property name="user.dir" value="W:\NetBeansProjects\MailChecker" />
+    <property name="application.args" value="" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="compile.on.save" value="true" />
+    <property name="java.vm.version" value="10.0-b23" />
+    <property name="libs.MySQLDriver.src" value="" />
+    <property name="java.class.path" value="W:\NetBeansProjects\MailChecker\build\classes;C:\Program Files\NetBeans 6.1\java2\modules\ext\junit-4.1.jar;W:\NetBeansProjects\MailChecker\build\test\classes;C:\Program Files\NetBeans 6.1\java2\ant\lib\ant-launcher.jar;C:\Program Files\NetBeans 6.1\java2\ant\lib\ant.jar;C:\Program Files\NetBeans 6.1\java2\ant\lib\ant-junit.jar" />
+    <property name="javax.xml.parsers.SAXParserFactory" value="org.netbeans.core.startup.SAXFactoryImpl" />
+    <property name="os.arch" value="x86" />
+    <property name="javac.deprecation" value="false" />
+    <property name="http.proxyHost" value="star" />
+    <property name="nbplatform.default.netbeans.dest.dir" value="C:\Program Files\NetBeans 6.1" />
+    <property name="build.classes.excludes" value="**/*.java,**/*.form" />
+    <property name="dist.dir" value="dist" />
+    <property name="debug.classpath" value=":build/classes" />
+    <property name="netbeans.user" value="C:\Documents and Settings\m08tea2\.netbeans\6.1" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="ant.core.lib" value="C:\Program Files\NetBeans 6.1\java2\ant\lib\ant.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="do.depend" value="false" />
+    <property name="file.separator" value="\" />
+    <property name="java.runtime.version" value="1.6.0_07-b06" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.6.0_07\jre\lib\resources.jar;C:\Program Files\Java\jdk1.6.0_07\jre\lib\rt.jar;C:\Program Files\Java\jdk1.6.0_07\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.6.0_07\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.6.0_07\jre\lib\jce.jar;C:\Program Files\Java\jdk1.6.0_07\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.6.0_07\jre\classes" />
+    <property name="debug.test.classpath" value=":build/classes:C:\Program Files\NetBeans 6.1\java2\modules\ext\junit-4.1.jar:build/test/classes" />
+    <property name="libs.beans-binding.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\beansbinding-1.2.1.jar" />
+    <property name="have.tests" value="true" />
+    <property name="main.class" value="mailchecker.Main" />
+    <property name="java.util.logging.config.class" value="org.netbeans.core.startup.TopLogging" />
+    <property name="libs.javac-api.classpath" value="C:\Program Files\NetBeans 6.1\java2\modules\ext\javac-api-nb-7.0-b07.jar" />
+    <property name="user.country" value="RU" />
+    <property name="javadoc.notree" value="false" />
+    <property name="libs.jaxws21.javadoc" value="C:\Program Files\NetBeans 6.1\java2\docs\jaxws-2_1-api-doc.zip" />
+    <property name="javac.classpath" value="" />
+    <property name="javadoc.additionalparam" value="" />
+    <property name="default.javac.target" value="1.6" />
+    <property name="build.classes.dir" value="build/classes" />
+    <property name="libs.swing-layout.src" value="C:\Program Files\NetBeans 6.1\platform8\docs\swing-layout-1.0.3-src.zip" />
+    <property name="libs.swing-layout.javadoc" value="C:\Program Files\NetBeans 6.1\platform8\docs\swing-layout-1.0.3-doc.zip" />
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="javac.target" value="1.5" />
+    <property name="libs.swing-app-framework.src" value="" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="sun.arch.data.model" value="32" />
+  </properties>
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testNullEmail" time="0.016" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testEmptyEmail" time="0.0" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testFirstDigits" time="0.0" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testFirstDash" time="0.0" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testOneLetterInDomain" time="0.0" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testTwoDotsTogetherInUsername" time="0.0" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testFirstDot" time="0.016" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testNonexistentDomain" time="0.0" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testSingleDigitInUsername" time="0.015" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testFirstDigitInSubdomain" time="0.0" />
+  <testcase classname="mailchecker.MailCheckerNegativeTest" name="testBadCharacterInUsername" time="0.016" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
