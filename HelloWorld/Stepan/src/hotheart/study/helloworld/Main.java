@@ -1,13 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Java HelloWorld by Korshakov Stepan
  */
-
 package hotheart.study.helloworld;
 
 /**
- *
- * @author HotHeart
+ * @author Korshakov Stepan
  */
 public class Main {
 
@@ -17,5 +14,4 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello, World!");
     }
-
 }
