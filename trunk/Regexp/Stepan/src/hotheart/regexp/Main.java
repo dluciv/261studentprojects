@@ -13,6 +13,13 @@ import java.util.Scanner;
  */
 public class Main {
 
+    private static AbstractNode build(IBuilder builder) throws ParseException {
+        if (builder == null) {
+            throw new NullPointerException("argument `builder` is null");
+        }
+        return builder.parse();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -30,7 +37,7 @@ public class Main {
             }
 
             AstBuilder builder = new AstBuilder(regexp);
-            AbstractNode root = builder.parse();
+            AbstractNode root = build(builder);
 
             System.out.println("-----------------------------");
             System.out.println("Basic tree visualization:");
