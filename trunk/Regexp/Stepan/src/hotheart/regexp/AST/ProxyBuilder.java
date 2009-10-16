@@ -11,7 +11,7 @@ import java.text.ParseException;
  */
 public class ProxyBuilder implements IBuilder {
 
-    IBuilder parent;
+    private IBuilder parent;
 
     public ProxyBuilder(IBuilder parent) {
         this.parent = parent;
