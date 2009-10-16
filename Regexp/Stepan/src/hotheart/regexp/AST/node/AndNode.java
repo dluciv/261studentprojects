@@ -1,12 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * AndNode class for Regular Expression Library by Korshakov Stepan
  */
 package hotheart.regexp.AST.node;
 
 /**
- *
- * @author m08ksa
+ * @author Korshakov Stepan
  */
 public class AndNode extends AbstractNode {
 

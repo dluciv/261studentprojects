@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Parser for Regular Expression Library by Korshakov Stepan
  */
 package hotheart.regexp.AST;
 
@@ -13,14 +12,13 @@ import hotheart.regexp.AST.node.OrNode;
 import java.text.ParseException;
 
 /**
- *
- * @author m08ksa
- *
  * Current gramatics.
  * alp:=a,b,c,d,...,0,1,...9,\\,\., etc
+ * or:= var|or'|'or
  * var:=alp|var+var|(var)|cycle
  * node:=(var)|alp|cycle
  * cycle:=node(*|+|?)
+ * @author Korshakov Stepan
  */
 public class AstBuilder {
 
@@ -40,11 +38,12 @@ public class AstBuilder {
 
         if ((currentPos >= regex.length) || (regex[currentPos] == '|')) {
             currentPos++;
-            AbstractNode  right =  parseOr();
-            if (right == null)
+            AbstractNode right = parseOr();
+            if (right == null) {
                 return node;
-            else
+            } else {
                 return new OrNode(node, right);
+            }
         } else {
             return node;
         }
@@ -118,20 +117,6 @@ public class AstBuilder {
     }
 
     private AbstractNode parseBrackets() throws ParseException {
-
-//        GroupNode res = new GroupNode();
-//        
-//        AstNode res = new AstNode();
-//        res.prev = prev;
-//        if (prev != null) {
-//            prev.next = res;
-//        }
-//
-//        res.type = AstNode.TYPE_GROUP;
-//
-//        res.subNodes = new AstNode[1];
-//        res.subNodes[0] = parseVar(res);
-
         AbstractNode inner = parseOr();
 
         if (regex[currentPos] != ')') {
@@ -140,34 +125,4 @@ public class AstBuilder {
 
         return new GroupNode(inner);
     }
-//
-//    private AstNode parseCycle(AstNode prev) throws ParseException {
-//
-//        AstNode res = new AstNode();
-//        res.prev = prev;
-//        if (prev != null) {
-//            prev.next = res;
-//        }
-//
-//        if (regex[currentPos] == '*') {
-//            res.type = AstNode.TYPE_STAR;
-//        } else if (regex[currentPos] == '+') {
-//            res.type = AstNode.TYPE_PLUS;
-//        } else if (regex[currentPos] == '?') {
-//            res.type = AstNode.TYPE_QUESTION;
-//        }
-//
-//        res.prev = prev.prev;
-//
-//        if (prev.prev != null) {
-//            prev.prev.next = res;
-//        }
-//
-//        res.subNodes = new AstNode[1];
-//        res.subNodes[0] = prev;
-//        prev.prev = res;
-//        prev.next = new AstNode();
-//
-//        return res;
-//    }
 }

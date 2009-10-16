@@ -1,12 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * CycleNode class for Regular Expression Library by Korshakov Stepan
  */
 package hotheart.regexp.AST.node;
 
 /**
- *
- * @author m08ksa
+ * @author Korshakov Stepan
  */
 public class CycleNode extends AbstractNode {
 
@@ -21,17 +19,16 @@ public class CycleNode extends AbstractNode {
         type = tp;
     }
 
-    private String getCycleSymbol()
-    {
+    private String getCycleSymbol() {
         if (type == STAR) {
             return "*";
         } else if (type == PLUS) {
             return "+";
         } else if (type == QUESTION) {
             return "?";
-        }
-        else
+        } else {
             return "";
+        }
     }
 
     @Override
