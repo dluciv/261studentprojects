@@ -12,12 +12,12 @@ import hotheart.regexp.AST.node.OrNode;
 import java.text.ParseException;
 
 /**
- * Current gramatics.
+ * New gramatics.
+ * or:= var|var'|'or
+ * var:=cycle|cycle+var <-- "+var" - symbol or '('
+ * cycle:=node(*|+|?)?
+ * node:=(var)|alp
  * alp:=a,b,c,d,...,0,1,...9,\\,\., etc
- * or:= var|or'|'or
- * var:=alp|var+var|(var)|cycle
- * node:=(var)|alp|cycle
- * cycle:=node(*|+|?)
  * @author Korshakov Stepan
  */
 public class AstBuilder implements IBuilder {
