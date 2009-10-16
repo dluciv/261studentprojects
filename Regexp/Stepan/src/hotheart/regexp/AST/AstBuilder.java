@@ -20,7 +20,7 @@ import java.text.ParseException;
  * cycle:=node(*|+|?)
  * @author Korshakov Stepan
  */
-public class AstBuilder {
+public class AstBuilder implements IBuilder {
 
     char[] regex;
     int currentPos;
@@ -30,7 +30,7 @@ public class AstBuilder {
         currentPos = 0;
     }
 
-    public AbstractNode parseOr() throws ParseException {
+    private AbstractNode parseOr() throws ParseException {
         AbstractNode node = parseVar();
         if (node == null) {
             return null;
