@@ -1,12 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * OrNode class for Regular Expression Library by Korshakov Stepan
  */
 package hotheart.regexp.AST.node;
 
 /**
- *
- * @author m08ksa
+ * @author Korshakov Stepan
  */
 public class OrNode extends AbstractNode {
 
@@ -29,5 +27,4 @@ public class OrNode extends AbstractNode {
         res += getChildVizNodeString(right);
         return res;
     }
-
 }
