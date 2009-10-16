@@ -9,10 +9,7 @@ import EduAlekseev.EmailChecker;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Lii
- */
+
 public class EmailCheckerNegativeTest {
 
     public EmailCheckerNegativeTest() {

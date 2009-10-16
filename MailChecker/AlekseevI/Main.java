@@ -13,7 +13,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-  System.out.println(EmailChecker.isEmail("mail@mail.org"));
+  System.out.println(EmailChecker.isEmail(null));
     }
 
 }
