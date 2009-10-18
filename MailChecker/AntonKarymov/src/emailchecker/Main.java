@@ -1,0 +1,25 @@
+/*Anton Karymov,gr261,2009,
+* EmailChecker
+*/
+
+package emailchecker;
+
+import java.util.regex.*;
+
+public class Main {
+    static final String nickName = "[a-zA-Z_]" + "([.]?[a-zA-Z1-9_]+)*" ;
+    static final String domainFirstLevel = "([a-z]{2,3}||museum||travel||info||name||aero||arpa||coop||mobi)";
+    static final String domainAllLevel = "[a-zA-Z_]+"+"([.]?[a-zA-Z1-9_]+)*";
+    static final String at = "@";
+    static final String dot = "[.]";
+    static final Pattern pattern = Pattern.compile (String.format ("%s%s%s%s%s",nickName,at,domainAllLevel,dot,domainFirstLevel));
+
+    public static boolean checkEmail(String email){       
+        if (email == null)
+            throw new IllegalArgumentException("email");
+        Matcher compare = pattern.matcher(email);
+        return  compare.matches();
+      
+    }
+}
+
