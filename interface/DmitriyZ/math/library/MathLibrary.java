@@ -4,9 +4,9 @@ package math.library;
 
 public interface MathLibrary {
 
-    float add(float a, float b);
+    float add(float num1, float num2);
 
-    float sub(float a, float b);
+    float sub(float num1, float num2);
 
-    float next(float a);
+    float next(float num);
 }
