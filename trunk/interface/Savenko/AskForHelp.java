@@ -6,7 +6,7 @@ package msavenko;
 
 import java.io.*;
 
-public class AskForHelp implements AskAnswerInterface {
+public class AskForHelp implements IAskAnswer {
 
 	@Override
 	public String questionTheUser() {

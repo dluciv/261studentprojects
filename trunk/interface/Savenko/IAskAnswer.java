@@ -4,7 +4,7 @@
 
 package msavenko;
 
-public interface AskAnswerInterface {
+public interface IAskAnswer {
 	String questionTheUser ();
 	void replyTheUser();
 }
