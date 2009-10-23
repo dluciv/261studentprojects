@@ -1,7 +1,7 @@
 /* HelloWorld 
  * Savenko Maria ©2009*/
 
-package msavenko.HelloWorld;
+package msavenko;
 
 import java.lang.System;
 
