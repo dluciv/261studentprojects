@@ -5,6 +5,6 @@
 package msavenko;
 
 public interface IAskAnswer {
-	String questionTheUser ();
-	void replyTheUser();
+    String questionTheUser ();
+    void replyTheUser();
 }

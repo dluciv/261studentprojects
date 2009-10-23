@@ -8,26 +8,26 @@ import java.io.*;
 
 public class AskForHelp implements IAskAnswer {
 
-	@Override
-	public String questionTheUser() {
-		BufferedReader br = new BufferedReader(new
+    @Override
+    public String questionTheUser() {
+        BufferedReader br = new BufferedReader(new
                 InputStreamReader(System.in));
         String reply=null;
-		System.out.print("O, just remembered, would you help me? (y/n): ");
-		try {
-			reply = br.readLine();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		return reply;
-	}
+        System.out.print("O, just remembered, would you help me? (y/n): ");
+        try {
+            reply = br.readLine();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return reply;
+    }
 
-	@Override
-	public void replyTheUser() {
+    @Override
+    public void replyTheUser() {
 
-		if (questionTheUser().equals("y")) 
-			System.out.println("Very kind of you! Thanks ");
-		else System.out.println("Sorry, for troubling. Goodby! ");
-	}
+        if (questionTheUser().equals("y")) 
+            System.out.println("Very kind of you! Thanks ");
+        else System.out.println("Sorry, for troubling. Goodby! ");
+    }
 
 }
