@@ -1,6 +1,7 @@
 ФИО, email (в лексикографическом порядкке)
 
 Алексеев Илья Владимирович, alekseev1989@gmail.com
+Антонов Кирилл Сергеевич, m08aks@gmail.com
 Бояровски Стефан bojarovski@gmail.com
 Забранский Дмитрий Юрьевич, dmitriy.zabranskiy@gmail.com
 Зольников Павел Евгеньевич, pasha.zolnikov@gmail.com
@@ -10,3 +11,4 @@
 Савенко Мария Олеговна, piranuy@gmail.com
 Солдатов Дмитрий Владимирович, dmitry.42nd@gmail.com
 Тодорук Евгений Анатольевич, eugene.todoruk@gamil.com
+
