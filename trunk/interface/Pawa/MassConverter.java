@@ -6,15 +6,16 @@
 
 
 public class MassConverter implements Converter{
-
+	public double poundsInKilogramm;
+	
     //килограмм -> фунт
     public double convertForwards(double kilogramms) {
-        return 2.2 * kilogramm;
+        return poundsInKilogramm * kilogramm;
     }
 
     //фунт -> килограмм
     public double convertBackwards(double pounds) {
-        return pound / 2.2;
+        return pound / poundsInKilogramm;
     }
 
 }
