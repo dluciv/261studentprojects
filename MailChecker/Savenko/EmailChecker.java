@@ -1,7 +1,7 @@
 /* EmailChecker
  * By Savenko Maria (c)2009 */
 
-package msavenko.EmailChecker;
+package msavenko;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,20 +19,20 @@ public class EmailChecker {
     public static boolean checkTheEmailMatching(String word) {
        Matcher matcher = email.matcher(word);
        if (matcher.matches()) {
-    	   return true;
+           return true;
        }
        else {
-    	   return false;
+           return false;
        }
     }
     
     public static boolean checkTheZipMatching(String word) {
         Matcher matcher = zipcode.matcher(word);
         if (matcher.matches()) {
-     	   return true;
+           return true;
         }
         else {
-     	   return false;
+           return false;
         }
      }
 
