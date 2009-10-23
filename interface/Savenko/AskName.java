@@ -6,11 +6,10 @@ package msavenko;
 
 import java.io.*;
 
-public class AskName implements AskAnswerInterface {
+public class AskName implements IAskAnswer {
 
 	@Override
-	public String questionTheUser() {
-		
+	public String questionTheUser() {		
 		BufferedReader br = new BufferedReader(new
                 InputStreamReader(System.in));
         String name=null;
