@@ -2,7 +2,7 @@
  * Here is the some Class2 created from Interface
  * Savenko Maria ©2009*/
 
-package msavenko.Interf;
+package msavenko;
 
 import java.io.*;
 

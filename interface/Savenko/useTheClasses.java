@@ -2,7 +2,7 @@
  * Here is the selfCheck
  * Savenko Maria ©2009*/
 
-package msavenko.Interf;
+package msavenko;
 
 public class useTheClasses {
 	public static void main(String[] args) {

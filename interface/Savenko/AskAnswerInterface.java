@@ -2,7 +2,7 @@
  * Here is the Interface itself
  * Savenko Maria ©2009*/
 
-package msavenko.Interf;
+package msavenko;
 
 public interface AskAnswerInterface {
 	String questionTheUser ();
