@@ -1,7 +1,7 @@
 /* JUnit Test for EmailChecker
  * By Savenko Maria (c)2009 */
 
-package msavenko.EmailChecker;
+package msavenko;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -48,11 +48,11 @@ public class EmailChekerTest {
     public void testCheckTheEmailFAILMatching5() {
     assertTrue(!EmailChecker.checkTheEmailMatching("a..b@mail.ru"));
     }
-	
-	@Test
-	public void testCheckTheZipMatching1(){
-		assertTrue(EmailChecker.checkTheZipMatching("198504"));
-	}
+    
+    @Test
+    public void testCheckTheZipMatching1(){
+        assertTrue(EmailChecker.checkTheZipMatching("198504"));
+    }
     
     public void testCheckTheZipMatching2(){
     assertTrue(EmailChecker.checkTheZipMatching("456780"));
