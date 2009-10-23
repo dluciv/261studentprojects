@@ -2,7 +2,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import mailchecker.MailChecker;
 
-public class IsMailRightTest {
+public class IsMailCorrectTest {
 
     @Test
     public void twoLetterDomainMailTest() {
@@ -22,6 +22,11 @@ public class IsMailRightTest {
     @Test
     public void underscoreFirstPlaceMailTest() {
         assertTrue(MailChecker.isMail("_.1@mail.com"));
+    }
+    
+    @Test
+    public void ManyPartSubdomainMailTest() {
+        assertTrue(MailChecker.isMail("abc@ab.cd.ef.g.com"));
     }
     
 }
