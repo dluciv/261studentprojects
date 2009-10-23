@@ -1,14 +1,14 @@
 //Lebedev Dmitry g261 2009 (c)
-
+//This task include throwing exception
 package calculations;
 
-public class Division implements Calculating{
+public class Division implements Calculator {
 
     public int calculate(int x, int y) {
-        if (y == 0)
+        if (y == 0) {
             throw new UnsupportedOperationException("Division by zero inhibited");
-        else return x/y;
+        }
+        return x / y;
     }
-    
 }
 
