@@ -8,19 +8,17 @@ import java.util.regex.*;
 
 public class EmailChecker {
 
-    public static boolean isEmail(String email) {
+     private static String login = "(([a-zA-Z_])|([a-zA-Z_]+([.|_|-]{0,1}[a-zA-Z0-9_])+))";
+     private static String domainSecondLevel = "(([a-zA-Z_])|([a-zA-Z_]+([.]{0,1}[a-zA-Z0-9_])+))";
+     private static String domainFirstLevel = "([a-z]){2,4}|museum|travel";
 
-        String login = "(([a-zA-Z_])|([a-zA-Z_]+([.|_|-]{0,1}[a-zA-Z0-9_])+))";
-        String domainSecondLevel = "(([a-zA-Z_])|([a-zA-Z_]+([.]{0,1}[a-zA-Z0-9_])+))";
-        String domainFirstLevel = "([a-z]){2,4}|museum|travel";
 
-       if (email == null){
+     public static boolean isEmail(String email) {
+       if (email == null)
            throw new NullPointerException("email is null");
-       }
-        
-                String regexpEmail = login + "@" + domainSecondLevel + "." + domainFirstLevel;
-                Pattern pattern = Pattern.compile(regexpEmail);
-                Matcher matcher = pattern.matcher(email);
+       Pattern pattern = Pattern.compile(String.format("%s%s%s%s", login,
+                 domainSecondLevel, domainFirstLevel));
+       Matcher matcher = pattern.matcher(email);
         
                 return matcher.matches();
            
