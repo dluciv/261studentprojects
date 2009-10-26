@@ -28,7 +28,7 @@ public class Dictionary {
             }
         }
         byte cursor = tmp.cursor;
-        tmp.ForseFormByte();
+        tmp.ForceFormByte();
         res.write(tmp.str.get(0));
         res.write(cursor);
     }
