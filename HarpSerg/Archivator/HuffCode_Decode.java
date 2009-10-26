@@ -6,7 +6,7 @@ import java.io.IOException;
  *
  * @author HarpSerg
  */
-public class HuffCode_Decode {
+public class HuffCode_Decode implements Code_Decode {
 
     private Tree[] nodelist = new Tree[256];;
     private String[] codetable = new String[256];
@@ -15,6 +15,8 @@ public class HuffCode_Decode {
     private final int notexist = 260;
     private final int shift = 128;
     
+    
+    @Override
     public void code(String infileName, String outfileName) throws IOException {
         InputFile fistr = new InputFile(infileName);
         OutputFile fostr = new OutputFile(outfileName);
@@ -28,6 +30,8 @@ public class HuffCode_Decode {
     /**
     @param fistr - file input stream;
      */
+    
+    @Override
     public void decode(String infileName, String outfileName) throws IOException {
         InputFile fistr = new InputFile(infileName);
         OutputFile fostr = new OutputFile(outfileName);

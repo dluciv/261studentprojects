@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  *
  * @author HarpSerg
  */
-public class ArithmCode_Decode {
+public class ArithmCode_Decode implements Code_Decode {
 
     HashMap<Byte, Integer> frequency = new HashMap<Byte, Integer>();
     int _size = 0;
@@ -38,12 +38,20 @@ public class ArithmCode_Decode {
         }
     }
 
-    public void CodeArith(String in, String out) throws IOException {
+    
+
+    
+    @Override
+    public void code(String in, String out) throws IOException {
+        CalcFrequency(in);
         Arithm ar = new Arithm();
         ar.pack(in, out, _size, frequency);
     }
 
-    public void DecodeArith(String in, String out) throws IOException {
+    
+    @Override
+    public void decode(String in, String out) throws IOException {
+       CalcFrequency(in);
         Arithm ar = new Arithm();
         try {
             ar.unpack(in, out);
@@ -51,4 +59,6 @@ public class ArithmCode_Decode {
             Logger.getLogger(ArithmCode_Decode.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+
 }

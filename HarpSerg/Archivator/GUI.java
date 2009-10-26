@@ -359,11 +359,8 @@ public class GUI extends javax.swing.JFrame {
                 setLog("huffman coding finished at " + getDate() + "\n");
             } else {
                 setLog("Arithmetic coding started at " + getDate() + "\n");
-                ArithmCode_Decode input = new ArithmCode_Decode();
-                input.CalcFrequency(inFileName);                
-                input.CodeArith(inFileName, outfilename);
-                //ArithmCode_Decode c = new ArithmCode_Decode();
-                //c.CodeArith(inFileName, outfilename);
+                ArithmCode_Decode input = new ArithmCode_Decode();                               
+                input.code(inFileName, outfilename);                
                 setLog("Arithmetic coding finished at " + getDate() + "\n");
             }
             
@@ -390,9 +387,8 @@ public class GUI extends javax.swing.JFrame {
         try {
             String inFileName = input.getText();
             setLog("Arithmetic coding started at " + getDate() + "\n");
-            ArithmCode_Decode input = new ArithmCode_Decode();
-            input.CalcFrequency(inFileName);
-            input.DecodeArith(inFileName, outfilename);
+            ArithmCode_Decode input = new ArithmCode_Decode();            
+            input.decode(inFileName, outfilename);
             setLog("Arithmetic coding finished at " + getDate() + "\n");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
