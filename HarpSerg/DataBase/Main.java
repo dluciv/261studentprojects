@@ -16,7 +16,7 @@ public class Main {
     public static final int ALL = 0;
     private static final int ERROR_CODE = -1;
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private static Selecter yandex;
+    private static Selecter selecter;
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
@@ -32,8 +32,9 @@ public class Main {
         if (args.length != 1) {
             printHelp();
         } else {
-            yandex = new Selecter(args[0]);
-            fullReading(args[0]);
+            printRequestHelp();
+            selecter = new Selecter(args[0]);
+            fullReading(args[0]);            
             request = getRequest();
             while (!request.equals("q")) {
                 arguments = request.split(" ");
@@ -57,9 +58,9 @@ public class Main {
                         } else {
                             c = new DobleKeyComp(keyType[0], keyType[1]);
                         }
-                        yandex.makeIndex(c);
+                        selecter.makeIndex(c);
                     }
-                    yandex.search(from, to, number);
+                    selecter.search(from, to, number);
                 }
                 request = getRequest();
             }
