@@ -99,7 +99,7 @@ public class Bits {
         _bits.clear();
     }
 
-    public void ForseFormByte() {
+    public void ForceFormByte() {
         FormByte();
         ClearBits();
         isForsed = true;
@@ -190,7 +190,7 @@ public class Bits {
 
     public ArrayList<Byte> GetByteStr() {
         ArrayList<Byte> res = (ArrayList<Byte>) str.clone();
-        ForseFormByte();
+        ForceFormByte();
         res.addAll(str);
         return res;
     }
@@ -206,9 +206,9 @@ public class Bits {
         return res;
     }
 
-    public ArrayList<Byte> toByteString() {
+    public ArrayList<Byte> toByteList() {
         if (!isBitsFree()) {
-            ForseFormByte();
+            ForceFormByte();
         }
         ArrayList<Byte> res = new ArrayList<Byte>();
         for (Byte tmp : str) {
@@ -235,7 +235,7 @@ public class Bits {
                     (byte) value
                 };
     }
-
+    //http://www.daniweb.com/forums/thread110076.html это по поводу смысла & 0xFF
     public static int byteArrayToInt(byte[] b) {
         return (b[0] << 24) + ((b[1] & 0xFF) << 16) + ((b[2] & 0xFF) << 8) + (b[3] & 0xFF);
     }

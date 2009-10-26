@@ -10,13 +10,13 @@ import java.util.HashMap;
  */
 public class Arithm {
 
-    public static final int BITS = 24;
-    public static final long MAX = (1 << BITS) - 1;
-    public static final long FIRST_QTR = (MAX / 4) + 1;
-    public static final long HALF = FIRST_QTR * 2;
-    public static final long THIRD_QTR = FIRST_QTR * 3;
+    static final int BITS = 24;
+    static final long MAX = (1 << BITS) - 1;
+    static final long FIRST_QTR = (MAX / 4) + 1;
+    static final long HALF = FIRST_QTR * 2;
+    static final long THIRD_QTR = FIRST_QTR * 3;
     // number of chars
-    public static final int CHARS = 256;
+    static final int CHARS = 256;
 
     public Arithm() {
     }
@@ -29,7 +29,7 @@ public class Arithm {
         new Unpack(inputfn, outputfn);
     }
 
-    class Pack {
+    private class Pack {
 
         private Model model = new Model();
         private InputFile input;
@@ -97,7 +97,7 @@ public class Arithm {
         }
     }
 
-    class Unpack {
+    public class Unpack {
 
         Model _model = new Model();
         BitsInput _inp;
@@ -186,7 +186,7 @@ public class Arithm {
         }
     }
 
-    class Model {
+    private class Model {
 
         int _size;
         HashMap<Byte, Integer> frequency;
