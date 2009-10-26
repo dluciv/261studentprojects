@@ -1,26 +1,28 @@
 /**
- *
+ *Class 
  * @author Alekseev Ilya
  */
-package EduAlekseev;
+package emailchecker;
 
 import java.util.regex.*;
 
 public class EmailChecker {
 
-     private static String login = "(([a-zA-Z_])|([a-zA-Z_]+([.|_|-]{0,1}[a-zA-Z0-9_])+))";
-     private static String domainSecondLevel = "(([a-zA-Z_])|([a-zA-Z_]+([.]{0,1}[a-zA-Z0-9_])+))";
-     private static String domainFirstLevel = "([a-z]){2,4}|museum|travel";
+    private static final String login = "[a-zA-Z_]([a-zA-Z_0-9]*)(\\.[a-zA-Z0-9_]+)*";
+    private static final String domainSecondLevel = "([a-zA-Z0-9-]+\\.)+";
+    private static final String domainFirstLevel = "(([a-zA-Z]{2,4})|museum|travel)";
+    private static final String isEmail = login + "@" + domainSecondLevel +
+            domainFirstLevel;
 
+    public static boolean isEmail(String email) {
 
-     public static boolean isEmail(String email) {
-       if (email == null)
-           throw new NullPointerException("email is null");
-       Pattern pattern = Pattern.compile(String.format("%s%s%s%s", login,
-                 domainSecondLevel, domainFirstLevel));
-       Matcher matcher = pattern.matcher(email);
-        
-                return matcher.matches();
-           
-       }   
+        if (email == null) {
+            throw new IllegalArgumentException("email can not be null");
+        }
+        Pattern pattern = Pattern.compile(isEmail);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.find();
+
+    }
 }
