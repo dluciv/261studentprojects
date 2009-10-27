@@ -47,13 +47,13 @@ public class GUI extends javax.swing.JFrame {
         browse = new javax.swing.JButton();
         output = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        generateName = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         log = new javax.swing.JTextArea();
         jPanel4 = new javax.swing.JPanel();
-        execute = new javax.swing.JButton();
+        pack = new javax.swing.JButton();
         cleareLog = new javax.swing.JButton();
+        unpack = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -111,8 +111,6 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel2.setText("output:");
 
-        generateName.setText("generate");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -127,10 +125,8 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(output, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(input, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(browse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(generateName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(52, 52, 52))
+                .addComponent(browse)
+                .addGap(54, 54, 54))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,11 +135,10 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(browse))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(generateName))
+                    .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29))
         );
 
@@ -171,10 +166,10 @@ public class GUI extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        execute.setText("execute");
-        execute.addActionListener(new java.awt.event.ActionListener() {
+        pack.setText("Pack");
+        pack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                executeActionPerformed(evt);
+                packActionPerformed(evt);
             }
         });
 
@@ -185,14 +180,23 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        unpack.setText("Unpack");
+        unpack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unpackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(execute)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 335, Short.MAX_VALUE)
+                .addComponent(pack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(unpack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
                 .addComponent(cleareLog)
                 .addContainerGap())
         );
@@ -201,8 +205,9 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(execute)
-                    .addComponent(cleareLog))
+                    .addComponent(pack)
+                    .addComponent(cleareLog)
+                    .addComponent(unpack))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -266,41 +271,9 @@ public class GUI extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void executeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeActionPerformed
-        if (generateName.isSelected()) {
-            output.setText("automatic");
-            if (input.getText().length() >= 3) {
-                if (getAttention()) {
-                    if(JOptionPane.showConfirmDialog(null,getQuestion(), "attention",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-                        execute(null);
-                    }
-                } else {
-                    execute(null);
-                }
-            } else {
-               JOptionPane.showMessageDialog(rootPane, "Error!!! incorrect input file name!!!");
-            }
-            output.setText("");
-        } else {
-            if (fileExist( output.getText() ) ) {
-                if(JOptionPane.showConfirmDialog(null,"this operation will overwrite file "
-                        + output.getText() + ". Proceed?", "attention",JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-                    if (!input.getText().equals(output.getText())) {
-                        execute(output.getText());
-                    } else {                        
-                        JOptionPane.showMessageDialog(rootPane, "You can't overwrite the input file:" + output.getText() + "!!!");
-                    }
-                }
-            } else {
-                if (input.getText().length() >= 3) {
-                    execute(output.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Error!!! incorrect input file name!!!");
-                }
-            }
-        }
-}//GEN-LAST:event_executeActionPerformed
+    private void packActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_packActionPerformed
+        checkParamsAndExecute(true);
+}//GEN-LAST:event_packActionPerformed
 
     private void browseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseActionPerformed
         jFileChooser1.setSelectedFile(new File(input.getText()));
@@ -322,6 +295,10 @@ public class GUI extends javax.swing.JFrame {
     private void cleareLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleareLogActionPerformed
         log.setText("");
 }//GEN-LAST:event_cleareLogActionPerformed
+
+    private void unpackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unpackActionPerformed
+        checkParamsAndExecute(false);
+}//GEN-LAST:event_unpackActionPerformed
 
     /**
     * @param args the command line arguments
@@ -348,6 +325,40 @@ public class GUI extends javax.swing.JFrame {
             }
         });        
     }   
+
+    private void checkParamsAndExecute(boolean packaction) {
+     if (output.getText().length() == 0) {            
+            if (input.getText().length() >= 3) {
+                if (getAttention()) {
+                    if(JOptionPane.showConfirmDialog(null,getQuestion(), "attention",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+                        execute(null,packaction);
+                    }
+                } else {
+                    execute(null,packaction);
+                }
+            } else {
+               JOptionPane.showMessageDialog(rootPane, "Error!!! incorrect input file name!!!");
+            }            
+        } else {
+            if (fileExist( output.getText() ) ) {
+                if(JOptionPane.showConfirmDialog(null,"this operation will overwrite file "
+                        + output.getText() + ". Proceed?", "attention",JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+                    if (!input.getText().equals(output.getText())) {
+                        execute(output.getText(),packaction);
+                    } else {                        
+                        JOptionPane.showMessageDialog(rootPane, "You can't overwrite the input file:" + output.getText() + "!!!");
+                    }
+                }
+            } else {
+                if (input.getText().length() >= 3) {
+                    execute(output.getText(),packaction);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Error!!! incorrect input file name!!!");
+                }
+            }
+        }   
+    }
 
     private void executeCoding(String outfilename) {
         String inFileName = input.getText();
@@ -399,32 +410,31 @@ public class GUI extends javax.swing.JFrame {
     }
    
 
-    private void execute(String newname) {
-        String inFileName = input.getText();
-        String nametouse = inFileName.substring(0, inFileName.length()-3);
+    private void execute(String newname, boolean packaction) {
+        String inFileName = input.getText();        
         if(newname != null) {
-            if (inFileName.substring(inFileName.length() - 3).equals("huf"))
-                executeHufDecoding(newname);
-            if (inFileName.substring(inFileName.length() - 3).equals("arf")) {
-                executeArfDecoding(newname);
+            if (packaction) {
+               executeCoding(newname);
+            } else {
+                if (inFileName.substring(inFileName.length() - 3).equals("huf"))
+                    executeHufDecoding(newname);
+                if (inFileName.substring(inFileName.length() - 3).equals("arf"))
+                    executeArfDecoding(newname);
             }
-            if (!inFileName.substring(inFileName.length() - 3).equals("huf") && !inFileName.substring(inFileName.length() - 3).equals("arf") )
-                executeCoding(newname);
-            
         } else {
-            if (inFileName.substring(inFileName.length() - 3).equals("huf"))
-                executeHufDecoding(nametouse + "dec");
-            if (inFileName.substring(inFileName.length() - 3).equals("arf")) {
-                executeArfDecoding(nametouse + "dec");
-            }
-            if (!inFileName.substring(inFileName.length() - 3).equals("huf") && !inFileName.substring(inFileName.length() - 3).equals("arf") ) {
+            if (packaction) {                
                 String type;
                 if(hufChoosen.isSelected())
-                    type = "huf";
+                    type = ".huf";
                 else
-                    type = "arf";
-                executeCoding(nametouse + type);
-            }
+                    type = ".arf";
+                executeCoding(inFileName + type);
+            } else {
+                if (inFileName.substring(inFileName.length() - 3).equals("huf"))
+                    executeHufDecoding(inFileName.substring(0, inFileName.length()-3));
+                if (inFileName.substring(inFileName.length() - 3).equals("arf")) 
+                    executeArfDecoding(inFileName.substring(0, inFileName.length()-3));
+            }            
         }
     }        
 
@@ -484,10 +494,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton browse;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cleareLog;
-    private javax.swing.JButton execute;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JRadioButton generateName;
     private javax.swing.JRadioButton hufChoosen;
     private javax.swing.JTextField input;
     private javax.swing.JFileChooser jFileChooser1;
@@ -502,6 +510,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JTextField output;
+    private javax.swing.JButton pack;
+    private javax.swing.JButton unpack;
     // End of variables declaration//GEN-END:variables
 
 }
