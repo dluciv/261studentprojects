@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  * @author HarpSerg
  */
-public interface Code_Decode {
+public interface CodeDecode {
     void code(String infileName, String outfileName) throws IOException;
     void decode(String infileName, String outfileName)throws IOException;
 }
