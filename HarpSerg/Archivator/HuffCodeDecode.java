@@ -6,7 +6,7 @@ import java.io.IOException;
  *
  * @author HarpSerg
  */
-public class HuffCode_Decode implements Code_Decode {
+public class HuffCodeDecode implements CodeDecode {
 
     private Tree[] nodelist = new Tree[256];;
     private String[] codetable = new String[256];
@@ -36,9 +36,8 @@ public class HuffCode_Decode implements Code_Decode {
         InputFile fistr = new InputFile(infileName);
         OutputFile fostr = new OutputFile(outfileName);
         int tail = 8;
-        Tree result = new Tree();
         getProbabilityFromFile(fistr);
-        result = huffTree();
+        Tree result = huffTree();
         Tree localtree = result;
         boolean isthelastbuf = false;
         char direction = '0';
@@ -59,8 +58,7 @@ public class HuffCode_Decode implements Code_Decode {
                     direction = codeframe.charAt(0);
                     codeframe = codeframe.substring(1);
                     localtree = getCharacter(localtree, direction);
-                    if (localtree.leaf) {
-                        //System.out.print(localtree.character + " ");
+                    if (localtree.isLeaf()) {
                         fostr.write(localtree.character + shift);
                         localtree = result;
                     }
@@ -96,10 +94,7 @@ public class HuffCode_Decode implements Code_Decode {
             }
             character = fistr1.read();
             weight = fistr1.read();
-            nodelist[character] = new Tree();
-            nodelist[character].character = character;
-            nodelist[character].leaf = true;
-            nodelist[character].weight = weight;        
+            nodelist[character] = new Tree(character, weight);
         }
     }
 
@@ -115,10 +110,7 @@ public class HuffCode_Decode implements Code_Decode {
                 if (nodelist[buf[p] + shift] != null) {
                     nodelist[buf[p] + shift].weight++;
                 } else {
-                    nodelist[buf[p] + shift] = new Tree();
-                    nodelist[buf[p] + shift].character = buf[p];
-                    nodelist[buf[p] + shift].leaf = true;
-                    nodelist[buf[p] + shift].weight = 1;
+                    nodelist[buf[p] + shift] = new Tree(buf[p], 1);
                 }
             }
         }
@@ -181,20 +173,20 @@ public class HuffCode_Decode implements Code_Decode {
     }
 
     private Tree huffTree() {
-        Tree res = new Tree();
+        Tree res = new Tree(0, null, null);
         int lpos = 0;
         int rpos = 0;
 
         lpos = getMinProbPlace();
         if (lpos != notexist) {
-            res.weight = nodelist[lpos].weight;
-            res.lchild = nodelist[lpos];
+            res.increaseWeight(nodelist[lpos].weight);
+            res.setLchild(nodelist[lpos]);
             nodelist[lpos] = null;
 
             rpos = getMinProbPlace();
             if (rpos != notexist) {
-                res.weight = res.weight + nodelist[rpos].weight;
-                res.rchild = nodelist[rpos];
+                res.increaseWeight(nodelist[rpos].weight);
+                res.setRchild(nodelist[rpos]);
                 nodelist[rpos] = null;
             } else {
                 return res.lchild;
@@ -207,7 +199,7 @@ public class HuffCode_Decode implements Code_Decode {
     }
 
     private void fillCodeTable(Tree tree, String trace) {
-        if (tree.leaf) //System.out.print("|" + trace + "  " + (tree.character + shift) + "|");
+        if (tree.isLeaf()) //System.out.print("|" + trace + "  " + (tree.character + shift) + "|");
         {
             codetable[tree.character + shift] = trace;
         }

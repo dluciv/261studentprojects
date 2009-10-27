@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  *
  * @author HarpSerg
  */
-public class ArithmCode_Decode implements Code_Decode {
+public class ArithmCodeDecode implements CodeDecode {
 
     HashMap<Byte, Integer> frequency = new HashMap<Byte, Integer>();
     int _size = 0;
@@ -56,7 +56,7 @@ public class ArithmCode_Decode implements Code_Decode {
         try {
             ar.unpack(in, out);
         } catch (UnpackException ex) {
-            Logger.getLogger(ArithmCode_Decode.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ArithmCodeDecode.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
