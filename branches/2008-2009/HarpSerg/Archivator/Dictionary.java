@@ -110,7 +110,7 @@ public class Dictionary {
             int temp = tmp.readOneByte();
             int tmpr = tmp.readOneByte();
             int passtmp = tmpr - Byte.MIN_VALUE + 1;
-            ArithmCode_Decode.cursor += 2;
+            ArithmCodeDecode.cursor += 2;
             if (temp == Byte.MIN_VALUE) {
                 pass += passtmp;
                 continue;
