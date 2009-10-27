@@ -6,6 +6,6 @@ public class ExampleClass
 {
    public static void Main()
    {
-       System.Console.WriteLine(ck);
+       System.Console.WriteLine(Hwdll.ck);
    }
 }
