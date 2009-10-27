@@ -365,12 +365,12 @@ public class GUI extends javax.swing.JFrame {
         try {            
             if(hufChoosen.isSelected()) {
                 setLog("huffman coding started at " + getDate() + "\n");
-                HuffCode_Decode coder = new HuffCode_Decode();
+                Code_Decode coder = new HuffCode_Decode();
                 coder.code(inFileName, outfilename);
                 setLog("huffman coding finished at " + getDate() + "\n");
             } else {
                 setLog("Arithmetic coding started at " + getDate() + "\n");
-                ArithmCode_Decode input = new ArithmCode_Decode();                               
+                Code_Decode input = new ArithmCode_Decode();                               
                 input.code(inFileName, outfilename);                
                 setLog("Arithmetic coding finished at " + getDate() + "\n");
             }
@@ -385,7 +385,7 @@ public class GUI extends javax.swing.JFrame {
         String inFileName = input.getText();
         try {
             setLog("huffman decoding started at " + getDate() + "\n");
-            HuffCode_Decode decoder = new HuffCode_Decode();
+            Code_Decode decoder = new HuffCode_Decode();
             decoder.decode(inFileName, outfilename);
             setLog("huffman decoding finished at " + getDate() + "\n");    
         } catch (IOException ex) {
@@ -398,7 +398,7 @@ public class GUI extends javax.swing.JFrame {
         try {
             String inFileName = input.getText();
             setLog("Arithmetic coding started at " + getDate() + "\n");
-            ArithmCode_Decode input = new ArithmCode_Decode();            
+            Code_Decode input = new ArithmCode_Decode();            
             input.decode(inFileName, outfilename);
             setLog("Arithmetic coding finished at " + getDate() + "\n");
         } catch (FileNotFoundException ex) {
