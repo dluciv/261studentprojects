@@ -13,5 +13,10 @@ class Tree {
     public int weight;
 
     public Tree() {
+
+    }
+
+    public boolean isLeaf() {
+        return this.leaf;
     }
 }

@@ -365,12 +365,12 @@ public class GUI extends javax.swing.JFrame {
         try {            
             if(hufChoosen.isSelected()) {
                 setLog("huffman coding started at " + getDate() + "\n");
-                Code_Decode coder = new HuffCode_Decode();
+                CodeDecode coder = new HuffCodeDecode();
                 coder.code(inFileName, outfilename);
                 setLog("huffman coding finished at " + getDate() + "\n");
             } else {
                 setLog("Arithmetic coding started at " + getDate() + "\n");
-                Code_Decode input = new ArithmCode_Decode();                               
+                CodeDecode input = new ArithmCodeDecode();
                 input.code(inFileName, outfilename);                
                 setLog("Arithmetic coding finished at " + getDate() + "\n");
             }
@@ -385,7 +385,7 @@ public class GUI extends javax.swing.JFrame {
         String inFileName = input.getText();
         try {
             setLog("huffman decoding started at " + getDate() + "\n");
-            Code_Decode decoder = new HuffCode_Decode();
+            CodeDecode decoder = new HuffCodeDecode();
             decoder.decode(inFileName, outfilename);
             setLog("huffman decoding finished at " + getDate() + "\n");    
         } catch (IOException ex) {
@@ -398,7 +398,7 @@ public class GUI extends javax.swing.JFrame {
         try {
             String inFileName = input.getText();
             setLog("Arithmetic coding started at " + getDate() + "\n");
-            Code_Decode input = new ArithmCode_Decode();            
+            CodeDecode input = new ArithmCodeDecode();
             input.decode(inFileName, outfilename);
             setLog("Arithmetic coding finished at " + getDate() + "\n");
         } catch (FileNotFoundException ex) {
@@ -441,16 +441,16 @@ public class GUI extends javax.swing.JFrame {
     private boolean getAttention() {
         String inFileName = input.getText();
         if ( inFileName.substring(inFileName.length() - 3).equals("huf") || inFileName.substring(inFileName.length() - 3).equals("arf") ) {
-            File file = new File(inFileName.substring(0,inFileName.length() - 3) + "dec");
+            File file = new File(inFileName.substring(0,inFileName.length() - 4));
             if (file.exists())
                 return true;            
         } else {
             String type;
             if(hufChoosen.isSelected())
-                type = "huf";
+                type = ".huf";
             else
-                type = "arf";
-            File file = new File(inFileName.substring(0,inFileName.length() - 3) + type);
+                type = ".arf";
+            File file = new File(inFileName + type);
             if (file.exists())
                 return true;            
         }
@@ -461,15 +461,15 @@ public class GUI extends javax.swing.JFrame {
         String inFileName = input.getText();
         if ( inFileName.substring(inFileName.length() - 3).equals("huf") || inFileName.substring(inFileName.length() - 3).equals("arf") ) {
             return "this operation will overwrite file " +
-                inFileName.substring(0,inFileName.length() - 3) + "dec" + ". Proceed?";            
+                inFileName.substring(0,inFileName.length() - 4) + ". Proceed?";
         } else {            
             String type;
             if(hufChoosen.isSelected())
-                type = "huf";
+                type = ".huf";
             else
-                type = "arf";
+                type = ".arf";
             return "this operation will overwrite file " +
-                inFileName.substring(0,inFileName.length() - 3) + type + ". Proceed?";
+                inFileName + type + ". Proceed?";
         }
     }
 
