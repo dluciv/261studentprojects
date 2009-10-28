@@ -4,7 +4,7 @@ package archiver;
  *
  * @author HarpSerg
  */
-class Tree {
+public class Tree {
 
     public Tree lchild;
     public Tree rchild;

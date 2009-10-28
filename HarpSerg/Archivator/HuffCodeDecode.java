@@ -1,6 +1,8 @@
 package archiver;
 
 import java.io.IOException;
+import java.util.PriorityQueue;
+
 
 /**
  *
@@ -8,7 +10,7 @@ import java.io.IOException;
  */
 public class HuffCodeDecode implements CodeDecode {
 
-    private Tree[] nodelist = new Tree[256];;
+    private Tree[] nodelist = new Tree[256];
     private String[] codetable = new String[256];
     private final int bufsize = 1000;
     private int[] limweight = new int[256];
@@ -150,14 +152,15 @@ public class HuffCodeDecode implements CodeDecode {
     }
 
     private int getMinProbPlace() {
+        TreeComporator comp = new TreeComporator();
         int counter = 0;
         int pos = 0;
 
         for (int ln = 0; ln < 256; ln++) {
-            if (nodelist[pos] != null && nodelist[pos].weight != 0) {
+            if ( comp.nodeExists(nodelist[pos]) ) {
                 counter++;
-                if (nodelist[ln] != null && nodelist[ln].weight != 0) {
-                    if (nodelist[pos].weight > nodelist[ln].weight) {
+                if ( comp.nodeExists(nodelist[ln]) ) {
+                    if ( comp.compare(nodelist[pos], nodelist[ln]) == 1 ) {
                         pos = ln;
                     }
                 }
