@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 public class OutputFile {

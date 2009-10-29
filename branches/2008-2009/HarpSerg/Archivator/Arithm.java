@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 public class Arithm {

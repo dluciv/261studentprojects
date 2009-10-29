@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.PriorityQueue;
 
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 public class HuffCodeDecode implements CodeDecode {
