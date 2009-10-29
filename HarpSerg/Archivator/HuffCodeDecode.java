@@ -119,38 +119,36 @@ public class HuffCodeDecode implements CodeDecode {
         }
         fistr.clean();
         return node;
-        
-    
-
     }
 
     public Tree[] limitProbability(Tree[] node) {
-        long minweight = 1;
-        int curlimweight = 1;
-        boolean finish = true;
+       
+        TreeComporator comp = new TreeComporator();
+        PriorityQueue<Tree> queue = new PriorityQueue<Tree>(256, comp);
+        PriorityQueue<Tree> temp = new PriorityQueue<Tree>(256, comp);
 
-        while (finish) {
-            finish = false;
-            if (getMinProbPlace(node) != notexist) {
-                minweight = node[getMinProbPlace(node)].weight;
-                for (int ln = 0; ln < 256; ln++) {
-                    if (node[ln] != null && node[ln].weight != 0) {
-                        finish = true;
-                        if (node[ln].weight == minweight) {
-                            node[ln].weight = 0;
-                            limweight[ln] = curlimweight;
-                        }
-                    }
-                }
-                curlimweight++;
+        for (int i = 0; i < 256; i++) {
+            if (node[i] != null) {
+                Tree t = node[i];
+                t.character = t.character + shift;
+                temp.add(t);
             }
         }
-        for (int ln = 0; ln < 256; ln++) {
-            if (node[ln] != null) {
-                node[ln].weight = limweight[ln];
-            }
+
+        Tree[] resnode = new Tree[256];
+        int end = temp.size();
+        for (int i = 0; i < end; i++) {
+            Tree t = temp.poll();
+            t.weight = i + 1;
+            queue.add(t);
+            limweight[t.character] = t.weight;
+            t.character = t.character - shift;
+            resnode[t.character + shift] = t;
         }
-        return node;
+
+        
+        
+        return resnode;
     }
 
     private int getMinProbPlace(Tree[] node) {
@@ -255,13 +253,12 @@ public class HuffCodeDecode implements CodeDecode {
         int counter = 0;
 
         for (int i = 0; i < 256; i++) {
-            if (limweight[i] != 0) {
+            if (codetable[i] != null) {
                 counter++;
             }
         }
         fostr.write(counter);
         for (int i = 0; i < 256; i++) {
-
             if (limweight[i] != 0) {
                 fostr.write(i);
                 fostr.write(limweight[i]);
