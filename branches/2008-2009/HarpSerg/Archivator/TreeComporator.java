@@ -16,9 +16,14 @@ public class TreeComporator implements Comparator<Tree> {
     public int compare(Tree t1, Tree t2) {
         if (t1.weight > t2.weight) {
             return 1;
-        } else {
+        }
+        if (t1.weight < t2.weight) {
+            return -1;
+        }
+        if (t1.weight == t2.weight) {
             return 0;
         }
+        return 0;
     }
 
     public boolean nodeExists(Tree t) {
