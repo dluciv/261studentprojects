@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 

@@ -3,7 +3,7 @@ package archiver;
 import java.util.ArrayList;
 
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 public class Bits {

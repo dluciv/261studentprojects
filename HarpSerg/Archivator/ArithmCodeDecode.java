@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 public class ArithmCodeDecode implements CodeDecode {

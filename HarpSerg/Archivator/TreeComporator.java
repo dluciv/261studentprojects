@@ -1,13 +1,8 @@
 package archiver;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author Admin
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
  */
 import java.util.Comparator;
 public class TreeComporator implements Comparator<Tree> {

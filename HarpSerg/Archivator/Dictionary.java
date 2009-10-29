@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 public class Dictionary {
