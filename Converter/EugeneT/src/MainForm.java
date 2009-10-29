@@ -1,3 +1,8 @@
+/**
+ * Класс окна главной формы
+ * @author Eugene Todoruk
+ * group 261
+ */
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -13,7 +18,7 @@ public class MainForm extends JFrame {
         final int FORM_HEIGHT = 150;
         final int MAIN_INDENT = 12;
         final int R_LABEL_INDENT = 6;
-        final double USD_TO_RUB = 29.1641;  // Данные на 22.10.09
+
 
         // Настраиваем первую горизонтальную панель (для ввода данных)
         Box boxRub = Box.createHorizontalBox();
@@ -54,12 +59,7 @@ public class MainForm extends JFrame {
         buttonOk.addMouseListener(new MouseAdapter() {
 
             public void mouseClicked(MouseEvent event) {
-                try {
-                    usdText.setText(Double.toString(Double.parseDouble(rubText.getText()) /
-                            USD_TO_RUB));
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Число записано не верно!");
-                }
+                usdText.setText(ConvertRubToUsd.parseAndConvert(rubText.getText()));
             }
         });
     }
