@@ -3,26 +3,22 @@ package archiver;
 import java.io.IOException;
 import java.util.PriorityQueue;
 
-
 /**
  *
  * @author HarpSerg
  */
 public class HuffCodeDecode implements CodeDecode {
 
+    private TreeComporator compar = new TreeComporator();
+    private PriorityQueue<Tree> leaves = new PriorityQueue<Tree>(256, compar);
     private final int bufsize = 1000;
-    private final int notexist = 260;
     private final int shift = 128;
-    
-    private int[] limweight = new int[256];
 
-    
-    
     @Override
     public void code(String infileName, String outfileName) throws IOException {
         InputFile fistr = new InputFile(infileName);
-        OutputFile fostr = new OutputFile(outfileName);        
-        writeCodeToFile(infileName, fostr,fillCodeTable(huffTree(limitProbability(getProbability(fistr))), "", new String[256]));
+        OutputFile fostr = new OutputFile(outfileName);
+        writeCodeToFile(infileName, fostr, fillCodeTable(huffTree(limitProbability(getProbability(fistr))), "", new String[256]));
         fistr.clean();
         fostr.clean();
     }
@@ -30,13 +26,12 @@ public class HuffCodeDecode implements CodeDecode {
     /**
     @param fistr - file input stream;
      */
-    
     @Override
     public void decode(String infileName, String outfileName) throws IOException {
         InputFile fistr = new InputFile(infileName);
         OutputFile fostr = new OutputFile(outfileName);
         int tail = 8;
-        
+
         Tree result = huffTree(getProbabilityFromFile(fistr));
         Tree localtree = result;
         boolean isthelastbuf = false;
@@ -79,25 +74,18 @@ public class HuffCodeDecode implements CodeDecode {
         return null;
     }
 
-     public Tree[] getProbabilityFromFile(InputFile fistr1) throws IOException {
-        Tree[] node = new Tree[256];
-         int codeslength = fistr1.read();
-        int character;
-        int weight;
+    public PriorityQueue<Tree> getProbabilityFromFile(InputFile fistr1) throws IOException {
+        TreeComporator comp = new TreeComporator();
+        PriorityQueue<Tree> temp = new PriorityQueue<Tree>(256, comp);
+
+        int codeslength = fistr1.read();
         if (codeslength == 0) {
             codeslength = 256;
         }
-        //System.out.print("\n");
         for (int i = 0; i < codeslength; i++) {
-            if (i == 128) {
-                int u = 0;
-                u++;
-            }
-            character = fistr1.read();
-            weight = fistr1.read();
-            node[character] = new Tree(character, weight);
+            temp.add(new Tree(fistr1.read(), fistr1.read()));
         }
-        return node;
+        return temp;
     }
 
     public Tree[] getProbability(InputFile fistr) throws IOException {
@@ -121,8 +109,8 @@ public class HuffCodeDecode implements CodeDecode {
         return node;
     }
 
-    public Tree[] limitProbability(Tree[] node) {
-       
+    public PriorityQueue<Tree> limitProbability(Tree[] node) {
+
         TreeComporator comp = new TreeComporator();
         PriorityQueue<Tree> queue = new PriorityQueue<Tree>(256, comp);
         PriorityQueue<Tree> temp = new PriorityQueue<Tree>(256, comp);
@@ -133,78 +121,45 @@ public class HuffCodeDecode implements CodeDecode {
                 t.character = t.character + shift;
                 temp.add(t);
             }
-        }
-
-        Tree[] resnode = new Tree[256];
+        }        
         int end = temp.size();
         for (int i = 0; i < end; i++) {
             Tree t = temp.poll();
-            t.weight = i + 1;
+            t.weight = i + 1;            
+            leaves.add(t);
             queue.add(t);
-            limweight[t.character] = t.weight;
-            t.character = t.character - shift;
-            resnode[t.character + shift] = t;
         }
-
-        
-        
-        return resnode;
+        return queue;
     }
 
-    private int getMinProbPlace(Tree[] node) {
-        TreeComporator comp = new TreeComporator();
-        int counter = 0;
-        int pos = 0;
-
-        for (int ln = 0; ln < 256; ln++) {
-            if ( comp.nodeExists(node[pos]) ) {
-                counter++;
-                if ( comp.nodeExists(node[ln]) ) {
-                    if ( comp.compare(node[pos], node[ln]) == 1 ) {
-                        pos = ln;
-                    }
-                }
-            } else {
-                pos++;
-            }
-        }
-        if (counter == 0) {
-            return notexist;
-        } else {
-            return pos;
-        }
-    }
-
-    private Tree huffTree(Tree[] node) {
+    private Tree huffTree(PriorityQueue<Tree> queue) {
         Tree res = new Tree(0, null, null);
-        int lpos = 0;
-        int rpos = 0;
+        Tree ltree = null;
+        Tree rtree = null;
 
-        lpos = getMinProbPlace(node);
-        if (lpos != notexist) {
-            res.increaseWeight(node[lpos].weight);
-            res.setLchild(node[lpos]);
-            node[lpos] = null;
+        ltree = queue.poll();
+        if (ltree != null) {
+            res.increaseWeight(ltree.weight);
+            res.setLchild(ltree);
 
-            rpos = getMinProbPlace(node);
-            if (rpos != notexist) {
-                res.increaseWeight(node[rpos].weight);
-                res.setRchild(node[rpos]);
-                node[rpos] = null;
+            rtree = queue.poll();
+            if (rtree != null) {
+                res.increaseWeight(rtree.weight);
+                res.setRchild(rtree);
             } else {
                 return res.lchild;
             }
-            node[lpos] = res;
+            queue.add(res);
         } else {
             return res;
         }
-        return huffTree(node);
+        return huffTree(queue);
     }
 
     private String[] fillCodeTable(Tree tree, String trace, String[] codetable) {
         if (tree.isLeaf()) //System.out.print("|" + trace + "  " + (tree.character + shift) + "|");
         {
-            codetable[tree.character + shift] = trace;
+            codetable[tree.character] = trace;
         }
         if (tree.lchild != null) {
             fillCodeTable(tree.lchild, trace + '0', codetable);
@@ -229,8 +184,6 @@ public class HuffCodeDecode implements CodeDecode {
         return str;
     }
 
-
-
     public byte getByteByBits(String bits) {
         int value = 0;
         if (bits != null) {
@@ -244,25 +197,18 @@ public class HuffCodeDecode implements CodeDecode {
     }
 
     public void writeCodeToFile(String infileName, OutputFile fostr, String[] codetable) throws IOException {
-        //printCodeTable();
-        //System.out.print("\n");
         byte tail = 0;//the real length of last byte
         boolean isthelastbuf = false;
         String bstring = "";
         InputFile fistr = new InputFile(infileName);
-        int counter = 0;
+        int counter = leaves.size();
 
-        for (int i = 0; i < 256; i++) {
-            if (codetable[i] != null) {
-                counter++;
-            }
-        }
         fostr.write(counter);
-        for (int i = 0; i < 256; i++) {
-            if (limweight[i] != 0) {
-                fostr.write(i);
-                fostr.write(limweight[i]);
-            }
+        int end = leaves.size();
+        for (int i = 0; i < end; i++) {
+            Tree t = leaves.poll();
+            fostr.write(t.character);
+            fostr.write(t.weight);
         }
 
         while (!isthelastbuf) {
@@ -272,8 +218,7 @@ public class HuffCodeDecode implements CodeDecode {
             }
             for (int p = 0; p < buf.length; p++) {
                 bstring = bstring + codetable[buf[p] + shift];
-                while (bstring.length() >= 8) {
-                    //System.out.print(getBitsByByte(getByteByBits(bstring)) + "  ");
+                while (bstring.length() >= 8) {                                        
                     fostr.write(getByteByBits(bstring));
                     bstring = bstring.substring(8);
                 }
