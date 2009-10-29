@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
  */
 public class HuffCodeDecode implements CodeDecode {
 
-    private Tree[] nodelist = new Tree[256];
+    //private Tree[] nodelist = new Tree[256];
     private String[] codetable = new String[256];
     private final int bufsize = 1000;
     private int[] limweight = new int[256];
@@ -22,8 +22,8 @@ public class HuffCodeDecode implements CodeDecode {
     public void code(String infileName, String outfileName) throws IOException {
         InputFile fistr = new InputFile(infileName);
         OutputFile fostr = new OutputFile(outfileName);
-        getProbability(fistr);
-        fillCodeTable(huffTree(), "");
+        
+        fillCodeTable(huffTree(limitProbability(getProbability(fistr))), "");
         writeCodeToFile(infileName, fostr);
         fistr.clean();
         fostr.clean();
@@ -38,8 +38,8 @@ public class HuffCodeDecode implements CodeDecode {
         InputFile fistr = new InputFile(infileName);
         OutputFile fostr = new OutputFile(outfileName);
         int tail = 8;
-        getProbabilityFromFile(fistr);
-        Tree result = huffTree();
+        
+        Tree result = huffTree(getProbabilityFromFile(fistr));
         Tree localtree = result;
         boolean isthelastbuf = false;
         char direction = '0';
@@ -81,8 +81,9 @@ public class HuffCodeDecode implements CodeDecode {
         return null;
     }
 
-     public void getProbabilityFromFile(InputFile fistr1) throws IOException {
-        int codeslength = fistr1.read();
+     public Tree[] getProbabilityFromFile(InputFile fistr1) throws IOException {
+        Tree[] node = new Tree[256];
+         int codeslength = fistr1.read();
         int character;
         int weight;
         if (codeslength == 0) {
@@ -96,12 +97,14 @@ public class HuffCodeDecode implements CodeDecode {
             }
             character = fistr1.read();
             weight = fistr1.read();
-            nodelist[character] = new Tree(character, weight);
+            node[character] = new Tree(character, weight);
         }
+        return node;
     }
 
-    public void getProbability(InputFile fistr) throws IOException {
+    public Tree[] getProbability(InputFile fistr) throws IOException {
         boolean isthelastbuf = false;
+        Tree[] node = new Tree[256];
 
         while (!isthelastbuf) {
             byte[] buf = fistr.read(bufsize);
@@ -109,33 +112,34 @@ public class HuffCodeDecode implements CodeDecode {
                 isthelastbuf = true;
             }
             for (int p = 0; p < buf.length; p++) {
-                if (nodelist[buf[p] + shift] != null) {
-                    nodelist[buf[p] + shift].weight++;
+                if (node[buf[p] + shift] != null) {
+                    node[buf[p] + shift].weight++;
                 } else {
-                    nodelist[buf[p] + shift] = new Tree(buf[p], 1);
+                    node[buf[p] + shift] = new Tree(buf[p], 1);
                 }
             }
         }
         fistr.clean();
-        limitProbability();
-    //printProb();
+        return node;
+        
+    
 
     }
 
-    public void limitProbability() {
+    public Tree[] limitProbability(Tree[] node) {
         long minweight = 1;
         int curlimweight = 1;
         boolean finish = true;
 
         while (finish) {
             finish = false;
-            if (getMinProbPlace() != notexist) {
-                minweight = nodelist[getMinProbPlace()].weight;
+            if (getMinProbPlace(node) != notexist) {
+                minweight = node[getMinProbPlace(node)].weight;
                 for (int ln = 0; ln < 256; ln++) {
-                    if (nodelist[ln] != null && nodelist[ln].weight != 0) {
+                    if (node[ln] != null && node[ln].weight != 0) {
                         finish = true;
-                        if (nodelist[ln].weight == minweight) {
-                            nodelist[ln].weight = 0;
+                        if (node[ln].weight == minweight) {
+                            node[ln].weight = 0;
                             limweight[ln] = curlimweight;
                         }
                     }
@@ -144,23 +148,23 @@ public class HuffCodeDecode implements CodeDecode {
             }
         }
         for (int ln = 0; ln < 256; ln++) {
-            if (nodelist[ln] != null) {
-                nodelist[ln].weight = limweight[ln];
-            //System.out.print(ln + "-" + nodelist[ln].weight + "|");
+            if (node[ln] != null) {
+                node[ln].weight = limweight[ln];
             }
         }
+        return node;
     }
 
-    private int getMinProbPlace() {
+    private int getMinProbPlace(Tree[] node) {
         TreeComporator comp = new TreeComporator();
         int counter = 0;
         int pos = 0;
 
         for (int ln = 0; ln < 256; ln++) {
-            if ( comp.nodeExists(nodelist[pos]) ) {
+            if ( comp.nodeExists(node[pos]) ) {
                 counter++;
-                if ( comp.nodeExists(nodelist[ln]) ) {
-                    if ( comp.compare(nodelist[pos], nodelist[ln]) == 1 ) {
+                if ( comp.nodeExists(node[ln]) ) {
+                    if ( comp.compare(node[pos], node[ln]) == 1 ) {
                         pos = ln;
                     }
                 }
@@ -175,30 +179,30 @@ public class HuffCodeDecode implements CodeDecode {
         }
     }
 
-    private Tree huffTree() {
+    private Tree huffTree(Tree[] node) {
         Tree res = new Tree(0, null, null);
         int lpos = 0;
         int rpos = 0;
 
-        lpos = getMinProbPlace();
+        lpos = getMinProbPlace(node);
         if (lpos != notexist) {
-            res.increaseWeight(nodelist[lpos].weight);
-            res.setLchild(nodelist[lpos]);
-            nodelist[lpos] = null;
+            res.increaseWeight(node[lpos].weight);
+            res.setLchild(node[lpos]);
+            node[lpos] = null;
 
-            rpos = getMinProbPlace();
+            rpos = getMinProbPlace(node);
             if (rpos != notexist) {
-                res.increaseWeight(nodelist[rpos].weight);
-                res.setRchild(nodelist[rpos]);
-                nodelist[rpos] = null;
+                res.increaseWeight(node[rpos].weight);
+                res.setRchild(node[rpos]);
+                node[rpos] = null;
             } else {
                 return res.lchild;
             }
-            nodelist[lpos] = res;
+            node[lpos] = res;
         } else {
             return res;
         }
-        return huffTree();
+        return huffTree(node);
     }
 
     private void fillCodeTable(Tree tree, String trace) {
