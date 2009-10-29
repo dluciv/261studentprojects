@@ -10,21 +10,19 @@ import java.util.PriorityQueue;
  */
 public class HuffCodeDecode implements CodeDecode {
 
-    //private Tree[] nodelist = new Tree[256];
-    private String[] codetable = new String[256];
     private final int bufsize = 1000;
-    private int[] limweight = new int[256];
     private final int notexist = 260;
     private final int shift = 128;
+    
+    private int[] limweight = new int[256];
+
     
     
     @Override
     public void code(String infileName, String outfileName) throws IOException {
         InputFile fistr = new InputFile(infileName);
-        OutputFile fostr = new OutputFile(outfileName);
-        
-        fillCodeTable(huffTree(limitProbability(getProbability(fistr))), "");
-        writeCodeToFile(infileName, fostr);
+        OutputFile fostr = new OutputFile(outfileName);        
+        writeCodeToFile(infileName, fostr,fillCodeTable(huffTree(limitProbability(getProbability(fistr))), "", new String[256]));
         fistr.clean();
         fostr.clean();
     }
@@ -205,17 +203,18 @@ public class HuffCodeDecode implements CodeDecode {
         return huffTree(node);
     }
 
-    private void fillCodeTable(Tree tree, String trace) {
+    private String[] fillCodeTable(Tree tree, String trace, String[] codetable) {
         if (tree.isLeaf()) //System.out.print("|" + trace + "  " + (tree.character + shift) + "|");
         {
             codetable[tree.character + shift] = trace;
         }
         if (tree.lchild != null) {
-            fillCodeTable(tree.lchild, trace + '0');
+            fillCodeTable(tree.lchild, trace + '0', codetable);
         }
         if (tree.rchild != null) {
-            fillCodeTable(tree.rchild, trace + '1');
+            fillCodeTable(tree.rchild, trace + '1', codetable);
         }
+        return codetable;
     }
 
     public String getBitsByByte(byte b) {
@@ -246,7 +245,7 @@ public class HuffCodeDecode implements CodeDecode {
         return (byte) value;
     }
 
-    public void writeCodeToFile(String infileName, OutputFile fostr) throws IOException {
+    public void writeCodeToFile(String infileName, OutputFile fostr, String[] codetable) throws IOException {
         //printCodeTable();
         //System.out.print("\n");
         byte tail = 0;//the real length of last byte
