@@ -13,19 +13,24 @@ public class Generator {
     static private ArrayList<String> names = new ArrayList<String>();
 
     public static void main(String[] args) throws IOException{
-        String surnamesFile = args[0], baseFile = args[1];
-        int n = Integer.parseInt(args[2]);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File( surnamesFile ))));
-        BufferedWriter writer = new BufferedWriter ( new OutputStreamWriter(new FileOutputStream(baseFile)));
-        generate(n, writer, reader);
+        if (args.length < 3) {
+            System.out.println("How to use: java -jar <Generator.jar_path> <surnamesFile_path> <new_database_file_path> <number_of_entryes>");
+        } else {
+            String surnamesFile = args[0], baseFile = args[1];
+            int n = Integer.parseInt(args[2]);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File( surnamesFile ))));
+            BufferedWriter writer = new BufferedWriter ( new OutputStreamWriter(new FileOutputStream(baseFile)));
+            generate(n, writer, reader, baseFile);
+        }
     }
 
-    public static void generate(int recordsNum, BufferedWriter writer, BufferedReader reader) throws FileNotFoundException, IOException {
+    public static void generate(int recordsNum, BufferedWriter writer, BufferedReader reader, String target) throws FileNotFoundException, IOException {
         setSurnames(reader);        
         for (int i = 0; i < recordsNum; ++i) {
             writeRecord(writer);
         }
         writer.close();
+        System.out.println("\n" + "Generated in " + target);
     }
 
     private static void setSurnames(BufferedReader reader) throws IOException {

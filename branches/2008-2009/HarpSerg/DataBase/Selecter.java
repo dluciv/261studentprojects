@@ -47,8 +47,12 @@ public class Selecter {
                 rTo = new Entry(to);
         long begin = System.nanoTime();
         lines = index.find(rFrom, rTo);
-        System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n" +
-                "Press Enter to watch results.\nType \"q\" to stop watching.");
+        if (lines.size() != 0) {
+            System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n" +
+                    "Press Enter to watch results.\nType \"q\" to stop watching.");
+        } else {
+            System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n");
+        }
         showRecords(lines, number);
     }
     private void showRecords(ArrayList<Integer> lineNums, int n) throws IOException {
@@ -57,9 +61,11 @@ public class Selecter {
         if (n == Main.ALL) {
             n = lineNums.size();
         }
-        while (!inReader.readLine().equals("q")) {
-            for (int i = 0; i < n && iter.hasNext(); ++i) {
-                showNthLine(iter.next());
+        if (lineNums.size() != 0) {
+            while (!inReader.readLine().equals("q")) {
+                for (int i = 0; i < n && iter.hasNext(); ++i) {
+                    showNthLine(iter.next());
+                }
             }
         }
     }
