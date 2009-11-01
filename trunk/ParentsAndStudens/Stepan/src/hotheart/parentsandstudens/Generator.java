@@ -87,7 +87,7 @@ public class Generator {
         String patronymic = generatePatronymic(generateName(Sex.MALE), sex);
         int age = 30 + rnd.nextInt(10);
 
-        int studentsCount = rnd.nextInt(10);
+        int studentsCount = 10 + rnd.nextInt(10);
         Student[] students = new Student[studentsCount];
         for (int i = 0; i < studentsCount; i++) {
             students[i] = generateStudent(name, surname);
