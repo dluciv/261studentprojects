@@ -18,8 +18,8 @@ public class CoolParent extends Parent {
 
         int sum = 0;
         int count = 0;
-        for (int i = 0; i < this.students.length; i++) {
-            int marksCount = students[i].getExamsCount();
+        for (int i = 0; i < getStudentCount(); i++) {
+            int marksCount = getStrudent(i).getExamsCount();
             for (int j = 0; j < marksCount; j++) {
                 count++;
                 sum += students[i].getExamMark(j);
