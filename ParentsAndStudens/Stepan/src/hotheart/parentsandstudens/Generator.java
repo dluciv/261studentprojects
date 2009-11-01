@@ -5,6 +5,8 @@
 package hotheart.parentsandstudens;
 
 import com.sun.org.apache.bcel.internal.generic.GETFIELD;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -96,5 +98,20 @@ public class Generator {
         } else {
             return new CoolParent(name, surname, patronymic, sex, age, students);
         }
+    }
+
+    public static List<IHuman> generateCollection() {
+        LinkedList<IHuman> res = new LinkedList<IHuman>();
+
+        int parentCount = rnd.nextInt(40);
+        for (int i = 0; i < parentCount; i++) {
+            Parent p = generateParent();
+            res.add(p);
+
+            for (int j = 0; j < p.getStudentCount(); j++) {
+                res.add(p.getStrudent(j));
+            }
+        }
+        return res;
     }
 }

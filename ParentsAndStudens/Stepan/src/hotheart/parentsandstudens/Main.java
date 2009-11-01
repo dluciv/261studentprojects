@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hotheart.parentsandstudens;
+
+import java.util.List;
 
 /**
  *
@@ -16,6 +17,8 @@ public class Main {
      */
     public static void main(String[] args) {
 
-    }
+        List<IHuman> list = Generator.generateCollection();
 
+        
+    }
 }

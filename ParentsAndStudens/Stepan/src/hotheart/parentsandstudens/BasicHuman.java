@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hotheart.parentsandstudens;
 
 /**
@@ -10,6 +9,7 @@ package hotheart.parentsandstudens;
  * @author HotHeart
  */
 public class BasicHuman implements IHuman {
+
     String name, surname, patronymic;
     Sex sex;
     int age;
@@ -21,7 +21,6 @@ public class BasicHuman implements IHuman {
         this.sex = sex;
         this.age = age;
     }
-
 
     public String getName() {
         return name;
@@ -41,5 +40,10 @@ public class BasicHuman implements IHuman {
 
     public int getAge() {
         return age;
+    }
+
+    @Override
+    public String toString() {
+        return name + " " + patronymic + " " + surname + " (" + age + ")";
     }
 }
