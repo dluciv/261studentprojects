@@ -16,4 +16,14 @@ public class Parent extends BasicHuman {
         super(name, surname, patronymic, sex, age);
         this.students = students;
     }
+
+    public int getStudentCount()
+    {
+        return students.length;
+    }
+
+    public Student getStrudent(int index)
+    {
+        return students[index];
+    }
 }
