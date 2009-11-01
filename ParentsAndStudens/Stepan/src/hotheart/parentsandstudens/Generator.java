@@ -73,4 +73,28 @@ public class Generator {
             return new Botan(name, surname, patronymic, sex, age, faculty);
         }
     }
+
+    public static Parent generateParent() {
+        Sex sex = Sex.FEMALE;
+        if (rnd.nextBoolean()) {
+            sex = Sex.MALE;
+        }
+
+        String name = generateName(sex);
+        String surname = generateSurname(sex);
+        String patronymic = generatePatronymic(generateName(Sex.MALE), sex);
+        int age = 30 + rnd.nextInt(10);
+
+        int studentsCount = rnd.nextInt(10);
+        Student[] students = new Student[studentsCount];
+        for (int i = 0; i < studentsCount; i++) {
+            students[i] = generateStudent(name, surname);
+        }
+
+        if (rnd.nextBoolean()) {
+            return new Parent(name, surname, patronymic, sex, age, students);
+        } else {
+            return new CoolParent(name, surname, patronymic, sex, age, students);
+        }
+    }
 }
