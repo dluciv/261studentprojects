@@ -6,15 +6,15 @@ import math.library.*;
 
 public class IntOperations implements MathLibrary {
 
-    public float sub(float num1, float num2) {
+    public double sub(double num1, double num2) {
         return (int) (num1 - num2);
     }
 
-    public float add(float num1, float num2) {
+    public double add(double num1, double num2) {
         return (int) (num1 + num2);
     }
 
-    public float next(float num) {
-        return (int) (num++);
+    public double next(double num) {
+        return (int) (num + 1);
     }
 }
