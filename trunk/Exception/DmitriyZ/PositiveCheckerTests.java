@@ -1,5 +1,5 @@
 // Dmitriy Zabranskiy g261 (c)2009
-// PositiveTests
+// Positive Tests of Library Checker
 package exception;
 
 import org.junit.Test;
@@ -7,12 +7,12 @@ import org.junit.Test;
 public class PositiveCheckerTests {
 
     @Test
-    public void FirstInterfaceTest() {
+    public void firstInterfaceTest() {
         LibraryChecker.Check(new IntOperations());
     }
 
     @Test
-    public void SecondInterfaceTest() {
-        LibraryChecker.Check(new FloatOperations());
+    public void secondInterfaceTest() {
+        LibraryChecker.Check(new DoubleOperations());
     }
 }
