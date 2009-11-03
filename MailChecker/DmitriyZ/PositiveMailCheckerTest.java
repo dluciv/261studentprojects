@@ -70,49 +70,49 @@ public class PositiveMailCheckerTest {
     }
 
     @Test
-    public void Example1() {
+    public void example1() {
         String email = "a@b.cc";
         assertTrue(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example2() {
+    public void example2() {
         String email = "yuri.gubanov@mail.ru";
         assertTrue(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example3() {
+    public void example3() {
         String email = "my@domain.info";
         assertTrue(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example4() {
+    public void example4() {
         String email = "_.1@mail.com";
         assertTrue(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example5() {
+    public void example5() {
         String email = "yurik@hermitage.museum";
         assertTrue(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example6() {
+    public void example6() {
         String email = "yu-rik@hermitage.museum";
         assertTrue(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example7() {
+    public void example7() {
         String email = "yu-rik@her---mitage.museum";
         assertTrue(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example8() {
+    public void example8() {
         String email = "yu-rik@mail.google.com";
         assertTrue(MailChecker.isMail(email));
     }
