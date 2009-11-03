@@ -16,43 +16,43 @@ public class NegativeMailCheckerTest {
     }
 
     @Test
-    public void Example1() {
+    public void example1() {
         String email = "a@b.c";
         assertFalse(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example2() {
+    public void example2() {
         String email = "a..b@mail.ru";
         assertFalse(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example3() {
+    public void example3() {
         String email = ".a@mail.ru";
         assertFalse(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example4() {
+    public void example4() {
         String email = "yo@domain.domain";
         assertFalse(MailChecker.isMail(email));
     }
 
     @Test
-    public void Example5() {
+    public void example5() {
         String email = "1@mail.ru";
         assertFalse(MailChecker.isMail(email));
     }
 
     @Test
-    public void DoublePoint1() {
+    public void doublePoint1() {
         String email = "swom@po..chta.ru";
         assertFalse(MailChecker.isMail(email));
     }
 
     @Test
-    public void DoublePoint2() {
+    public void doublePoint2() {
         String email = "swo..mm@ppochta.ru";
         assertFalse(MailChecker.isMail(email));
     }
