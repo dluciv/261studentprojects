@@ -30,4 +30,9 @@ public class InterfaceTests {
     public void NullPointer() {
         Main.calculate(null, NUMBER_ONE, NUMBER_THREE);
     }
+    @Test
+    public void UnsupportedOperationExceptionTest() {
+        Main.calculate(divisor, NUMBER_ONE, NUMBER_THREE);
+    }
+
 }
