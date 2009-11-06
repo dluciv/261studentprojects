@@ -1,10 +1,13 @@
-
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 import java.util.ArrayList;
 import java.util.Comparator;
+/**
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
+ */
 public class BTree {
 
     private ArrayList<Entry> keys = new ArrayList<Entry>();

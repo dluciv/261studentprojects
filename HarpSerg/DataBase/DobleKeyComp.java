@@ -1,11 +1,12 @@
-
-
-
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 import java.util.Comparator;
+/**
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
+ */
 public class DobleKeyComp implements Comparator<Entry>{
     private int first;
     private int second;
