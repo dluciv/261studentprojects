@@ -1,11 +1,12 @@
-
-
-
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 import java.util.Comparator;
+/**
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
+ */
 public class SingleKeyComp implements Comparator<Entry>{
     private int field;
     SingleKeyComp(int field){

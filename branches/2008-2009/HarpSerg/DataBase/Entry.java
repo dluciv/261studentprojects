@@ -1,11 +1,12 @@
-
-
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 import java.util.ArrayList;
-
+/**
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
+ */
 public class Entry {
     private ArrayList<Integer> line_num = new ArrayList<Integer>();
     static public final int SURNAME = 0,  TEL = 1;

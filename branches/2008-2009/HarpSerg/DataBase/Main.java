@@ -1,12 +1,13 @@
-
-
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 import java.io.*;
 import java.util.Comparator;
-
+/**
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
+ */
 public class Main {
 
     /**

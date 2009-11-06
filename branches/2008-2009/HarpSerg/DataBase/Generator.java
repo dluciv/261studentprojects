@@ -1,11 +1,13 @@
-
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 import java.io.*;
 import java.util.*;
-
+/**
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
+ */
 public class Generator {
 
     static private ArrayList<String> INITIALS = new ArrayList<String>();
