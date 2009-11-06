@@ -1,10 +1,12 @@
-/* Example Of Using Interfaces
- * Here is the Interface itself
- * Savenko Maria ©2009*/
+/*
+ * Example Of Using Interfaces Here is the Interface itself Savenko Maria ©2009
+ */
 
 package msavenko;
 
 public interface IAskAnswer {
-    String questionTheUser ();
+    
+    String questionTheUser();
+    
     void replyTheUser();
 }
