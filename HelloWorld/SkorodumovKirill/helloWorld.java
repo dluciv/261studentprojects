@@ -2,7 +2,7 @@
 //Hello World
 public class helloWorld {
 	public static void main(String args[]){
-		System.out.print("Стало быть, здравствуй мир");
+		System.out.print("Hello world");
 	}
 
 }
