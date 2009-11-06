@@ -1,6 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
  */
 
 package archiver;

@@ -1,3 +1,7 @@
+/**
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
+ */
 package archiver;
 
 import java.util.ArrayList;
