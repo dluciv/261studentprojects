@@ -1,5 +1,5 @@
-/**
- *Class 
+/**Класс обработки подаваемого Email.
+ * 
  * @author Alekseev Ilya
  */
 package emailchecker;
@@ -13,7 +13,7 @@ public class EmailChecker {
     private static final String domainFirstLevel = "(([a-zA-Z]{2,4})|museum|travel)";
     private static final String isEmail = login + "@" + domainSecondLevel +
             domainFirstLevel;
-
+	// сопоставление с возможным образцом
     public static boolean isEmail(String email) {
 
         if (email == null) {
