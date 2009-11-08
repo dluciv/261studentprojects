@@ -105,7 +105,7 @@ public class MakeMainMenu implements ActionListener {
         convFrame.add(jCourse);
         convFrame.add(chCourse2);
         convFrame.add(jExchange);
-        convFrame.setResizable(true);
+        convFrame.setResizable(false);
         convFrame.setVisible(true);
     }
 
