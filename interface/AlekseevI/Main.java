@@ -6,13 +6,13 @@ package interfacepkg;
 
 public class Main {
 
-    // Медвед1 будет наделён способностью говорить 'Превед'
+    // Стоить можно из дерева
     private static Construction building1 = new InTrees();
-    // Медвед2 будет наделён способностью говорить 'Кревед'
+    // строить можно из кирпичей
     private static Construction building2 = new Brick();
 
     public static void main(String[] args) {
-        // Медведи разговаривают!!
+        // Осторожно, идет стройка
         building1.build();
         building2.build();
     }
