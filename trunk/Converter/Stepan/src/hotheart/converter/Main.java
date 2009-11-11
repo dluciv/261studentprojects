@@ -25,6 +25,11 @@ import javax.swing.border.Border;
  */
 public class Main {
 
+    /**
+     * Parsing an IP-adress in A.B.C.D format to new int[] {A, B, C, D}
+     * @param s - String representation of IP
+     * @return
+     */
     private static int[] tryParse(String s) {
         String[] nums = s.split("\\.");
         if (nums.length != 4) {
@@ -44,6 +49,16 @@ public class Main {
         }
         return res;
 
+    }
+
+    /**
+     * Converting int[] {A,B,C,D} IP to long int representation
+     * @param ip source IP representation
+     * @return result of conversion
+     */
+    private static long convertIp(int[] ip) {
+        return ((long) ip[0] << 24) + ((long) ip[1] << 16) +
+                ((long) ip[2] << 8) + (long) ip[3];
     }
 
     /**
@@ -74,8 +89,7 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 int[] vals = tryParse(textField.getText());
                 if (vals != null) {
-                    long ip = ((long)vals[0] << 24) + ((long)vals[1] << 16) +
-                            ((long)vals[2] << 8) + (long)vals[3];
+                    long ip = convertIp(vals);
                     answer.setText("Результат:" + Long.toString(ip));
                 } else {
                     answer.setText("Неверный ввод");
