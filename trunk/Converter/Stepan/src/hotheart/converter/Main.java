@@ -30,7 +30,7 @@ public class Main {
      * @param s - String representation of IP
      * @return
      */
-    private static int[] tryParse(String s) {
+    public static int[] tryParse(String s) {
         String[] nums = s.split("\\.");
         if (nums.length != 4) {
             return null;
@@ -56,7 +56,7 @@ public class Main {
      * @param ip source IP representation
      * @return result of conversion
      */
-    private static long convertIp(int[] ip) {
+    public static long convertIp(int[] ip) {
         return ((long) ip[0] << 24) + ((long) ip[1] << 16) +
                 ((long) ip[2] << 8) + (long) ip[3];
     }
