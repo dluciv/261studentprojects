@@ -27,7 +27,7 @@ public class Main {
         Comparator c;
 
 
-        for (int i = 1; i < prevKeyType.length; ++i) {
+        for (int i = 0; i < prevKeyType.length; ++i) {
             prevKeyType[i] = INIT_VALUE;
         }
         if (args.length != 1) {
@@ -52,16 +52,21 @@ public class Main {
                     keyType = parseKey(arguments[0]);
                     if (keyType[0] == ERROR_CODE) {
                         printHelp();
-                    } else if (keyType != prevKeyType) {
-                        prevKeyType = keyType;
+                    } else {                        
                         if (keyType[1] == INIT_VALUE) {
                             c = new SingleKeyComp(keyType[0]);
-                        } else {
-                            c = new DobleKeyComp(keyType[0], keyType[1]);
+                            if (keyType[0] != prevKeyType[0] || prevKeyType[1] != INIT_VALUE) {
+                                selecter.makeIndex(c);
+                            }
+                        } else {                            
+                            c = new DoubleKeyComp(keyType[0], keyType[1]);
+                            if (keyType[0] != prevKeyType[0] || keyType[1] != prevKeyType[1]) {
+                                selecter.makeIndex(c);
+                            }
                         }
-                        selecter.makeIndex(c);
-                    }
-                    selecter.search(from, to, number);
+                        prevKeyType = keyType;
+                        selecter.search(from, to, number);
+                    }                    
                 }
                 request = getRequest();
             }
@@ -124,6 +129,6 @@ public class Main {
 
     private static void printHelp() {
         System.out.println("MyDataBaseSearchEngine Copyright (c) 2009 HarpSerg");
-        System.out.println("How to use: java -jar <mydbse.jar_path> <database_file>");
+        System.out.println("How to use: <database_file>");
     }
 }

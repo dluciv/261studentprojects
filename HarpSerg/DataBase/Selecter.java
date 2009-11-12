@@ -1,7 +1,5 @@
-
-
 /**
- *
+ * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
 import java.io.*;
@@ -9,7 +7,10 @@ import java.util.ArrayList;
 import java.io.RandomAccessFile;
 import java.util.ListIterator;
 import java.util.Comparator;
-
+/**
+ * @copyright 2009 HarpSerg
+ * @author HarpSerg
+ */
 public class Selecter {
 
     private RandomAccessFile reader;
@@ -38,8 +39,7 @@ public class Selecter {
             ++i;
         }
         index = index.getRoot();
-
-    }
+    }    
 
     public void search(String from, String to, int number) throws IOException {
         ArrayList<Integer> lines;
@@ -55,6 +55,7 @@ public class Selecter {
         }
         showRecords(lines, number);
     }
+
     private void showRecords(ArrayList<Integer> lineNums, int n) throws IOException {
         BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
         ListIterator<Integer> iter = lineNums.listIterator();

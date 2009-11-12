@@ -17,7 +17,7 @@ public class BTree {
     private Comparator<Entry> c;
     private static final int ORDER = 16;
     private static final int INIT = -1;
-    private static Entry prevKey = new Entry("","0");
+    
 
     BTree(Comparator<Entry> c) {
         this.c = c;
@@ -119,7 +119,7 @@ public class BTree {
     }
 
     public ArrayList<Integer> find(Entry from, Entry to) {
-        
+        Entry prevKey = new Entry("","0");
         ArrayList<Integer> lines = new ArrayList<Integer>();
         Entry key;
         BTree child;
@@ -133,10 +133,7 @@ public class BTree {
             }
         } else {
             for (int i = 0; i < keys.size(); ++i) {
-                key = keys.get(i);
-                if(key.getSN().compareTo("K") >= 0 && key.getTel().compareTo("1500000")<=0){
-                    int a = 1;
-                }
+                key = keys.get(i);                
                 lastProperChild = i + 1;
                 if (c.compare(key,to) <= 0 && c.compare(key,from) >= 0) {
                     if (c.compare(key,from) > 0) {
@@ -159,31 +156,12 @@ public class BTree {
             if (lastProperChild != INIT) {
                 lines.addAll(children.get(lastProperChild).find(from, to));
             }
-        }
+        }       
         return lines;
     }
 
 
-    private int getKeysNum() {
-        int n = 0;
-        int lastChild = 0;
-
-        for (BTree child : children) {
-            if (child != null) {
-                leaf = false;
-            }
-        }
-        if (this.leaf) {
-            return keys.size();
-        } else {
-            for (int i = 0; i < keys.size(); ++i) {
-                n += children.get(i).getKeysNum() + 1;
-                lastChild = i + 1;
-            }
-            n += children.get(lastChild).getKeysNum();
-        }
-        return n;
-    }
+    
 
     public BTree getParent() {
         return parent;
