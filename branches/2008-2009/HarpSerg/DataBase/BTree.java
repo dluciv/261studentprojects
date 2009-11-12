@@ -40,6 +40,7 @@ public class BTree {
     }
 
     public void addKeyToNode(Entry newKey, BTree right) {
+
         int pos = findPos(newKey);
 
 
@@ -100,10 +101,11 @@ public class BTree {
         Entry curr;
         int lastKey = keys.size() - 1;
         for (int i = 0; i <= lastKey; ++i) {
-            curr = keys.get(i);
-            if (c.compare(r,curr) <= 0) {
+            curr = keys.get(i);    
+            if (c.compare(r, curr) <= 0) {
                 return children.get(i).findNode(r);
             }
+            
         }
         return children.get(lastKey + 1).findNode(r);
     }
