@@ -37,6 +37,7 @@ public class Main {
             selecter = new Selecter(args[0]);
             fullReading(args[0]);            
             request = getRequest();
+
             while (!request.equals("q")) {
                 arguments = request.split(" ");
                 if (arguments.length < 3 || arguments.length > 4) {
