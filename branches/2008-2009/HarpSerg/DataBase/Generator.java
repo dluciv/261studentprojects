@@ -16,7 +16,7 @@ public class Generator {
 
     public static void main(String[] args) throws IOException{
         if (args.length < 3) {
-            System.out.println("How to use: java -jar <Generator.jar_path> <surnamesFile_path> <new_database_file_path> <number_of_entryes>");
+            System.out.println("How to use: <surnamesFile_path> <new_database_file_path> <number_of_entryes>");
         } else {
             String surnamesFile = args[0], baseFile = args[1];
             int n = Integer.parseInt(args[2]);
