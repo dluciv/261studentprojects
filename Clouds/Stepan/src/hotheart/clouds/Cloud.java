@@ -10,12 +10,14 @@ package hotheart.clouds;
 public class Cloud {
 
     IWeather weather;
+    IMagic magic;
 
-    public Cloud(IWeather weather) {
+    public Cloud(IWeather weather, IMagic magic) {
         this.weather = weather;
+        this.magic = magic;
     }
 
-    public Creature getCreature() {
+    public BabyCarrier getCreature() {
 
         IDayLight daylightPrivider = weather.getDayLight();
         DayLightType daylight = daylightPrivider.getDayLightType();
@@ -23,31 +25,39 @@ public class Cloud {
         IWind wind = weather.getWind();
         int windSpeed = wind.getSpeed();
 
+        Creature result = null;
+        BabyCarrier carrier = null;
+
         if (weather.getLuminary().isShining()) {
             // isLuminary
             if (daylight == DayLightType.NOON) {
                 if (windSpeed == 10) {
-                    return new Creature(CreatureType.Puppy);
+                    result = new Creature(CreatureType.Puppy);
+                    carrier = magic.CallDaemon();
                 } else {
                     return null;
                 }
             } else if (daylight == DayLightType.EVENING) {
                 if ((8 <= windSpeed) && (windSpeed <= 9)) {
-                    return new Creature(CreatureType.Kitten);
+                    result = new Creature(CreatureType.Kitten);
+                    carrier = magic.CallStork();
                 } else if ((4 <= windSpeed) && (windSpeed <= 7)) {
-                    return new Creature(CreatureType.Piglet);
+                    result = new Creature(CreatureType.Piglet);
+                    carrier = magic.CallDaemon();
                 } else {
                     return null;
                 }
             } else if (daylight == DayLightType.MORNING) {
                 if (windSpeed == 5) {
-                    return new Creature(CreatureType.Balloon);
+                    result = new Creature(CreatureType.Balloon);
+                    carrier = magic.CallStork();
                 } else {
                     return null;
                 }
             } else if (daylight == DayLightType.NIGHT) {
                 if ((1 <= windSpeed) && (windSpeed <= 3)) {
-                    return new Creature(CreatureType.Hedgehog);
+                    result = new Creature(CreatureType.Hedgehog);
+                    carrier = magic.CallStork();
                 } else {
                     return null;
                 }
@@ -57,9 +67,11 @@ public class Cloud {
 
             if (daylight == DayLightType.NIGHT) {
                 if ((1 <= windSpeed) && (windSpeed <= 3)) {
-                    return new Creature(CreatureType.Bearcub);
+                    result = new Creature(CreatureType.Bearcub);
+                    carrier = magic.CallDaemon();
                 } else if (0 == windSpeed) {
-                    return new Creature(CreatureType.Bat);
+                    result = new Creature(CreatureType.Bat);
+                    carrier = magic.CallDaemon();
                 } else {
                     return null;
                 }
@@ -67,7 +79,9 @@ public class Cloud {
                 return null;
             }
         }
+        
+        carrier.giveBaby(result);
 
-        return null;
+        return carrier;
     }
 }

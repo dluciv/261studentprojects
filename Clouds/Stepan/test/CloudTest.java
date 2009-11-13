@@ -3,11 +3,14 @@
  * 261 Group - 2009
  */
 
+import hotheart.clouds.BabyCarrierType;
 import hotheart.clouds.Cloud;
 import hotheart.clouds.CreatureType;
 import hotheart.clouds.DayLightType;
+import hotheart.clouds.BabyCarrier;
 import hotheart.clouds.IDayLight;
 import hotheart.clouds.ILuminary;
+import hotheart.clouds.IMagic;
 import hotheart.clouds.IWeather;
 import hotheart.clouds.IWind;
 import org.jmock.Expectations;
@@ -23,12 +26,58 @@ public class CloudTest {
 
     Mockery context;
 
-    private Cloud createCloud(final boolean isLum, final int wind, final DayLightType daylight) {
+    private void testCloud(final boolean isLum, final int wind,
+            final DayLightType daylight, final CreatureType type,
+            final BabyCarrierType carierType) {
+
         context = new Mockery();
         final IWeather mockWeather = context.mock(IWeather.class);
         final ILuminary mockLum = context.mock(ILuminary.class);
         final IWind mockWind = context.mock(IWind.class);
         final IDayLight mockDayLight = context.mock(IDayLight.class);
+
+        final IMagic mockMagic = context.mock(IMagic.class);
+
+        final BabyCarrier mockCarier = new BabyCarrier(carierType);
+
+        // Carrier
+
+        if (carierType == BabyCarrierType.Daemon) {
+            context.checking(new Expectations() {
+
+                {
+                    oneOf(mockMagic).CallDaemon();
+                    will(returnValue(mockCarier));
+                    never(mockMagic).CallStork();
+                    will(returnValue(null));
+                }
+            });
+        } else {
+            context.checking(new Expectations() {
+
+                {
+                    oneOf(mockMagic).CallStork();
+                    will(returnValue(mockCarier));
+                    never(mockMagic).CallDaemon();
+                    will(returnValue(null));
+                }
+            });
+        }
+
+        // Weather
+
+        context.checking(new Expectations() {
+
+            {
+                allowing(mockLum).isShining();
+                will(returnValue(isLum));
+                allowing(mockWind).getSpeed();
+                will(returnValue(wind));
+                allowing(mockDayLight).getDayLightType();
+                will(returnValue(daylight));
+            }
+        });
+
 
         context.checking(new Expectations() {
 
@@ -43,90 +92,59 @@ public class CloudTest {
         });
 
 
-        context.checking(new Expectations() {
 
-            {
-                allowing(mockLum).isShining();
-                will(returnValue(isLum));
-                allowing(mockWind).getSpeed();
-                will(returnValue(wind));
-                allowing(mockDayLight).getDayLightType();
-                will(returnValue(daylight));
-            }
-        });
 
-        return new Cloud(mockWeather);
+        Cloud cloud = new Cloud(mockWeather, mockMagic);
+        BabyCarrier carrier = cloud.getCreature();
+
+        context.assertIsSatisfied();
+
+        assertEquals(carrier.getType(), carierType);
+
+        assertEquals(carrier.getCreature().getCreatureType(), type);
+
     }
 
     @Test
     public void testPuppy() {
-        Cloud cloud;
-
-        cloud = createCloud(true, 10, DayLightType.NOON);
-        assertEquals(cloud.getCreature().getCreatureType(), CreatureType.Puppy);
+        testCloud(true, 10, DayLightType.NOON, CreatureType.Puppy, BabyCarrierType.Daemon);
     }
 
     @Test
     public void testKitten() {
-        Cloud cloud;
         for (int i = 8; i <= 9; i++) {
-            cloud = createCloud(true, i, DayLightType.EVENING);
-            assertEquals(cloud.getCreature().getCreatureType(), CreatureType.Kitten);
+            testCloud(true, i, DayLightType.EVENING, CreatureType.Kitten, BabyCarrierType.Storck);
         }
     }
 
     @Test
     public void testHedgehog() {
-        Cloud cloud;
         for (int i = 1; i <= 3; i++) {
-            cloud = createCloud(true, i, DayLightType.NIGHT);
-            assertEquals(cloud.getCreature().getCreatureType(), CreatureType.Hedgehog);
+            testCloud(true, i, DayLightType.NIGHT, CreatureType.Hedgehog, BabyCarrierType.Storck);
         }
     }
 
     @Test
     public void testBearcub() {
-        Cloud cloud;
         for (int i = 1; i <= 3; i++) {
-            cloud = createCloud(false, i, DayLightType.NIGHT);
-            assertEquals(cloud.getCreature().getCreatureType(), CreatureType.Bearcub);
+            testCloud(false, i, DayLightType.NIGHT, CreatureType.Bearcub, BabyCarrierType.Daemon);
         }
     }
 
     @Test
     public void testPiglet() {
-        Cloud cloud;
         for (int i = 4; i <= 7; i++) {
-            cloud = createCloud(true, i, DayLightType.EVENING);
-            assertEquals(cloud.getCreature().getCreatureType(), CreatureType.Piglet);
+            testCloud(true, i, DayLightType.EVENING, CreatureType.Piglet, BabyCarrierType.Daemon);
         }
     }
 
     @Test
     public void testBat() {
-        Cloud cloud;
-        cloud = createCloud(false, 0, DayLightType.NIGHT);
-        assertEquals(cloud.getCreature().getCreatureType(), CreatureType.Bat);
+        testCloud(false, 0, DayLightType.NIGHT, CreatureType.Bat, BabyCarrierType.Daemon);
     }
 
     @Test
     public void testBaloon() {
-        Cloud cloud;
-        cloud = createCloud(true, 5, DayLightType.MORNING);
-        assertEquals(cloud.getCreature().getCreatureType(), CreatureType.Balloon);
-    }
-
-    @Test
-    public void testNone() {
-        Cloud cloud;
-        
-        cloud = createCloud(true, 5, DayLightType.NIGHT);
-        assertEquals(cloud.getCreature(), null);
-        
-        cloud = createCloud(true, 10, DayLightType.NIGHT);
-        assertEquals(cloud.getCreature(), null);
-        
-        cloud = createCloud(false, 4, DayLightType.EVENING);
-        assertEquals(cloud.getCreature(), null);
+        testCloud(true, 5, DayLightType.MORNING, CreatureType.Balloon, BabyCarrierType.Storck);
     }
 }
