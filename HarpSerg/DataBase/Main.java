@@ -53,26 +53,26 @@ public class Main {
                         printHelp();
                     } else {                        
                         if (keyType[1] == INIT_VALUE) {
-                            c = new SingleKeyComp(keyType[0]);
+                            c = new SingleKeyComparator(keyType[0]);
                             if (keyType[0] != prevKeyType[0] || prevKeyType[1] != INIT_VALUE) {
                                 selector.makeIndex(c);
                             }
                         } else {                            
-                            c = new DoubleKeyComp(keyType[0], keyType[1]);
+                            c = new DoubleKeyComparator(keyType[0], keyType[1]);
                             if (keyType[0] != prevKeyType[0] || keyType[1] != prevKeyType[1]) {
                                 selector.makeIndex(c);
                             }
                         }
                         prevKeyType = keyType;
                         long begin = System.nanoTime();
-                        ArrayList<Integer> lines = selector.search(from, to, number);
-                        if (lines.size() != 0) {
-                            System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n" +
+                        ArrayList<Entry> entryes = selector.search(from, to, number);
+                        if (entryes.size() != 0) {
+                            System.out.println(entryes.size() + " results found in " + (System.nanoTime() - begin) + " ns\n" +
                                     "Press Enter to watch results.\nType \"q\" to stop watching.");
                         } else {
-                            System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n");
+                            System.out.println(entryes.size() + " results found in " + (System.nanoTime() - begin) + " ns\n");
                         }
-                        selector.showRecords(lines, number);
+                        selector.showRecords(entryes, number);
                     }                    
                 }
                 request = getRequest();

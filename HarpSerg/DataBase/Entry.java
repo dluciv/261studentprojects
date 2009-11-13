@@ -2,10 +2,7 @@
  * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
-import java.util.ArrayList;
-
-public class Entry {
-    private ArrayList<Integer> line_num = new ArrayList<Integer>();
+public class Entry {   
     static public final int SURNAME = 0,  TEL = 1;
     private String sn;
     private String tel;
@@ -18,8 +15,7 @@ public class Entry {
     public Entry(String line, int num) {
         int i = line.indexOf(' ');
         sn = line.substring(0, i);
-        tel = line.substring(15);
-        line_num.add(num);
+        tel = line.substring(15);        
     }
     public Entry(String line){
         String[] args = line.split(":");
@@ -30,15 +26,7 @@ public class Entry {
             this.sn = args[0];
             this.tel = args[1];
         }
-    }
-
-    public ArrayList<Integer> getLineNums() {
-        return line_num;
-    }
-
-    public void addToLineNums(ArrayList<Integer> newNums) {
-        line_num.addAll(newNums);
-    }
+    }    
 
     public String getTel() {
         return tel;
@@ -48,11 +36,5 @@ public class Entry {
         return sn;
     }
 
-    public void setTel(String tel){
-        this.tel = tel;
-    }
-
-    public void setSN(String sn){
-        this.sn = sn;
-    }
+   
 }

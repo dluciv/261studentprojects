@@ -4,9 +4,9 @@
  */
 import java.util.Comparator;
 
-public class SingleKeyComp implements Comparator<Entry>{
+public class SingleKeyComparator implements Comparator<Entry>{
     private int field;
-    public SingleKeyComp(int field){
+    public SingleKeyComparator(int field){
         this.field = field;
     }
 

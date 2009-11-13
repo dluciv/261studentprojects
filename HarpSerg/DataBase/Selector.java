@@ -35,17 +35,17 @@ public class Selector {
         index = index.getRoot();
     }    
 
-    public ArrayList<Integer> search(String from, String to, int number) throws IOException {
+    public ArrayList<Entry> search(String from, String to, int number) throws IOException {
         return index.find(new Entry(from), new Entry(to));
     }
 
-    public void showRecords(ArrayList<Integer> lineNums, int n) throws IOException {
+    public void showRecords(ArrayList<Entry> entryestoshow, int n) throws IOException {
         BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
-        ListIterator<Integer> iter = lineNums.listIterator();
+        ListIterator<Entry> iter = entryestoshow.listIterator();
         if (n == Main.ALL) {
-            n = lineNums.size();
+            n = entryestoshow.size();
         }
-        if (lineNums.size() != 0) {
+        if (entryestoshow.size() != 0) {
             while (!inReader.readLine().equals("q")) {
                 for (int i = 0; i < n && iter.hasNext(); ++i) {
                     showNthLine(iter.next());
@@ -54,8 +54,7 @@ public class Selector {
         }
     }
 
-    public void showNthLine(int n) throws IOException {
-        reader.seek((n - 1) * LINE_SIZE);
-        System.out.println(reader.readLine());
+    public void showNthLine(Entry n) throws IOException {        
+        System.out.println(n.getSN() + " " + n.getTel());
     }
 }
