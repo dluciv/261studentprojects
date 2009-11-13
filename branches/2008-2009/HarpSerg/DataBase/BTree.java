@@ -44,17 +44,12 @@ public class BTree {
         if (children.isEmpty()) {
             children.add(new BTree(c));
         }
-        if (pos > 0 && c.compare(keys.get(pos - 1),newKey) == 0) {
-            keys.get(pos - 1).addToLineNums(newKey.getLineNums());
-        } else {
-            keys.add(pos, newKey);
-            children.add(pos + 1, right);
-            right.parent = this;
-            if (keys.size() > ORDER) {
-                split();
-            }
+        keys.add(pos, newKey);
+        children.add(pos + 1, right);
+        right.parent = this;
+        if (keys.size() > ORDER) {
+            split();
         }
-
     }
 
     private void split() {
@@ -117,9 +112,9 @@ public class BTree {
         return keys.size();
     }
 
-    public ArrayList<Integer> find(Entry from, Entry to) {
+    public ArrayList<Entry> find(Entry from, Entry to) {
         Entry prevKey = new Entry("","0");
-        ArrayList<Integer> lines = new ArrayList<Integer>();
+        ArrayList<Entry> entryes = new ArrayList<Entry>();
         Entry key;
         BTree child;
         int lastProperChild = INIT;
@@ -127,7 +122,7 @@ public class BTree {
         if (leaf) {
             for (Entry k : keys) {
                 if (c.compare(k,to) <= 0 && c.compare(k,from) >= 0) {
-                    lines.addAll(k.getLineNums());
+                    entryes.add(k);
                 }
             }
         } else {
@@ -137,26 +132,26 @@ public class BTree {
                 if (c.compare(key,to) <= 0 && c.compare(key,from) >= 0) {
                     if (c.compare(key,from) > 0) {
                         child = children.get(i);
-                        lines.addAll(child.find(from, to));
+                        entryes.addAll(child.find(from, to));
                     }
-                    lines.addAll(key.getLineNums());
+                    entryes.add(key);
                     if (c.compare(key,to) < 0) {
                         lastProperChild = i + 1;
                     }
                 } else if (c.compare(key,to) > 0 && c.compare(prevKey, from) < 0) {
                     child = children.get(i);
-                    lines.addAll(child.find(from, to));
-                    return lines;
+                    entryes.addAll(child.find(from, to));
+                    return entryes;
                 } else if (c.compare(key,to) > 0) {
-                    return lines;
+                    return entryes;
                 }
                 prevKey = key;
             }
             if (lastProperChild != INIT) {
-                lines.addAll(children.get(lastProperChild).find(from, to));
+                entryes.addAll(children.get(lastProperChild).find(from, to));
             }
         }       
-        return lines;
+        return entryes;
     }
 
 
