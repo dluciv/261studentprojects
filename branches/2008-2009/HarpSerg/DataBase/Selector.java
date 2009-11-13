@@ -7,20 +7,14 @@ import java.util.ArrayList;
 import java.io.RandomAccessFile;
 import java.util.ListIterator;
 import java.util.Comparator;
-/**
- * @copyright 2009 HarpSerg
- * @author HarpSerg
- */
-public class Selecter {
+
+public class Selector {
 
     private RandomAccessFile reader;
     private BTree index;
     private static int LINE_SIZE = 23;
-
-    Selecter() {
-    }
-
-    Selecter(String fileName) throws IOException {
+    
+    public Selector(String fileName) throws IOException {
         reader = new RandomAccessFile(fileName, "r");
     }
 
@@ -41,22 +35,11 @@ public class Selecter {
         index = index.getRoot();
     }    
 
-    public void search(String from, String to, int number) throws IOException {
-        ArrayList<Integer> lines;
-        Entry rFrom = new Entry(from),
-                rTo = new Entry(to);
-        long begin = System.nanoTime();
-        lines = index.find(rFrom, rTo);
-        if (lines.size() != 0) {
-            System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n" +
-                    "Press Enter to watch results.\nType \"q\" to stop watching.");
-        } else {
-            System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n");
-        }
-        showRecords(lines, number);
+    public ArrayList<Integer> search(String from, String to, int number) throws IOException {
+        return index.find(new Entry(from), new Entry(to));
     }
 
-    private void showRecords(ArrayList<Integer> lineNums, int n) throws IOException {
+    public void showRecords(ArrayList<Integer> lineNums, int n) throws IOException {
         BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
         ListIterator<Integer> iter = lineNums.listIterator();
         if (n == Main.ALL) {

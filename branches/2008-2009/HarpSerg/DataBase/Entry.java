@@ -3,28 +3,25 @@
  * @author HarpSerg
  */
 import java.util.ArrayList;
-/**
- * @copyright 2009 HarpSerg
- * @author HarpSerg
- */
+
 public class Entry {
     private ArrayList<Integer> line_num = new ArrayList<Integer>();
     static public final int SURNAME = 0,  TEL = 1;
     private String sn;
     private String tel;
 
-    Entry(String sn, String tel) {
+    public Entry(String sn, String tel) {
         this.sn = sn;
         this.tel = tel;
     }
 
-    Entry(String line, int num) {
+    public Entry(String line, int num) {
         int i = line.indexOf(' ');
         sn = line.substring(0, i);
         tel = line.substring(15);
         line_num.add(num);
     }
-    Entry(String line){
+    public Entry(String line){
         String[] args = line.split(":");
         if(args.length == 1){
             this.sn = args[0];

@@ -4,10 +4,7 @@
  */
 import java.util.ArrayList;
 import java.util.Comparator;
-/**
- * @copyright 2009 HarpSerg
- * @author HarpSerg
- */
+
 public class BTree {
 
     private ArrayList<Entry> keys = new ArrayList<Entry>();
@@ -19,11 +16,11 @@ public class BTree {
     private static final int INIT = -1;
     
 
-    BTree(Comparator<Entry> c) {
+    public BTree(Comparator<Entry> c) {
         this.c = c;
     }
 
-    BTree(Entry k, Comparator<Entry> c) {
+    private BTree(Entry k, Comparator<Entry> c) {
         keys.add(k);
         children.add(new BTree(c));
         children.add(new BTree(c));
