@@ -3,11 +3,9 @@
  * @author HarpSerg
  */
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Comparator;
-/**
- * @copyright 2009 HarpSerg
- * @author HarpSerg
- */
+
 public class Main {
 
     /**
@@ -17,7 +15,7 @@ public class Main {
     public static final int ALL = 0;
     private static final int ERROR_CODE = -1;
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private static Selecter selecter;
+    private static Selector selector;
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
@@ -34,7 +32,7 @@ public class Main {
             printHelp();
         } else {
             printRequestHelp();
-            selecter = new Selecter(args[0]);
+            selector = new Selector(args[0]);
             fullReading(args[0]);            
             request = getRequest();
 
@@ -57,16 +55,24 @@ public class Main {
                         if (keyType[1] == INIT_VALUE) {
                             c = new SingleKeyComp(keyType[0]);
                             if (keyType[0] != prevKeyType[0] || prevKeyType[1] != INIT_VALUE) {
-                                selecter.makeIndex(c);
+                                selector.makeIndex(c);
                             }
                         } else {                            
                             c = new DoubleKeyComp(keyType[0], keyType[1]);
                             if (keyType[0] != prevKeyType[0] || keyType[1] != prevKeyType[1]) {
-                                selecter.makeIndex(c);
+                                selector.makeIndex(c);
                             }
                         }
                         prevKeyType = keyType;
-                        selecter.search(from, to, number);
+                        long begin = System.nanoTime();
+                        ArrayList<Integer> lines = selector.search(from, to, number);
+                        if (lines.size() != 0) {
+                            System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n" +
+                                    "Press Enter to watch results.\nType \"q\" to stop watching.");
+                        } else {
+                            System.out.println(lines.size() + " results found in " + (System.nanoTime() - begin) + " ns\n");
+                        }
+                        selector.showRecords(lines, number);
                     }                    
                 }
                 request = getRequest();
