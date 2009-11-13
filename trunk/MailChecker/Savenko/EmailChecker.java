@@ -18,8 +18,7 @@ public class EmailChecker {
                                                   .compile("([A-Z]{0,2} )*[0-9]{6}");
     
     public static boolean checkTheEmailMatching(String word) {
-        Matcher matcher = email.matcher(word);
-        if (matcher.matches()){
+        if (email.matcher(word).matches()){
             return true;
         }
         else{
