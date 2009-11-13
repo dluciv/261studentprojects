@@ -1,11 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Cloud class by Korshakov Stepan
+ * Group 261 - 2009(c)
  */
 package hotheart.clouds;
 
 /**
- * @author m08ksa
+ * @author Korshakov Stepan
  */
 public class Cloud {
 

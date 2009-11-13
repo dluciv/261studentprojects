@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * CreatureType enum by Korshakov Stepan
+ * 261 Group - 2009(c)
  */
 
 package hotheart.clouds;
