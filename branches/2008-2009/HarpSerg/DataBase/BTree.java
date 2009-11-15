@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class BTree {
-
     private ArrayList<Entry> keys = new ArrayList<Entry>();
     private ArrayList<BTree> children = new ArrayList<BTree>();
     private boolean leaf = true;
@@ -113,8 +112,8 @@ public class BTree {
     }
 
     public ArrayList<Entry> find(Entry from, Entry to) {
+        ArrayList<Entry> propentryes = new ArrayList<Entry>();
         Entry prevKey = new Entry("","0");
-        ArrayList<Entry> entryes = new ArrayList<Entry>();
         Entry key;
         BTree child;
         int lastProperChild = INIT;
@@ -122,7 +121,7 @@ public class BTree {
         if (leaf) {
             for (Entry k : keys) {
                 if (c.compare(k,to) <= 0 && c.compare(k,from) >= 0) {
-                    entryes.add(k);
+                    propentryes.add(k);
                 }
             }
         } else {
@@ -132,26 +131,26 @@ public class BTree {
                 if (c.compare(key,to) <= 0 && c.compare(key,from) >= 0) {
                     if (c.compare(key,from) > 0) {
                         child = children.get(i);
-                        entryes.addAll(child.find(from, to));
+                        propentryes.addAll(child.find(from, to));
                     }
-                    entryes.add(key);
+                    propentryes.add(key);
                     if (c.compare(key,to) < 0) {
                         lastProperChild = i + 1;
                     }
                 } else if (c.compare(key,to) > 0 && c.compare(prevKey, from) < 0) {
                     child = children.get(i);
-                    entryes.addAll(child.find(from, to));
-                    return entryes;
+                    propentryes.addAll(child.find(from, to));
+                    return propentryes;
                 } else if (c.compare(key,to) > 0) {
-                    return entryes;
+                    return propentryes;
                 }
                 prevKey = key;
             }
             if (lastProperChild != INIT) {
-                entryes.addAll(children.get(lastProperChild).find(from, to));
+                propentryes.addAll(children.get(lastProperChild).find(from, to));
             }
         }       
-        return entryes;
+        return propentryes;
     }
 
 

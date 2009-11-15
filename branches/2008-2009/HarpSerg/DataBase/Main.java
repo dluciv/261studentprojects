@@ -5,29 +5,29 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
-
+import java.util.ListIterator;
 public class Main {
 
     /**
      * @param args the command line arguments
      */
-    private static final int INIT_VALUE = -1;
-    public static final int ALL = 0;
-    private static final int ERROR_CODE = -1;
+    
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Selector selector;
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
-        String from, to, request;
-        int number, keyType[], prevKeyType[] = new int[2];
+        String from;
+        String to;
+        String request;
+        int number;
+        Keys prevKeyType = Keys.INIT_VALUE;
+        Keys keyType;
         String[] arguments;
         Comparator c;
 
 
-        for (int i = 0; i < prevKeyType.length; ++i) {
-            prevKeyType[i] = INIT_VALUE;
-        }
+             
         if (args.length != 1) {
             printHelp();
         } else {
@@ -44,24 +44,17 @@ public class Main {
                     from = arguments[1];
                     to = arguments[2];
                     if (arguments.length == 3) {
-                        number = ALL;
+                        number = 0;
                     } else {
                         number = Integer.parseInt(arguments[3]);
                     }
                     keyType = parseKey(arguments[0]);
-                    if (keyType[0] == ERROR_CODE) {
-                        printHelp();
-                    } else {                        
-                        if (keyType[1] == INIT_VALUE) {
-                            c = new SingleKeyComparator(keyType[0]);
-                            if (keyType[0] != prevKeyType[0] || prevKeyType[1] != INIT_VALUE) {
-                                selector.makeIndex(c);
-                            }
-                        } else {                            
-                            c = new DoubleKeyComparator(keyType[0], keyType[1]);
-                            if (keyType[0] != prevKeyType[0] || keyType[1] != prevKeyType[1]) {
-                                selector.makeIndex(c);
-                            }
+                    if (!keyType.equals(Keys.ERROR)) {
+                        c = new KeyComparator(keyType);
+                        if (keyType != prevKeyType) {
+                            System.out.println("indexing in progress" + "\n");
+                            selector.makeIndex(c);
+                            System.out.println("indexing completed" + "\n");
                         }
                         prevKeyType = keyType;
                         long begin = System.nanoTime();
@@ -72,7 +65,7 @@ public class Main {
                         } else {
                             System.out.println(entryes.size() + " results found in " + (System.nanoTime() - begin) + " ns\n");
                         }
-                        selector.showRecords(entryes, number);
+                        showRecords(entryes, number);
                     }                    
                 }
                 request = getRequest();
@@ -81,34 +74,34 @@ public class Main {
 
     }
 
-    private static int[] parseKey(String commonKey) {
-        int[] fields = new int[2];
-        String[] keys = commonKey.split(":");
-        if (keys.length < 0 || keys.length > 2) {
-            printHelp();
-            fields[0] = ERROR_CODE;
-        } else if (keys.length == 1) {
-            if (keys[0].equals("tel")) {
-                fields[0] = Entry.TEL;
-                fields[1] = INIT_VALUE;
-            } else if(keys[0].equals("sn")) {
-                fields[0] = Entry.SURNAME;
-                fields[1] = INIT_VALUE;
-            } else {
-                printHelp();
-                fields[0] = ERROR_CODE;
-            }
-        } else  if (keys[0].equals("tel")) {
-            fields[0] = Entry.TEL;
-            fields[1] = Entry.SURNAME;
-        } else if (keys[0].equals("sn")){
-            fields[0] = Entry.SURNAME;
-            fields[1] = Entry.TEL;
+    private static Keys parseKey(String key) {
+        if (key.equals("sn")) {
+            return Keys.SURNAME;
+        } else if (key.equals("tel")) {
+            return Keys.TEL;
         } else {
-            printHelp();
-            fields[0] = ERROR_CODE;
+            printRequestHelp();
+            return Keys.ERROR;
         }
-        return fields;
+    }
+
+    public static void showRecords(ArrayList<Entry> entryestoshow, int n) throws IOException {
+        BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
+        ListIterator<Entry> iter = entryestoshow.listIterator();
+        if (n == 0) {
+            n = entryestoshow.size();
+        }
+        if (entryestoshow.size() != 0) {
+            while (!inReader.readLine().equals("q")) {
+                for (int i = 0; i < n && iter.hasNext(); ++i) {
+                    showNthLine(iter.next());
+                }
+            }
+        }
+    }
+
+    public static void showNthLine(Entry n) throws IOException {
+        System.out.println(n.getSN() + " " + n.getTel());
     }
 
     private static void fullReading(String fileName) throws FileNotFoundException, IOException {
