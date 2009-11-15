@@ -2,8 +2,7 @@
  * @copyright 2009 HarpSerg
  * @author HarpSerg
  */
-public class Entry {   
-    static public final int SURNAME = 0,  TEL = 1;
+public class Entry {     
     private String sn;
     private String tel;
 
@@ -12,21 +11,15 @@ public class Entry {
         this.tel = tel;
     }
 
-    public Entry(String line, int num) {
-        int i = line.indexOf(' ');
-        sn = line.substring(0, i);
-        tel = line.substring(15);        
-    }
-    public Entry(String line){
-        String[] args = line.split(":");
-        if(args.length == 1){
-            this.sn = args[0];
-            this.tel = args[0];
+    public String get(Keys key) {
+        if (key.equals(Keys.SURNAME)) {
+            return sn;
+        } else if (key.equals(Keys.TEL)) {
+            return tel;
         } else {
-            this.sn = args[0];
-            this.tel = args[1];
+            return null;
         }
-    }    
+    }
 
     public String getTel() {
         return tel;
@@ -35,6 +28,4 @@ public class Entry {
     public String getSN() {
         return sn;
     }
-
-   
 }
