@@ -1,0 +1,5 @@
+w:\Visual Studio 2008\Projects\HelloWorldSolution\HelloWorld\bin\Debug\HelloWorld.exe
+w:\Visual Studio 2008\Projects\HelloWorldSolution\HelloWorld\bin\Debug\HelloWorld.pdb
+w:\Visual Studio 2008\Projects\HelloWorldSolution\HelloWorld\obj\Debug\ResolveAssemblyReference.cache
+w:\Visual Studio 2008\Projects\HelloWorldSolution\HelloWorld\obj\Debug\HelloWorld.exe
+w:\Visual Studio 2008\Projects\HelloWorldSolution\HelloWorld\obj\Debug\HelloWorld.pdb
