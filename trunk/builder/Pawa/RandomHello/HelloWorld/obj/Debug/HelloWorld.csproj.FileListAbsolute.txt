@@ -1,0 +1,7 @@
+w:\Visual Studio 2008\Projects\RandomHello\HelloWorld\obj\Debug\ResolveAssemblyReference.cache
+w:\Visual Studio 2008\Projects\RandomHello\HelloWorld\bin\Debug\HelloWorld.exe
+w:\Visual Studio 2008\Projects\RandomHello\HelloWorld\bin\Debug\HelloWorld.pdb
+w:\Visual Studio 2008\Projects\RandomHello\HelloWorld\bin\Debug\RandomGenerator.exe
+w:\Visual Studio 2008\Projects\RandomHello\HelloWorld\bin\Debug\RandomGenerator.pdb
+w:\Visual Studio 2008\Projects\RandomHello\HelloWorld\obj\Debug\HelloWorld.exe
+w:\Visual Studio 2008\Projects\RandomHello\HelloWorld\obj\Debug\HelloWorld.pdb
