@@ -1,14 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * myOwnException
+ * soldatov dmitry (c), 09
  */
 
 package exception;
 
-/**
- *
- * @author m08sdv
- */
 public class BrokenWheelException extends Exception {
     public BrokenWheelException() {
         super();

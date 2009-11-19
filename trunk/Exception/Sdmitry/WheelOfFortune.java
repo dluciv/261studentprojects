@@ -1,3 +1,7 @@
+/*
+ * soldatov dmity©, 2009
+ */
+
 package exception;
 
 import java.util.Random;
