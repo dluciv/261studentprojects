@@ -1,20 +1,13 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * just AnimalVoices method tests
+ * soldatov dmitry (c), 09
  */
 package interfacepkg;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Dmitry
- */
 public class MainTest {
-
-    public MainTest() {
-    }
 
     @Test
     public void testAnimalVoices_null_null() {
@@ -45,4 +38,5 @@ public class MainTest {
         IAnimal justCat = null;
         Main.animalVoices(justDog, justCat);
     }
+	
 }

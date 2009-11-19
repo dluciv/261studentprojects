@@ -1,13 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * just interface
+ * soldatov dmitry (c), 09
  */
 package interfacepkg;
 
-/**
- *
- * @author Dmitry
- */
 public class Main {
 
     public static void animalVoices(IAnimal justDog, IAnimal justCat) {
@@ -23,4 +19,5 @@ public class Main {
 
         animalVoices(justDog, justCat);
     }
+	
 }

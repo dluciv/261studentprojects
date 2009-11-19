@@ -1,14 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Реализация интерфейса Животного посредством Собаки, которая как бы говорить нам "гав-гав!"
+ * soldatov dmitry (c), 09
  */
 
 package interfacepkg;
 
-/**
- *
- * @author Dmitry
- */
 public class Dog implements IAnimal {
 
     public String getNoise() {

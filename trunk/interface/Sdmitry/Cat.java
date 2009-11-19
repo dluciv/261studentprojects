@@ -1,14 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Реализация интерфейса Животного посредством Кошки, которая как бы говорить нам "мяу!"
+ * soldatov dmitry (c), 09
  */
-
+ 
 package interfacepkg;
 
-/**
- *
- * @author Dmitry
- */
 public class Cat implements IAnimal {
 
     public String getNoise() {

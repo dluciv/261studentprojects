@@ -1,14 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * "Немой" интерфейс Животного, в которе природой заложено потенциальное умение издавать звуки
+ * soldatov dmitry (c), 09
  */
 
 package interfacepkg;
 
-/**
- *
- * @author Dmitry
- */
 public interface IAnimal {
     public String getNoise();
 }
