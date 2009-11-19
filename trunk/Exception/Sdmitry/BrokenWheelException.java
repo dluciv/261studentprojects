@@ -10,8 +10,8 @@ package exception;
  * @author m08sdv
  */
 public class BrokenWheelException extends Exception {
-    public BrokenWheelException(String message) {
-        super(message);
+    public BrokenWheelException() {
+        super();
     }
 }
 

@@ -19,19 +19,25 @@ public class Main {
                 "Choose number between 0 and 4: ");
         try {
             number = System.in.read() - offset;
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
 
         return number;
     }
 
     public static void main(String[] args) throws BrokenWheelException {
         WheelOfFortune wheelOfFortune = new WheelOfFortune();
-        if (wheelOfFortune.goodLuckCheck(chooseNumber())) {
-            throw new BrokenWheelException("Sorry, but Wheel of Fortune is broken." +
+        wheelOfFortune.twistWheel();
+        try {
+            if (wheelOfFortune.goodLuckCheck(chooseNumber())) {
+                throw new BrokenWheelException();
+            } else {
+                System.out.println("You loose! Fortune choosed " +
+                        wheelOfFortune.getLuckyNumber() + "!");
+            }
+        } catch (BrokenWheelException e) {
+            System.out.println("Sorry, but Wheel of Fortune is broken." +
                     "*Wheel shows " + wheelOfFortune.getLuckyNumber() + "*");
-        } else {
-            System.out.println("You loose! Fortune choosed " + 
-                    wheelOfFortune.getLuckyNumber() + "!");
         }
     }
 }
