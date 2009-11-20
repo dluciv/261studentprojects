@@ -4,5 +4,5 @@ package calculations;
 
 public interface Calculator {
 
-    int calculate(int x, int y);
+    int calculate(int firstArgument, int secondArgument);
 }

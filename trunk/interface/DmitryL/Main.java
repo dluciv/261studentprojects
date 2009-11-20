@@ -4,10 +4,11 @@ package calculations;
 
 public class Main {
 
-    public static int calculate(Calculator calculator, int x, int y) {
+    public static int calculate(Calculator calculator, int firstArgument, int secondArgument) {
         if (calculator == null) {
-            throw new NullPointerException("Illegal argument");
+            throw new IllegalArgumentException ("Illegal argument");
         }
-        return calculator.calculate(x, y);
+        
+        return calculator.calculate(firstArgument, secondArgument);        
     }
-}
+ }

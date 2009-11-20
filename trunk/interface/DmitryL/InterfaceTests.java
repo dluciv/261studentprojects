@@ -3,18 +3,17 @@
 package tests;
 
 import calculations.Addition;
-import calculations.Calculator;
 import calculations.Division;
 import calculations.Main;
 import org.junit.*;
 
-public class InterfaceTests {
+public class MainTests {
 
     static final int NUMBER_ONE = 15;
     static final int NUMBER_TWO = 5;
     static final int NUMBER_THREE = 0;
-    public static Calculator additor = new Addition();
-    public static Calculator divisor = new Division();
+    public static Addition additor = new Addition();
+    public static Division divisor = new Division();
 
     @Test
     public void additionTest() {
@@ -26,13 +25,12 @@ public class InterfaceTests {
         Assert.assertNotNull((Main.calculate(divisor, NUMBER_ONE, NUMBER_TWO)));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void NullPointer() {
         Main.calculate(null, NUMBER_ONE, NUMBER_THREE);
     }
-    @Test
-    public void UnsupportedOperationExceptionTest() {
+    @Test(expected = ArithmeticException.class)
+    public void ArithmeticException() {
         Main.calculate(divisor, NUMBER_ONE, NUMBER_THREE);
     }
-
 }

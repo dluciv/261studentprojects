@@ -4,11 +4,11 @@ package calculations;
 
 public class Division implements Calculator {
 
-    public int calculate(int x, int y) {
-        if (y == 0) {
-            throw new UnsupportedOperationException("Division by zero inhibited");
+    public int calculate(int firstArgument, int secondArgument) {
+        if (secondArgument == 0) {
+            throw new ArithmeticException ("Division by zero inhibited");
         }
-        return x / y;
+        return firstArgument / secondArgument;
     }
 }
 
