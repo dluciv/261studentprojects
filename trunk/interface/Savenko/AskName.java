@@ -8,26 +8,29 @@ package msavenko;
 import java.io.*;
 
 public class AskName implements IAskAnswer {
+	
+	@Override
+	public void Dialog() {
+        String name = askUser("Hi! What is your name Mr/Mrs? Tell me: ");
+        replyUser(name);
+	}
     
     @Override
-    public String questionTheUser() {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public String askUser(String question) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String name = null;
-        System.out.println("Hi !");
-        System.out.print("What is your name mr/mrs? Tell me: ");
+        System.out.print(question);
         try{
-            name = br.readLine();
+            name = reader.readLine();
         }
-        catch (IOException e1){
-            e1.printStackTrace();
+        catch (IOException e){
+            e.printStackTrace();
         }
         return name;
     }
     
     @Override
-    public void replyTheUser() {
-        String name = questionTheUser();
-        System.out.println("Mmmmm !");
+    public void replyUser(String name) {
         System.out.println("Ok, Nice to meet your " + name);
     }
     

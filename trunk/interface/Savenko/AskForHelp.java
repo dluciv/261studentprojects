@@ -8,27 +8,36 @@ package msavenko;
 import java.io.*;
 
 public class AskForHelp implements IAskAnswer {
+	
+	@Override
+	public void Dialog() {
+		String reply=askUser("O, just remembered, would you help me? (y/n): ");		
+		replyUser(reply);
+	}
     
     @Override
-    public String questionTheUser() {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public String askUser(String question) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String reply = null;
-        System.out.print("O, just remembered, would you help me? (y/n): ");
+        System.out.print(question);
         try{
-            reply = br.readLine();
+            reply = reader.readLine();
         }
-        catch (IOException e1){
-            e1.printStackTrace();
+        catch (IOException e){
+            e.printStackTrace();
         }
-        return reply;
+        
+		return reply;
     }
     
     @Override
-    public void replyTheUser() {
-        
-        if (questionTheUser().equals("y"))
-            System.out.println("Very kind of you! Thanks ");
-        else System.out.println("Sorry, for troubling. Goodby! ");
+    public void replyUser(String reply) {        
+        if (reply.equals("y")||reply.equals("Y")){
+        	System.out.println("Very kind of you! Thanks ");
+        } else {
+        	System.out.println("Sorry, for troubling. Goodbye! ");
+        	throw new NullPointerException("You said NO!!!");
+        }
     }
     
 }

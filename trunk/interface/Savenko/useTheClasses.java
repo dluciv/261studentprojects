@@ -7,10 +7,10 @@ package msavenko;
 public class UseTheClasses {
     
     public static void main(String[] args) {
-        IAskAnswer conversation1 = new AskName();
-        IAskAnswer conversation2 = new AskForHelp();
-        conversation1.replyTheUser();
-        conversation2.replyTheUser();
+        IAskAnswer askName    = new AskName();
+        IAskAnswer askForHelp = new AskForHelp();
+        askName.Dialog();
+        askForHelp.Dialog();
     }
     
 }
