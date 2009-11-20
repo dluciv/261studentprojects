@@ -10,10 +10,11 @@ import javax.swing.border.*;
 
 public class ExchangeRateConverter {
     
+    final static double USD_TO_RUB = 29.1641;
+    
     public static Box CreateComponents() {
         int Main_Border = 12;
-        int Label_Position = 6;
-        final double USD_TO_RUB = 29.1641;
+        int Label_Position = 6;        
         
         Box boxRub = Box.createHorizontalBox();
         JLabel rubLabel = new JLabel("RUB: ");
@@ -47,29 +48,42 @@ public class ExchangeRateConverter {
         buttonOk.addMouseListener(new MouseAdapter(){
             
             public void mouseClicked(MouseEvent event) {
-                try{
-                    usdText.setText(Double.toString(Double.parseDouble(rubText
-                            .getText())
-                            / USD_TO_RUB));
-                }
-                catch (NumberFormatException e){
-                    JOptionPane.showMessageDialog(null,
-                            "There is nothing to convert!");
-                }
+            	usdText.setText(Double.toString(Exchange(rubText.getText())));
             }
         });
         
         return mainBox;
     }
     
+    public static double Exchange(String rub){
+    	double usd=0;
+    	
+    	if (rub == null) {
+            JOptionPane.showMessageDialog(null, "The number is null");
+            throw new IllegalArgumentException("The number is null");
+        }
+    	
+        try{
+        	usd=Double.parseDouble(rub)/ USD_TO_RUB;
+        }
+        catch (NumberFormatException e){
+        	JOptionPane.showMessageDialog(null,"The wrong number!");
+        	throw new IllegalArgumentException("The wrong number!");            
+        }
+		return usd;
+    }
+    
     public static void main(String[] args) {
         int Form_Width = 250;
         int Form_Height = 150;
+        int WIDTH = 1024;
+        int HEIGHT = 600;
         
         JFrame frame = new JFrame("ExchangeRateConverter");
         Box contents = CreateComponents();
         frame.setSize(Form_Width, Form_Height);
         frame.setResizable(false);
+        frame.setLocation(WIDTH/2,HEIGHT/2);
         frame.setContentPane(contents);
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
