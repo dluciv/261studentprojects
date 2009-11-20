@@ -1,17 +1,16 @@
 /*
  * (c) Stefan Bojarovski 2009
  * */
-package EmailChecker;
+package mail_checker;
 
 import junit.framework.*;
-import EmailChecker.mailChecker;
+import mail_checker.MailChecker;
 
 public class mailCheckerTest extends TestCase {
-	mailChecker tested = new mailChecker();
-	{
-		tested.init();
-	}
-	
+	private MailChecker tested = 
+		new MailChecker("^[a-zA-Z_]([a-zA-Z_0-9]*)(\\.[a-zA-Z0-9_]+)*" +
+						"@([a-zA-Z0-9-]+\\.)+(([a-zA-Z]{2,4})|museum|travel)$");
+		
 	//Valid e-mail addresses
 	public void testCheckSingleChar(){
 		assertTrue(tested.check("a@b.cc"));

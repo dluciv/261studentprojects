@@ -3,7 +3,7 @@
  * 
  * An e-mail checker that uses java's RegEx library
  * */
-package EmailChecker;
+package mail_checker;
 
 import java.io.*;
 
@@ -12,8 +12,12 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		mailChecker mCheck = new mailChecker();
-		mCheck.init();
+		String name = "^[a-zA-Z_]([a-zA-Z_0-9]*)(\\.[a-zA-Z0-9_]+)*";
+		String domain = "([a-zA-Z0-9-]+\\.)+(([a-zA-Z]{2,4})|museum|travel)$";
+		String regex = name+"@"+domain;
+		
+		MailChecker mCheck = new MailChecker(regex);
+		
 		String candidate;
 		
 		while (true){
@@ -22,7 +26,7 @@ public class Main {
 			candidate = in.readLine();
 			
 			if (candidate.isEmpty()){
-				System.out.print("Empty candidate string entered. Exiting...");
+				System.out.print("Empty candidate string entered. Exiting.");
 				break;
 			}
 			

@@ -22,36 +22,35 @@
  * $								- followed by an end of line
  * */
 
-package EmailChecker;
+package mail_checker;
 
 import java.util.regex.*;
 
-public class mailChecker {
+public class MailChecker {
 	
-	private String Regex;
-	public Pattern p;
-	public Matcher m;
+	private String regex;
+	private Pattern p;
+	private Matcher m;
 	
-	public void init(){
-		String name = "^[a-zA-Z_]([a-zA-Z_0-9]*)(\\.[a-zA-Z0-9_]+)*";
-		String domain = "([a-zA-Z0-9-]+\\.)+(([a-zA-Z]{2,4})|museum|travel)$";
-		setRegex(name+"@"+domain);
+	public MailChecker(String expr) {
+		this.regex = expr;
+		p =Pattern.compile(expr);
 	}
-	
+
 	public void setRegex(String newRegex) {
 		/*TODO: write a regular to "java-type" regex transformer
 		 * 		so that the regex pattern could be changed if necessary
 		 * */
-		this.Regex = newRegex;
-		p = Pattern.compile(Regex);
+		this.regex = newRegex;
+		p = Pattern.compile(regex);
 	}
 	
 	public String getRegex() {
-		return Regex;
+		return regex;
 	}
 	
 	public boolean check (String candidate){
 		m = p.matcher(candidate);
-		return m.find();
+		return m.matches();
 	}
 }
