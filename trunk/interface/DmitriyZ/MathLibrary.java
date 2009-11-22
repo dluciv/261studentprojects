@@ -2,11 +2,11 @@
 // Interface
 package math.library;
 
-public interface MathLibrary {
+public interface MathLibrary<T> {
 
-    double add(double num1, double num2);
+    T add(T num1, T num2);
 
-    double sub(double num1, double num2);
+    T sub(T num1, T num2);
 
-    double next(double num);
+    T next(T num);
 }

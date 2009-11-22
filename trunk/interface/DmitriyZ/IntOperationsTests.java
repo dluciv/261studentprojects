@@ -1,39 +1,41 @@
 // Dmitriy Zabranskiy g261 (c)2009
 // Tests of IntOperations
+package tests;
 
 import math.library.MathLibrary;
+import myinterface.IntOperations;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class IntOperationsTests {
 
-    MathLibrary lib = new IntOperations();
+    MathLibrary<Integer> lib1 = new IntOperations();
 
     @Test
     public void addTest() {
-        double result = lib.add(2, 3);
-        double expResult = 5;
+        int result = lib1.add(2, 3);
+        int expResult = 5;
         assertTrue(result == expResult);
     }
 
     @Test
     public void subTest() {
-        double result = lib.sub(-2, 3);
-        double expResult = -5;
+        int result = lib1.sub(-2, 3);
+        int expResult = -5;
         assertTrue(result == expResult);
     }
 
     @Test
     public void nextTest() {
-        double result = lib.next(2);
-        double expResult = 3;
+        int result = lib1.next(2);
+        int expResult = 3;
         assertTrue(result == expResult);
     }
 
     @Test
     public void someTest() {
-        double result = lib.next(lib.add(2, 3));
-        double expResult = 6;
+        int result = lib1.next(lib1.add(2, 3));
+        int expResult = 6;
         assertTrue(result == expResult);
     }
 }
