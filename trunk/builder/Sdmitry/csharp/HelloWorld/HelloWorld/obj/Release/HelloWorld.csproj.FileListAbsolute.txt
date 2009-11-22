@@ -1,0 +1,7 @@
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Release\HelloWorld.exe
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Release\HelloWorld.pdb
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Release\HelloAgainF.dll
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Release\HelloAgainF.pdb
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\obj\Release\ResolveAssemblyReference.cache
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\obj\Release\HelloWorld.exe
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\obj\Release\HelloWorld.pdb

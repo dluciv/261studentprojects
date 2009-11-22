@@ -1,0 +1,73 @@
+
+Microsoft (R) Visual Studio ┬хЁёш  9.0.21022.8.
+(C) ╩юЁяюЁрЎш  ╠рщъЁюёюЇЄ (Microsoft Corp.). ┬ёх яЁртр чр∙ш∙хэ√.
+------ Построение начато: проект: HelloWorld, Конфигурация: Release Any CPU ------
+HelloWorld -> c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Release\HelloWorld.exe
+------ Построение начато: проект: HelloAgainF, Конфигурация: Release Any CPU ------
+HelloAgainF -> c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloAgainF\bin\Release\HelloAgainF.dll
+========== Построение: успешно и без изменений: 2, с ошибками: 0, пропущено: 0 ==========
+
+Microsoft (R) Visual Studio ┬хЁёш  9.0.21022.8.
+(C) ╩юЁяюЁрЎш  ╠рщъЁюёюЇЄ (Microsoft Corp.). ┬ёх яЁртр чр∙ш∙хэ√.
+------ Построение начато: проект: HelloWorld, Конфигурация: Release Any CPU ------
+HelloWorld -> c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Release\HelloWorld.exe
+------ Построение начато: проект: HelloAgainF, Конфигурация: Release Any CPU ------
+HelloAgainF -> c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloAgainF\bin\Release\HelloAgainF.dll
+========== Построение: успешно и без изменений: 2, с ошибками: 0, пропущено: 0 ==========
+
+Microsoft (R) Visual Studio ┬хЁёш  9.0.21022.8.
+(C) ╩юЁяюЁрЎш  ╠рщъЁюёюЇЄ (Microsoft Corp.). ┬ёх яЁртр чр∙ш∙хэ√.
+------ Построение начато: проект: HelloWorld, Конфигурация: Release Any CPU ------
+HelloWorld -> c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Release\HelloWorld.exe
+------ Построение начато: проект: HelloAgainF, Конфигурация: Release Any CPU ------
+HelloAgainF -> c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloAgainF\bin\Release\HelloAgainF.dll
+========== Построение: успешно и без изменений: 2, с ошибками: 0, пропущено: 0 ==========
+
+Microsoft (R) Visual Studio ┬хЁёш  9.0.21022.8.
+(C) ╩юЁяюЁрЎш  ╠рщъЁюёюЇЄ (Microsoft Corp.). ┬ёх яЁртр чр∙ш∙хэ√.
+------ Построение начато: проект: HelloWorld, Конфигурация: Release Any CPU ------
+HelloWorld -> c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Release\HelloWorld.exe
+------ Построение начато: проект: HelloAgainF, Конфигурация: Release Any CPU ------
+HelloAgainF -> c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloAgainF\bin\Release\HelloAgainF.dll
+========== Построение: успешно и без изменений: 2, с ошибками: 0, пропущено: 0 ==========
+
+Microsoft (R) Visual Studio ┬хЁёш  9.0.21022.8.
+(C) ╩юЁяюЁрЎш  ╠рщъЁюёюЇЄ (Microsoft Corp.). ┬ёх яЁртр чр∙ш∙хэ√.
+
+Не удается найти следующие файлы: 
+
+	c:\261studentproject\Builder\Sdmitry\csharp\helloWorld\HelloWorld.sln, 
+
+указанные в командной строке, поэтому они не будут загружены.
+Microsoft (R) Visual Studio ┬хЁёш  9.0.21022.8.
+(C) ╩юЁяюЁрЎш  ╠рщъЁюёюЇЄ (Microsoft Corp.). ┬ёх яЁртр чр∙ш∙хэ√.
+
+Не удается найти следующие файлы: 
+
+	c:\261studentproject\Builder\Sdmitry\csharp\helloWorld\HelloWorld.sln, 
+
+указанные в командной строке, поэтому они не будут загружены.
+Microsoft (R) Visual Studio ┬хЁёш  9.0.21022.8.
+(C) ╩юЁяюЁрЎш  ╠рщъЁюёюЇЄ (Microsoft Corp.). ┬ёх яЁртр чр∙ш∙хэ√.
+
+Не удается найти следующие файлы: 
+
+	c:\261studentproject\Builder\Sdmitry\csharp\helloWorld\HelloWorld.sln, 
+
+указанные в командной строке, поэтому они не будут загружены.
+Microsoft (R) Visual Studio ┬хЁёш  9.0.21022.8.
+(C) ╩юЁяюЁрЎш  ╠рщъЁюёюЇЄ (Microsoft Corp.). ┬ёх яЁртр чр∙ш∙хэ√.
+
+Не удается найти следующие файлы: 
+
+	c:\261studentproject\Builder\Sdmitry\csharp\helloWorld\HelloWorld.sln, 
+
+указанные в командной строке, поэтому они не будут загружены.
+Microsoft (R) Visual Studio ┬хЁёш  9.0.21022.8.
+(C) ╩юЁяюЁрЎш  ╠рщъЁюёюЇЄ (Microsoft Corp.). ┬ёх яЁртр чр∙ш∙хэ√.
+
+Не удается найти следующие файлы: 
+
+	c:\261studentproject\Builder\Sdmitry\csharp\helloWorld\HelloWorld.sln, 
+
+указанные в командной строке, поэтому они не будут загружены.
