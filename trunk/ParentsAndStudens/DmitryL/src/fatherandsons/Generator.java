@@ -58,10 +58,8 @@ public class Generator {
     }
     static LinkedList<IHuman> humans = new LinkedList();
 
-    //Generating random number of parents, random number of kids, printing
-    //information about them, printing the sum of all money of CoolParents
-    //and printing average mark of all Botans
-    public static void generate() {
+    //Generating random number of parents, random number of kids
+    public static LinkedList<IHuman> generate() {
         int numberOfParents = rnd.nextInt(10) + 1;
 
         while (numberOfParents > 0) {
@@ -86,6 +84,12 @@ public class Generator {
                 ((Parent) human).printAll();
             }
         }
+        return humans;
+    }
+    //printing information about them, printing the sum of all money of
+    //CoolParents and printing average mark of all Botans
+    public static void generateAndPrint() {
+        humans = generate();
         System.out.println("Общая сумма денег крутых родителей: " + getAllMoney(humans));
         System.out.println("Средний балл среди всех ботанов: " + getAverageOfAllMarks(humans));
     }
