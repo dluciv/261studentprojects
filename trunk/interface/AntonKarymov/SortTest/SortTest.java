@@ -1,19 +1,19 @@
 /*Anton Karymov,gr261,2009
- *Test for Bubble and Insert sort
+ *Test for Bubble and InsertSort sort
  */
 package SortTest;
 
 import org.junit.*;
 import org.junit.Assert.*;
-import sort.Insert;
+import sort.InsertSort;
 import sort.Main;
-import sort.MySort;
+import sort.ISortAlgorithm;
 
 public class SortTest {
 
     int array[] = {2, 4, 4, 6, 1, 8, 7, 3};
-    static MySort insert = new Insert();
-    static MySort bubble = new Insert();
+    static ISortAlgorithm insert = new InsertSort();
+    static ISortAlgorithm bubble = new InsertSort();
 
     public static boolean isSorted(int array[]) {
         for (int i = 0; i <= array.length - 2; i++) {
@@ -24,12 +24,12 @@ public class SortTest {
         return true;
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void NullSortTest() {
         Main.sort(null, array);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void NullArrayTest() {
         Main.sort(bubble, null);
     }
