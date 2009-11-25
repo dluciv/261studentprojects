@@ -9,7 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.*;
 
-public class MakeMainMenu implements ActionListener {
+public class MakeMainMenu extends converter implements ActionListener
+{
 
     //Объявление меток.exFrom - из каких единиц идет пересчет,exTo -куда;
     JLabel exFrom;
@@ -22,13 +23,9 @@ public class MakeMainMenu implements ActionListener {
 
     //jExchange - производим вычисления после нажатия;
     JButton jExchange;
-    
+
     //jMoney - Список вариантов(Откуда,куда и как);
     JComboBox jMoney;
-
-    //exCourse - Нынишний курс;
-    static double exCourse;
-
     /*whatEx отвечат за то,что куда переводим(usd->rub,rub->usd)
      * Использование типа boolean по причине наличия только 2х вариантов;
      */
@@ -134,15 +131,18 @@ public class MakeMainMenu implements ActionListener {
         if(comStr.equals("Convert")){
 
             //Проверяем изменение курса;
-            exCourse = converter.ifNum(jCourse.getText());
-            exCourse = exCourse > 0 ? exCourse : 0;
+            converter.Exchange = converter.convertString(jCourse.getText());
+            converter.Exchange = converter.Exchange > 0 ? converter.Exchange : 0;
 
             //Количество цифр после запятой;
             NumberFormat nf = NumberFormat.getInstance();
             nf.setMaximumFractionDigits(3);
-            
+
             //Производим расчет и выводим;
-            jOutput.setText(nf.format(converter.calcMoney(jInput.getText(), exCourse,isUSD))+"");
+            if(isUSD)
+                jOutput.setText(nf.format(converter.calcMoney(jInput.getText()))+"");
+            else
+                jOutput.setText(nf.format(converter.calcBackMoney(jInput.getText()))+"");
         }
 
         //Обрабатываем выбор в списке;
@@ -152,7 +152,7 @@ public class MakeMainMenu implements ActionListener {
             jInput.setEditable(true);
             jExchange.setEnabled(true);
             jCourse.setEditable(true);
-            jCourse.setText(exCourse+"");
+            jCourse.setText(converter.Exchange+"");
 
             if(jMoney.getSelectedIndex() == 1){
 
@@ -174,6 +174,6 @@ public class MakeMainMenu implements ActionListener {
         if(comStr.equals("About"))
             JOptionPane.showMessageDialog(null,"   Money Converter\n\n by Zubrilin Andrey (c)2009");
         if(comStr.equals("Reset"))
-            Reset();               
+            Reset();
     }
 }

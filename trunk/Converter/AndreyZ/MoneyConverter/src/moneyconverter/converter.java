@@ -5,14 +5,15 @@ package moneyconverter;
  */
 
 public class converter {
-
+    //Курс валюты;
+    static double Exchange;
     //Изменение курса валюты на стандартный;
     public static double resetCourse(){
-        return MakeMainMenu.exCourse = 29.1;
+        return Exchange = 29.1;
     }
 
     //Проверяем является ли строка числом,если да,то возвращаем число,иначе 0;
-    public static double ifNum(String someMoney){
+    public static double convertString(String someMoney){
         try {
             return Double.parseDouble(someMoney);
         } catch (NumberFormatException e) {
@@ -21,16 +22,22 @@ public class converter {
     }
 
     //Перевод из одних единиц в другие;
-    public static double calcMoney(String someMoney,double Course,boolean whatEx){
+    public static double calcMoney(String someMoney){
         double val;
 
-        val = ifNum(someMoney);
+        val = convertString(someMoney);
         if(val>0)
-            if(whatEx)
-                return val*Course;
-            else
-                return val/Course;
+            return val*Exchange;
         return 0;
     }
+    
+    //Перевод из одних единиц в другие;
+    public static double calcBackMoney(String someMoney){
+        double val;
 
+        val = convertString(someMoney);
+        if(val>0)
+            return val/Exchange;
+        return 0;
+    }
 }
