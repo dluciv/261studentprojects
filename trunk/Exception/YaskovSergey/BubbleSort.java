@@ -8,7 +8,7 @@ package exception;
 public class BubbleSort implements ISortWay {
     public int[] sort(int[] arrayToSort) {
         if (arrayToSort == null) {
-            throw new java.lang.NullPointerException();
+            throw new java.lang.IllegalArgumentException();
         }
         if (arrayToSort.length <= 0) {
             throw new java.lang.NegativeArraySizeException();

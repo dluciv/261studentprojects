@@ -24,17 +24,17 @@ public class SorterTests {
         return true;
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void NullArrayBubbleSorting() {
         Sorter.sort(bubble, null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void NullArrayQuickSorting() {
         Sorter.sort(quick, null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void SortWayIsNull() {
         Sorter.sort(null, unsortedArray);
     }

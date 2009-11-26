@@ -11,7 +11,7 @@ public class QuickSort implements ISortWay {
         int startIndex = 0;
 
         if (arrayToSort == null) {
-            throw new java.lang.NullPointerException();
+            throw new java.lang.IllegalArgumentException();
         }
         if (arrayToSort.length <= 0) {
             throw new java.lang.NegativeArraySizeException();
