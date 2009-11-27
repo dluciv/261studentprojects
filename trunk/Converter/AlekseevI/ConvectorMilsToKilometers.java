@@ -1,6 +1,6 @@
-/**Modul conversion
- *
- * @author Alekseev Ilya
+/**
+ *Modul conversion
+ * @author Alekseev Ilya (c) 2009
  */
 package convector;
 
@@ -14,7 +14,7 @@ public class ConvectorMilsToKilometers {
         return mile * KilometersInMile;
 
     }
-// перевод числа с строку
+// перевод чи�?ла �? �?троку
 
     public static String parseAndConvert(String mile) {
 

@@ -1,6 +1,6 @@
-/**Modul window
- *
- * @ Alekseev Ilya
+/**
+ * Modul window
+ * @ Alekseev Ilya (c) 2009
  */
 package convector;
 
