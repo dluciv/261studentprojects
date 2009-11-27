@@ -1,0 +1,7 @@
+I:\Build\MainSolution\MainSolution\bin\Debug\MainSolution.exe
+I:\Build\MainSolution\MainSolution\bin\Debug\MainSolution.pdb
+I:\Build\MainSolution\MainSolution\bin\Debug\TestLibrary1.dll
+I:\Build\MainSolution\MainSolution\bin\Debug\TestLibrary1.pdb
+I:\Build\MainSolution\MainSolution\obj\Debug\ResolveAssemblyReference.cache
+I:\Build\MainSolution\MainSolution\obj\Debug\MainSolution.exe
+I:\Build\MainSolution\MainSolution\obj\Debug\MainSolution.pdb

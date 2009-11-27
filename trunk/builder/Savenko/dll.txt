@@ -1,0 +1,3 @@
+MainSolution.exe
+TestLibrary1.dll
+Test2.dll
