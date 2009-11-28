@@ -4,10 +4,6 @@
  */
 
 import hotheart.converter.Main;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -40,5 +36,19 @@ public class ConverterTest {
         assertArrayEquals(new int[]{209, 85, 229, 104}, Main.tryParse("209.85.229.104"));
         assertArrayEquals(new int[]{213, 180, 204, 8}, Main.tryParse("213.180.204.8"));
         assertArrayEquals(new int[]{85, 21, 143, 138}, Main.tryParse("85.21.143.138"));
+    }
+
+    @Test
+    public void wrongParseTest() {
+        String[] tests = new String[]{"192.168.0.0.0", "192.168.0.0.1", "192.168.0", "192.168.0.0.", ".168.0.0.0",
+            "256.0.0.1", "asdas.13.sdf.2", "-1.0.0.1", "0.0.."};
+
+        for (int i = 0; i < tests.length; i++) {
+            try {
+                Main.tryParse("192.168.0.1.1");
+                assertTrue("Must throw exception!", false);
+            } catch (IllegalArgumentException e) {
+            }
+        }
     }
 }
