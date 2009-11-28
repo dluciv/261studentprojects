@@ -2,6 +2,7 @@
  * Tests for Interfaces by Stepan Korshakov
  */
 
+import hotheart.interfaces.Main;
 import hotheart.interfaces.objects.Cube;
 import hotheart.interfaces.objects.Plane;
 import hotheart.interfaces.objects.Sphere;
@@ -58,5 +59,11 @@ public class InterfacesTest {
         
         assertTrue(testFloatsAreSame(sphere.calcVolume(), (float) Math.PI * 10 * 10 * 10 * 4 / 3));
         assertTrue(testFloatsAreSame(sphere.calcArea(), (float) Math.PI * 10 * 10 * 4));
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void MainTest()
+    {
+        Main.calcArea(null);
     }
 }

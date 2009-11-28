@@ -13,10 +13,10 @@ import hotheart.interfaces.objects.IAreaObject;
 public class Main {
 
 
-    public float calcArea(IAreaObject area)
+    public static float calcArea(IAreaObject area)
     {
        if (area == null)
-           throw new NullPointerException();
+           throw new IllegalArgumentException();
 
        return area.calcArea();
     }

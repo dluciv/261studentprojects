@@ -10,17 +10,17 @@ package hotheart.interfaces.objects;
  */
 public class Sphere implements IVolumeObject, IAreaObject {
 
-    public float R;
+    public float Radius;
 
-    public Sphere(float R) {
-        this.R = R;
+    public Sphere(float Radius) {
+        this.Radius = Radius;
     }
 
     public float calcVolume() {
-        return (float) Math.PI * R * R * R * 4 / 3;
+        return (float) Math.PI * Radius * Radius * Radius * 4 / 3;
     }
 
     public float calcArea() {
-        return (float) Math.PI * R * R * 4;
+        return (float) Math.PI * Radius * Radius * 4;
     }
 }
