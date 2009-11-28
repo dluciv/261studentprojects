@@ -1,14 +1,13 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Processor for collection of humans.
+ * Korshakov Stepan - 261 Group - (c) 2009
  */
 package hotheart.parentsandstudens;
 
 import java.util.List;
 
 /**
- *
- * @author HotHeart
+  * @author Korshakov Stepan
  */
 public class Processor {
 

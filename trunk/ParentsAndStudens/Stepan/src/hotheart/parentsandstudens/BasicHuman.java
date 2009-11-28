@@ -1,12 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Basic class contains basic parameters for all humans.
+ * Korshakov Stepan - 261 Group - (c) 2009
  */
 package hotheart.parentsandstudens;
 
 /**
- *
- * @author HotHeart
+ * Basic class contains basic parameters for all humans.
+ * @author Korshakov Stepan
  */
 public class BasicHuman implements IHuman {
 

@@ -1,15 +1,14 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Class of clever students.
+ * Korshakov Stepan - 261 Group - (c) 2009
  */
-
 package hotheart.parentsandstudens;
 
 import java.util.Random;
 
 /**
- *
- * @author HotHeart
+ * Class of clever students.
+ * @author Korshakov Stepan
  */
 public class Botan extends Student {
 

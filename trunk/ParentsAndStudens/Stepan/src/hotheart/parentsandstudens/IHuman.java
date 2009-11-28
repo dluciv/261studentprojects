@@ -1,13 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Interface for all humans.
+ * Korshakov Stepan - 261 Group - (c) 2009
  */
 
 package hotheart.parentsandstudens;
 
 /**
- *
- * @author HotHeart
+  * @author Korshakov Stepan
  */
 public interface IHuman {
 

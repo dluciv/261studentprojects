@@ -1,17 +1,15 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Generator of collection of humans.
+ * Korshakov Stepan - 261 Group - (c) 2009
  */
 package hotheart.parentsandstudens;
 
-import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 /**
- *
- * @author HotHeart
+  * @author Korshakov Stepan
  */
 public class Generator {
 

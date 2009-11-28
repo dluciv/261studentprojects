@@ -1,12 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Class of Students extends BasicHuman, contains information about exams.
+ * Korshakov Stepan - 261 Group - (c) 2009
  */
 package hotheart.parentsandstudens;
 
 /**
- *
- * @author HotHeart
+ * @author Korshakov Stepan
  */
 public class Student extends BasicHuman {
 
@@ -15,12 +14,7 @@ public class Student extends BasicHuman {
 
     public Student(String name, String surname, String patronymic, Sex sex, int age, String faculty) {
         super(name, surname, patronymic, sex, age);
-        this.name = name;
-        this.surname = surname;
-        this.patronymic = patronymic;
         this.faculty = faculty;
-        this.sex = sex;
-        this.age = age;
     }
 
     public int getExamsCount() {
@@ -35,8 +29,7 @@ public class Student extends BasicHuman {
         return 3;
     }
 
-    public String getFaculty()
-    {
+    public String getFaculty() {
         return faculty;
     }
 }

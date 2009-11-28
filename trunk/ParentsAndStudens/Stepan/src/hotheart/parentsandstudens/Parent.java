@@ -1,12 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Class of parents, contains information about there childs.
+ * Korshakov Stepan - 261 Group - (c) 2009
  */
 package hotheart.parentsandstudens;
 
 /**
- *
- * @author HotHeart
+  * @author Korshakov Stepan
  */
 public class Parent extends BasicHuman {
 

@@ -1,20 +1,16 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Main.
+ * Korshakov Stepan - 261 Group - (c) 2009
  */
 package hotheart.parentsandstudens;
 
 import java.util.List;
 
 /**
- *
- * @author HotHeart
+  * @author Korshakov Stepan
  */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
 
         List<IHuman> list = Generator.generateCollection();
