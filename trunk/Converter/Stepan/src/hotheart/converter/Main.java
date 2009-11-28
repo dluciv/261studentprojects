@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.IllegalFormatException;
 import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -31,9 +32,14 @@ public class Main {
      * @return
      */
     public static int[] tryParse(String s) {
+        if (s.endsWith("."))
+            throw new IllegalArgumentException("Can't ends by dot.");
+        if (s.startsWith("."))
+            throw new IllegalArgumentException("Can't starts by dot.");
+        
         String[] nums = s.split("\\.");
         if (nums.length != 4) {
-            return null;
+            throw new IllegalArgumentException("Must be in *.*.*.* format");
         }
 
         int[] res = new int[4];
@@ -41,10 +47,10 @@ public class Main {
             try {
                 res[i] = Integer.parseInt(nums[i]);
             } catch (NumberFormatException e) {
-                return null;
+                throw new IllegalArgumentException("Must contain only numbers");
             }
-            if ((res[i] < 0) & (res[i] > 255)) {
-                return null;
+            if ((res[i] < 0) || (res[i] > 255)) {
+                throw new IllegalArgumentException("Must contain only numbers in [0..255]");
             }
         }
         return res;
@@ -57,6 +63,14 @@ public class Main {
      * @return result of conversion
      */
     public static long convertIp(int[] ip) {
+        if (ip.length != 4)
+            throw new IllegalArgumentException("Must have length equals to 4.");
+        for (int i = 0; i < 4; i++) {
+            if ((ip[i] < 0) || (ip[i] > 255)) {
+                throw new IllegalArgumentException("Must contain only numbers in [0..255]");
+            }
+        }
+
         return ((long) ip[0] << 24) + ((long) ip[1] << 16) +
                 ((long) ip[2] << 8) + (long) ip[3];
     }

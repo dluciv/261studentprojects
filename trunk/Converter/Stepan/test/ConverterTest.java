@@ -4,6 +4,7 @@
  */
 
 import hotheart.converter.Main;
+import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -39,14 +40,32 @@ public class ConverterTest {
     }
 
     @Test
+    public void wrongConvertTest() {
+        int[][] tests = new int[][]{
+            new int[]{128, 256, 1, -1},
+            new int[]{128, 0, 1, -1, 0},
+            new int[]{128, 0, 1, -1},
+            new int[]{128, 0, 1, 128, 0},
+        };
+
+        for (int i = 0; i < tests.length; i++) {
+            try {
+                Main.convertIp(tests[i]);
+                assertTrue("Must throw exception! Test:" + Arrays.toString(tests[i]), false);
+            } catch (IllegalArgumentException e) {
+            }
+        }
+    }
+
+    @Test
     public void wrongParseTest() {
         String[] tests = new String[]{"192.168.0.0.0", "192.168.0.0.1", "192.168.0", "192.168.0.0.", ".168.0.0.0",
             "256.0.0.1", "asdas.13.sdf.2", "-1.0.0.1", "0.0.."};
 
         for (int i = 0; i < tests.length; i++) {
             try {
-                Main.tryParse("192.168.0.1.1");
-                assertTrue("Must throw exception!", false);
+                Main.tryParse(tests[i]);
+                assertTrue("Must throw exception! Test:" + tests[i], false);
             } catch (IllegalArgumentException e) {
             }
         }
