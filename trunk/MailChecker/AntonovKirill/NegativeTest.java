@@ -13,7 +13,7 @@ public class NegativeTest {
        String mail = "a@b.c";
        assertFalse(Checker.checkEmail(mail));
     }
-    //тест на наличие множества точек по среди 
+    //тест на наличие множества точек посреди 
     @Test
     public void CheckEmailPointMailTest() throws Exception {
        String mail = "a..b@mail.ru";
