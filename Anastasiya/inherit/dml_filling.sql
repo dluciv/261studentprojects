@@ -445,9 +445,19 @@ INSERT INTO development
             (employeeid, applicationid)
    (SELECT e.ID, a.ID
       FROM maintancer e
-         , free_application a);
+         , free_application a 
+		 
+     MINUS
+
+	SELECT employeeID, applicationID
+      FROM development);
 INSERT INTO development
             (employeeid, applicationid)
    (SELECT e.ID, a.ID
       FROM maintancer e
-         , optional_application a);
+         , optional_application a
+		 
+     MINUS
+
+	SELECT employeeID, applicationID
+      FROM development);
