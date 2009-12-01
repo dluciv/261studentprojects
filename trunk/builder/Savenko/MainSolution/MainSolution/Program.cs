@@ -8,7 +8,7 @@ namespace MainSolution {
         static void Main(string[] args) {
             Class1 test = new Class1();
 
-            test.Message()
+            test.Message();
             Console.ReadLine();
         }
     }
