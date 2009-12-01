@@ -1,5 +1,0 @@
-D:\Documents and Settings\Администратор\Мои документы\Visual Studio 2005\Projects\TestLibrary1\TestLibrary1\bin\Debug\TestLibrary1.dll
-D:\Documents and Settings\Администратор\Мои документы\Visual Studio 2005\Projects\TestLibrary1\TestLibrary1\bin\Debug\TestLibrary1.pdb
-D:\Documents and Settings\Администратор\Мои документы\Visual Studio 2005\Projects\TestLibrary1\TestLibrary1\obj\Debug\ResolveAssemblyReference.cache
-D:\Documents and Settings\Администратор\Мои документы\Visual Studio 2005\Projects\TestLibrary1\TestLibrary1\obj\Debug\TestLibrary1.dll
-D:\Documents and Settings\Администратор\Мои документы\Visual Studio 2005\Projects\TestLibrary1\TestLibrary1\obj\Debug\TestLibrary1.pdb
