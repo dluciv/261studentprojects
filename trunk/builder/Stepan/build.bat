@@ -2,8 +2,11 @@
 
 IF NOT EXIST app GOTO CHECKOUT
 
-echo Delete old folder
-rmdir /s /q app
+echo Updating Application
+
+:UPDATE
+svn update app >> svn.log
+goto BUILD
 
 :CHECKOUT
 echo CheckOut Application
