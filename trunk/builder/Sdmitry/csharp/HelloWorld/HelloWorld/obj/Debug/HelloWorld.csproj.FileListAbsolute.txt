@@ -5,12 +5,3 @@ w:\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.exe
 w:\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.pdb
 w:\Visual Studio 2008\Projects\HelloWorld\HelloWorld\bin\Debug\HelloAgainF.dll
 w:\Visual Studio 2008\Projects\HelloWorld\HelloWorld\bin\Debug\HelloAgainF.pdb
-C:\Documents and Settings\Dmitry\Мои документы\Загрузки\Qwe\Qwe\HelloWorld\HelloWorld\obj\Debug\HelloWorld.exe
-C:\Documents and Settings\Dmitry\Мои документы\Загрузки\Qwe\Qwe\HelloWorld\HelloWorld\obj\Debug\HelloWorld.pdb
-c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Debug\HelloWorld.exe
-c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Debug\HelloWorld.pdb
-c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Debug\HelloAgainF.dll
-c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\bin\Debug\HelloAgainF.pdb
-c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\obj\Debug\ResolveAssemblyReference.cache
-c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\obj\Debug\HelloWorld.exe
-c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloWorld\obj\Debug\HelloWorld.pdb
