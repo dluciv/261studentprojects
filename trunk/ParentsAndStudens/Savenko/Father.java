@@ -5,7 +5,7 @@
 
 package msavenko.parentsandstudens;
 
-public class Father extends Human {
+public class Father extends Human implements IFather{
     
     protected Student[] students;
     
@@ -18,7 +18,9 @@ public class Father extends Human {
         students = Children;
     }
     
+    @Override
     public int getStudentCount() { return students.length; }
     
+    @Override
     public Student getStudent(int index) { return students[index]; }
 }

@@ -5,12 +5,13 @@
 
 package msavenko.parentsandstudens;
 
-public class CoolFather extends Father {
+public class CoolFather extends Father implements ICoolFather{
     
     public CoolFather(String Name, String Surname, String Patronymic, Sex Sex, int Age, Student[] Children) {
         super(Name,Surname,Patronymic,Sex,Age,Children);
     }
     
+    @Override
     public int getAmountOfMoney() {
         int marksSum = 0;
         int count = 0;

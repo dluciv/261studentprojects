@@ -1,9 +1,7 @@
 package msavenko.parentsandstudens;
 
-import static org.junit.Assert.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import msavenko.parentsandstudens.IHuman.Sex;
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,13 +55,15 @@ public class GeneratorTest {
         Assert.assertEquals(name + "овна", Generator.generatePatronymic(name, Sex.female));
     }
     
-    /*
+    
     private List<IHuman> CreateList(){ 
         
-        class Botan extends Student {            
-            private int[] marks = new int[3];
+        class MyBotan extends Student implements IBotan {            
             
-            public Botan(String Name, String Surname, String Patronymic, Sex Sex, int Age, String Faculty) {
+            private int   exams_num = 3;
+            private int[] marks = new int[exams_num];
+            
+            public MyBotan(String Name, String Surname, String Patronymic, Sex Sex, int Age, String Faculty) {
                 super(Name,Surname,Patronymic,Sex,Age,Faculty);
                 marks[0]=5;
                 marks[1]=4;
@@ -72,17 +72,20 @@ public class GeneratorTest {
             
             @Override
             public int getMarkForExam(int index) { return marks[index]; }
+            
+            @Override
+            public int getNumberOfExams() { return 3; } 
         }
         
         LinkedList<IHuman> FatherChildrenList = new LinkedList<IHuman>();
         Student[] children = new Student[2];
         
-        children[0] = new Botan("","","",Sex.male,18,"");
-        children[1] = new Botan("","","",Sex.male,19,"");
-        Father father1 = new Father("","","",Sex.male,40,children);
-        Father father2 = new Father("","","",Sex.male,42,children);
-        Father father3 = new CoolFather("","","",Sex.male,52,children);
-        Father father4 = new CoolFather("","","",Sex.male,32,children);
+        children[0] = new MyBotan("","","",Sex.male,18,"");
+        children[1] = new MyBotan("","","",Sex.male,19,"");
+        IFather father1 = new Father("","","",Sex.male,40,children);
+        IFather father2 = new Father("","","",Sex.male,42,children);
+        ICoolFather father3 = new CoolFather("","","",Sex.male,52,children);
+        ICoolFather father4 = new CoolFather("","","",Sex.male,32,children);
         
         FatherChildrenList.add(father1);
         FatherChildrenList.add(father2);
@@ -120,6 +123,6 @@ public class GeneratorTest {
         List<IHuman> FatherChildrenList = CreateList();
         
         Assert.assertEquals(4, Generator.calcMark(FatherChildrenList));
-    }*/
+    }
     
 }

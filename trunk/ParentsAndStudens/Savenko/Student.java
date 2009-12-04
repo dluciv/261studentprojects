@@ -7,10 +7,10 @@ package msavenko.parentsandstudens;
 
 import java.util.Random;
 
-public class Student extends Human {
+public class Student extends Human implements IStudent  {
     
     private Random random = new Random();
-    private int    exams_num = random.nextInt(10);
+    private int    exams_num = random.nextInt(10)+1;
     private String faculty;
     
     public Student(String Name, String Surname, String Patronymic, Sex Sex,int Age, String Faculty) {
@@ -22,8 +22,10 @@ public class Student extends Human {
         faculty = Faculty;
     }    
     
+    @Override
     public int getNumberOfExams() { return exams_num; }    
 
+    @Override
     public int getMarkForExam(int index) {
         if ((index < 0) || (index >= exams_num)){
             throw new IllegalArgumentException();
@@ -31,6 +33,7 @@ public class Student extends Human {
         
         return 3;
     }
-    
+   
+    @Override
     public String getFaculty() { return faculty; }
 }

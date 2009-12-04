@@ -7,7 +7,7 @@ package msavenko.parentsandstudens;
 
 import java.util.Random;
 
-public class Botan extends Student {
+public class Botan extends Student implements IBotan {
     
     private int[] marks;
     

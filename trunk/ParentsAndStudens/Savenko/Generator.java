@@ -102,7 +102,7 @@ public class Generator {
     public static List<IHuman> generateCollection() {
         LinkedList<IHuman> FatherChildrenList = new LinkedList<IHuman>();
         
-        int parentCount = random.nextInt(10);
+        int parentCount = random.nextInt(10)+1;
         for (int i = 0; i < parentCount; i++) {
             Father father = generateFather();
             FatherChildrenList.add(father);
@@ -117,8 +117,8 @@ public class Generator {
     public static int calcMoney(List<IHuman> humans) {
         int amount = 0;
         for (IHuman i : humans) {
-            if (i instanceof CoolFather) {
-                amount += ((CoolFather) i).getAmountOfMoney();
+            if (i instanceof ICoolFather) {
+                amount += ((ICoolFather) i).getAmountOfMoney();
             }
         }
 
@@ -129,13 +129,12 @@ public class Generator {
         int marksSum = 0;
         int count = 0;
         for (IHuman i : humans) {
-            if (i instanceof Botan) {
-                Botan botan = ((Botan) i);
-                int excount = botan.getNumberOfExams();
+            if (i instanceof IBotan) {
+                int excount = ((IBotan) i).getNumberOfExams();
 
                 count += excount;
                 for (int j = 0; j < excount; j++) {
-                    marksSum += botan.getMarkForExam(j);
+                    marksSum += ((IBotan) i).getMarkForExam(j);
                 }
             }
         }
