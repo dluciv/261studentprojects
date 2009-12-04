@@ -31,12 +31,12 @@ public class ConverterTest {
 
     @Test
     public void parseTest() {
-        assertEquals(new int[]{192, 168, 0, 1}, Main.tryParse("192.168.0.1"));
-        assertEquals(new int[]{127, 0, 0, 1}, Main.tryParse("127.0.0.1"));
+        assertArrayEquals(new int[]{192, 168, 0, 1}, Main.tryParse("192.168.0.1"));
+        assertArrayEquals(new int[]{127, 0, 0, 1}, Main.tryParse("127.0.0.1"));
 
-        assertEquals(new int[]{209, 85, 229, 104}, Main.tryParse("209.85.229.104"));
-        assertEquals(new int[]{213, 180, 204, 8}, Main.tryParse("213.180.204.8"));
-        assertEquals(new int[]{85, 21, 143, 138}, Main.tryParse("85.21.143.138"));
+        assertArrayEquals(new int[]{209, 85, 229, 104}, Main.tryParse("209.85.229.104"));
+        assertArrayEquals(new int[]{213, 180, 204, 8}, Main.tryParse("213.180.204.8"));
+        assertArrayEquals(new int[]{85, 21, 143, 138}, Main.tryParse("85.21.143.138"));
     }
 
     @Test
