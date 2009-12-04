@@ -6,6 +6,7 @@
 package hotheart.interfaces;
 
 import hotheart.interfaces.objects.IAreaObject;
+import hotheart.interfaces.objects.Sphere;
 
 /**
   * @author Korshakov Stepan
@@ -25,6 +26,14 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        Sphere sphere = new Sphere(10.0f);
+        try
+        {
+            calcArea(sphere);
+        }
+        catch(IllegalArgumentException e)
+        {
+            System.out.print("Wrong argument!");
+        }
     }
 }
