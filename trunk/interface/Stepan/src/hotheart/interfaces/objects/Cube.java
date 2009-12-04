@@ -10,19 +10,19 @@ package hotheart.interfaces.objects;
  */
 public class Cube implements IVolumeObject, IAreaObject {
 
-    public float Width, Height, Length;
+    private float width, height, length;
 
     public Cube(float Width, float Height, float Length) {
-        this.Width = Width;
-        this.Height = Height;
-        this.Length = Length;
+        this.width = Width;
+        this.height = Height;
+        this.length = Length;
     }
 
     public float calcVolume() {
-        return Math.abs(Width)*Math.abs(Height)*Math.abs(Length);
+        return Math.abs(width)*Math.abs(height)*Math.abs(length);
     }
 
     public float calcArea() {
-        return Math.abs(Width*Height*2) + Math.abs(Width*Length*2) + Math.abs(Length*Height*2);
+        return Math.abs(width*height*2) + Math.abs(width*length*2) + Math.abs(length*height*2);
     }
 }

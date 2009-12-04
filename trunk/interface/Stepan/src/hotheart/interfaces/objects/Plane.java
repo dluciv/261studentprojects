@@ -10,11 +10,11 @@ package hotheart.interfaces.objects;
  */
 public class Plane implements IVolumeObject, IAreaObject {
 
-    public float Width, Height;
+    private float width, height;
 
     public Plane(float Width, float Height) {
-        this.Width = Width;
-        this.Height = Height;
+        this.width = Width;
+        this.height = Height;
     }
 
     public float calcVolume() {
@@ -22,6 +22,6 @@ public class Plane implements IVolumeObject, IAreaObject {
     }
 
     public float calcArea() {
-        return Math.abs(Width*Height);
+        return Math.abs(width*height);
     }
 }

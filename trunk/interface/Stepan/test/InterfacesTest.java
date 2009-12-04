@@ -1,5 +1,6 @@
 /*
  * Tests for Interfaces by Stepan Korshakov
+ * Group 261 - 2009(c)
  */
 
 import hotheart.interfaces.Main;
@@ -43,13 +44,7 @@ public class InterfacesTest {
     
     boolean testFloatsAreSame(float a, float b)
     {
-        float sub = a - b;
-        if (sub < 0.00001)
-            return true;
-        else if (sub > -0.00001)
-            return true;
-        else
-            return false;
+        return Math.abs(a - b) < 0.00001;
     }
     
     @Test
