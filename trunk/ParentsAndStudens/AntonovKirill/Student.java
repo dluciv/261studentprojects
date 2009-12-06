@@ -24,8 +24,12 @@ public class Student implements IHuman {
         this.age = age;
         this.faculty = faculty;
         this.exams_counter = exams_counter;
+		
+		//count equals the number of examinations
         marks = new int[exams_counter];
-        for (int i = 0; i < exams_counter; i++) { //array 3 ratings
+		
+		//assessment of the examinations in all 3
+        for (int i = 0; i < exams_counter; i++) { 
             marks[i] = ExamsMark;
         }
     }

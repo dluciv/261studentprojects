@@ -1,4 +1,4 @@
-//(c)Antonov Kirill 2009
+﻿//(c)Antonov Kirill 2009
 //Here we are create random marks from 3 to 5 and collected AverageGrades
 
 package parentsstudents;
@@ -20,7 +20,7 @@ public class Botan extends Student {
 
         marks = new int[exams_counter];
 
-
+        //marks are generated randomly from 3 to 5
         for (int i = 0; i < exams_counter; i++) {
             marks[i] = MINIMAL_MARKS + random.nextInt(NUMBER_FROM_0_To_2);
         }
@@ -30,7 +30,7 @@ public class Botan extends Student {
 
     private double AverageGrades(int[] marks) {
         double sum = 0;
-
+        //consider average marks
         for (int i = 0; i < marks.length; i++) {
             sum += marks[i];
         }

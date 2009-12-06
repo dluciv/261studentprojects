@@ -33,7 +33,8 @@ public class Generator {
     };
 
     private static Random random = new Random();
-
+	
+    //randomly generate a name
     private static String generateName(Sex sex) {
         if (sex == Sex.male) {
             return maleNames[random.nextInt(maleNames.length)];
@@ -42,22 +43,26 @@ public class Generator {
         }
     }
 
+	//randomly generate a malesurname
     private static String generateMaleSurname() {
         return surnames[random.nextInt(surnames.length)];
     }
 
+	//construction of women's surname
     private static String turnToFemaleSurname(String surname) {
+	    // if surname ends with "ов" "ев" "ин" => add the ending 'а'
         if ((surname.endsWith("ов") || surname.endsWith("ев")
                                     || surname.endsWith("ин"))) {
             return (surname + 'а');
         }
+		//if surname ends with "ий"  "ой" => Look at the end of the string subtracting namely -2 and add the ending "ая"
         else if ( (surname.endsWith("ий") || surname.endsWith("ой"))) {
             return surname.substring(0, surname.length() - 2) + "ая";
         }
 
         return surname;
     }
-
+    //construction of FatherName
     private static String generateFatherName(String fatherName, Sex sex) {
         if (sex == Sex.male) {
             return fatherName + "ович";
@@ -66,10 +71,12 @@ public class Generator {
         }
     }
 
+	//generate Faculty randomly
     private static String generateFaculty() {
         return faculties[random.nextInt(faculties.length)];
     }
-
+ 
+    //generate Father
     private static Parents generateFather() {
         Sex sex = Sex.male;
         String surname = generateMaleSurname();
@@ -78,7 +85,8 @@ public class Generator {
         int age = THE_YOUNGEST_FATHER_AGE + random.nextInt(FATHER_AGE_RANGE);
         int children_Counter = random.nextInt(MAX_CHILDREN_PER_FATHER);
         Student[] children = new Student [children_Counter];
-
+ 
+        
         for (int i = 0; i < children_Counter; i++) {
             children[i] = generateStudent(name, surname);
         }
@@ -92,7 +100,7 @@ public class Generator {
     }
 
     private static Student generateStudent(String fatherName,
-            String fatherSurname) {
+                                           String fatherSurname) {
         String studentSurname = fatherSurname;
         Sex sex = Sex.male;
         int age = THE_YOUNGEST_STUDENT_AGE + random.nextInt(STUDENT_AGE_RANGE);

@@ -3,8 +3,9 @@
  */
 
 package parentsstudents;
-
-public enum  Sex {
+ 
+ //male and female gender
+ public enum  Sex {
     male,
     female
 }

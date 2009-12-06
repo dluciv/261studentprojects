@@ -3,7 +3,7 @@
 
 package parentsstudents;
 
-public class Parents /*extends humanSpecifications*/ {
+public class Parents {
     public Student[] students;
 
     Parents(String surname, String name, String FatherName, Sex sex, int age,
