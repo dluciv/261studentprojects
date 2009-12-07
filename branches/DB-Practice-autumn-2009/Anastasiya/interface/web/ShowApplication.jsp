@@ -67,7 +67,7 @@
             <%} else if (appl.getType() == ApplicationType.INDIVIDUAL) {%>
             Индивидуальное приложение. <br>
             <% Pair customer = appl.getIndividualCustomer();%>
-            Заказчик: <a href="ShowCustomer?id=<%= customer.getId()%>"> <%= customer.getName()%> </a>
+            Заказчик: <a href="ShowCustomer?id=<%= customer.getId()%>"> <%= customer.getName()%> </a> <br>
             <% BigDecimal price = appl.getPrice(); %>
             Стоимость: <% if(price == null) {%> не указана <% }else { %> <%= price %> <% } %>
             <%} else if (appl.getType() == ApplicationType.INNER) {%>

@@ -50,7 +50,7 @@
                                     <td><a href="AllApplications.jsp">Приложения</a></td>
                                 </tr>
                                 <tr>
-                                    <td>Заказчики</td>
+                                    <td><a href="AllCustomers.jsp">Заказчики</a></td>
                                 </tr>
                                 <tr>
                                     <td>Другое</td>
