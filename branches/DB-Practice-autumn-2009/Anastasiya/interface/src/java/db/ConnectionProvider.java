@@ -17,6 +17,12 @@ import java.util.logging.Logger;
 public class ConnectionProvider {
 
     private static Connection connection;
+    public static String HOST = "localhost";
+    public static String PORT = "1521";
+    public static String DATABASE = "leidbase";
+    public static String LOGIN = "db_practice";
+    public static String PASSWORD = "";
+
 
     public static Connection getConnection() throws SQLException {
         if (connection == null) {
@@ -25,7 +31,7 @@ public class ConnectionProvider {
             } catch (ClassNotFoundException ex) {
                 throw new ConfigurationException(ex);
             }
-            connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:leidbase", "db_practice", "nastya");
+            connection = DriverManager.getConnection("jdbc:oracle:thin:@" + HOST + ":" + PORT + ":" + DATABASE, LOGIN, PASSWORD);
         }
         return connection;
     }
