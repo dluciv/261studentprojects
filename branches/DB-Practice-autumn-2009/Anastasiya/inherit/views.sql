@@ -39,3 +39,13 @@ create or replace view application_customer as
 select a.id as application_id, a.name as application_name, c.id as customer_id, c.name as customer_name
 from application a, customer c, installed i
 where a.id = i.applicationID and c.id = i.customerID;
+
+create or replace view customer_extended as 
+select c.id, 
+	   c.name, 
+	   c.depart,
+	   c.phone,
+	   e.id as maintancer_id,
+	   e.name as maintancer_name 
+from customer c, employee e
+where c.MAINTANCE = e.id(+);
