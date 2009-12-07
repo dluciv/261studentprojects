@@ -35,8 +35,12 @@ public class Generator {
                 numberOfBotans++;
             }
         }
-        return BigDecimal.valueOf(result / numberOfBotans).
-                setScale(2, RoundingMode.UP).doubleValue();
+        if (numberOfBotans == 0) {
+            return 0;
+        } else {
+            return BigDecimal.valueOf(result / numberOfBotans).
+                    setScale(2, RoundingMode.UP).doubleValue();
+        }
     }
 
     //Generating random between Parent and CoolParent
@@ -88,6 +92,7 @@ public class Generator {
     }
     //printing information about them, printing the sum of all money of
     //CoolParents and printing average mark of all Botans
+
     public static void generateAndPrint() {
         humans = generate();
         System.out.println("Общая сумма денег крутых родителей: " + getAllMoney(humans));

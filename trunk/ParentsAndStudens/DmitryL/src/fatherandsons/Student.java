@@ -20,7 +20,7 @@ public class Student implements IHuman {
         this.setMarks(marks);
     }
 
-    String patronymicEnd(Sex sex) {
+    public static String patronymicEnd(Sex sex) {
         if (sex == Sex.male) {
             return "ович";
         } else {
@@ -28,7 +28,7 @@ public class Student implements IHuman {
         }
     }
 
-    String surnameEnd(Sex sex) {
+    public static String surnameEnd(Sex sex) {
         if (sex == Sex.male) {
             return "";
         } else {
