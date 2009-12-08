@@ -5,3 +5,5 @@ w:\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.exe
 w:\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.pdb
 w:\Visual Studio 2008\Projects\HelloWorld\HelloWorld\bin\Debug\HelloAgainF.dll
 w:\Visual Studio 2008\Projects\HelloWorld\HelloWorld\bin\Debug\HelloAgainF.pdb
+w:\261studentprojects\Builder\Sdmitry\HW\HelloWorld\obj\Debug\HelloWorld.exe
+w:\261studentprojects\Builder\Sdmitry\HW\HelloWorld\obj\Debug\HelloWorld.pdb
