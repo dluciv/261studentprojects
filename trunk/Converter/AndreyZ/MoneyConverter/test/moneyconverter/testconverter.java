@@ -1,9 +1,9 @@
-package moneyconverter;
-
 /**
  * Testing MoneyConverter
  * @author Zubrilin Andrey (c) 2009
  */
+package moneyconverter;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -12,32 +12,26 @@ public class testconverter {
     public testconverter(){
 
     }
-    
-    public static double Course;
-    public static String value;
-    public static boolean isUSD;
+    private MoneyConverter c = new MoneyConverter();
 
-    @Test
-    public void TestingUsdToRub() {
-        isUSD = true;
-        value = "100";
-        Course = 29.1;
-        assertTrue(converter.calcMoney(value, Course, isUSD)==2910);
+    @Test(expected = NumberFormatException.class)
+    public void IncorrectNumberTest() {
+        c.convert("Hello world");
     }
 
-    @Test
-    public void TestingRubToUsd() {
-        isUSD = false;
-        value = "2910";
-        Course = 29.1;
-        assertTrue(converter.calcMoney(value, Course, isUSD)==100);
+    @Test(expected = NullPointerException.class)
+    public void NullTest() {
+        c.convert(null);
     }
 
-    @Test
-    public void TestingBadValue() {
-        isUSD = true;
-        value = "dfgdg";
-        Course = 29.1;
-        assertTrue(converter.calcMoney(value, Course, isUSD)==0);
+    @Test()
+    public void NegativeNumberTest() {
+        assertTrue(c.convert("-5") == 0 );
+    }
+
+    @Test()
+    public void NegativeExchange(){
+        c.Exchange = -5;
+        assertTrue(c.Exchange == 0);
     }
 }

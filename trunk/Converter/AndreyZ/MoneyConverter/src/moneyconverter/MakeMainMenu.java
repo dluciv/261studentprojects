@@ -1,15 +1,15 @@
-package moneyconverter;
-
 /**
  * Creating Menu and Actions;
  * @author Zubrilin Andrey (c)2009
  */
+package moneyconverter;
+
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
 import java.text.*;
 
-public class MakeMainMenu extends converter implements ActionListener
+public class MakeMainMenu implements ActionListener
 {
 
     //Объявление меток.exFrom - из каких единиц идет пересчет,exTo -куда;
@@ -30,10 +30,9 @@ public class MakeMainMenu extends converter implements ActionListener
      * Использование типа boolean по причине наличия только 2х вариантов;
      */
     boolean isUSD = false;
-
+    private MoneyConverter c = new MoneyConverter();
     //Создание формы и компонентов;
     MakeMainMenu(){
-
         /*Создаем форму,задаем размер,указываем действие при закрытие,
          *порядок расположения компонентов;
          */
@@ -67,7 +66,7 @@ public class MakeMainMenu extends converter implements ActionListener
         jExchange = new JButton("Convert");
 
         //Создаем поле курса валюты;
-        jCourse = new JTextField(3);
+        jCourse = new JTextField(4);
         JLabel chCourse = new JLabel("1 USD = ");
         JLabel chCourse2 = new JLabel("RUB");
 
@@ -116,7 +115,7 @@ public class MakeMainMenu extends converter implements ActionListener
         jInput.setText("");
         jOutput.setText("");
         jExchange.setEnabled(false);
-        converter.resetCourse();
+        c.Exchange = 29.1;
         jCourse.setText("");
         jCourse.setEditable(false);
     }
@@ -131,8 +130,8 @@ public class MakeMainMenu extends converter implements ActionListener
         if(comStr.equals("Convert")){
 
             //Проверяем изменение курса;
-            converter.Exchange = converter.convertString(jCourse.getText());
-            converter.Exchange = converter.Exchange > 0 ? converter.Exchange : 0;
+            c.Exchange = c.NegativeNumberChecker(c.stringToNum(jCourse.getText()));
+            
 
             //Количество цифр после запятой;
             NumberFormat nf = NumberFormat.getInstance();
@@ -140,9 +139,9 @@ public class MakeMainMenu extends converter implements ActionListener
 
             //Производим расчет и выводим;
             if(isUSD)
-                jOutput.setText(nf.format(converter.calcMoney(jInput.getText()))+"");
+                jOutput.setText(nf.format(c.convert(jInput.getText()))+"");
             else
-                jOutput.setText(nf.format(converter.calcBackMoney(jInput.getText()))+"");
+                jOutput.setText(nf.format(c.convertBack(jInput.getText()))+"");
         }
 
         //Обрабатываем выбор в списке;
@@ -152,7 +151,7 @@ public class MakeMainMenu extends converter implements ActionListener
             jInput.setEditable(true);
             jExchange.setEnabled(true);
             jCourse.setEditable(true);
-            jCourse.setText(converter.Exchange+"");
+            jCourse.setText(c.Exchange+"");
 
             if(jMoney.getSelectedIndex() == 1){
 

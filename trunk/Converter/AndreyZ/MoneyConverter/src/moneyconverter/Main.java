@@ -1,9 +1,8 @@
-package moneyconverter;
-
 /**
  *  Money Converter (USD->RUB ,RUB->USD)
  *  @author Zubrilin Andrey (c)2009
  */
+package moneyconverter;
 
 import javax.swing.*;
 
