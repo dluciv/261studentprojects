@@ -9,7 +9,7 @@ public class EMailChecker {
 
     public static boolean Checker(String email) {
 
-        String AddressName = "([a-z\\_]|([a-z\\_][a-z\\d\\_\\.\\-]+))";
+        String AddressName = "[a-z\\_]([a-z\\_\\-\\d]*)(\\.[a-z\\-\\d\\_]+)*";
         String domain1 = "([a-z]{2,4}|museum|travel)";
         String domain2 = "[a-zA-Z\\d\\_\\-]+[.]";
 
@@ -18,7 +18,7 @@ public class EMailChecker {
         Pattern pattern = Pattern.compile(eMail);
         Matcher matcher = pattern.matcher(email);
 
-        if(!matcher.matches()|(email.indexOf("..")!=-1))
+        if(!matcher.matches())
             return false;
         return true;
     }
