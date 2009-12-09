@@ -1,37 +1,41 @@
-package Interface;
-
 /**
- * Example of using interface(Pricelists of cars and socks);
+ * Example of using interface(Shop);
  * @author Zubrilin Andrey (c)2009
  */
-import java.util.Random;
+package Interface;
+
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        
-        Random random = new Random();
+    public static Chocolate chocolate = new Chocolate();
+    public static Water water = new Water();
 
-        //Socks costs;
-        IPrice modelSocks = new Socks(random.nextInt(4)+1);
+    public static void main(String[] args) throws IOException {
 
-        int price = modelSocks.seePrice();
 
-        if(price != 0)
-            System.out.println("The Price is "+price+" Ketse");
-        else
-            System.out.println("Don't have this item on the storage");
+        System.out.println("To exit our shop push enter \"Exit\"");
 
-        //Cars costs;
-        IPrice modelCars = new Cars(random.nextInt(4)+1);
+        while(true){
+            String choco;
+            String aqua;
+            System.out.println("\n-What chocolate do you want?");
 
-        price = modelCars.seePrice();
-        
-        if(price != 0)
-            System.out.println("The Price is "+price+" Ketse");
-        else
-            System.out.println("Don't have this item on the storage");
+            BufferedReader bReader = new BufferedReader (new InputStreamReader(System.in));
+            choco = bReader.readLine();
+
+            if (chocolate.price(choco) == null)
+                throw new IllegalArgumentException("Not in stock.");
+            System.out.println("Cost : " + chocolate.price(choco));
+
+            System.out.println("\n-What water do you want?");
+            aqua = bReader.readLine();
+
+            if (water.price(aqua) == null)
+                throw new IllegalArgumentException("Not in stock.");
+            System.out.println("Cost : " + water.price(aqua));
+        }
     }
 }
