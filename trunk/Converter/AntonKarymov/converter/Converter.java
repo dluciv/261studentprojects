@@ -7,15 +7,15 @@ import java.math.*;
 
 public final class Converter {
 
-    private static double course = 29.34;
+    private double course = 29.34;
 
-    public static double rubleToDollar(double nominalRub) {
+    public double rubleToDollar(double nominalRub) {
         double nominalBaks = nominalRub / course;
-        return (BigDecimal.valueOf(nominalBaks).setScale(2, RoundingMode.UP)).doubleValue();
+        return (BigDecimal.valueOf(nominalBaks).setScale(2, RoundingMode.HALF_EVEN)).doubleValue();
     }
 
-    public static double dollarToRuble(double nominalDollar) {
+    public double dollarToRuble(double nominalDollar) {
         double nominalRub = nominalDollar * course;
-        return (BigDecimal.valueOf(nominalRub).setScale(2, RoundingMode.UP)).doubleValue();
+        return (BigDecimal.valueOf(nominalRub).setScale(2, RoundingMode.HALF_EVEN)).doubleValue();
     }
 }

@@ -10,15 +10,15 @@ import java.awt.event.*;
 
 public final class Components {
 
-    private static String textStartWord = "Введите сумму: ";
-    private static String textResult = "Это будет: ";
-    private static String sum = "0";
-    private static String rouble = " руб.";
-    private static String dollar = " $";
-    private static String textChoiceOperation = "Выберите нужную операцию перевода:";
+    private String textStartWord = "Введите сумму: ";
+    private String textResult = "Это будет: ";
+    private String sum = "0";
+    private String rouble = " руб.";
+    private String dollar = " $";
+    private String textChoiceOperation = "Выберите нужную операцию перевода:";
 
-//проверка корректности ввода пользователя
-    public static double isUserEnterCorrect(String value) {
+//Парсим введеное пользователем число в дабл заодно проверяется корректность ввода
+    public double prserInput(String value) {
         if (value == null) {
             throw new java.lang.IllegalArgumentException();
         }
@@ -31,7 +31,7 @@ public final class Components {
         }
     }
 
-    public static Component createComponents() {
+    public Component createComponents() {
 // Кнопка, которую мы нажимаем
         JButton button = new JButton("Перевести валюту");
         button.setMnemonic(KeyEvent.VK_S);
@@ -62,12 +62,13 @@ public final class Components {
         button.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
+                Converter converter = new Converter();
                 if (radioButtonDollarToRouble.isSelected() == true) {
-                    sum = String.valueOf(Converter.dollarToRuble(isUserEnterCorrect(textfield.getText())));
+                    sum = String.valueOf(converter.dollarToRuble(prserInput(textfield.getText())));
                     result.setText(textResult + sum + rouble);
                 }
                 if (radioButtonRoubleToDollar.isSelected() == true) {
-                    sum = String.valueOf(Converter.rubleToDollar(isUserEnterCorrect(textfield.getText())));
+                    sum = String.valueOf(converter.rubleToDollar(prserInput(textfield.getText())));
                     result.setText(textResult + sum + dollar);
                 }
             }
