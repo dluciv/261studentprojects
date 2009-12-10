@@ -20,25 +20,73 @@ namespace Ex3Editor
     /// </summary>
     public partial class MainWindow : Window
     {
-        EditorEngine model = null;
-
         public MainWindow()
         {
             InitializeComponent();
         }
-        private void New_Click(object sender, RoutedEventArgs e)
+
+        void LoadStateFromModel()
         {
-            model = new EditorEngine();
             this.MainTextBox.Text = model.Text;
             this.MainTextBox.CaretIndex = model.State.CursorPos;
             this.MainTextBox.ScrollToHorizontalOffset(model.State.HorizontalScroll);
             this.MainTextBox.ScrollToVerticalOffset(model.State.VerticalScroll);
         }
+        void SaveStateToModel()
+        {
+            model.Text = MainTextBox.Text;
+            model.State.CursorPos = MainTextBox.CaretIndex;
+            model.State.HorizontalScroll = MainTextBox.HorizontalOffset;
+            model.State.VerticalScroll = MainTextBox.VerticalOffset;
+        }
+
+        EditorEngine model = null;
+       
+        #region Loading states from model methods
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            model = EditorEngine.LoadState();
+            LoadStateFromModel();
+            this.MainTextBox.Focus();
+        }
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.Filter = "Text files|*.txt";
+            bool? res = dialog.ShowDialog();
+            if (res.Value == true)
+            {
+                model = EditorEngine.LoadFile(dialog.FileName);
+                model.SaveState();
+                LoadStateFromModel();
+            }
+            this.MainTextBox.Focus();
+        }
+        private void New_Click(object sender, RoutedEventArgs e)
+        {
+            model = new EditorEngine();
+            model.SaveState();
+            LoadStateFromModel();
+        }
+        #endregion
+
+        #region Saving states to model methods
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (!model.IsModified)
+            {
+                SaveStateToModel();
+                model.SaveState();
+            }
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (model.IsNew)
+            if (model.State.IsNew)
             {
                 Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+                dialog.Filter = "Text files|*.txt";
                 dialog.FileName = model.State.FileName;
 
                 bool? res = dialog.ShowDialog();
@@ -50,48 +98,17 @@ namespace Ex3Editor
                     return;
             }
 
-            model.Text = MainTextBox.Text;
-            model.State.CursorPos = MainTextBox.CaretIndex;
-            model.State.HorizontalScroll = MainTextBox.HorizontalOffset;
-            model.State.VerticalScroll = MainTextBox.VerticalOffset;
+            SaveStateToModel();
             model.SaveFile();
             model.SaveState();
             this.MainTextBox.Focus();
         }
+        #endregion
 
-        private void Open_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
-            bool? res = dialog.ShowDialog();
-            if (res.Value == true)
-            {
-                model = EditorEngine.LoadFile(dialog.FileName);
-                this.MainTextBox.Text = model.Text;
-            }
-            this.MainTextBox.Focus();
-        }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            if (!model.IsModified)
-            {
-                model.State.CursorPos = MainTextBox.CaretIndex;
-                model.State.HorizontalScroll = MainTextBox.HorizontalOffset;
-                model.State.VerticalScroll = MainTextBox.VerticalOffset;
-                model.SaveState();
-            }
-
             App.Current.Shutdown();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            model = EditorEngine.LoadState();
-            this.MainTextBox.Text = model.Text;
-            this.MainTextBox.CaretIndex = model.State.CursorPos;
-            this.MainTextBox.ScrollToHorizontalOffset(model.State.HorizontalScroll);
-            this.MainTextBox.ScrollToVerticalOffset(model.State.VerticalScroll);
-            this.MainTextBox.Focus();
         }
     }
 }
