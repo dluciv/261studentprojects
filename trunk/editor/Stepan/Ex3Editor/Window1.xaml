@@ -1,0 +1,11 @@
+﻿<Window x:Class="Ex3Editor.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Window1" Height="338" Width="685">
+    <Grid>
+        <TextBox Name="textBox1" AcceptsTab="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,58,0,22" />
+        <StatusBar Height="23" Name="statusBar1" VerticalAlignment="Bottom">
+            <StatusBarItem>kjhkjh</StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
