@@ -24,7 +24,6 @@ namespace TextRedactorBySM
             InitializeComponent();
         }
 
-        private Filling textBoxFilling;
         private static BinaryFormatter binFormat = new BinaryFormatter();
 
         private void AboutProg_Click(object sender, EventArgs e)
@@ -35,10 +34,6 @@ namespace TextRedactorBySM
 
         private void SaveAs_Click(object sender, EventArgs e)
         {
-            textBoxFilling = new Filling();
-            textBoxFilling.Text = richTextBox.Text;
-            textBoxFilling.CursorPosition = richTextBox.SelectionStart;
-
             if (saveFileDialog.ShowDialog() != DialogResult.OK)
                 return;
             SaveToFile(saveFileDialog.FileName + ".sav");
@@ -46,8 +41,13 @@ namespace TextRedactorBySM
 
         private void SaveToFile(string FileName)
         {
+            IControlState[] state_list = new IControlState[2];
+
+            state_list[0] = new FormState(this);
+            state_list[1] = new RichTextFState(richTextBox);
+
             FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.None);
-            binFormat.Serialize(fs, textBoxFilling);
+            binFormat.Serialize(fs, state_list);
             fs.Close();
         }
 
@@ -56,31 +56,11 @@ namespace TextRedactorBySM
             if (openFileDialog.ShowDialog() != DialogResult.OK)
                 return;
             FileStream fs = File.OpenRead(openFileDialog.FileName);
-            Filling openedFilling = (Filling)binFormat.Deserialize(fs);
+            IWidget widget = new Widget((IControlState[])binFormat.Deserialize(fs));
 
-            richTextBox.Text = openedFilling.Text;
-            richTextBox.SelectionStart = openedFilling.CursorPosition;
+            widget.LoadState();
 
             fs.Close();
-        }
-    }
-
-    [Serializable]
-    public class Filling
-    {
-        private String text;
-        private int currPosition;
-
-        public string Text
-        {
-            get { return this.text; }
-            set { this.text = value; }
-        }
-
-        public int CursorPosition
-        {
-            get { return this.currPosition; }
-            set { this.currPosition = value; }
         }
     }
 

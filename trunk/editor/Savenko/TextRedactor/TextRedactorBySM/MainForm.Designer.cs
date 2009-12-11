@@ -58,14 +58,14 @@ namespace TextRedactorBySM {
             // OpenAs
             // 
             this.OpenAs.Name = "OpenAs";
-            this.OpenAs.Size = new System.Drawing.Size(173, 22);
+            this.OpenAs.Size = new System.Drawing.Size(162, 22);
             this.OpenAs.Text = "Открыть как...";
             this.OpenAs.Click += new System.EventHandler(this.OpenAs_Click);
             // 
             // SaveAs
             // 
             this.SaveAs.Name = "SaveAs";
-            this.SaveAs.Size = new System.Drawing.Size(173, 22);
+            this.SaveAs.Size = new System.Drawing.Size(162, 22);
             this.SaveAs.Text = "Сохранить как...";
             this.SaveAs.Click += new System.EventHandler(this.SaveAs_Click);
             // 
@@ -119,7 +119,7 @@ namespace TextRedactorBySM {
         private System.Windows.Forms.ToolStripMenuItem SaveAs;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.RichTextBox richTextBox;
+        public System.Windows.Forms.RichTextBox richTextBox;
     }
 }
 
