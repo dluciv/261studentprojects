@@ -1,6 +1,6 @@
-/**
- *Main Program
- * @author Alekseev Ilya (c) 2009
+/**Main Program
+ *
+ * @author Alekseev Ilya
  */
 package convector;
 
