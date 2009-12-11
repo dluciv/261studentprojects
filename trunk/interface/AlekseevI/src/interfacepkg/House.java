@@ -5,9 +5,9 @@ package interfacepkg;
  * @author Alekseev Ilya
  */
 
-public class InTrees implements Construction {
+public class House implements IConstruction {
 
     public void build() {
-        System.out.println("build a house of wood");
+        System.out.println("build of house");
     }
 }

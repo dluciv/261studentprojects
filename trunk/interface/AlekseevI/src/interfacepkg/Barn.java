@@ -5,9 +5,9 @@ package interfacepkg;
  * @author Alekseev Ilya
  */
 
-public class Brick implements Construction {
+public class Barn implements IConstruction {
 
     public void build(){
-        System.out.println("build a house of bricks");
+        System.out.println("build of barn");
     }
 }

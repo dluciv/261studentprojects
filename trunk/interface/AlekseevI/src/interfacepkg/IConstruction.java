@@ -4,6 +4,6 @@
  */
 package interfacepkg;
 
-public interface Construction {
+public interface IConstruction {
     void build();
 }
