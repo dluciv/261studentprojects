@@ -11,8 +11,13 @@ ADD city_id int
 INSERT INTO cities(name) values('СПб')
 INSERT INTO cities(name) values('Москва')
 
-UPDATE publishers SET publishers.city_id = 1 WHERE publishers.title != 'Эксмо'
-UPDATE publishers SET publishers.city_id = 2 WHERE publishers.title = 'Эксмо' 
+UPDATE publishers SET publishers.city_id = 1 
+
+INSERT INTO publishers(title, city_id) VALUES('Азбука', 2)
+INSERT INTO publishers(title, city_id) VALUES('Эксмо', 2)
+
+UPDATE edition SET publisher_id = 5 WHERE book_id >= 9
+
 
 INSERT INTO cathegories(name) values('Американская проза XX в.')
 INSERT INTO cathegories(name) values('Детектив')
