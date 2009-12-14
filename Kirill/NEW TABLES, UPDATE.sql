@@ -38,3 +38,12 @@ EXISTS(SELECT * FROM authors WHERE authors.id = authorship.author_id AND authors
 update books set books.cathegory_id = 2 where books.title = 'Расследование';
 update books set books.cathegory_id = 4 where books.title = 'Солярис';
 update books set books.cathegory_id = 3 where books.title = 'Лабиринт';
+
+ALTER TABLE edition ADD price NUMERIC(6,2) DEFAULT 500.00
+ALTER TABLE edition ADD printing int DEFAULT 200000 
+
+UPDATE edition SET price = 450.00 WHERE book_id >= 4
+UPDATE edition SET price = 300.00 WHERE publisher_id < 4
+UPDATE edition SET printing = 200000 
+UPDATE edition SET printing = 300000 WHERE publisher_id BETWEEN 3 and 4
+UPDATE edition SET printing = 150000 where publisher_id <= 2
