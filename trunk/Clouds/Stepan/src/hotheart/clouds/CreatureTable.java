@@ -1,12 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
+ * CreatureTable for Cloud allpication by Korshakov Stepan
  * and open the template in the editor.
  */
 package hotheart.clouds;
 
 /**
- *
- * @author HotHeart
+  * @author Korshakov Stepan
  */
 public class CreatureTable {
 
@@ -28,6 +27,20 @@ public class CreatureTable {
             this.daylight = daylight;
             this.creature = creature;
             this.carrier = carrier;
+        }
+
+        public boolean testParameters(boolean isShinig, int windSpeed, DayLightType daylight)
+        {
+            if (this.isShinig != isShinig)
+                return false;
+            if (this.daylight != daylight)
+                return false;
+            if (windSpeed < windStart)
+                return false;
+            if (windSpeed > windEnd)
+                return false;
+
+            return true;
         }
     }
     

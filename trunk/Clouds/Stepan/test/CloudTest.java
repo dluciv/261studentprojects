@@ -8,6 +8,7 @@ import hotheart.clouds.Cloud;
 import hotheart.clouds.CreatureType;
 import hotheart.clouds.DayLightType;
 import hotheart.clouds.BabyCarrier;
+import hotheart.clouds.CreatureTable;
 import hotheart.clouds.IDayLight;
 import hotheart.clouds.ILuminary;
 import hotheart.clouds.IMagic;
@@ -106,45 +107,11 @@ public class CloudTest {
     }
 
     @Test
-    public void testPuppy() {
-        testCloud(true, 10, DayLightType.NOON, CreatureType.Puppy, BabyCarrierType.Daemon);
-    }
-
-    @Test
-    public void testKitten() {
-        for (int i = 8; i <= 9; i++) {
-            testCloud(true, i, DayLightType.EVENING, CreatureType.Kitten, BabyCarrierType.Storck);
+    public void TestCloud() {
+        for (CreatureTable.CreatureTableRow row : CreatureTable.Table) {
+            for (int i = row.windStart; i <= row.windEnd; i++) {
+                testCloud(row.isShinig, i, row.daylight, row.creature, row.carrier);
+            }
         }
-    }
-
-    @Test
-    public void testHedgehog() {
-        for (int i = 1; i <= 3; i++) {
-            testCloud(true, i, DayLightType.NIGHT, CreatureType.Hedgehog, BabyCarrierType.Storck);
-        }
-    }
-
-    @Test
-    public void testBearcub() {
-        for (int i = 1; i <= 3; i++) {
-            testCloud(false, i, DayLightType.NIGHT, CreatureType.Bearcub, BabyCarrierType.Daemon);
-        }
-    }
-
-    @Test
-    public void testPiglet() {
-        for (int i = 4; i <= 7; i++) {
-            testCloud(true, i, DayLightType.EVENING, CreatureType.Piglet, BabyCarrierType.Daemon);
-        }
-    }
-
-    @Test
-    public void testBat() {
-        testCloud(false, 0, DayLightType.NIGHT, CreatureType.Bat, BabyCarrierType.Daemon);
-    }
-
-    @Test
-    public void testBaloon() {
-        testCloud(true, 5, DayLightType.MORNING, CreatureType.Balloon, BabyCarrierType.Storck);
     }
 }
