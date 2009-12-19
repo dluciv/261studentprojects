@@ -14,5 +14,11 @@ namespace Ex3Editor.Model
         public Double VerticalScroll { get; set; }
         public Double HorizontalScroll { get; set; }
         public Boolean IsNew { get; set; }
+
+        public double WindowWidth { get; set; }
+        public double WindowHeight { get; set; }
+
+        public double WindowX { get; set; }
+        public double WindowY { get; set; }
     }
 }

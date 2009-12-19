@@ -39,6 +39,10 @@ namespace Ex3Editor.Model
             catch
             {
                 res = new EditorEngine();
+                res.State.WindowHeight = Properties.Settings.Default.LastState.WindowHeight;
+                res.State.WindowWidth = Properties.Settings.Default.LastState.WindowWidth;
+                res.State.WindowX = Properties.Settings.Default.LastState.WindowX;
+                res.State.WindowY = Properties.Settings.Default.LastState.WindowY;
             }
             return res;
         }

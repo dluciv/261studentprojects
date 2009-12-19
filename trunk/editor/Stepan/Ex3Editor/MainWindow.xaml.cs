@@ -31,6 +31,16 @@ namespace Ex3Editor
             this.MainTextBox.CaretIndex = model.State.CursorPos;
             this.MainTextBox.ScrollToHorizontalOffset(model.State.HorizontalScroll);
             this.MainTextBox.ScrollToVerticalOffset(model.State.VerticalScroll);
+
+            if (model.State.WindowWidth > 0)
+                this.Width = model.State.WindowWidth;
+            if (model.State.WindowHeight > 0)
+                this.Height = model.State.WindowHeight;
+
+            if (model.State.WindowX > 0)
+                this.Top = model.State.WindowX;
+            if (model.State.WindowY > 0)
+                this.Left = model.State.WindowY;
         }
         void SaveStateToModel()
         {
@@ -38,17 +48,23 @@ namespace Ex3Editor
             model.State.CursorPos = MainTextBox.CaretIndex;
             model.State.HorizontalScroll = MainTextBox.HorizontalOffset;
             model.State.VerticalScroll = MainTextBox.VerticalOffset;
+            model.State.WindowWidth = this.Width;
+            model.State.WindowHeight = this.Height;
+            model.State.WindowX = this.Top;
+            model.State.WindowY = this.Left;
         }
 
         EditorEngine model = null;
-       
+
         #region Loading states from model methods
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+
+        private void Window_Initialized(object sender, EventArgs e)
         {
             model = EditorEngine.LoadState();
             LoadStateFromModel();
             this.MainTextBox.Focus();
         }
+
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
@@ -74,11 +90,8 @@ namespace Ex3Editor
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (!model.IsModified)
-            {
-                SaveStateToModel();
-                model.SaveState();
-            }
+            SaveStateToModel();
+            model.SaveState();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
