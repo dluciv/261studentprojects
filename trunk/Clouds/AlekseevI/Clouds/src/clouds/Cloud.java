@@ -12,7 +12,7 @@ public class Cloud implements ICloud {
 
     private IMagic magic;
 
-    private Cloud(IMagic magic) {
+    public Cloud(IMagic magic) {
         this.magic = magic;
     }
 
@@ -37,7 +37,7 @@ public class Cloud implements ICloud {
             } else {
                 return new Creature(CreatureType.PIGLET);
             }
-        } else if (wind.current() == EnumWinds.TWISTER) {
+        } else if (daylight.current() == EnumDaylight.EVENING) {
             return new Creature(CreatureType.HEDGEHOG);
         } else {
             return new Creature(CreatureType.BAT);
