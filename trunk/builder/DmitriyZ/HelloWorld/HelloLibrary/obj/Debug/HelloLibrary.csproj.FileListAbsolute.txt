@@ -1,0 +1,5 @@
+G:\svn\builder\DmitriyZ\HelloWorld\HelloLibrary\obj\Debug\ResolveAssemblyReference.cache
+G:\svn\builder\DmitriyZ\HelloWorld\HelloLibrary\obj\Debug\HelloLibrary.dll
+G:\svn\builder\DmitriyZ\HelloWorld\HelloLibrary\obj\Debug\HelloLibrary.pdb
+G:\svn\builder\DmitriyZ\HelloWorld\HelloLibrary.dll
+G:\svn\builder\DmitriyZ\HelloWorld\HelloLibrary.pdb
