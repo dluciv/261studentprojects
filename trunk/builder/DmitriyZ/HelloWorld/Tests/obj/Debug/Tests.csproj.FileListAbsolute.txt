@@ -1,7 +1,0 @@
-G:\svn\builder\DmitriyZ\HelloWorld\Tests\bin\Debug\Tests.dll
-G:\svn\builder\DmitriyZ\HelloWorld\Tests\bin\Debug\Tests.pdb
-G:\svn\builder\DmitriyZ\HelloWorld\Tests\bin\Debug\HelloLibrary.dll
-G:\svn\builder\DmitriyZ\HelloWorld\Tests\bin\Debug\HelloLibrary.pdb
-G:\svn\builder\DmitriyZ\HelloWorld\Tests\obj\Debug\ResolveAssemblyReference.cache
-G:\svn\builder\DmitriyZ\HelloWorld\Tests\obj\Debug\Tests.dll
-G:\svn\builder\DmitriyZ\HelloWorld\Tests\obj\Debug\Tests.pdb
