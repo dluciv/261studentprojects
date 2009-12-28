@@ -10,4 +10,10 @@ HAVING AVG(mark) > 4.5;
 --Имена отличников
 ((STUDENT JOIN STUDENT_EXAM) WHERE MARK = '5'){NAME}
 
+--Имена отличников
+SELECT STUDENT.NAME FROM (STUDENT JOIN STUDENT_EXAM) WHERE MARK = '5';
+
+
+--Даты проведения экзаменов преподавателся с id=3;
+SELECT SESSION.DATE FROM (SUBJECT JOIN SESSION) WHERE TEACHER_ID = '3';
 
