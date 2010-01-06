@@ -37,27 +37,32 @@ public class CheckerTests {
     
     //negative tests
     @Test
-    public void shortDomainTest() {
+    public void shortDomainTest() 
+    {
         Assert.assertFalse(Checker.check("a@b.c"));
     }
     
     @Test
-    public void twoDotsInLoginTest() {
+    public void twoDotsInLoginTest() 
+    {
         Assert.assertFalse(Checker.check("a..b@mail.ru"));
     }
     
     @Test
-    public void loginStartsFromDotTest() {
+    public void loginStartsFromDotTest() 
+    {
         Assert.assertFalse(Checker.check(".a@mail.ru"));
     }
     
     @Test
-    public void icorrectDomainTest() {
+    public void icorrectDomainTest() 
+    {
         Assert.assertFalse(Checker.check("yo@domain.domain"));
     }
     
     @Test
-    public void testMailLoginStartsFromDigit() {
+    public void testMailLoginStartsFromDigit() 
+    {
         Assert.assertFalse(Checker.check("1@mail.ru"));
     }
 }
