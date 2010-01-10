@@ -1,0 +1,12 @@
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\Example\bin\Release\Example.exe
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\Example\bin\Release\Example.pdb
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\Example\bin\Release\MainProject.exe
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\Example\bin\Release\MainProject.pdb
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\Example\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\Example\obj\Release\Example.exe
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\Example\obj\Release\Example.pdb
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\obj\Release\Example.exe
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\obj\Release\Example.pdb
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example.exe
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example.pdb
