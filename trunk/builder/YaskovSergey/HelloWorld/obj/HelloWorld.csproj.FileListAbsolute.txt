@@ -1,0 +1,5 @@
+D:\261studentprojects\builder\YaskovSergey\HelloWorld\obj\Debug\ResolveAssemblyReference.cache
+D:\261studentprojects\builder\YaskovSergey\HelloWorld\obj\Debug\HelloWorld.dll
+D:\261studentprojects\builder\YaskovSergey\HelloWorld\obj\Debug\HelloWorld.pdb
+D:\261studentprojects\builder\YaskovSergey\HelloWorld.dll
+D:\261studentprojects\builder\YaskovSergey\HelloWorld.pdb
