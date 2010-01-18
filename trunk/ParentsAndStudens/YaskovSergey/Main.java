@@ -21,7 +21,7 @@ public class Main {
                 calcAverageGradesOfAllBotans(humanList));
     }
 
-    private static void showHumans(List<IHuman> humanList) {
+    public static void showHumans(List<IHuman> humanList) {
         int familyCount = 0;
 
         for (IHuman human : humanList) {

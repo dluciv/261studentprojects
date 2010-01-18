@@ -1,6 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * "Fathers and Children"
+ * some generics example
+ * (c) Yaskov Sergey, 261; 2009
+ *
+ * this class generates several families and puts it to collection.
+ * each family consists of father and his children-students;
  */
 
 package fathersandchildren;
@@ -44,11 +48,12 @@ public class Creator {
     }
 
     private static String turnToFemaleSurname(String surname) {
-        if ((surname.endsWith("ов") || surname.endsWith("ев")
-                                    || surname.endsWith("ин"))) {
+        if (surname.endsWith("ов") || surname.endsWith("ев")
+                                    || surname.endsWith("ин")) {
             return (surname + 'а');
         }
-        else if ( (surname.endsWith("ий") || surname.endsWith("ой"))) {
+        else if ( surname.endsWith("ий") || surname.endsWith("ой")
+                                         || surname.endsWith("ый")) {
             return surname.substring(0, surname.length() - 2) + "ая";
         }
 

@@ -1,6 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * "Fathers and Children"
+ * some generics example
+ * (c) Yaskov Sergey, 261; 2009
+ *
+ * this class extends class "SimplyHuman" using some student's characteristics,
+ * like a faculty or marks;
  */
 
 package fathersandchildren;

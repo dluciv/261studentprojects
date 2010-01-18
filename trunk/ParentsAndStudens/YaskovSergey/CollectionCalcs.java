@@ -1,6 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * "Fathers and Children"
+ * some generics example
+ * (c) Yaskov Sergey, 261; 2009
+ *
+ * this class contains two functions to calculate sum of money
+ * of all Cool Parents and average grades of all Botans;
  */
 
 package fathersandchildren;

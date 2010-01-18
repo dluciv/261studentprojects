@@ -1,6 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * "Fathers and Children"
+ * some generics example
+ * (c) Yaskov Sergey, 261; 2009
+ *
+ * this class extends class "Parent" using field "moneyQnt" (quantity of money)
+ * and some else;
+ * quantity of many depends of marks of parent's children;
  */
 
 package fathersandchildren;

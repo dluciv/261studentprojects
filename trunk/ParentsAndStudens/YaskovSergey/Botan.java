@@ -1,6 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * "Fathers and Children"
+ * some generics example
+ * (c) Yaskov Sergey, 261; 2009
+ *
+ * this class extends class "Student" using field "averageGrades"
+ * any Botan has better marks (from 3 to 5) than any Student;
  */
 
 package fathersandchildren;
