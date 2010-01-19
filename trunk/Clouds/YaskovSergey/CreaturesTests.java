@@ -11,60 +11,113 @@ import clouds.*;
 
 public class CreaturesTests {
     IMagic magic = new Magic();
+    int i;
+
+    final int MIN_WIND_ONE = 0;
+    final int MAX_WIND_ONE = 5;
+
+    final int MIN_WIND_TWO = 6;
+    final int MAX_WIND_TWO = 11;
 
     @Test
     public void testCreatePiglet() {
-        IWeather weather = new WeatherMock(LuminaryType.ISSHINING, 5, DaylightType.MORNING);
         Cloud cloud = new Cloud(magic);
 
-        assertTrue(cloud.Create(weather).creatureType == CreatureType.PIGLET);
+        for (i = MIN_WIND_ONE; i <= MAX_WIND_ONE; i++) {
+            IWeather weatherOne = new WeatherMock(LuminaryType.ISSHINING, i, DaylightType.MORNING);
+            IWeather weatherTwo = new WeatherMock(LuminaryType.ISNOTSHINING, i, DaylightType.NIGHT);
+
+            assertTrue(cloud.Create(weatherOne).creatureType == CreatureType.PIGLET);
+            assertTrue(cloud.Create(weatherTwo).creatureType == CreatureType.PIGLET);
+        }
     }
 
     @Test
     public void testCreateBalloon() {
-        IWeather weather = new WeatherMock(LuminaryType.ISSHINING, 4, DaylightType.NOON);
         Cloud cloud = new Cloud(magic);
 
-        assertTrue(cloud.Create(weather).creatureType == CreatureType.BALLOON);
+        for (i = MIN_WIND_ONE; i <= MAX_WIND_ONE; i++) {
+            IWeather weather = new WeatherMock(LuminaryType.ISSHINING, i, DaylightType.NOON);
+            assertTrue(cloud.Create(weather).creatureType == CreatureType.BALLOON);
+        }
+        for (i = MIN_WIND_TWO; i <= MAX_WIND_TWO; i++) {
+            IWeather weather = new WeatherMock(LuminaryType.ISNOTSHINING, i, DaylightType.NIGHT);
+            assertTrue(cloud.Create(weather).creatureType == CreatureType.BALLOON);
+        }
     }
 
     @Test
     public void testCreateBat() {
-        IWeather weather = new WeatherMock(LuminaryType.ISSHINING, 3, DaylightType.DAY);
         Cloud cloud = new Cloud(magic);
 
-        assertTrue(cloud.Create(weather).creatureType == CreatureType.BAT);
+        for (i = MIN_WIND_ONE; i <= MAX_WIND_ONE; i++) {
+            IWeather weatherOne = new WeatherMock(LuminaryType.ISSHINING, i, DaylightType.DAY);
+            IWeather weatherTwo = new WeatherMock(LuminaryType.ISNOTSHINING, i, DaylightType.NOON);
+
+            assertTrue(cloud.Create(weatherOne).creatureType == CreatureType.BAT);
+            assertTrue(cloud.Create(weatherTwo).creatureType == CreatureType.BAT);
+        }
+        for (i = MIN_WIND_TWO; i <= MAX_WIND_TWO; i++) {
+            IWeather weather = new WeatherMock(LuminaryType.ISNOTSHINING, i, DaylightType.DAY);
+            assertTrue(cloud.Create(weather).creatureType == CreatureType.BAT);
+        }
     }
 
     @Test
     public void testCreateHedgehog() {
-        IWeather weather = new WeatherMock(LuminaryType.ISSHINING, 7, DaylightType.NIGHT);
         Cloud cloud = new Cloud(magic);
 
-        assertTrue(cloud.Create(weather).creatureType == CreatureType.HEDGEHOG);
+        for (i = MIN_WIND_ONE; i <= MAX_WIND_ONE; i++) {
+            IWeather weather = new WeatherMock(LuminaryType.ISNOTSHINING, i, DaylightType.DAY);
+            assertTrue(cloud.Create(weather).creatureType == CreatureType.HEDGEHOG);
+        }
+        for (i = MIN_WIND_TWO; i <= MAX_WIND_TWO; i++) {
+            IWeather weather = new WeatherMock(LuminaryType.ISSHINING, i, DaylightType.NIGHT);
+            assertTrue(cloud.Create(weather).creatureType == CreatureType.HEDGEHOG);
+        }
     }
 
     @Test
     public void testCreatePuppy() {
-        IWeather weather = new WeatherMock(LuminaryType.ISNOTSHINING, 0, DaylightType.MORNING);
         Cloud cloud = new Cloud(magic);
 
-        assertTrue(cloud.Create(weather).creatureType == CreatureType.PUPPY);
+        for (i = MAX_WIND_TWO; i <= MAX_WIND_TWO; i++) {
+            IWeather weatherOne = new WeatherMock(LuminaryType.ISSHINING, i, DaylightType.NOON);
+            IWeather weatherTwo = new WeatherMock(LuminaryType.ISSHINING, i, DaylightType.DAY);
+
+            assertTrue(cloud.Create(weatherOne).creatureType == CreatureType.PUPPY);
+            assertTrue(cloud.Create(weatherTwo).creatureType == CreatureType.PUPPY);
+        }
+        for (i = MIN_WIND_ONE; i <= MAX_WIND_ONE; i++) {
+            IWeather weather = new WeatherMock(LuminaryType.ISNOTSHINING, i, DaylightType.MORNING);
+            assertTrue(cloud.Create(weather).creatureType == CreatureType.PUPPY);
+        }
     }
 
     @Test
     public void testCreateKitten() {
-        IWeather weather = new WeatherMock(LuminaryType.ISNOTSHINING, 11, DaylightType.NOON);
         Cloud cloud = new Cloud(magic);
 
-        assertTrue(cloud.Create(weather).creatureType == CreatureType.KITTEN);
+        for (i = MIN_WIND_TWO; i <= MAX_WIND_TWO; i++) {
+            IWeather weatherOne = new WeatherMock(LuminaryType.ISSHINING, i, DaylightType.MORNING);
+            IWeather weatherTwo = new WeatherMock(LuminaryType.ISNOTSHINING, i, DaylightType.NOON);
+
+            assertTrue(cloud.Create(weatherOne).creatureType == CreatureType.KITTEN);
+            assertTrue(cloud.Create(weatherTwo).creatureType == CreatureType.KITTEN);
+        }
     }
 
     @Test
     public void testCreateBearcub() {
-        IWeather weather = new WeatherMock(LuminaryType.ISNOTSHINING, 10, DaylightType.MORNING);
         Cloud cloud = new Cloud(magic);
-
-        assertTrue(cloud.Create(weather).creatureType == CreatureType.BEARCUB);
+        
+        for (i = MIN_WIND_ONE; i <= MAX_WIND_ONE; i++) {
+            IWeather weather = new WeatherMock(LuminaryType.ISSHINING, i, DaylightType.NIGHT);
+            assertTrue(cloud.Create(weather).creatureType == CreatureType.BEARCUB);
+        }
+        for (i = MIN_WIND_TWO; i <= MAX_WIND_TWO; i++) {
+            IWeather weather = new WeatherMock(LuminaryType.ISNOTSHINING, i, DaylightType.MORNING);
+            assertTrue(cloud.Create(weather).creatureType == CreatureType.BEARCUB);
+        }
     }
 }
