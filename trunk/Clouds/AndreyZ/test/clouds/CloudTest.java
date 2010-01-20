@@ -133,6 +133,145 @@ public class CloudTest {
     }
 
     @Test
+    public void ExceptionShinyDayTest() {
+        for(int i = 0; i<9; i++){
+            IWFactory weather = new WFacMock(LuminaryType.Shiny, i, DaylightType.Day);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+    }
+
+    @Test
+    public void ExceptionNotShinyDayTest() {
+        for(int i = 0; i<2; i++){
+            IWFactory weather = new WFacMock(LuminaryType.NotShiny, i, DaylightType.Day);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+        for(int j = 4; j<11; j++){
+            IWFactory weather = new WFacMock(LuminaryType.NotShiny, j, DaylightType.Day);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+    }
+
+    @Test
+    public void ExceptionShinyNoonTest() {
+        for(int i = 0; i<11; i++){
+            IWFactory weather = new WFacMock(LuminaryType.Shiny, i, DaylightType.Noon);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+    }
+
+    @Test
+    public void ExceptionNotShinyNoonTest() {
+        for(int i = 0; i<8; i++){
+            IWFactory weather = new WFacMock(LuminaryType.NotShiny, i, DaylightType.Noon);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+        for(int j = 10; j<11; j++){
+            IWFactory weather = new WFacMock(LuminaryType.NotShiny, j, DaylightType.Noon);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+    }
+
+    @Test
+    public void ExceptionShinyEveningTest() {
+        for(int i = 0; i<11; i++){
+            IWFactory weather = new WFacMock(LuminaryType.Shiny, i, DaylightType.Evening);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+    }
+
+    @Test
+    public void ExceptionNotShinyEveningTest() {
+        for(int i = 0; i<4; i++){
+            IWFactory weather = new WFacMock(LuminaryType.NotShiny, i, DaylightType.Evening);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+        for(int j = 6; j<11; j++){
+            IWFactory weather = new WFacMock(LuminaryType.NotShiny, j, DaylightType.Evening);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+    }
+
+    @Test
+    public void ExceptionNotShinyNightTest() {
+        for(int i = 0; i<11; i++){
+            IWFactory weather = new WFacMock(LuminaryType.NotShiny, i, DaylightType.Night);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+    }
+
+    @Test
+    public void ExceptionShinyNightTest() {
+        for(int i = 0; i<6; i++){
+            IWFactory weather = new WFacMock(LuminaryType.Shiny, i, DaylightType.Night);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+        for(int j = 8; j<11; j++){
+            IWFactory weather = new WFacMock(LuminaryType.Shiny, j, DaylightType.Night);
+
+            ICloud cloud = new Cloud(magic);
+
+            CreatureType result = cloud.callBaby(weather);
+
+            assertTrue(CreatureType.Bat == result);
+        }
+    }
+    @Test
     public void puppyTest2() {
         IWFactory weather = new WFacMock(LuminaryType.Shiny, 10, DaylightType.Day);
         ICloud cloud = new Cloud(magic);
