@@ -45,10 +45,10 @@ public class CoolParent extends Parent {
     }
 
     @Override
-    public void getInfo(){
+    public String getInfo(){
         String info ;
-        info = surname + " " +
+        info = "Отец (Cool)       : "+surname + " " +
                     name + " " + patron + "; " + "Возраст : " + age;
-        System.out.println("Отец (Cool)       : "+info);
+        return info;
     }
 }

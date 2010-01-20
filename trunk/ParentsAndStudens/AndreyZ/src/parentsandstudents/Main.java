@@ -15,7 +15,7 @@ public class Main {
         System.out.println("Список людей:");
 
         for (IHuman person : list)
-            person.getInfo();
+            System.out.println(person.getInfo());
 
         System.out.print("Средняя балл у ботанов:");
         System.out.println(Botan.markCounter(list));

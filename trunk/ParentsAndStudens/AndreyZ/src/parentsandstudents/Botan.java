@@ -38,13 +38,13 @@ public class Botan extends Student {
     }
 
     @Override
-    public void getInfo(){
+    public String getInfo(){
         String info ;
         String sexStudent = "Студентка";
         if(sex)
             sexStudent = "Студент  ";
-        info = surname + " " +
+        info = "  "+sexStudent+"(Botan): "+surname + " " +
                     name + " " + patron + "; " + "Возраст : " + age;
-        System.out.println("  "+sexStudent+"(Botan): "+info);
+        return info;
     }
 }

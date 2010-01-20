@@ -15,7 +15,7 @@ public class PaSTests {
     public void PeopleGenerationTest() {
         List<IHuman> crowd = PeopleGeneration.generateCollection();
         for (IHuman person : crowd)
-            person.getInfo();
+            System.out.println(person.getInfo());
     }
 
     @Test

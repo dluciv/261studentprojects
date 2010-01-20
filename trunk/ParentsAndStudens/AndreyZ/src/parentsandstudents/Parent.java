@@ -49,10 +49,10 @@ public class Parent implements IHuman {
         return HumanType.Parent;
     }
 
-    public void getInfo(){
+    public String getInfo(){
         String info ;
-        info = surname + " " +
+        info = "Отец              : "+surname + " " +
                     name + " " + patron + "; " + "Возраст : " + age;
-        System.out.println("Отец              : "+info);
+        return info;
     }
 }

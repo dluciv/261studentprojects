@@ -63,13 +63,13 @@ public class Student implements IHuman {
         return HumanType.Student;
     }
 
-    public void getInfo(){
+    public String getInfo(){
         String info ;
         String sexStudent = "Студентка";
         if(sex)
             sexStudent = "Студент  ";
-        info = surname + " " +
+        info = "  "+sexStudent+"       : "+surname + " " +
                     name + " " + patron + "; " + "Возраст : " + age;
-        System.out.println("  "+sexStudent+"       : "+info);
+        return info;
     }
 }
