@@ -15,12 +15,7 @@ public class PaSTests {
     public void PeopleGenerationTest() {
         List<IHuman> crowd = PeopleGeneration.generateCollection();
         for (IHuman person : crowd)
-            PeopleGeneration.info(person);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void NullHumanTest() {
-        PeopleGeneration.info(null);
+            person.getInfo();
     }
 
     @Test

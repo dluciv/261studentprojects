@@ -114,23 +114,4 @@ public class PeopleGeneration {
         return new Student(genSurname,genName,genPatron,sex,genAge,whatFac);
     }
 
-    public static void info(IHuman person){
-        if (person == null) {
-            throw new IllegalArgumentException("Null");
-        }
-        String info ;
-        String sexStudent = "Студентка";
-        if(person.Sex())
-            sexStudent = "Студент  ";
-        info = person.Surname() + " " +
-                    person.Name() + " " + person.Patron() + "; " + "Возраст : " + person.Age();
-        if(person.hType() == HumanType.CoolParent)
-            System.out.println("Отец (Cool)       : "+info);
-        if(person.hType() == HumanType.Parent)
-            System.out.println("Отец              : "+info);
-        if(person.hType() == HumanType.Botan)
-            System.out.println("  "+sexStudent+"(Botan): "+info);
-        if(person.hType() == HumanType.Student)
-            System.out.println("  "+sexStudent+"       : "+info);
-    }
 }

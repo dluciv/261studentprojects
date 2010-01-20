@@ -43,4 +43,12 @@ public class CoolParent extends Parent {
     public HumanType hType(){
         return HumanType.CoolParent;
     }
+
+    @Override
+    public void getInfo(){
+        String info ;
+        info = surname + " " +
+                    name + " " + patron + "; " + "Возраст : " + age;
+        System.out.println("Отец (Cool)       : "+info);
+    }
 }

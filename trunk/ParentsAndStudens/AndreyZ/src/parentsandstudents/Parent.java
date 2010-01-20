@@ -7,11 +7,11 @@ package parentsandstudents;
 
 public class Parent implements IHuman {
 
-    private String surname;
-    private String name;
-    private String patron;
-    private boolean sex;
-    private int age;
+    protected String surname;
+    protected String name;
+    protected String patron;
+    protected boolean sex;
+    protected int age;
     public Student[] crowd;
 
     public Parent(String surname,String name,String patron,boolean sex,int age,Student[] crowd){
@@ -47,5 +47,12 @@ public class Parent implements IHuman {
     }
     public HumanType hType(){
         return HumanType.Parent;
+    }
+
+    public void getInfo(){
+        String info ;
+        info = surname + " " +
+                    name + " " + patron + "; " + "Возраст : " + age;
+        System.out.println("Отец              : "+info);
     }
 }

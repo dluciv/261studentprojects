@@ -15,4 +15,6 @@ public interface IHuman {
 
     public int Age();
     public HumanType hType();
+
+    public void getInfo();
 }

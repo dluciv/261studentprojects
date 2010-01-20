@@ -7,12 +7,12 @@ package parentsandstudents;
 
 public class Student implements IHuman {
 
-    private String surname;
-    private String name;
-    private String patron;
-    private boolean sex;
-    private int age;
-    private String fac;
+    protected String surname;
+    protected String name;
+    protected String patron;
+    protected boolean sex;
+    protected int age;
+    protected String fac;
     public int examsNum = 5;
 
     public Student(String surname,String name,String patron,boolean sex,int age,String fac){
@@ -61,5 +61,15 @@ public class Student implements IHuman {
     
     public HumanType hType(){
         return HumanType.Student;
+    }
+
+    public void getInfo(){
+        String info ;
+        String sexStudent = "Студентка";
+        if(sex)
+            sexStudent = "Студент  ";
+        info = surname + " " +
+                    name + " " + patron + "; " + "Возраст : " + age;
+        System.out.println("  "+sexStudent+"       : "+info);
     }
 }

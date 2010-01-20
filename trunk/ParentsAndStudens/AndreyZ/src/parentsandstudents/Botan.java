@@ -36,4 +36,15 @@ public class Botan extends Student {
     public HumanType hType(){
         return HumanType.Botan;
     }
+
+    @Override
+    public void getInfo(){
+        String info ;
+        String sexStudent = "Студентка";
+        if(sex)
+            sexStudent = "Студент  ";
+        info = surname + " " +
+                    name + " " + patron + "; " + "Возраст : " + age;
+        System.out.println("  "+sexStudent+"(Botan): "+info);
+    }
 }
