@@ -13,7 +13,7 @@ public class NegativeTest {
        String mail = "a@b.c";
        assertFalse(Checker.checkEmail(mail));
     }
-    //тест на наличие множества точек посреди 
+    //тест на наличие множества точек посреди
     @Test
     public void CheckEmailPointMailTest() throws Exception {
        String mail = "a..b@mail.ru";
@@ -25,7 +25,7 @@ public class NegativeTest {
        String mail = ".a@mail.ru";
        assertFalse(Checker.checkEmail(mail));
     }
-    //тест на неправильность повтора 
+    //тест на неправильность повтора
     @Test
     public void CheckEmailWithYoAnddomain() throws Exception {
        String mail = "yo@domain.domain";
@@ -49,6 +49,12 @@ public class NegativeTest {
        String mail = "kirill@@mail.ru";
        assertFalse(Checker.checkEmail(mail));
      }
+
+    @Test
+    public void CheckMail() throws Exception {
+        String mail = "kirill.@mail.ru";
+        assertFalse(Checker.checkEmail(mail));
+    }
 }
 
 

@@ -1,4 +1,4 @@
-//(c), 2009 Antonov Kirill 
+//(c), 2009 Antonov Kirill
 //Test for correcting Mail Addresses
 //Positive Test
 
@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class PositiveTest {
     @Test
-    //тест с одной буквой до @ 
+    //тест с одной буквой до @
     public void CheckerTestSimple() throws Exception  {
        String mail = "a@b.cc";
        assertTrue(Checker.checkEmail(mail));
@@ -32,7 +32,7 @@ public class PositiveTest {
        String mail = "_.1@mail.com";
        assertTrue(Checker.checkEmail(mail));
     }
-    //тест с museum 
+    //тест с museum
     @Test
       public void CheckerTestWithMuseum() throws Exception  {
        String mail = "yurik@hermitage.museum";
