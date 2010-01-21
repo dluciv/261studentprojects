@@ -3,8 +3,8 @@
 package myinterface;
 
 public class GreenHuman implements IColouredCreature{
-	private static String name = "human";
 	private static String COLOUR = "green";
+	private String name;
 	
 	public String getColour() {
 		return COLOUR;
@@ -14,7 +14,8 @@ public class GreenHuman implements IColouredCreature{
 		return name;
 	}
 	
-	public GreenHuman()
+	public GreenHuman(String name)
 	{
+		this.name = name;
 	}
 }

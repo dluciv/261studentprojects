@@ -8,16 +8,16 @@ public class InterfaceTests {
 	@Test
 	public void humanTest()
 	{
-		IColouredCreature cr = new GreenHuman();
-		Assert.assertEquals(cr.getName(),"human");
+		IColouredCreature cr = new GreenHuman("Коля");
+		Assert.assertEquals(cr.getName(),"Коля");
 		Assert.assertEquals(cr.getColour(),"green");
 	}
 	
 	@Test
 	public void elephantTest()
 	{
-		IColouredCreature cr = new PinkElephant();
-		Assert.assertEquals(cr.getName(),"elephant");
+		IColouredCreature cr = new PinkElephant("Слоник");
+		Assert.assertEquals(cr.getName(),"Слоник");
 		Assert.assertEquals(cr.getColour(),"pink");
 	}
 

@@ -1,11 +1,10 @@
 //by Skorodumov Kirill gr: 261
 
-
 package myinterface;
 
 public class PinkElephant implements IColouredCreature{
-	private static String name = "elephant";
 	private static String COLOUR = "pink";
+	private String name;
 	
 	public String getColour() {
 		return COLOUR;
@@ -15,7 +14,8 @@ public class PinkElephant implements IColouredCreature{
 		return name;
 	}
 	
-	public PinkElephant()
+	public PinkElephant(String name)
 	{
+		this.name = name;
 	}
 }
