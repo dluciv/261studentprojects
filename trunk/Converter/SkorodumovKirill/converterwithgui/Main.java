@@ -1,3 +1,5 @@
+//by Skorodumov K. gr: 261
+
 package converterwithgui;
 
 public class Main {

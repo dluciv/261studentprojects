@@ -1,3 +1,5 @@
+//by Skorodumov K. gr: 261
+
 package converterwithgui;
 
 import java.awt.*;
@@ -32,7 +34,7 @@ public class ConvGUI extends JFrame{
 	      try 
 	      {
 	   	   Integer inp = Integer.parseInt(input.getText());
-	   	   answer.setText("Answer: " + Converter.toBinary(inp) );
+	   	   answer.setText("Answer: " + Converter.toHex(inp) );
 	      } catch (NumberFormatException e1) {
 	   	   answer.setText("Wrong input!");
 	      }

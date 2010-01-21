@@ -1,3 +1,5 @@
+//by Skorodumov K. gr: 261
+
 package converterwithgui;
 
 import org.junit.Assert;
@@ -8,15 +10,19 @@ public class ConverterTests {
 	@Test
 	public void firstSimpleTest()
 	{
-		long x = 10001001100l;
-		Assert.assertEquals(Converter.toBinary(1100),x);
+		Assert.assertEquals(Converter.toHex(10),"A");
 	}
 	
 	@Test
 	public void secondSimpleTest()
 	{
-		long x = 1000010110;
-		Assert.assertEquals(Converter.toBinary(534),x);
+		Assert.assertEquals(Converter.toHex(123),"7B");
+	}
+	
+	@Test
+	public void complexTest()
+	{
+		Assert.assertEquals(Converter.toHex(4132950), "3F1056");
 	}
 
 }
