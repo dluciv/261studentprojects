@@ -10,11 +10,11 @@ import java.util.LinkedList;
 
 public class Tests{
 	
-	static final Integer PARENTS_COUNT = 10;
-    static final Integer MONEY_PER_PARENT = 10;
-    static final Integer BOTAN_COUNT = 10;
+	private static final Integer PARENTS_COUNT = 10;
+    private static final Integer MONEY_PER_PARENT = 10;
+    private static final Integer BOTAN_COUNT = 10;
 
-    private static class CoolParentTest extends CoolParent {
+    private class CoolParentTest extends CoolParent {
 
         public CoolParentTest() {
             super("", "", "", Sex.MALE, 10, null);
@@ -25,32 +25,21 @@ public class Tests{
             return MONEY_PER_PARENT;
         }
     }
-
-
+    
     @Test
-    public void ProcessorTest() {
-        LinkedList<IHuman> humans = new LinkedList<IHuman>();
-        int markSum = 0;
-        int markCount = 0;
-        for (int i = 0; i < BOTAN_COUNT; i++) {
-            Botan bt = new Botan("", "", "", Sex.MALE, 16, "");
-
-            humans.add(bt);
-
-            int examsCount = bt.getExamNum();
-            markCount += examsCount;
-            for (int markId = 0; markId < examsCount; markId++) {
-                markSum += bt.getMark(markId);
-            }
-        }
-
-        for (int i = 0; i < PARENTS_COUNT; i++) {
-            humans.add(new CoolParentTest());
-        }
-
-        int mark = Calculator.calcMark(humans);
-
-        Assert.assertEquals(markSum / markCount, mark);
+    public void CalculatorTest2()
+    {
+    	LinkedList<IHuman> humans = new LinkedList<IHuman>();
+    	
+    	for(int i = 0; i < PARENTS_COUNT; i++)
+    	{
+    		CoolParentTest parent = new CoolParentTest();
+    		humans.add(parent);
+    	}
+    	Integer actMoney = Calculator.calcMoney(humans);
+    	Integer expMoney = PARENTS_COUNT*MONEY_PER_PARENT;
+    	
+    	Assert.assertEquals(expMoney, actMoney);
     }
 
     @Test
