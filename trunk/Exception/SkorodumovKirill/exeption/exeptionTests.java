@@ -1,3 +1,5 @@
+//by Skorodumov K. gr: 261
+
 package exeption;
 
 import org.junit.Assert;
