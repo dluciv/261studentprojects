@@ -14,9 +14,10 @@ public class Main {
 		System.out.println(human.getPatronymic());
 		System.out.println(human.getAge());
 		System.out.println(human.getSex());
+		System.out.println("");
 	}
 	
-	public static void main()
+	public static void main(String[] args)
 	{
 		LinkedList<IHuman> humans = generator.genCollection();
 		

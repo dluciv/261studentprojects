@@ -32,10 +32,10 @@ public class generator {
 	
 	private static String genSurname(Sex sex)
 	{	
-		if (sex == Sex.FEMALE) {
+		if (sex == Sex.MALE) {
             return surnames[rnd.nextInt(surnames.length)];
         } else {
-            return maleNames[rnd.nextInt(surnames.length)] + 'à';
+            return surnames[rnd.nextInt(surnames.length)] + 'à';
         }
 	}
 	
@@ -55,9 +55,8 @@ public class generator {
 		}
 	}
 	
-	private static String genPatronymic()
+	private static String genPatronymic(Sex sex)
 	{
-		Sex sex = genSex();
 		String name = genName(sex);
 		if (sex == Sex.MALE)
 		{
@@ -68,7 +67,7 @@ public class generator {
 		}
 	}
 	
-	private static Student genStudent(String father)
+	public static Student genStudent(String father)
 	{
 		Sex sex = genSex();
 		String name = genName(sex);
@@ -97,10 +96,10 @@ public class generator {
 		Sex sex = genSex();
 		String name = genName(sex);
 		String surname = genSurname(sex);
-		String patronymic = genPatronymic();
+		String patronymic = genPatronymic(sex);
 		Integer age = rnd.nextInt(100);
 		
-		Student[] children = new Student[rnd.nextInt(10)];
+		Student[] children = new Student[1 + rnd.nextInt(5)];
 		for (int i = 0; i < children.length; i++)
 		{
 			children[i] = genStudent(name);

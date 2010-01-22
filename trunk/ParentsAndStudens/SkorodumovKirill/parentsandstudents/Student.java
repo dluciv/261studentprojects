@@ -30,7 +30,7 @@ public class Student extends BasicHuman {
 	
 	public Integer getMark(Integer i)
 	{
-		if ((i > examNum) || (i <= 0))
+		if ((i >= examNum) || (i < 0))
 		{
 			throw new IllegalArgumentException();
 		}

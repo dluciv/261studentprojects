@@ -22,7 +22,7 @@ public class Botan extends Student {
 	@Override
 	public Integer getMark(Integer i)
 	{
-		if ((i > getExamNum()) || (i <= 0))
+		if ((i >= getExamNum()) || (i < 0))
 		{
 			throw new IllegalArgumentException();
 		}
