@@ -15,9 +15,23 @@ public class Tests
 	
 	@Test
 	public void hedgehogTest()
-	{
+	{	
+		IWeatherFactory factory = context.mock(IWeatherFactory.class);
+		Cloud cloud = new Cloud(factory);
+		
 		context.checking(new Expectations() {
-			oneOf (lu)
-		});
+			{
+				oneOf (luminary).isShining();
+				/*will(returnValue(true));
+				oneOf(wind).getSpeed();
+				will(returnValue(0));
+				oneOf(daylight).getDaylight();
+				will(returnValue(DaylightType.Morning));*/
+			}
+			});
+		
+		//context.assertIsSatisfied();
+			
+		Assert.assertSame(CreatureType.Baloon, cloud.Create().getType());
 	}
 }

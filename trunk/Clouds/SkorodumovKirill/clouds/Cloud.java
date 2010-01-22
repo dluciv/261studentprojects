@@ -7,10 +7,14 @@ class Cloud
 {
 
     private IDaylight daylight = new Daylight();
-
     private ILuminary luminary = new Luminary();
-
     private IWind wind = new Wind();
+    
+    public Cloud(IWeatherFactory factory) {
+    	daylight = factory.createDaylight();
+    	wind = factory.createWind();
+    	luminary = factory.createLuminary();
+    }
 
  
 
