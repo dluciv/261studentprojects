@@ -6,10 +6,7 @@
 
 package clouds;
 
-/**
- *
- * @author Tiesto
- */
+
 import java.util.Random;
 
 public class Daylight implements IDaylight {

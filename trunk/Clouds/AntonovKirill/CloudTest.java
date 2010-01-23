@@ -11,10 +11,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 
-/**
- *
- * @author Tiesto
- */
+
  class CloudTests {
 	static Mockery context = new JUnit4Mockery();
 	static IDaylight daylight = context.mock(IDaylight.class);

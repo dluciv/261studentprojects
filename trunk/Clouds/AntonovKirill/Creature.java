@@ -5,10 +5,6 @@
 
 package clouds;
 
-/**
- *
- * @author Tiesto
- */
 public class Creature implements ICreature {
 
 	public CreatureType creature;

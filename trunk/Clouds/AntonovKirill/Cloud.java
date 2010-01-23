@@ -9,10 +9,7 @@ package clouds;
 import clouds.ICreature.CreatureType;
 import clouds.IDaylight.DaylightType;
 
-/**
- *
- * @author Tiesto
- */
+
 public class Cloud implements ICloud {
 
     private IDaylight daylight;

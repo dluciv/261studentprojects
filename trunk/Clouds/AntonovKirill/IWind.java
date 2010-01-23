@@ -5,10 +5,7 @@
 
 package clouds;
 
-/**
- *
- * @author Tiesto
- */
+
 public interface IWind {
 	
 	public int getWindPower();

@@ -7,10 +7,7 @@ package clouds;
 
 import clouds.ICreature.CreatureType;
 
-/**
- *
- * @author Tiesto
- */
+
 public interface IMagic {
 
 	public void CallStork(CreatureType creatureType);

@@ -5,10 +5,6 @@
 
 package clouds;
 
-/**
- *
- * @author Tiesto
- */
 public interface IWeatherFactory {
 
 	public IDaylight CreateDaylight();

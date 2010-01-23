@@ -6,10 +6,7 @@
 
 package clouds;
 
-/**
- *
- * @author Tiesto
- */
+
 public interface IDaylight {
 
 	public enum DaylightType {Morning, Noon, Evening, Night}

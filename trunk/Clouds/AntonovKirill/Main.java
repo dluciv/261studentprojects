@@ -5,10 +5,7 @@
 
 package clouds;
 
-/**
- *
- * @author Tiesto
- */
+
 public class Main {
 
     /**

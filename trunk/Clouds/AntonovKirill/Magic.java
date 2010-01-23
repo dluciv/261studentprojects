@@ -7,10 +7,7 @@ package clouds;
 
 import clouds.ICreature.CreatureType;
 
-/**
- *
- * @author Tiesto
- */
+
 public class Magic implements IMagic {
 
 	@Override

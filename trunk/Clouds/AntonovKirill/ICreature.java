@@ -6,10 +6,7 @@
 
 package clouds;
 
-/**
- *
- * @author Tiesto
- */
+
 public interface ICreature {
 
 	public enum CreatureType {Puppy,Kitten,Hedgehog,Bearcub,Piglet,Bat,Balloon};

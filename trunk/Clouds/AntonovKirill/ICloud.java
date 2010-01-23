@@ -5,10 +5,7 @@
 
 package clouds;
 
-/**
- *
- * @author Tiesto
- */
+
 public interface ICloud {
 
 	public ICreature Create();
