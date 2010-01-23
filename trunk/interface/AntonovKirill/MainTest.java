@@ -8,57 +8,34 @@ package animals;
 import org.junit.Test;
 
 public class MainTest {
-
+    
     @Test
     public void testAnimalVoices_null_null() {
-        try {
-            IAnimal justDog = null;
-            IAnimal justCat = null;
-            IAnimal justCow = null;
-            Main.animalVoices(justDog, justCat, justCow);
-        } catch (NullPointerException e) {}
+        IAnimal justDog = null;
+        IAnimal justCat = null;
+        Main.animalVoices(justDog, justCat);
     }
 
     @Test
     public void testAnimalVoices_null_Cat() {
-        try {
-            IAnimal justDog = null;
-            IAnimal justCat = new Cat();
-            IAnimal justCow = null;
-            Main.animalVoices(justDog, justCat, justCow);
-        } catch (NullPointerException e) {}
+        IAnimal justDog = null;
+        IAnimal justCat = new Cat();
+        Main.animalVoices(justDog, justCat);
     }
 
     @Test
-    public void testAnimalVoices_Dog_Cat_Cow() {
-        try {
-            System.out.println("animalVoices");
-            IAnimal justDog = new Dog();
-            IAnimal justCat = new Cat();
-            IAnimal justCow = new Cow();
-            Main.animalVoices(justDog, justCat, justCow);
-        } catch (NullPointerException e) {}
+    public void testAnimalVoices_Dog_Cat() {
+        System.out.println("animalVoices");
+        IAnimal justDog = new Dog();
+        IAnimal justCat = new Cat();
+        Main.animalVoices(justDog, justCat);
     }
 
     @Test
     public void testAnimalVoices_Dog_null() {
-        try {
-            System.out.println("animalVoices");
-            IAnimal justDog = new Dog();
-            IAnimal justCat = null;
-            IAnimal justCow = null;
-            Main.animalVoices(justDog, justCat, justCow);
-        } catch (NullPointerException e) {}
+        System.out.println("animalVoices");
+        IAnimal justDog = new Dog();
+        IAnimal justCat = null;
+        Main.animalVoices(justDog, justCat);
     }
-
-    @Test
-    public void testAnimalVoices_null_Cow() {
-        try {
-            IAnimal justDog = null;
-            IAnimal justCat = null;
-            IAnimal justCow = new Cow();
-            Main.animalVoices(justDog, justCat, justCow);
-        } catch (NullPointerException e) {}
-    }
-
 }
