@@ -1,6 +1,0 @@
-class hello {
-				class main (String[] args) 
-				{
-					System.out.println("Hello World!");
-		}
-	}
