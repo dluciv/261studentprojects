@@ -1,3 +1,6 @@
+/*
+ * (c) Stefan Bojarovski 2009
+ * */
 package fathers_sons;
 
 public class Human implements IHuman {
@@ -9,7 +12,7 @@ public class Human implements IHuman {
 	public Human(String name,String surname,String patronymic, Sex sex, int age){
 		this.sex = sex;
 		this.name = name;
-		if (sex == IHuman.Sex.female) surname +="a";
+		if (sex == Sex.FEMALE) surname += "a";
 		this.surname = surname;
 		this.patronymic = patronymic;		
 		this.age = age;

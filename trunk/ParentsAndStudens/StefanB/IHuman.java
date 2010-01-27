@@ -1,10 +1,9 @@
+/*
+ * (c) Stefan Bojarovski 2009
+ * */
 package fathers_sons;
 
 public interface IHuman {
-	
-	public enum Sex{
-		male, female
-	}
 	
 	public String getName();
 	public String getSurname();

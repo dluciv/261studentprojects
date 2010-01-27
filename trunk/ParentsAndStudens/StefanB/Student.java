@@ -1,3 +1,6 @@
+/*
+ * (c) Stefan Bojarovski 2009
+ * */
 package fathers_sons;
 
 public class Student extends Human {
@@ -14,6 +17,7 @@ public class Student extends Human {
 		return NUMBER_OF_EXAMS;
 	}
 	
+	//a regular student always gets 3 on his exams
 	public int getMark(int index){
 		if ((index < 0) || (index >= NUMBER_OF_EXAMS)){
 			throw new IllegalArgumentException();

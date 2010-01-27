@@ -1,3 +1,6 @@
+/*
+ * (c) Stefan Bojarovski 2009
+ * */
 package fathers_sons;
 
 import java.util.LinkedList;
@@ -21,24 +24,24 @@ public class RandomListGenerator {
 		 "Mat-Meh", "PM-PU", "Him-Fak", "Fiz-Fak", "Meh-Mat"
 	 };
 	 
-	 public static String generateName(IHuman.Sex sex) {
-	        if (sex == IHuman.Sex.female) {
+	 public static String generateName(Sex sex) {
+	        if (sex == Sex.FEMALE) {
 	            return FEMALE_NAMES[rand.nextInt(FEMALE_NAMES.length)];
 	        } else {
 	            return MALE_NAMES[rand.nextInt(MALE_NAMES.length)];
 	        }
 	    }
 	 
-	 public static String generateSurname(IHuman.Sex sex) {
-	        if (sex == IHuman.Sex.female) {
+	 public static String generateSurname(Sex sex) {
+	        if (sex == Sex.FEMALE) {
 	            return SURNAMES[rand.nextInt(SURNAMES.length)] + "a";
 	        } else {
 	            return SURNAMES[rand.nextInt(SURNAMES.length)];
 	        }
 	    }
 	 
-	 public static String generatePatronymic(String parentsName, IHuman.Sex sex) {
-	        if (sex == IHuman.Sex.female) {
+	 public static String generatePatronymic(String parentsName, Sex sex) {
+	        if (sex == Sex.FEMALE) {
 	            return parentsName + "ovna";
 	        } else {
 	            return parentsName + "ovich";
@@ -51,7 +54,7 @@ public class RandomListGenerator {
 
 	 public static Student generateStudent(String parentsName, String surname) {
 		 
-		 IHuman.Sex sex = IHuman.Sex.values()[rand.nextInt(2)];
+		 Sex sex = Sex.values()[rand.nextInt(2)];
          String name = generateName(sex);
          String patronymic = generatePatronymic(parentsName, sex);
          String faculty = generateFaculty();
@@ -66,10 +69,10 @@ public class RandomListGenerator {
 
 	 public static Parent generateParent() {
 		 
-		 IHuman.Sex sex = IHuman.Sex.male;
+		 Sex sex = Sex.MALE;
 		 String name = generateName(sex);
 	     String surname = generateSurname(sex);
-	     String patronymic = generatePatronymic(generateName(IHuman.Sex.male), sex);
+	     String patronymic = generatePatronymic(generateName(Sex.MALE), sex);
 	     int age = 30 + rand.nextInt(10);
 	     
 	     int numberOfChildren = 1 + rand.nextInt(5);

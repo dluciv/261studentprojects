@@ -1,13 +1,11 @@
-
+/*
+    (c) Stefan Bojarovski 2009
+    A simple Hello World program
+    
+*/
 public class HelloWorld {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-		System.out.println("Hello world!");
-	}
-
+    
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
 }

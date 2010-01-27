@@ -1,3 +1,6 @@
+/*
+ * (c) Stefan Bojarovski 2009
+ * */
 package fathers_sons;
 
 public class Parent extends Human {
