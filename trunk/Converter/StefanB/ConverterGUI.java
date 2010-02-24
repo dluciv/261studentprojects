@@ -98,14 +98,15 @@ public class ConverterGUI extends JPanel implements ActionListener {
     	//what component fired the signal?
     	Object source = evt.getSource();
     	
+    	
     	if (source == inputMkd){
     		Double fieldText = Double.valueOf(inputMkd.getText());			
-    		Double converted = ConverterFunctionality.convertToRub(fieldText);
+    		Double converted = ConverterFunctionality.convert(fieldText, "MKD", "RUB");    		
     		inputRub.setText(converted.toString());
     		}
     	else if (source == inputRub){
 		    Double fieldText = Double.valueOf(inputRub.getText());			
-		    Double converted = ConverterFunctionality.convertToMkd(fieldText);
+		    Double converted = ConverterFunctionality.convert(fieldText, "RUB", "MKD");
 		    inputMkd.setText(converted.toString());
 		    }
     }
