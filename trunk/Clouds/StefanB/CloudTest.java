@@ -1,6 +1,7 @@
 /*
  * (c) Stefan Bojarovski 2009
  * */
+ 
 package cloud;
 
 import org.jmock.Mockery;
