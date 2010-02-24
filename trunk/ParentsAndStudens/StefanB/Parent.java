@@ -5,7 +5,7 @@ package fathers_sons;
 
 public class Parent extends Human {
 	
-	Student [] children;
+	protected Student [] children;
 	
 	public Parent(String name, String surname, String patronymic, Sex sex, int age, Student[] children){
 		super(name,surname, patronymic, sex, age);

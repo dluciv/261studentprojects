@@ -9,9 +9,9 @@ public class CollectionFunctions {
 
 	public static void printHumanList (List<? extends IHuman> c){
 		for (IHuman h : c){
-	    	if ((h instanceof Botan)||(h instanceof Student)){
-	    		System.out.print("	");
-	    	}
+	    	//if ((h instanceof Botan)||(h instanceof Student)){
+	    		//System.out.print("	");
+	    	//}
 			h.printIdentity();
 		}
 	}

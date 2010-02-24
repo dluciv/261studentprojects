@@ -25,5 +25,10 @@ public class CoolParent extends Parent {
 
         return sum * 10;
 	}
+	
+	@Override
+	public void printIdentity(){
+		System.out.println(surname + " " + name + " " + patronymic + " (" + this.getMoney() + ")");
+	}
 
 }

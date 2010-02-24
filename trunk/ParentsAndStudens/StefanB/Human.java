@@ -5,9 +5,9 @@ package fathers_sons;
 
 public class Human implements IHuman {
 	
-	String name, surname, patronymic;
-	Sex sex;
-	int age;
+	protected String name, surname, patronymic;
+	private Sex sex;
+	private int age;
 	
 	public Human(String name,String surname,String patronymic, Sex sex, int age){
 		this.sex = sex;
@@ -39,7 +39,8 @@ public class Human implements IHuman {
 	}
 	
 	public void printIdentity(){
-		System.out.println(this.getClass().getSimpleName()+ ": " + surname + " " + name + " " + patronymic);
+		//this.getClass().getSimpleName()
+		System.out.println(surname + " " + name + " " + patronymic);
 	}
 
 }
