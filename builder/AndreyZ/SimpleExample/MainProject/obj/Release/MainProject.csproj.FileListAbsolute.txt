@@ -1,0 +1,10 @@
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\MainProject\bin\Release\MainProject.exe
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\MainProject\bin\Release\MainProject.pdb
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\MainProject\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\MainProject\obj\Release\MainProject.exe
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\Example\MainProject\obj\Release\MainProject.pdb
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\obj\Release\MainProject.dll
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\obj\Release\MainProject.pdb
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject.dll
+C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject.pdb

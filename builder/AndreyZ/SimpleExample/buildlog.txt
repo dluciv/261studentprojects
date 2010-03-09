@@ -1,0 +1,150 @@
+Microsoft (R) Build Engine Version 3.5.30729.1
+[Microsoft .NET Framework версии 2.0.50727.3603]
+ (C) Корпорация Майкрософт (Microsoft Corp.), 2007.
+
+Построение начато 10.01.2010 23:52:38.
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" на узле 0 (конечные объекты по умолчанию).
+  Создание конфигурации решения "Debug|Any CPU".
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (2) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  MainProject -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\bin\Debug\MainProject.dll
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (конечные объекты по умолчанию).
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (3) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  Example -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\bin\Debug\Example.exe
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (конечные объекты по умолчанию).
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (конечные объекты по умолчанию).
+
+Построение успешно завершено.
+    Предупреждений: 0
+    Ошибок: 0
+
+Прошло времени 00:00:00.39
+Microsoft (R) Build Engine Version 3.5.30729.1
+[Microsoft .NET Framework версии 2.0.50727.3603]
+ (C) Корпорация Майкрософт (Microsoft Corp.), 2007.
+
+Построение начато 10.01.2010 23:53:06.
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" на узле 0 (конечные объекты по умолчанию).
+  Создание конфигурации решения "Debug|Any CPU".
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (2) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  MainProject -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\bin\Debug\MainProject.dll
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (конечные объекты по умолчанию).
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (3) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  Example -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\bin\Debug\Example.exe
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (конечные объекты по умолчанию).
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (конечные объекты по умолчанию).
+
+Построение успешно завершено.
+    Предупреждений: 0
+    Ошибок: 0
+
+Прошло времени 00:00:00.23
+Microsoft (R) Build Engine Version 3.5.30729.1
+[Microsoft .NET Framework версии 2.0.50727.3603]
+ (C) Корпорация Майкрософт (Microsoft Corp.), 2007.
+
+Построение начато 10.01.2010 23:54:31.
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" на узле 0 (конечные объекты по умолчанию).
+  Создание конфигурации решения "Debug|Any CPU".
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (2) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  MainProject -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\bin\Debug\MainProject.dll
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (конечные объекты по умолчанию).
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (3) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  Example -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\bin\Debug\Example.exe
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (конечные объекты по умолчанию).
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (конечные объекты по умолчанию).
+
+Построение успешно завершено.
+    Предупреждений: 0
+    Ошибок: 0
+
+Прошло времени 00:00:00.23
+Microsoft (R) Build Engine Version 3.5.30729.1
+[Microsoft .NET Framework версии 2.0.50727.3603]
+ (C) Корпорация Майкрософт (Microsoft Corp.), 2007.
+
+Построение начато 10.01.2010 23:54:56.
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" на узле 0 (конечные объекты по умолчанию).
+  Создание конфигурации решения "Debug|Any CPU".
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (2) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  MainProject -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\bin\Debug\MainProject.dll
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (конечные объекты по умолчанию).
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (3) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  Example -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\bin\Debug\Example.exe
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (конечные объекты по умолчанию).
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (конечные объекты по умолчанию).
+
+Построение успешно завершено.
+    Предупреждений: 0
+    Ошибок: 0
+
+Прошло времени 00:00:00.25
+Microsoft (R) Build Engine Version 3.5.30729.1
+[Microsoft .NET Framework версии 2.0.50727.3603]
+ (C) Корпорация Майкрософт (Microsoft Corp.), 2007.
+
+Построение начато 10.01.2010 23:56:19.
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" на узле 0 (конечные объекты по умолчанию).
+  Создание конфигурации решения "Debug|Any CPU".
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (2) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  MainProject -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\bin\Debug\MainProject.dll
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\MainProject\MainProject.csproj" (конечные объекты по умолчанию).
+Проект "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (1) выполняет построение "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (3) на узле 0 (конечные объекты по умолчанию).
+  Processing 0 EDMX files.
+  Finished processing 0 EDMX files.
+CoreCompile:
+Цель "CoreCompile" пропускается, так как все выходные файлы актуальны по отношению к входным.
+CopyFilesToOutputDirectory:
+  Example -> C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\bin\Debug\Example.exe
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\Example\Example.csproj" (конечные объекты по умолчанию).
+Завершенный проект сборки "C:\Documents and Settings\JSmi1e\Мои документы\Visual Studio 2008\Projects\SimpleExample\SimpleExample.sln" (конечные объекты по умолчанию).
+
+Построение успешно завершено.
+    Предупреждений: 0
+    Ошибок: 0
+
+Прошло времени 00:00:00.23
