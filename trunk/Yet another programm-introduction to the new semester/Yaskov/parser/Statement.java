@@ -8,11 +8,14 @@
 
 package parser;
 
-public abstract class Statement {
-    private int varId;
-    private BinOp expression;
+public abstract class Statement extends AbstractTree {
+    public Statement(AbstractTree leftOperand, AbstractTree rightOperand) {
+        super(leftOperand, rightOperand);
+    }
+    /*private int varId;
+    private Expression expression;
 
-    public Statement(int varId, BinOp expression) {
+    public Statement(int varId, Expression expression) {
         this.varId = varId;
         this.expression = expression;
     }
@@ -21,7 +24,8 @@ public abstract class Statement {
         return varId;
     }
 
-    public BinOp getExpression() {
+    public Expression getExpression() {
         return expression;
-    }
+    }*/
+
 }

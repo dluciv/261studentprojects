@@ -8,10 +8,10 @@
 
 package parser;
 
-public class Num extends BinOp {
+public class Num extends Expression {
     private int number;
 
-    public Num(BinOp leftOperand, BinOp rightOperand, int number) {
+    public Num(Expression leftOperand, Expression rightOperand, int number) {
         super(leftOperand, rightOperand);
         this.number = number;
     }

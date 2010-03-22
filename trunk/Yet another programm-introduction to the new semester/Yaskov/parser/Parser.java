@@ -12,10 +12,9 @@ import lexer.*;
 import java.util.LinkedList;
 
 public class Parser {
-    private final int NONE = 0;
     private LinkedList<Token> tokenStream;
     private LinkedList<TableCell> varTable;
-    private LinkedList<Statement> output;
+    private Sequence output;
     private int tokenNo = 0;
     private int errorCounter = 0;
     private Token curToken;
@@ -33,7 +32,7 @@ public class Parser {
         }
     }
 
-    public LinkedList<Statement> getOutput() {
+    public Sequence getOutput() {
         return output;
     }
 
@@ -41,31 +40,32 @@ public class Parser {
         return errorCounter;
     }
 
-    private LinkedList<Statement> parseProgram() {
-        LinkedList<Statement> result = new LinkedList<Statement>();
-        nextToken();
+    private Sequence parseProgram() {
+        Sequence sequence = null;
 
+        nextToken();
         while (curToken.getType() != TokenType.EOF) {
-            if (curToken.getType() == TokenType.PRINT) {
-                result.add(parseKeyword());
+            if (curToken.getType() != TokenType.PRINT) {
+                sequence = new Sequence(sequence, parseAssignment());
             }
-            else {            
-                result.add(parseAssignment());
+            else {
+                sequence = new Sequence(sequence, parseKeyword());
             }
-            nextToken();
         }
 
-        return result;
+        return sequence;
     }
 
-    private Assignment parseAssignment() {    
+    private Assignment parseAssignment() {
         int varId = curToken.getAttribute();
+        AbstractTree leftPart = new Variable(null, null, varId);
         nextToken();
 
         if (curToken.getType() == TokenType.ASSIGNMENT) {
-            Assignment result = new Assignment(varId, parseExpression());
+            Assignment result = new Assignment(leftPart, parseExpression());
             
             if (curToken.getType() == TokenType.SEMICOLON) {
+                nextToken();
                 return result;
             }
             else {
@@ -81,7 +81,8 @@ public class Parser {
 
     private Keyword parseKeyword() {
         if (curToken.getType() == TokenType.PRINT) {
-            Keyword result = new Print(NONE, parseExpression());
+            Keyword result = new Print(null, parseExpression());
+            nextToken();
 
             return result;
         }
@@ -91,13 +92,13 @@ public class Parser {
         }
     }
 
-    private BinOp parseExpression() {
-        BinOp result;
+    private Expression parseExpression() {
+        Expression result;
 
         result = parseTerm();
         while (curToken.getType() == TokenType.PLUS || curToken.getType() == TokenType.MINUS) {
             Token sign = curToken;
-            BinOp toFind = parseTerm();
+            Expression toFind = parseTerm();
 
             if (sign.getType() == TokenType.PLUS) {
                 result = new Plus(result, toFind);
@@ -110,13 +111,13 @@ public class Parser {
         return result;
     }
 
-    private BinOp parseTerm() {
-        BinOp result = parseFormula();
+    private Expression parseTerm() {
+        Expression result = parseFormula();
         
         while (curToken.getType() == TokenType.MULTIPLICATION || curToken.getType() == TokenType.DIVISION) {
             Token sign = curToken;
 
-            BinOp toFind = parseFormula();
+            Expression toFind = parseFormula();
             if (sign.getType() == TokenType.MULTIPLICATION) {
                 result = new Mult(result, toFind);
             }
@@ -128,23 +129,23 @@ public class Parser {
         return result;
     }
 
-    private BinOp parseFormula()
+    private Expression parseFormula()
     {
         nextToken();
         if (curToken.getType() == TokenType.NUMBER) {
-            BinOp toReturn = new Num(null, null, curToken.getAttribute());
+            Expression toReturn = new Num(null, null, curToken.getAttribute());
             nextToken();
 
             return toReturn;
         }
         else if (curToken.getType() == TokenType.ID) {
-            BinOp toReturn = new Variable(null, null, curToken.getAttribute());
+            Expression toReturn = new Variable(null, null, curToken.getAttribute());
             nextToken();
 
             return toReturn;
         }
         else if (curToken.getType() == TokenType.LEFT_BRACKET) {
-            BinOp toFind = parseExpression();
+            Expression toFind = parseExpression();
             
             if (curToken.getType() != TokenType.RIGHT_BRACKET) {
                 fixError("strange symbol, ')' expected");

@@ -9,7 +9,7 @@
 package parser;
 
 public class Assignment extends Statement {
-    public Assignment(int varId, BinOp expression) {
-        super(varId, expression);
+    public Assignment(AbstractTree leftOperand, AbstractTree rightOperand) {
+        super(leftOperand, rightOperand);
     }
 }

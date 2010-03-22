@@ -8,10 +8,10 @@
 
 package parser;
 
-public class Variable extends BinOp {
+public class Variable extends Expression {
     private int id;
 
-    public Variable(BinOp leftOperand, BinOp rightOperand, int id) {
+    public Variable(Expression leftOperand, Expression rightOperand, int id) {
         super(leftOperand, rightOperand);
         this.id = id;
     }

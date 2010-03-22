@@ -23,9 +23,9 @@ public class Compiler {
                        "print((one + two * 4) / 2);" +  "\n" +
                        '\0';
         Lexer lexer = new Lexer(input);
+        
         Parser parser = new Parser(lexer.getTokenStream(), lexer.getVarTable(), lexer.getErrorQnt());
         Interpreter interpreter = new Interpreter(parser.getOutput(), lexer.getVarTable(), parser.getErrorQnt());
-
-        interpreter.toInterpret();
     }
 }
+
