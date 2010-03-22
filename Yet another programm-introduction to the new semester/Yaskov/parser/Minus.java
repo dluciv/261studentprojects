@@ -8,8 +8,8 @@
 
 package parser;
 
-public class Minus extends BinOp {
-    public Minus(BinOp leftOperand, BinOp rightOperand) {
+public class Minus extends Expression {
+    public Minus(Expression leftOperand, Expression rightOperand) {
         super(leftOperand, rightOperand);
     }
 }

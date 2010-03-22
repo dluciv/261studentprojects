@@ -13,49 +13,50 @@ import parser.*;
 import lexer.*;
 
 public class Interpreter {
+    Sequence input;
     public LinkedList<StackCell> stack = new LinkedList<StackCell>();
     public LinkedList<TableCell> varTable = new LinkedList<TableCell>();
-    LinkedList<Statement> input;
     private int errorCounter = 0;
 
-    public Interpreter(LinkedList<Statement> parserOutput, LinkedList<TableCell> varTable, int parseErrorQnt) {
+    public Interpreter(Sequence parserOutput, LinkedList<TableCell> varTable, int parseErrorQnt) {
         if (parseErrorQnt == 0) {
-            input = parserOutput;
             this.varTable = varTable;
+            toInterpretSequence(parserOutput);
         }
         else {
             fixError("there are lexical errors");
         }
     }
 
-    public void toInterpret() {
-        int i;
-
-        for (i = 0; i < input.size(); ++i) {
-            findVarValue(input.get(i));
+    public void toInterpretSequence(AbstractTree treeRoot) {
+        if (treeRoot.getLeftOperand() != null) {
+            toInterpretSequence(treeRoot.getLeftOperand());
         }
+        toInterpretStatement(treeRoot.getRightOperand());
     }
 
-    public void findVarValue(Statement treeRoot) {
-        bypassExpressionTree(treeRoot.getExpression());
+    public void toInterpretStatement(AbstractTree treeRoot) {
+        Variable temp2;
 
+        toInterpretExpression(treeRoot.getRightOperand());
         if (treeRoot.getClass().getSimpleName().equals("Print")) {
+            toInterpretExpression(treeRoot.getRightOperand());
             System.out.println(stack.pop().getValue());
         }
         else {
-            findVar(treeRoot.getVarId()).setVarValue(stack.pop().getValue());
+            temp2 = (Variable) treeRoot.getLeftOperand();
+            findVar(temp2.getId()).setVarValue(stack.pop().getValue());
         }
     }
 
-    public void bypassExpressionTree(BinOp treeRoot) {
-        Num temp;
-        Variable temp2;
+    public void toInterpretExpression(AbstractTree treeRoot) {
         String sign;
         int num;
-
+        Num temp;
+        Variable temp2;
         if (treeRoot.getLeftOperand() != null) {
-            bypassExpressionTree(treeRoot.getLeftOperand());
-            bypassExpressionTree(treeRoot.getRightOperand());
+            toInterpretExpression(treeRoot.getLeftOperand());
+            toInterpretExpression(treeRoot.getRightOperand());
             sign = treeRoot.getClass().getSimpleName();
             if (sign.equals("Plus")) {
                stack.push(new StackCell(stack.pop().getValue() + stack.pop().getValue()));
@@ -71,7 +72,7 @@ public class Interpreter {
                if (num == 0) {
                    fixError("devide by zero");
                    return;
-               } 
+               }
                stack.push(new StackCell(stack.pop().getValue() / num));
             }
             else {
@@ -79,13 +80,13 @@ public class Interpreter {
             }
         }
         else {
-            if (treeRoot.getClass().getSimpleName().equals("Num")) {
-                temp = (Num)treeRoot;
-                stack.push(new StackCell(temp.getValue()));
-            }
+            if (treeRoot.getClass().getSimpleName().equals("Variable")) {
+                    temp2 = (Variable) treeRoot;
+                    stack.push(new StackCell(findVar(temp2.getId()).getVarValue()));
+                }
             else {
-                temp2 = (Variable)treeRoot;
-                stack.push(new StackCell(findVar(temp2.getId()).getVarValue()));
+                    temp = (Num) treeRoot;
+                    stack.push(new StackCell(temp.getValue()));
             }
         }
     }

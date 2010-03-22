@@ -9,7 +9,7 @@
 package parser;
 
 public class Print extends Keyword {
-    public Print(int varId, BinOp expression) {
-        super(varId, expression);
+    public Print(AbstractTree leftOperand, AbstractTree rightOperand) {
+        super(leftOperand, rightOperand);
     }
 }

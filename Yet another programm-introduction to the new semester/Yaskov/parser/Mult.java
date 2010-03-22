@@ -8,8 +8,8 @@
 
 package parser;
 
-public class Mult extends BinOp {
-    public Mult(BinOp leftOperand, BinOp rightOperand) {
+public class Mult extends Expression {
+    public Mult(Expression leftOperand, Expression rightOperand) {
         super(leftOperand, rightOperand);
     }
 }

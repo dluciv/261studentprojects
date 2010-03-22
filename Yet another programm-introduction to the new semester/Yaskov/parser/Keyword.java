@@ -9,7 +9,7 @@
 package parser;
 
 public class Keyword extends Statement {
-    public Keyword(int varId, BinOp expression) {
-        super(varId, expression);
+    public Keyword(AbstractTree leftOperand, AbstractTree rightOperand) {
+        super(leftOperand, rightOperand);
     }
 }
