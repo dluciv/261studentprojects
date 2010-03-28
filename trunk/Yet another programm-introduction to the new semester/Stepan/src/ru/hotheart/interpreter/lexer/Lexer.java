@@ -26,7 +26,7 @@ public class Lexer {
                     String num = Character.toString(data[pos++]);
                     while ((pos < data.length) && (getSymbolType(data[pos]) == SYMBOL_DIGIT))
                         num += Character.toString(data[pos++]);
-                    res.add(new NumberLexeme(Double.parseDouble(num)));
+                    res.add(new ValueLexeme(Double.parseDouble(num)));
                     break;
                 case SYMBOL_LETTER:
                     String var = Character.toString(data[pos++]);
