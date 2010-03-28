@@ -2,9 +2,6 @@ package ru.hotheart.interpreter.syntax;
 
 import ru.hotheart.interpreter.lexer.*;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 /**
  * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
@@ -48,9 +45,15 @@ public class SyntaxProcessor {
     }
 
     private SyntaxTreeNode processValue(Lexeme[] data) throws Exception {
-        if (data[pointer] instanceof NumberLexeme) {
+        if (data[pointer] instanceof ValueLexeme) {
 
-            ValueTreeNode res = new ValueTreeNode(((NumberLexeme) data[pointer]).value);
+            ValueTreeNode res = new ValueTreeNode(((ValueLexeme) data[pointer]).value);
+            pointer++;
+            return res;
+        }
+        if (data[pointer] instanceof VariableLexeme) {
+
+            VariableTreeNode res = new VariableTreeNode(((VariableLexeme) data[pointer]).value);
             pointer++;
             return res;
         }
