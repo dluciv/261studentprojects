@@ -74,6 +74,7 @@ public class Lexer {
 
     public void moveNext() {
         if (expression.length() > position) {
+
             if (expression.charAt(position) <= '0' || expression.charAt(position) >= '9') {
                 position++;
             } else {
@@ -82,6 +83,9 @@ public class Lexer {
                         expression.charAt(position) <= '9') {
                     position++;
                 }
+            }
+            while (expression.length() > position && expression.charAt(position) == ' ') {
+                position++;
             }
         } else {
             if (expression.length() == position) {

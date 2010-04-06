@@ -4,7 +4,7 @@ package ast;
 public class Main {
 
     public static void main(String[] args) {
-        Parser.main("8-3-4");
+        Parser.main("8 - 2 + 3 * ( 2 + 1)");
     }
 }
 
