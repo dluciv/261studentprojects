@@ -7,10 +7,13 @@ public class Parser {
 
     public static Lexer lexer;
 
-    public static void main(String args) {
+    public Parser(String args) {
 
-        Parser parser = new Parser();
-        lexer = new Lexer(args);
+        Parser.lexer = new Lexer(args);
+    }
+
+    public static void main(String args) {
+        Parser parser = new Parser(args);
         Tree tree;
         int result = 0;
         try {
@@ -23,13 +26,12 @@ public class Parser {
 
                 if (lexer.getCurrentLexem().getLeft() == Lexer.lexem.closebracket) {
                     System.out.printf("%s %s %s", "Error in the input string (unexpected closebracket)", "at", position);
-                    //System.out.println("Error in the input string (unexepcted closebracket)");
                 }
                 return;
             }
 
         } catch (Exception e) {
-             return;
+            return;
         }
         result = tree.evaluate();
         System.out.println(result);
@@ -54,8 +56,7 @@ public class Parser {
 
     public Tree term() throws Exception {
         Tree left = factor();
-        while (lexer.getCurrentLexem().getLeft() == lexem.multiply || lexer.getCurrentLexem().getLeft() == lexem.divide)
-        {
+        while (lexer.getCurrentLexem().getLeft() == lexem.multiply || lexer.getCurrentLexem().getLeft() == lexem.divide) {
             lexem sign = lexer.getCurrentLexem().getLeft();
             lexer.moveNext();
             Tree right = factor();
@@ -70,7 +71,7 @@ public class Parser {
 
     public Tree factor() throws Exception {
         int value;
-        Tree left = new Number(0);
+        Tree left;
         if (lexer.getCurrentLexem().getLeft() == lexem.number) {
             value = Integer.parseInt(lexer.getCurrentLexem().getRight());
             lexer.moveNext();
