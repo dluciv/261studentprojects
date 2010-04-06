@@ -8,7 +8,6 @@ public class Parser {
     public static Lexer lexer;
 
     public Parser(String args) {
-
         Parser.lexer = new Lexer(args);
     }
 
