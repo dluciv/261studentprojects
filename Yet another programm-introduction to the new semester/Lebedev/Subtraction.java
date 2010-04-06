@@ -14,9 +14,9 @@ public class Subtraction extends BinaryOperation {
 
     @Override
     public void print() {
-        System.out.print("- ");
         getLeft().print();
         getRight().print();
-
+        System.out.print("- ");
+                
     }
 }
