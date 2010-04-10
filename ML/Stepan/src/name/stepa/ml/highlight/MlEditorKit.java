@@ -55,65 +55,43 @@ class MlDocument extends DefaultStyledDocument {
         StyleConstants.setForeground(quote, Color.red);
 
         keywords = new HashSet();
-        keywords.add("abstract");
-        keywords.add("boolean");
-        keywords.add("break");
-        keywords.add("byte");
-        keywords.add("byvalue");
-        keywords.add("case");
-        keywords.add("cast");
-        keywords.add("catch");
-        keywords.add("char");
-        keywords.add("class");
-        keywords.add("const");
-        keywords.add("continue");
-        keywords.add("default");
+
+        // Taken from
+        // http://www.midnight-commander.org/browser/misc/syntax/ml.syntax?rev=6f6ea1bc8873082fe407b1762d97193d3df19424
+        keywords.add("and");
+        keywords.add("as");
+        keywords.add("begin");
         keywords.add("do");
-        keywords.add("double");
+        keywords.add("done");
+        keywords.add("downto");
         keywords.add("else");
-        keywords.add("extends");
-        keywords.add("false");
-        keywords.add("final");
-        keywords.add("finally");
-        keywords.add("float");
+        keywords.add("end");
         keywords.add("for");
-        keywords.add("future");
-        keywords.add("generic");
-        keywords.add("goto");
+        keywords.add("fun");
+        keywords.add("function");
         keywords.add("if");
-        keywords.add("implements");
-        keywords.add("import");
-        keywords.add("inner");
-        keywords.add("instanceof");
-        keywords.add("int");
-        keywords.add("interface");
-        keywords.add("long");
-        keywords.add("native");
-        keywords.add("new");
-        keywords.add("null");
-        keywords.add("operator");
-        keywords.add("outer");
-        keywords.add("package");
-        keywords.add("private");
-        keywords.add("protected");
-        keywords.add("public");
-        keywords.add("rest");
-        keywords.add("return");
-        keywords.add("short");
-        keywords.add("static");
-        keywords.add("super");
-        keywords.add("switch");
-        keywords.add("synchronized");
-        keywords.add("this");
-        keywords.add("throw");
-        keywords.add("throws");
-        keywords.add("transient");
-        keywords.add("true");
+        keywords.add("in");
+        keywords.add("let");
+        keywords.add("match");
+        keywords.add("mutable");
+        keywords.add("not");
+        keywords.add("of");
+        keywords.add("or");
+        keywords.add("prefix");
+        keywords.add("rec");
+        keywords.add("then");
+        keywords.add("to");
         keywords.add("try");
-        keywords.add("var");
-        keywords.add("void");
-        keywords.add("volatile");
+        keywords.add("type");
+        keywords.add("value");
+        keywords.add("where");
         keywords.add("while");
+        keywords.add("mod");
+        keywords.add("with");
+        keywords.add("false");
+
+        //other
+        keywords.add("raise");
     }
 
     /*
