@@ -31,7 +31,7 @@ class MlDocument extends DefaultStyledDocument {
     private boolean multiLineComment;
     private MutableAttributeSet normal;
     private MutableAttributeSet keyword;
-    private MutableAttributeSet comment;
+    private MutableAttributeSet commentSymbol;
     private MutableAttributeSet quote;
 
     private HashSet keywords;
@@ -44,9 +44,9 @@ class MlDocument extends DefaultStyledDocument {
         normal = new SimpleAttributeSet();
         StyleConstants.setForeground(normal, Color.black);
 
-        comment = new SimpleAttributeSet();
-        StyleConstants.setForeground(comment, Color.gray);
-        StyleConstants.setItalic(comment, true);
+        commentSymbol = new SimpleAttributeSet();
+        StyleConstants.setForeground(commentSymbol, Color.BLUE);
+        StyleConstants.setBackground(commentSymbol, Color.YELLOW);
 
         keyword = new SimpleAttributeSet();
         StyleConstants.setForeground(keyword, Color.blue);
@@ -134,7 +134,7 @@ class MlDocument extends DefaultStyledDocument {
         //  Make sure all comment lines prior to the start line are commented
         //  and determine if the start line is still in a multi line comment
 
-        setMultiLineComment(commentLinesBefore(content, startLine));
+        //setMultiLineComment(commentLinesBefore(content, startLine));
 
         //  Do the actual highlighting
 
@@ -144,16 +144,16 @@ class MlDocument extends DefaultStyledDocument {
 
         //  Resolve highlighting to the next end multi line delimiter
 
-        if (isMultiLineComment())
+/*        if (isMultiLineComment())
             commentLinesAfter(content, endLine);
         else
-            highlightLinesAfter(content, endLine);
+            highlightLinesAfter(content, endLine);*/
     }
 
-    /*
+/*    *//*
      *  Highlight lines when a multi line comment is still 'open'
      *  (ie. matching end delimiter has not yet been encountered)
-     */
+     *//*
 
     private boolean commentLinesBefore(String content, int line) {
         int offset = rootElement.getElement(line).getStartOffset();
@@ -178,9 +178,9 @@ class MlDocument extends DefaultStyledDocument {
         return true;
     }
 
-    /*
+    *//*
      *  Highlight comment lines to matching end delimiter
-     */
+     *//*
 
     private void commentLinesAfter(String content, int line) {
         int offset = rootElement.getElement(line).getEndOffset();
@@ -199,7 +199,7 @@ class MlDocument extends DefaultStyledDocument {
         if (startDelimiter < 0 || startDelimiter <= offset) {
             doc.setCharacterAttributes(offset, endDelimiter - offset + 1, comment, false);
         }
-    }
+    }*/
 
     /*
      *  Highlight lines to start or end delimiter
@@ -234,8 +234,8 @@ class MlDocument extends DefaultStyledDocument {
             Element leaf = doc.getCharacterElement(branch.getStartOffset());
             AttributeSet as = leaf.getAttributes();
 
-            if (as.isEqual(comment))
-                applyHighlighting(content, i);
+/*            if (as.isEqual(comment))
+                applyHighlighting(content, i);*/
         }
     }
 
@@ -257,12 +257,12 @@ class MlDocument extends DefaultStyledDocument {
         //  check for multi line comments
         //  (always set the comment attribute for the entire line)
 
-        if (endingMultiLineComment(content, startOffset, endOffset)
+/*        if (endingMultiLineComment(content, startOffset, endOffset)
                 || isMultiLineComment()
                 || startingMultiLineComment(content, startOffset, endOffset)) {
             doc.setCharacterAttributes(startOffset, endOffset - startOffset + 1, comment, false);
             return;
-        }
+        }*/
 
         //  set normal attributes for the line
 
@@ -270,12 +270,11 @@ class MlDocument extends DefaultStyledDocument {
 
         //  check for single line comment
 
-        int index = content.indexOf(getSingleLineDelimiter(), startOffset);
-
-        if ((index > -1) && (index < endOffset)) {
+        //int index = content.indexOf(getSingleLineDelimiter(), startOffset);
+        /*if ((index > -1) && (index < endOffset)) {
             doc.setCharacterAttributes(index, endOffset - index + 1, comment, false);
             endOffset = index - 1;
-        }
+        }*/
 
         //  check for tokens
 
@@ -284,7 +283,7 @@ class MlDocument extends DefaultStyledDocument {
 
     /*
      *  Does this line contain the start delimiter
-     */
+     *//*
 
     private boolean startingMultiLineComment(String content, int startOffset, int endOffset)
             throws BadLocationException {
@@ -298,9 +297,9 @@ class MlDocument extends DefaultStyledDocument {
         }
     }
 
-    /*
+    *//*
      *  Does this line contain the end delimiter
-     */
+     *//*
 
     private boolean endingMultiLineComment(String content, int startOffset, int endOffset)
             throws BadLocationException {
@@ -314,10 +313,10 @@ class MlDocument extends DefaultStyledDocument {
         }
     }
 
-    /*
+    *//*
      *  We have found a start delimiter
      *  and are still searching for the end delimiter
-     */
+     *//*
 
     private boolean isMultiLineComment() {
         return multiLineComment;
@@ -325,7 +324,7 @@ class MlDocument extends DefaultStyledDocument {
 
     private void setMultiLineComment(boolean value) {
         multiLineComment = value;
-    }
+    }*/
 
     /*
      *	Parse the line for tokens to highlight
@@ -385,14 +384,11 @@ class MlDocument extends DefaultStyledDocument {
         return endOfQuote + 1;
     }
 
-    /*
-     *
-     */
-
     private int getOtherToken(String content, int startOffset, int endOffset) {
         int endOfToken = startOffset + 1;
 
         while (endOfToken <= endOffset) {
+
             if (isDelimiter(content.substring(endOfToken, endOfToken + 1)))
                 break;
 
@@ -481,9 +477,14 @@ class MlDocument extends DefaultStyledDocument {
             return true;
     }
 
+    protected boolean isStartCommentDelimiter(String text) {
+        return text.equals("(*");
+    }
+
+
     /*
-     *  Override for other languages
-     */
+    *  Override for other languages
+    */
 
     protected boolean isKeyword(String token) {
         return keywords.contains(token);
