@@ -1,6 +1,6 @@
-package savenko;
+package savenko.AST;
 
-import savenko.Lexer.lexems;
+import savenko.AST.Lexer.lexems;
 
 public class Lexem {
 	

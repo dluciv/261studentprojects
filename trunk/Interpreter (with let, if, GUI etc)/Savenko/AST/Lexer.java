@@ -4,14 +4,14 @@
  * moves right on one symbol then asked
  * Savenko Maria(c)
  */
-package savenko;
-
+package savenko.AST;
+/*
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStreamReader;*/
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,7 +21,8 @@ public class Lexer {
                         Identifier,EOF,Unknown, Keyword,
                         IF,THEN,ELSE,LET,IN,BEGIN,END,FUN,PRINT,
                         Semicolon,Equation, LE, GE, Less, Greater};//????
-    private ArrayList<Character> expression;
+    private ArrayList<Character> expression2;
+    private String expression;
     private int curr_index = 0;
     private static HashMap<String, lexems> keywords = new HashMap<String, lexems>() {{
     		put("if",lexems.IF);
@@ -33,7 +34,12 @@ public class Lexer {
     		put("fun",lexems.FUN);
     		put("print",lexems.PRINT);
     	}};
-    
+
+    public Lexer(String programm){
+        expression = programm;
+    }
+
+    /*
     //reads the file -> all symbols one by one adds to the "expression" list
     public Lexer(String filename){
     	BufferedReader in = null;
@@ -44,19 +50,23 @@ public class Lexer {
 		}
     	expression = new ArrayList<Character>();
     	try {
-			while (in.ready()) {
-			    char charac =  (char)in.read();
-				//exclude all white spaces & chars of EOL  
-				//if (charac!=' ' && charac!='\r' && charac!='\n') expression.add(charac);
-			    expression.add(charac);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+               while (in.ready()) {
+                        char charac =  (char)in.read();
+			//exclude all white spaces & chars of EOL  
+			//if (charac!=' ' && charac!='\r' && charac!='\n') expression.add(charac);
+			expression.add(charac);
 		}
-		finally {
-			//in.close();
-		}
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	finally {
+		//in.close();
+	}
     }
+
+    public Lexer(ArrayList<Character> programm){
+        expression = programm;
+    }*/
     
     public Lexem getCurrent(){
     	return currLexem;
@@ -67,24 +77,24 @@ public class Lexer {
     }
     
     private boolean ifIdentifier(){
-        return (expression.get(curr_index) >= 'A' && expression.get(curr_index) <= 'z');
+        return (expression.charAt(curr_index) >= 'A' && expression.charAt(curr_index) <= 'z');
     }
     
     private boolean ifNumber(){
-    	return (expression.get(curr_index)>='0'&&expression.get(curr_index)<='9');
+    	return (expression.charAt(curr_index)>='0'&&expression.charAt(curr_index)<='9');
     }
     
     private boolean ifEOF(){
-    	return (curr_index == expression.size());
+    	return (curr_index == expression.length());
     }
     
     private String getIdentifier(){
-        String identifier = String.valueOf(expression.get(curr_index));
+        String identifier = String.valueOf(expression.charAt(curr_index));
         
         curr_index++;
         while (true) {
-            if (expression.size()>curr_index && expression.get(curr_index)>= 'A' && expression.get(curr_index) <= 'z'){
-                identifier += String.valueOf(expression.get(curr_index));
+            if (expression.length()>curr_index && expression.charAt(curr_index)>= 'A' && expression.charAt(curr_index) <= 'z'){
+                identifier += String.valueOf(expression.charAt(curr_index));
                 curr_index++;
             } else break;
         }
@@ -93,12 +103,12 @@ public class Lexer {
     }
     
     private Integer getNumber(){  
-        String number = String.valueOf(expression.get(curr_index));
+        String number = String.valueOf(expression.charAt(curr_index));
         
         curr_index++;
         while (true) {
-            if (expression.size()>curr_index && expression.get(curr_index)>='0' && expression.get(curr_index)<='9'){
-                number += String.valueOf(expression.get(curr_index));
+            if (expression.length()>curr_index && expression.charAt(curr_index)>='0' && expression.charAt(curr_index)<='9'){
+                number += String.valueOf(expression.charAt(curr_index));
                 curr_index++;
             } else break;
         }
@@ -110,12 +120,12 @@ public class Lexer {
     
     public void moveNext(){
         char currChar = ' ';
-        if (curr_index < expression.size()){
-            currChar = expression.get(curr_index);
+        if (curr_index < expression.length()){
+            currChar = expression.charAt(curr_index);
         
         while (currChar == ' ' || currChar == '\r' || currChar == '\n') {
         	curr_index++;
-        	currChar =  expression.get(curr_index);
+        	currChar =  expression.charAt(curr_index);
         }
         }
         

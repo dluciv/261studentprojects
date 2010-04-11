@@ -1,4 +1,4 @@
-package savenko;
+package savenko.AST;
 
 public class Number implements Expression{
 	

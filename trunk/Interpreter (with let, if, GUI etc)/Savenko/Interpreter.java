@@ -1,17 +1,32 @@
 package savenko;
 
+import savenko.AST.Begin;
+import savenko.AST.Sequence;
+import savenko.AST.If;
+import savenko.AST.Value;
+import savenko.AST.Print;
+import savenko.AST.Multiply;
+import savenko.AST.Number;
+import savenko.AST.Identifier;
+import savenko.AST.Expression;
+import savenko.AST.Binding;
+import savenko.AST.Plus;
+import savenko.AST.Minus;
+import savenko.AST.Divide;
+import savenko.AST.Tree;
+
 
 public class Interpreter {
     
     Environment environment;
     
-    Interpreter (){
+    public Interpreter (){
         environment = new Environment();
     }
-    
+    /*
     public Value interpret(ProgrammToInterpret programm) throws InterpreterException{
         return interpret(programm.getSequence());
-    }
+    }*/
     
     public Value interpret(Sequence sequence) throws InterpreterException{
     	Value val = null;
@@ -77,7 +92,7 @@ public class Interpreter {
     
     private Value interpret(Print id) throws InterpreterException{
         Value val = interpret(id.getExpression());
-        System.out.print(val.getIntValue());
+        System.out.print(val.getIntValue()); //?????????
         return val;
     }
     

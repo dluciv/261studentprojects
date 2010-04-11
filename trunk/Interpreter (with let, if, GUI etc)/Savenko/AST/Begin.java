@@ -1,4 +1,6 @@
-package savenko;
+package savenko.AST;
+
+import savenko.AST.Expression;
 
 
 public class Begin implements Expression{
