@@ -1,7 +1,7 @@
 package savenko;
 
-import savenko.AST.Value;
-import savenko.AST.Identifier;
+import savenko.ast.Value;
+import savenko.ast.Identifier;
 import java.util.HashMap;
 
 

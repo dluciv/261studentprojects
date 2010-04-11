@@ -2,9 +2,9 @@
  * This class receives the string, then do the recursive descent
  * Savenko Maria(c)
  */
-package savenko.AST;
+package savenko.ast;
 
-import savenko.AST.Lexer.lexems;
+import savenko.ast.Lexer.lexems;
 import savenko.ParserException;
 import savenko.SyntaxException;
 

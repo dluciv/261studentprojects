@@ -1,19 +1,19 @@
 package savenko;
 
-import savenko.AST.Begin;
-import savenko.AST.Sequence;
-import savenko.AST.If;
-import savenko.AST.Value;
-import savenko.AST.Print;
-import savenko.AST.Multiply;
-import savenko.AST.Number;
-import savenko.AST.Identifier;
-import savenko.AST.Expression;
-import savenko.AST.Binding;
-import savenko.AST.Plus;
-import savenko.AST.Minus;
-import savenko.AST.Divide;
-import savenko.AST.Tree;
+import savenko.ast.Begin;
+import savenko.ast.Sequence;
+import savenko.ast.If;
+import savenko.ast.Value;
+import savenko.ast.Print;
+import savenko.ast.Multiply;
+import savenko.ast.Number;
+import savenko.ast.Identifier;
+import savenko.ast.Expression;
+import savenko.ast.Binding;
+import savenko.ast.Plus;
+import savenko.ast.Minus;
+import savenko.ast.Divide;
+import savenko.ast.Tree;
 
 
 public class Interpreter {

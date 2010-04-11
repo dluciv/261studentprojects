@@ -4,7 +4,7 @@
  * moves right on one symbol then asked
  * Savenko Maria(c)
  */
-package savenko.AST;
+package savenko.ast;
 /*
 import java.io.BufferedReader;
 import java.io.File;
