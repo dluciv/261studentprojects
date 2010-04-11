@@ -1,4 +1,4 @@
-package savenko.AST;
+package savenko.ast;
 
 public class Multiply extends BinaryOperation{
 

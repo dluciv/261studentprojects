@@ -1,6 +1,6 @@
-package savenko.AST;
+package savenko.ast;
 
-import savenko.AST.Expression;
+import savenko.ast.Expression;
 
 
 public class Let implements Expression{

@@ -1,7 +1,7 @@
-package savenko.AST;
+package savenko.ast;
 
-import savenko.AST.Expression;
-import savenko.AST.Tree;
+import savenko.ast.Expression;
+import savenko.ast.Tree;
 import java.util.ArrayList;
 import java.util.List;
 
