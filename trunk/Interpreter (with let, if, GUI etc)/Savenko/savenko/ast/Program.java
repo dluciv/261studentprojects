@@ -2,10 +2,6 @@ package savenko.ast;
 
 //import java.util.Scanner;
 
-import savenko.ast.Sequence;
-import savenko.ast.Value;
-import savenko.ast.Parser;
-import savenko.ast.Lexer;
 import savenko.Interpreter;
 import savenko.InterpreterException;
 import savenko.NullIDException;
@@ -25,11 +21,9 @@ public class Program {
             result = interpreter.interpret(sequence);
         }
         catch (NullIDException e) {
-            System.out.print("NullIDException");
             return "NullIDException";
         }
         catch (InterpreterException e) {
-            System.out.print("unknown Error");
             return "unknown Error";
         }
 

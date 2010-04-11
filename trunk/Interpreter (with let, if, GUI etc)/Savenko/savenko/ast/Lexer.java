@@ -5,13 +5,7 @@
  * Savenko Maria(c)
  */
 package savenko.ast;
-/*
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;*/
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,8 +14,7 @@ public class Lexer {
     public enum lexems {Plus,Minus,Divide,Multiply,LeftBracket,RightBracket,Number,
                         Identifier,EOF,Unknown, Keyword,
                         IF,THEN,ELSE,LET,IN,BEGIN,END,FUN,PRINT,
-                        Semicolon,Equation, LE, GE, Less, Greater};//????
-    private ArrayList<Character> expression2;
+                        Semicolon,Equation, LE, GE, Less, Greater};
     private String expression;
     private int curr_index = 0;
     private static HashMap<String, lexems> keywords = new HashMap<String, lexems>() {{
@@ -38,35 +31,6 @@ public class Lexer {
     public Lexer(String programm){
         expression = programm;
     }
-
-    /*
-    //reads the file -> all symbols one by one adds to the "expression" list
-    public Lexer(String filename){
-    	BufferedReader in = null;
-    	try {
-			in = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-    	expression = new ArrayList<Character>();
-    	try {
-               while (in.ready()) {
-                        char charac =  (char)in.read();
-			//exclude all white spaces & chars of EOL  
-			//if (charac!=' ' && charac!='\r' && charac!='\n') expression.add(charac);
-			expression.add(charac);
-		}
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-	finally {
-		//in.close();
-	}
-    }
-
-    public Lexer(ArrayList<Character> programm){
-        expression = programm;
-    }*/
     
     public Lexem getCurrent(){
     	return currLexem;

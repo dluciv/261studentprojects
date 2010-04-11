@@ -23,7 +23,7 @@ public class Parser {
     	while (lexer.getCurrent().getTypeLexem() != lexems.EOF){
     		sequence.addStatement(getStatement());
     	}
-		return sequence;    	
+	return sequence;    	
     }
     
     public Expression getStatement() throws ParserException{
@@ -50,7 +50,7 @@ public class Parser {
             Expression else_expr = null;
             
             lexer.moveNext();
-            expr = getStatement(); //??
+            expr = getStatement(); ///??
             if (lexer.getCurrent().getTypeLexem() != lexems.THEN) throw new ParserException();
             lexer.moveNext();
             expr2 = getStatement();
@@ -66,9 +66,16 @@ public class Parser {
             if (lexer.getCurrent().getTypeLexem() != lexems.END) throw new ParserException();
             lexer.moveNext();
             return new Begin(seq);
-        }else new Exception();
-        
-        return null;
+        }else if (lexer.getCurrent().getTypeLexem() == lexems.Identifier) {
+            identifier = new Identifier(lexer.getCurrent().getStringLexem());
+            lexer.moveNext();
+            if (lexer.getCurrent().getTypeLexem() == lexems.Equation){
+                lexer.moveNext();
+                expr = getExpression();
+                return new Binding(identifier, expr, expr2);
+            }else if(lexer.getCurrent().getTypeLexem() != lexems.EOF) throw new ParserException();
+            return identifier;
+        }else throw new ParserException();
     }
 
     public Expression getExpression() throws ParserException{
@@ -79,7 +86,8 @@ public class Parser {
             lexer.moveNext(); //semicolon is erased  
             return left;
         }else
-        if (lexer.getCurrent().getTypeLexem()== lexems.THEN || lexer.getCurrent().getTypeLexem()== lexems.IN){
+        if (lexer.getCurrent().getTypeLexem()== lexems.THEN || lexer.getCurrent().getTypeLexem()== lexems.IN
+                || lexer.getCurrent().getTypeLexem()== lexems.EOF){
             return left; //then and in will not be erased
         }else {
             if (lexer.getCurrent().getTypeLexem() == lexems.Unknown)

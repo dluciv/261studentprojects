@@ -47,9 +47,11 @@ public class Interpreter {
     		environment.addToEnvironment(binding.getIdentifier(), old_value);
     	}
     	else {
+            if (binding.getValue() != null){
     		environment.addToEnvironment(binding.getIdentifier(), interpret(binding.getExpression()));
     		val = interpret(binding.getValue());
     		environment.removeIdentifier(binding.getIdentifier());
+            }else val = interpret(binding.getExpression());
     	}
     	
         return val;
