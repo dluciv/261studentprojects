@@ -57,41 +57,71 @@ class MlDocument extends DefaultStyledDocument {
         keywords = new HashSet();
 
         // Taken from
-        // http://www.midnight-commander.org/browser/misc/syntax/ml.syntax?rev=6f6ea1bc8873082fe407b1762d97193d3df19424
+        // http://caml.inria.fr/pub/docs/manual-ocaml/manual044.html
+
         keywords.add("and");
         keywords.add("as");
+        keywords.add("assert");
+
         keywords.add("begin");
+
+        keywords.add("class");
+        keywords.add("constraint");
+
         keywords.add("do");
         keywords.add("done");
         keywords.add("downto");
+
         keywords.add("else");
         keywords.add("end");
+        keywords.add("exception");
+        keywords.add("external");
+
+        keywords.add("false");
         keywords.add("for");
         keywords.add("fun");
         keywords.add("function");
+        keywords.add("functor");
+
         keywords.add("if");
         keywords.add("in");
+        keywords.add("include");
+        keywords.add("inherit");
+        keywords.add("initializer");
+
+        keywords.add("lazy");
         keywords.add("let");
+
         keywords.add("match");
+        keywords.add("method");
+        keywords.add("module");
         keywords.add("mutable");
-        keywords.add("not");
+
+        keywords.add("new");
+
+        keywords.add("object");
         keywords.add("of");
+        keywords.add("open");
         keywords.add("or");
-        keywords.add("prefix");
+
+        keywords.add("private");
         keywords.add("rec");
+
+        keywords.add("sig");
+        keywords.add("struct");
+
         keywords.add("then");
         keywords.add("to");
+        keywords.add("true");
         keywords.add("try");
         keywords.add("type");
-        keywords.add("value");
-        keywords.add("where");
-        keywords.add("while");
-        keywords.add("mod");
-        keywords.add("with");
-        keywords.add("false");
 
-        //other
-        keywords.add("raise");
+        keywords.add("val");
+        keywords.add("virtual");
+
+        keywords.add("when");
+        keywords.add("while");
+        keywords.add("with");
     }
 
     /*
