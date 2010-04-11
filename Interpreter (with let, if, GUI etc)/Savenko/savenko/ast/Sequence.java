@@ -1,7 +1,5 @@
 package savenko.ast;
 
-import savenko.ast.Expression;
-import savenko.ast.Tree;
 import java.util.ArrayList;
 import java.util.List;
 

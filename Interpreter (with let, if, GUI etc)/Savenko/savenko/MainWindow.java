@@ -124,17 +124,18 @@ public class MainWindow extends javax.swing.JFrame {
         try {
             programm = new Program(programmTextField.getText());
         }catch (SyntaxException e) {
-            System.out.print("Semicolon expected");
+            consoleTextField.setText("Semicolon expected");
 	} catch (ParserException e){
-            System.out.print("parser error");
+            consoleTextField.setText("parser error");
         }
 
-        consoleTextField.setText(programm.Interpret());
+        consoleTextField.setText(
+                programm.Interpret());
     }//GEN-LAST:event_executeButtonClick
 
     private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
         //"W:/WorkspaceForJava/Interpriter/src/savenko/1.txt"
-        String filename = "F:/Program Files/Workspace for Java/Interpriter/src/savenko/1.txt";
+        String filename = "src/savenko/1.txt";
         BufferedReader in = null;
 
     	try {
