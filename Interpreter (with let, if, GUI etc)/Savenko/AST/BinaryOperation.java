@@ -1,4 +1,4 @@
-package savenko;
+package savenko.AST;
 
 
 public abstract class BinaryOperation implements Expression {

@@ -1,4 +1,4 @@
-package savenko;
+package savenko.AST;
 
 public class Plus extends BinaryOperation{
 

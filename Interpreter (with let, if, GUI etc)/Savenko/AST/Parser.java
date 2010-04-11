@@ -2,16 +2,18 @@
  * This class receives the string, then do the recursive descent
  * Savenko Maria(c)
  */
-package savenko;
+package savenko.AST;
 
-import savenko.Lexer.lexems;
+import savenko.AST.Lexer.lexems;
+import savenko.ParserException;
+import savenko.SyntaxException;
 
 public class Parser {
     
     private Lexer lexer;
     Sequence sequence;
     
-    Parser(Lexer args){
+    public Parser(Lexer args){
         lexer = args;
         lexer.moveNext();
     }
@@ -84,7 +86,7 @@ public class Parser {
                 System.out.println("Error in the input string (unknown symbol)");
             if (lexer.getCurrent().getTypeLexem() == lexems.RightBracket)
                 System.out.println("Error in the input string (unexepcted Right Bracket)");
-            throw new SyntaxesException();
+            throw new SyntaxException();
             }
         
     }
