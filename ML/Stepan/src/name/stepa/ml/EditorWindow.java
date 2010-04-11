@@ -7,10 +7,11 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-public class EditorWindow extends JDialog {
+public class EditorWindow extends JFrame {
     private JPanel contentPane;
     private JButton buttonSave;
     private JButton buttonClose;
@@ -19,7 +20,8 @@ public class EditorWindow extends JDialog {
 
     public EditorWindow() {
         setContentPane(contentPane);
-        setModal(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("HotMlStudio");
         getRootPane().setDefaultButton(buttonSave);
         editorPane.setEditorKit(new MlEditorKit());
 
@@ -43,14 +45,14 @@ public class EditorWindow extends JDialog {
         });
 
 // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onCancel();
             }
         });
 
-// call onCancel() on ESCAPE
+// callonCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -99,9 +101,33 @@ public class EditorWindow extends JDialog {
     }
 
     public static void main(String[] args) {
+
+        try {
+            // Set System L&F
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        }
+        catch (ClassNotFoundException e) {
+            // handle exception
+        }
+        catch (InstantiationException e) {
+            // handle exception
+        }
+        catch (IllegalAccessException e) {
+            // handle exception
+        }
+
+
         EditorWindow dialog = new EditorWindow();
         dialog.pack();
         dialog.setVisible(true);
-        System.exit(0);
+        dialog.setSize(700, 500);
+        Toolkit toolkit = dialog.getToolkit();
+        Dimension size = toolkit.getScreenSize();
+        dialog.setLocation((size.width - dialog.getWidth()) / 2, (size.height - dialog.getHeight()) / 2);
+
     }
 }
