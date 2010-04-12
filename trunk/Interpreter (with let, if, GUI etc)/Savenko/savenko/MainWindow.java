@@ -97,7 +97,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         consoleTextField.setColumns(20);
         consoleTextField.setRows(5);
+        consoleTextField.setName("null"); // NOI18N
         jScrollPane2.setViewportView(consoleTextField);
+        consoleTextField.getAccessibleContext().setAccessibleName("consoleTextField");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,7 +112,7 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -135,6 +137,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
         //"W:/WorkspaceForJava/Interpriter/src/savenko/1.txt"
+        programmTextField.setText(null);
         String filename = "src/savenko/1.txt";
         BufferedReader in = null;
 

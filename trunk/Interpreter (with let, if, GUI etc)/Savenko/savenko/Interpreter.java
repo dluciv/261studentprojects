@@ -118,7 +118,7 @@ public class Interpreter {
     	    return interpret((Number) node);
     	else
     	if (node instanceof Binding)
-    		return interpret((Binding) node);
+            return interpret((Binding) node);
     	else
         if (node instanceof Plus)
             return interpret((Plus) node);
