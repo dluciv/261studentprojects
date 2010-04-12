@@ -20,10 +20,11 @@ public class Lexer {
     private static HashMap<String, lexems> keywords = new HashMap<String, lexems>() {{
     		put("if",lexems.IF);
     		put("then",lexems.THEN);
+                put("else",lexems.ELSE);
     		put("let",lexems.LET);
-    		put("else",lexems.ELSE);
     		put("in",lexems.IN);
     		put("begin",lexems.BEGIN);
+                put("end",lexems.END);
     		put("fun",lexems.FUN);
     		put("print",lexems.PRINT);
     	}};

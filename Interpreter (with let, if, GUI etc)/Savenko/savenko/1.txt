@@ -1,2 +1,6 @@
-let x = 11 + 2 in
-print( x );
+let x = 11 + 4 in
+begin
+let y = x+15 in
+y;
+let z= y + x in print(z)
+end

@@ -11,7 +11,6 @@ import savenko.SyntaxException;
 public class Parser {
     
     private Lexer lexer;
-    Sequence sequence;
     
     public Parser(Lexer args){
         lexer = args;
@@ -19,9 +18,12 @@ public class Parser {
     }
     
     public Sequence getSequence() throws ParserException{
-    	sequence = new Sequence();
-    	while (lexer.getCurrent().getTypeLexem() != lexems.EOF){
-    		sequence.addStatement(getStatement());
+    	Sequence sequence = new Sequence();
+    	while (lexer.getCurrent().getTypeLexem() != lexems.EOF && lexer.getCurrent().getTypeLexem() != lexems.END){
+            if (lexer.getCurrent().getTypeLexem() == lexems.Semicolon){
+                lexer.moveNext();
+            }else
+                sequence.addStatement(getStatement());
     	}
 	return sequence;    	
     }
@@ -42,7 +44,7 @@ public class Parser {
             if (lexer.getCurrent().getTypeLexem() != lexems.IN)throw new ParserException();
         	lexer.moveNext();
             expr2 = getStatement();
-        	return new Binding(identifier, expr, expr2);
+            return new Binding(identifier, expr, expr2);
         }else if (lexer.getCurrent().getTypeLexem() == lexems.PRINT){
             lexer.moveNext();
             return new Print(getExpression());
@@ -69,13 +71,20 @@ public class Parser {
         }else if (lexer.getCurrent().getTypeLexem() == lexems.Identifier) {
             identifier = new Identifier(lexer.getCurrent().getStringLexem());
             lexer.moveNext();
+            /* //THIS IS ONLY IF SIMPLE EQ.(NOT ON LET STAT.) ARE ALLOWED - THINK!*/
             if (lexer.getCurrent().getTypeLexem() == lexems.Equation){
                 lexer.moveNext();
                 expr = getExpression();
                 return new Binding(identifier, expr, expr2);
-            }else if(lexer.getCurrent().getTypeLexem() != lexems.EOF) throw new ParserException();
+            }else if(ifEndEofSem()) throw new ParserException();
             return identifier;
         }else throw new ParserException();
+    }
+
+    private boolean ifEndEofSem(){
+        return (lexer.getCurrent().getTypeLexem() != lexems.EOF
+             && lexer.getCurrent().getTypeLexem() != lexems.END
+             && lexer.getCurrent().getTypeLexem() != lexems.Semicolon);
     }
 
     public Expression getExpression() throws ParserException{
@@ -87,7 +96,8 @@ public class Parser {
             return left;
         }else
         if (lexer.getCurrent().getTypeLexem()== lexems.THEN || lexer.getCurrent().getTypeLexem()== lexems.IN
-                || lexer.getCurrent().getTypeLexem()== lexems.EOF){
+                || lexer.getCurrent().getTypeLexem()== lexems.EOF
+                || lexer.getCurrent().getTypeLexem()== lexems.END){
             return left; //then and in will not be erased
         }else {
             if (lexer.getCurrent().getTypeLexem() == lexems.Unknown)
