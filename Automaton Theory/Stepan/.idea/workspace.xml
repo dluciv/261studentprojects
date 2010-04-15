@@ -59,26 +59,7 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="4" selection-start="116" selection-end="116" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Machine.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/Machine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="28" selection-start="1977" selection-end="1977" vertical-scroll-proportion="0.6524702">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -89,8 +70,8 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/src/name/stepa/turing/Main.java" />
-        <option value="$PROJECT_DIR$/src/name/stepa/turing/InfiniteTape.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/turing/Machine.java" />
+        <option value="$PROJECT_DIR$/src/name/stepa/turing/InfiniteTape.java" />
       </list>
     </option>
   </component>
@@ -443,21 +424,21 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/InfiniteTape.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="22" selection-start="470" selection-end="470" vertical-scroll-proportion="0.5212947">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="4" selection-start="116" selection-end="116" vertical-scroll-proportion="0.0">
+        <state line="8" column="0" selection-start="147" selection-end="147" vertical-scroll-proportion="0.23168655">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/Machine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="28" selection-start="1977" selection-end="1977" vertical-scroll-proportion="0.6524702">
+        <state line="69" column="28" selection-start="1977" selection-end="1977" vertical-scroll-proportion="1.9982964">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="4" selection-start="116" selection-end="116" vertical-scroll-proportion="0.1737649">
           <folding />
         </state>
       </provider>
