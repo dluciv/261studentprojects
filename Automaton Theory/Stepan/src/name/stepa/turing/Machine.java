@@ -5,31 +5,7 @@ package name.stepa.turing;
  */
 public class Machine {
 
-    public static enum Move {
-        LEFT, RIGHT, NONE;
-
-        private Move() {
-        }
-    }
-
-    public static class MachineRule {
-
-        public static char VALUE_UNKNOWN = '*';
-
-        public int oldState;
-        public char oldValue;
-        public char newValue;
-        public int newState;
-        public Move movement;
-
-        public MachineRule(int oldState, char oldValue, int newState, char newValue, Move movement) {
-            this.oldState = oldState;
-            this.oldValue = oldValue;
-            this.newValue = newValue;
-            this.newState = newState;
-            this.movement = movement;
-        }
-    }
+    public static final int STATE_STOP = -1;
 
     public int currentState;
     public int currentPos;
@@ -37,10 +13,11 @@ public class Machine {
     public InfiniteTape tape;
 
 
-    public Machine(int startupState, int startupPos, String startupTape, MachineRule[] rules) {
-        this.currentState = startupState;
-        this.currentPos = startupPos;
+    public Machine(int startState, int startPos, String startupTape, MachineRule[] rules) {
+        this.currentState = startState;
+        this.currentPos = startPos;
         this.rules = rules;
+        this.tape = new InfiniteTape();
 
         char[] data = startupTape.toCharArray();
         for (int i = 0; i < data.length; i++) {
@@ -48,15 +25,25 @@ public class Machine {
         }
     }
 
-    public boolean iterate() throws Exception {
-        if (currentPos < 0)
-            throw new Exception("Wrong state!");
+    public boolean iterate(boolean isLogging) {
+        if (currentState == STATE_STOP)
+            return false;
 
         char currentValue = tape.get(currentPos);
         for (MachineRule rule : rules) {
-            if ((rule.oldState == currentState) && ((rule.oldValue == currentValue) || (rule.oldValue == MachineRule.VALUE_UNKNOWN))) {
+            if ((rule.oldState == currentState) && ((rule.oldValue == currentValue) ||
+                    (rule.oldValue == MachineRule.ANY_VALUE))) {
 
-                if (rule.newValue != MachineRule.VALUE_UNKNOWN) {
+                if (isLogging) {
+                    System.out.println(String.format("Selected rule: (%d,%c)->(%d,%c,%s)", rule.oldState, rule.oldValue, rule.newState, rule.newValue, rule.movement.toString()));
+                }
+
+                if (rule.movement == Move.STOP) {
+                    currentState = STATE_STOP;
+                    return false;
+                }
+
+                if (rule.newValue != MachineRule.ANY_VALUE) {
                     tape.set(currentPos, rule.newValue);
                 }
 
@@ -72,4 +59,17 @@ public class Machine {
         }
         return false;
     }
+
+    public String getStateString() {
+        StringBuilder res = new StringBuilder();
+        res.append("State:");
+        res.append(currentState);
+        res.append('\n');
+        res.append("Tape:");
+        res.append('\n');
+        res.append(tape.getStateString(currentPos));
+        res.append('\n');
+        return res.toString();
+    }
+
 }
