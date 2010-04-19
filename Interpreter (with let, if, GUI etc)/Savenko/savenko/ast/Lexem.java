@@ -7,19 +7,23 @@ public class Lexem {
 	private int number;
 	private String identifier;
 	private lexems type;
+	private Position position = null;
 	
-	public Lexem(lexems lexem){
+	public Lexem(lexems lexem, Position position){
 		type = lexem;
+		this.position = position;
 	}
 	
-	public Lexem(lexems lexem,int new_number){
+	public Lexem(lexems lexem,int number, Position position){
 		type = lexem;
-		number = new_number;
+		this.number = number;
+		this.position = position;
 	}
 	
-	public Lexem(lexems lexem,String new_identifier){
+	public Lexem(lexems lexem,String identifier, Position position){
 		type = lexem;
-		identifier = new_identifier;
+		this.identifier = identifier;
+		this.position = position;
 	}
 	
 	public lexems getTypeLexem(){
@@ -33,5 +37,9 @@ public class Lexem {
 	public int getIntLexem(){
 		return number;
 	}
+
+        public  Position getPosition(){
+             return position;
+        }
 
 }
