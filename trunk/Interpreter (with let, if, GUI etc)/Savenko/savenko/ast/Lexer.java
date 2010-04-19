@@ -6,7 +6,6 @@
  */
 package savenko.ast;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Lexer {
@@ -14,9 +13,13 @@ public class Lexer {
     public enum lexems {Plus,Minus,Divide,Multiply,LeftBracket,RightBracket,Number,
                         Identifier,EOF,Unknown, Keyword,
                         IF,THEN,ELSE,LET,IN,BEGIN,END,FUN,PRINT,
-                        Semicolon,Equation, LE, GE, Less, Greater};
+                        Semicolon,Equation,
+                        AND, OR, NO, LE, GE, LESS, GREATER, UNEQUAL};
     private String expression;
     private int curr_index = 0;
+    private int old_index = 0 ;
+    private int row_num = 0;
+    private int col_num = 0;
     private static HashMap<String, lexems> keywords = new HashMap<String, lexems>() {{
     		put("if",lexems.IF);
     		put("then",lexems.THEN);
@@ -27,6 +30,14 @@ public class Lexer {
                 put("end",lexems.END);
     		put("fun",lexems.FUN);
     		put("print",lexems.PRINT);
+                put("&&",lexems.AND);
+                put("||",lexems.OR);
+                put("!",lexems.NO);
+                put(">",lexems.GREATER);
+                put("<",lexems.LESS);
+                put(">=",lexems.GE);
+                put("<=",lexems.LE);
+                put("<>",lexems.UNEQUAL);
     	}};
 
     public Lexer(String programm){
@@ -83,45 +94,56 @@ public class Lexer {
     
     private Lexem currLexem;
     
-    public void moveNext(){
+    private Position getPosition(){
+    	return new Position(col_num ,row_num, curr_index, curr_index - old_index);
+    }
+    
+    public void moveNext(){    	
         char currChar = ' ';
+
         if (curr_index < expression.length()){
             currChar = expression.charAt(curr_index);
         
         while (currChar == ' ' || currChar == '\r' || currChar == '\n') {
         	curr_index++;
+        	if (currChar == '\n'){
+        		col_num = 0;
+        		row_num++;
+        	}else col_num++;
         	currChar =  expression.charAt(curr_index);
         }
         }
+
+        old_index = curr_index;
         
         switch (currChar) {
-        case '+': currLexem = new Lexem(lexems.Plus,'+'); curr_index++; break;        
-        case '-': currLexem = new Lexem(lexems.Minus,'-');curr_index++; break;
-    	case '*': currLexem = new Lexem(lexems.Multiply,'*');curr_index++; break;
-    	case '/': currLexem = new Lexem(lexems.Divide,'/');curr_index++; break;
-    	case '(': currLexem = new Lexem(lexems.LeftBracket,'(');curr_index++; break;
-    	case ')': currLexem = new Lexem(lexems.RightBracket,')');curr_index++; break;
-    	case '=': currLexem = new Lexem(lexems.Equation,'='); curr_index++; break;
-    	case ';': currLexem = new Lexem(lexems.Semicolon,';');curr_index++; break;
+        case '+': currLexem = new Lexem(lexems.Plus,'+', getPosition()); curr_index++; break;        
+        case '-': currLexem = new Lexem(lexems.Minus,'-', getPosition());curr_index++; break;
+    	case '*': currLexem = new Lexem(lexems.Multiply,'*', getPosition());curr_index++; break;
+    	case '/': currLexem = new Lexem(lexems.Divide,'/', getPosition());curr_index++; break;
+    	case '(': currLexem = new Lexem(lexems.LeftBracket,'(', getPosition());curr_index++; break;
+    	case ')': currLexem = new Lexem(lexems.RightBracket,')', getPosition());curr_index++; break;
+    	case '=': currLexem = new Lexem(lexems.Equation,'=', getPosition()); curr_index++; break;
+    	case ';': currLexem = new Lexem(lexems.Semicolon,';', getPosition());curr_index++; break;
     	//---------------------------Think About It!-----------------------
     	//if (currChar.equals('<')) return new Lexem(lexems.Greater,'<');
     	//if (currChar.equals('>')) return new Lexem(lexems.Less,'>');
     	default:
 	        if (ifEOF()) {
-	        	currLexem = new Lexem(lexems.EOF,'0');
+	        	currLexem = new Lexem(lexems.EOF,'0', getPosition());
 	        }else 
 	        if (ifNumber()){
-	        	currLexem = new Lexem(lexems.Number,getNumber());
+	        	currLexem = new Lexem(lexems.Number,getNumber(),getPosition());
 	        }else
 	        
 	        if (ifIdentifier()){
-	        	String ident = getIdentifier();
-	        	if (ifKeyword(ident)){
-	        		currLexem = new Lexem(keywords.get(ident),ident);
+	        	String identifier = getIdentifier();
+	        	if (ifKeyword(identifier)){
+	        		currLexem = new Lexem(keywords.get(identifier),identifier, getPosition());
 	        	}else 
-	        		currLexem = new Lexem(lexems.Identifier,ident);
+	        		currLexem = new Lexem(lexems.Identifier,identifier, getPosition());
 	        }else
-	        	currLexem = new Lexem(lexems.Unknown,'0');
+	        	currLexem = new Lexem(lexems.Unknown,'0',getPosition());
         }
 
     }

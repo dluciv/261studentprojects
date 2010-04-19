@@ -23,10 +23,6 @@ public class Interpreter {
     public Interpreter (){
         environment = new Environment();
     }
-    /*
-    public Value interpret(ProgrammToInterpret programm) throws InterpreterException{
-        return interpret(programm.getSequence());
-    }*/
     
     public Value interpret(Sequence sequence) throws InterpreterException{
     	Value val = null;
@@ -89,7 +85,7 @@ public class Interpreter {
     private Value interpret(Identifier id) throws NullIDException{
     	Value val = environment.getValue(id);
         if (val != null) return val;
-        else throw new NullIDException();
+        else throw new NullIDException(null);
     }
     
     private Value interpret(Print id) throws InterpreterException{
@@ -140,8 +136,7 @@ public class Interpreter {
             return interpret((If) node);
         if (node instanceof Begin)
             return interpret((Begin) node);
-        else new Exception("");
-        return null;
+        else throw new InterpreterException(null);
     }
 
 }
