@@ -1,98 +1,158 @@
 //Lebedev Dmitry 2010 (c)
 package ast;
 
+import java.util.Scanner;
+
 public class Lexer {
 
-    public enum lexem {
-
-        plus, minus, divide, multiply, eol, openbracket, closebracket, number, unknown
-    }
-    private String expression;
-    private int position;
+//    public enum LexemKind {
+//        plus, minus, divide, multiply, openbracket, closebracket, number, unknown, semicolon, let, eof
+//    }
+    private String currentString;
+    private int symbolPosition;
+    private int linePosition;
+    private int absPosition;
     private int counter;
+    private Scanner programm;
+    private Lexem lexem;
 
-    public Lexer(String arg) {
-        position = 0;
-        expression = arg;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public String getCurrent() {
-        if (expression.length() > position) {
-            if (expression.charAt(position) >= '0' && expression.charAt(position) <= '9') {
-                return getNumber();
+    public Lexer(Scanner scanner) {
+        symbolPosition = 0;
+        programm = scanner;
+        if (programm.hasNextLine()) {
+            currentString = programm.nextLine();
+        }
+        lexem = new Lexem(LexemKind.unknown);//Pair.create(LexemKind.unknown, "0");
+        if (currentString.charAt(symbolPosition) == ';') {
+            lexem = new Lexem(LexemKind.semicolon);//Pair.create(LexemKind.semicolon, "0");
             }
-            return expression.substring(position, position + 1);
-        } else {
-            return "/n";
+        if (currentString.charAt(symbolPosition) == '+') {
+            lexem = new Lexem(LexemKind.plus);//Pair.create(LexemKind.plus, "0");
+            }
+        if (currentString.charAt(symbolPosition) == '-') {
+            lexem = new Lexem(LexemKind.minus);// Pair.create(LexemKind.minus, "0");
+            }
+        if (currentString.charAt(symbolPosition) == '*') {
+            lexem = new Lexem(LexemKind.multiply);//Pair.create(LexemKind.multiply, "0");
+            }
+        if (currentString.charAt(symbolPosition) == '/') {
+            lexem = new Lexem(LexemKind.divide);//Pair.create(LexemKind.divide, "0");
+            }
+        if (currentString.charAt(symbolPosition) == '(') {
+            lexem = new Lexem(LexemKind.openbracket);//Pair.create(LexemKind.openbracket, "0");
+            }
+        if (currentString.charAt(symbolPosition) == ')') {
+            lexem = new Lexem(LexemKind.closebracket);//Pair.create(LexemKind.closebracket, "0");
+            }
+        if (currentString.charAt(symbolPosition) >= '0' && currentString.charAt(symbolPosition) <= '9') {
+            lexem = new Lexem(LexemKind.number, programm.nextInt()); //Pair.create(LexemKind.number, CurrLexem);
+            }
+        if (currentString.length() == symbolPosition && !(programm.hasNextLine())) {
+            lexem = new Lexem(LexemKind.eof);//Pair.create(LexemKind.eol, "/n");
+
         }
+        //lexem = ;
     }
 
-    public Pair<lexem, String> getCurrentLexem() {
-        String CurrLexem = getCurrent();
-
-        if (CurrLexem.equals("+")) {
-            return Pair.create(lexem.plus, "0");
-        }
-        if (CurrLexem.equals("-")) {
-            return Pair.create(lexem.minus, "0");
-        }
-        if (CurrLexem.equals("*")) {
-            return Pair.create(lexem.multiply, "0");
-        }
-        if (CurrLexem.equals("/")) {
-            return Pair.create(lexem.divide, "0");
-        }
-        if (CurrLexem.equals("(")) {
-            return Pair.create(lexem.openbracket, "0");
-        }
-        if (CurrLexem.equals(")")) {
-            return Pair.create(lexem.closebracket, "0");
-        }
-        if (CurrLexem.charAt(0) >= '0' && CurrLexem.charAt(0) <= '9') {
-            return Pair.create(lexem.number, CurrLexem);
-        }
-        if (CurrLexem.equals("/n")) {
-            return Pair.create(lexem.eol, "/n");
-        }
-
-        return Pair.create(lexem.unknown, "0");
+    public int getSymbolPosition() {
+        return symbolPosition;
     }
 
-    public String getNumber() {
+    public int getLinePosition() {
+        return linePosition;
+    }
+
+    public int getAbsPosition() {
+        return absPosition;
+    }
+//    public String getCurrent() {
+//        if (currentString.length() > symbolPosition) {
+//            if (currentString.charAt(symbolPosition) >= '0' && currentString.charAt(symbolPosition) <= '9') {
+//                return getNumber();
+//            }
+//            return currentString.substring(symbolPosition, symbolPosition + 1);
+//        } else {
+//            return "/n";
+//        }
+//    }
+//    String CurrLexem = getCurrent();
+
+    public Lexem getCurrentLexem() {
+        return lexem;
+    }
+
+//    public int getNumber() {
+//        return programm.nextInt();
+//    }
+    public int getNumber() {
         String number = "";
-        counter = position;
-        while (expression.length() > counter && expression.charAt(counter) >= '0' && expression.charAt(counter) <= '9') {
-            number += String.valueOf(expression.charAt(counter));
+        counter = symbolPosition;
+        while (currentString.length() > counter && currentString.charAt(counter) >= '0' && currentString.charAt(counter) <= '9') {
+            number += String.valueOf(currentString.charAt(counter));
             counter++;
         }
-        return number;
+        return Integer.parseInt(number);
     }
 
+//    private int getInt() {
+//        throw new UnsupportedOperationException("Not yet implemented");
+//    }
     public void moveNext() {
-        if (expression.length() > position) {
-
-            if (expression.charAt(position) <= '0' || expression.charAt(position) >= '9') {
-                position++;
-            } else {
-                while (expression.length() > position &&
-                        expression.charAt(position) >= '0' &&
-                        expression.charAt(position) <= '9') {
-                    position++;
-                }
+        if (currentString.length() > symbolPosition + 1) {
+            while (currentString.length() > symbolPosition && currentString.charAt(symbolPosition) == ' ') {
+                symbolPosition++;
+                absPosition++;
             }
-            while (expression.length() > position && expression.charAt(position) == ' ') {
-                position++;
+
+            if (currentString.charAt(symbolPosition) <= '0' || currentString.charAt(symbolPosition) >= '9') {
+                symbolPosition++;
+                absPosition++;
+            } else {
+                while (currentString.length() > symbolPosition &&
+                        currentString.charAt(symbolPosition) >= '0' &&
+                        currentString.charAt(symbolPosition) <= '9') {
+                    symbolPosition++;
+                    absPosition++;
+                }
+                //Curr
             }
         } else {
-            if (expression.length() == position) {
-                return;
+            if (currentString.length() == symbolPosition + 1 && programm.hasNextLine()) {
+                currentString = programm.nextLine();
+                linePosition++;
+                absPosition++;
+                symbolPosition = 0;
             } else {
-                expression = "/n";
+                currentString = "\n";
             }
         }
+        lexem = new Lexem(LexemKind.unknown);//Pair.create(LexemKind.unknown, "0");
+        if (currentString.charAt(symbolPosition) == ';') {
+            lexem = new Lexem(LexemKind.semicolon);//Pair.create(LexemKind.semicolon, "0");
+            }
+        if (currentString.charAt(symbolPosition) == '+') {
+            lexem = new Lexem(LexemKind.plus);//Pair.create(LexemKind.plus, "0");
+            }
+        if (currentString.charAt(symbolPosition) == '-') {
+            lexem = new Lexem(LexemKind.minus);// Pair.create(LexemKind.minus, "0");
+            }
+        if (currentString.charAt(symbolPosition) == '*') {
+            lexem = new Lexem(LexemKind.multiply);//Pair.create(LexemKind.multiply, "0");
+            }
+        if (currentString.charAt(symbolPosition) == '/') {
+            lexem = new Lexem(LexemKind.divide);//Pair.create(LexemKind.divide, "0");
+            }
+        if (currentString.charAt(symbolPosition) == '(') {
+            lexem = new Lexem(LexemKind.openbracket);//Pair.create(LexemKind.openbracket, "0");
+            }
+        if (currentString.charAt(symbolPosition) == ')') {
+            lexem = new Lexem(LexemKind.closebracket);//Pair.create(LexemKind.closebracket, "0");
+            }
+        if (currentString.charAt(symbolPosition) >= '0' && currentString.charAt(symbolPosition) <= '9') {
+            lexem = new Lexem(LexemKind.number, getNumber()); //Pair.create(LexemKind.number, CurrLexem);
+            }
+        if (currentString.length() == symbolPosition && !(programm.hasNextLine())) {
+            lexem = new Lexem(LexemKind.eof);//Pair.create(LexemKind.eol, "/n");
+            }
     }
 }
