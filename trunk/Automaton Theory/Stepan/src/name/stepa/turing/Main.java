@@ -6,18 +6,22 @@ package name.stepa.turing;
 public class Main {
 
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("USAGE:");
-            System.out.println("TuringMachine <app_path> <input_data>");
-            System.out.println("For testing execute:");
-            System.out.println("TuringMachine sum.txt \"111x11=\"");
-            return;
-        }
-        Machine m = MachineFactory.createMachine(args[0], args[1]);
 
-        System.out.print(m.getStateString());
-        while (m.iterate(true))
-            System.out.print(m.getStateString());
-        System.out.print(m.getStateString());
+        boolean verbose = false;
+        int parIndex = 0;
+        if (args[0] == "-t") {
+            parIndex++;
+            verbose = true;
+        }
+
+
+        Machine m = MachineFactory.createMachine(args[parIndex], args[parIndex + 1]);
+
+        if (verbose)
+            System.out.print(m);
+        while (m.iterate(verbose))
+            if (verbose)
+                System.out.print(m);
+        System.out.print(m);
     }
 }

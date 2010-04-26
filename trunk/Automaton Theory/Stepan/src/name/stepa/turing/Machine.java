@@ -5,31 +5,24 @@ package name.stepa.turing;
  */
 public class Machine {
 
-    public static final int STATE_STOP = -1;
-
+    public boolean isStopped;
     public int currentState;
-    public int currentPos;
     public MachineRule[] rules;
     public InfiniteTape tape;
 
 
-    public Machine(int startState, int startPos, String startupTape, MachineRule[] rules) {
+    public Machine(int startState, String startTape, MachineRule[] rules) {
         this.currentState = startState;
-        this.currentPos = startPos;
         this.rules = rules;
-        this.tape = new InfiniteTape();
-
-        char[] data = startupTape.toCharArray();
-        for (int i = 0; i < data.length; i++) {
-            tape.set(i, data[i]);
-        }
+        this.tape = new InfiniteTape(startTape);
+        this.isStopped = false;
     }
 
     public boolean iterate(boolean isLogging) {
-        if (currentState == STATE_STOP)
+        if (isStopped)
             return false;
 
-        char currentValue = tape.get(currentPos);
+        char currentValue = tape.readValue();
         for (MachineRule rule : rules) {
             if ((rule.oldState == currentState) && ((rule.oldValue == currentValue) ||
                     (rule.oldValue == MachineRule.ANY_VALUE))) {
@@ -39,20 +32,20 @@ public class Machine {
                 }
 
                 if (rule.movement == Move.STOP) {
-                    currentState = STATE_STOP;
+                    isStopped = true;
                     return false;
                 }
 
                 if (rule.newValue != MachineRule.ANY_VALUE) {
-                    tape.set(currentPos, rule.newValue);
+                    tape.writeValue(rule.newValue);
                 }
 
                 currentState = rule.newState;
 
                 if (rule.movement == Move.LEFT)
-                    currentPos--;
+                    tape.moveLeft();
                 else if (rule.movement == Move.RIGHT)
-                    currentPos++;
+                    tape.moveRight();
 
                 return true;
             }
@@ -60,16 +53,8 @@ public class Machine {
         return false;
     }
 
-    public String getStateString() {
-        StringBuilder res = new StringBuilder();
-        res.append("State:");
-        res.append(currentState);
-        res.append('\n');
-        res.append("Tape:");
-        res.append('\n');
-        res.append(tape.getStateString(currentPos));
-        res.append('\n');
-        return res.toString();
+    @Override
+    public String toString() {
+        return "(" + currentState + "," + tape + ")";
     }
-
 }
