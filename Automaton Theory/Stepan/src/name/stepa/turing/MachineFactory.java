@@ -42,6 +42,6 @@ public class MachineFactory {
     }
 
     public static Machine createMachine(String state, String fileName) {
-        return new Machine(0, 0, state, loadRules(fileName));
+        return new Machine(0, state, loadRules(fileName));
     }
 }

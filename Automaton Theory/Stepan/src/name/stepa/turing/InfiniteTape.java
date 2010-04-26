@@ -11,24 +11,53 @@ public class InfiniteTape {
 
     private HashMap<Integer, Character> map = new HashMap();
 
-    public synchronized void set(Integer index, Character value) {
-        if (!map.containsKey(index))
-            map.remove(index);
-        map.put(index, value);
+    private int position = 0;
+
+    public InfiniteTape(String initialData) {
+        char[] data = initialData.toCharArray();
+        for (int i = 0; i < data.length; i++) {
+            writeValue(data[i], i);
+        }
     }
 
-    public synchronized Character get(Integer index) {
-        if (!map.containsKey(index))
+    public int getPosition() {
+        return position;
+    }
+
+    public void moveRight() {
+        position++;
+    }
+
+    public void moveLeft() {
+        position--;
+    }
+
+    public void writeValue(Character value) {
+        if (!map.containsKey(position))
+            map.remove(position);
+        map.put(position, value);
+    }
+
+    public Character readValue() {
+        return readValue(position);
+    }
+
+    private Character readValue(int pos) {
+        if (!map.containsKey(pos))
             return TAPE_UNKNOWN_VALUE;
         else
-            return map.get(index);
+            return map.get(pos);
     }
 
-    public String getStateString() {
-        return getStateString(-1);
+    private void writeValue(Character value, int pos) {
+        if (!map.containsKey(pos))
+            map.remove(pos);
+        map.put(pos, value);
     }
 
-    public synchronized String getStateString(int pos) {
+
+    @Override
+    public String toString() {
         StringBuilder res = new StringBuilder();
 
         int maxIndex = 0;
@@ -41,17 +70,13 @@ public class InfiniteTape {
         }
 
         for (int i = minIndex - 3; i <= maxIndex + 3; i++) {
-            res.append(get(i));
-        }
-
-        if (pos != -1) {
-            res.append('\n');
-            for (int i = minIndex - 3; i < pos; i++)
-                res.append(' ');
-            res.append('^');
+            res.append(readValue(i));
+            if (i == position)
+                res.append('^');
         }
 
         return res.toString();
     }
+
 
 }
