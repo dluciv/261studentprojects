@@ -9,6 +9,7 @@ public class Machine {
     public int currentState;
     public MachineRule[] rules;
     public InfiniteTape tape;
+    public boolean verbose;
 
 
     public Machine(int startState, String startTape, MachineRule[] rules) {
@@ -16,9 +17,10 @@ public class Machine {
         this.rules = rules;
         this.tape = new InfiniteTape(startTape);
         this.isStopped = false;
+        this.verbose = false;
     }
 
-    public boolean iterate(boolean isLogging) {
+    public boolean iterate() {
         if (isStopped)
             return false;
 
@@ -27,7 +29,7 @@ public class Machine {
             if ((rule.oldState == currentState) && ((rule.oldValue == currentValue) ||
                     (rule.oldValue == MachineRule.ANY_VALUE))) {
 
-                if (isLogging) {
+                if (verbose) {
                     System.out.println(String.format("Selected rule: (%d,%c)->(%d,%c,%s)", rule.oldState, rule.oldValue, rule.newState, rule.newValue, rule.movement.toString()));
                 }
 
@@ -50,6 +52,8 @@ public class Machine {
                 return true;
             }
         }
+
+        isStopped = true;
         return false;
     }
 
