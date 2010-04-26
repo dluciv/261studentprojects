@@ -59,7 +59,17 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="Main.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="28" selection-start="427" selection-end="427" vertical-scroll-proportion="0.3403782">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -126,6 +136,34 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="Stepan" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Stepan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Stepan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Stepan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Stepan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="turing" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -349,7 +387,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="36" width="1928" height="1048" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -363,7 +401,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16123866" sideWeight="0.6627027" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16123866" sideWeight="0.6627027" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18378378" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -416,9 +454,16 @@
         <state line="5" column="24" selection-start="105" selection-end="116" vertical-scroll-proportion="0.11772853" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/MachineFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="40" selection-start="847" selection-end="847" vertical-scroll-proportion="0.3971079">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/InfiniteTape.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="32" selection-start="265" selection-end="265" vertical-scroll-proportion="0.09232481">
+        <state line="17" column="52" selection-start="439" selection-end="439" vertical-scroll-proportion="0.2080089">
           <folding>
             <element signature="method#writeValue#0;class#InfiniteTape#0" expanded="false" />
             <element signature="method#readValue#1;class#InfiniteTape#0" expanded="false" />
@@ -427,23 +472,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/MachineFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="40" selection-start="847" selection-end="847" vertical-scroll-proportion="0.3971079">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/Machine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="28" selection-start="144" selection-end="144" vertical-scroll-proportion="0.1323693">
+        <state line="19" column="29" selection-start="521" selection-end="521" vertical-scroll-proportion="0.3592881">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/turing/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="27" selection-start="300" selection-end="300" vertical-scroll-proportion="0.2458287">
+        <state line="18" column="28" selection-start="427" selection-end="427" vertical-scroll-proportion="0.3403782">
           <folding />
         </state>
       </provider>

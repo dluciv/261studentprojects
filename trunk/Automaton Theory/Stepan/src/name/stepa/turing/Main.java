@@ -16,10 +16,11 @@ public class Main {
 
 
         Machine m = MachineFactory.createMachine(args[parIndex], args[parIndex + 1]);
+        m.verbose = verbose;
 
         if (verbose)
             System.out.print(m);
-        while (m.iterate(verbose))
+        while (m.iterate())
             if (verbose)
                 System.out.print(m);
         System.out.print(m);
