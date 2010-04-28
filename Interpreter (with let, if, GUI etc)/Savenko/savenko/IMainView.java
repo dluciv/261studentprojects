@@ -11,5 +11,8 @@ public interface IMainView {
 	public void setProgramText(String program);
 	
 	public void printResult(String result);
+	
+	public void resetConsole();
 
+        public void highlightText(int start_ind, int end_index);
 }

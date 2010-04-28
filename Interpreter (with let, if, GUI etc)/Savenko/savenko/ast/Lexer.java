@@ -32,12 +32,6 @@ public class Lexer {
     		put("print",lexems.PRINT);
                 put("&&",lexems.AND);
                 put("||",lexems.OR);
-                put("!",lexems.NO);
-                put(">",lexems.GREATER);
-                put("<",lexems.LESS);
-                put(">=",lexems.GE);
-                put("<=",lexems.LE);
-                put("<>",lexems.UNEQUAL);
     	}};
 
     public Lexer(String programm){
@@ -95,7 +89,7 @@ public class Lexer {
     private Lexem currLexem;
     
     private Position getPosition(){
-    	return new Position(col_num ,row_num, curr_index, curr_index - old_index);
+    	return new Position(col_num ,row_num, old_index, curr_index - old_index);
     }
     
     public void moveNext(){    	
@@ -117,17 +111,36 @@ public class Lexer {
         old_index = curr_index;
         
         switch (currChar) {
-        case '+': currLexem = new Lexem(lexems.Plus,'+', getPosition()); curr_index++; break;        
-        case '-': currLexem = new Lexem(lexems.Minus,'-', getPosition());curr_index++; break;
-    	case '*': currLexem = new Lexem(lexems.Multiply,'*', getPosition());curr_index++; break;
-    	case '/': currLexem = new Lexem(lexems.Divide,'/', getPosition());curr_index++; break;
-    	case '(': currLexem = new Lexem(lexems.LeftBracket,'(', getPosition());curr_index++; break;
-    	case ')': currLexem = new Lexem(lexems.RightBracket,')', getPosition());curr_index++; break;
-    	case '=': currLexem = new Lexem(lexems.Equation,'=', getPosition()); curr_index++; break;
-    	case ';': currLexem = new Lexem(lexems.Semicolon,';', getPosition());curr_index++; break;
-    	//---------------------------Think About It!-----------------------
-    	//if (currChar.equals('<')) return new Lexem(lexems.Greater,'<');
-    	//if (currChar.equals('>')) return new Lexem(lexems.Less,'>');
+        case '+': curr_index++; currLexem = new Lexem(lexems.Plus,'+', getPosition()); break;        
+        case '-': curr_index++; currLexem = new Lexem(lexems.Minus,'-', getPosition());break;
+    	case '*': curr_index++; currLexem = new Lexem(lexems.Multiply,'*', getPosition());break;
+    	case '/': curr_index++; currLexem = new Lexem(lexems.Divide,'/', getPosition());break;
+    	case '(': curr_index++; currLexem = new Lexem(lexems.LeftBracket,'(', getPosition());break;
+    	case ')': curr_index++; currLexem = new Lexem(lexems.RightBracket,')', getPosition());break;
+    	case '=': curr_index++; currLexem = new Lexem(lexems.Equation,'=', getPosition());break;
+    	case ';': curr_index++; currLexem = new Lexem(lexems.Semicolon,';', getPosition());break;
+        case '!': curr_index++; currLexem = new Lexem(lexems.NO, '!', getPosition()); break;
+        case '>':
+             switch (expression.charAt(curr_index+1)){
+             case '=': curr_index+=2; currLexem = new Lexem(lexems.GE, '>', getPosition()); break;
+             default:  curr_index++; currLexem = new Lexem(lexems.GREATER, '>', getPosition()); break;
+             }
+        case '<':
+             switch (expression.charAt(curr_index+1)){
+             case '=': curr_index+=2; currLexem = new Lexem(lexems.LE, '<', getPosition()); break;
+             case '>': curr_index+=2; currLexem = new Lexem(lexems.UNEQUAL, '<', getPosition()); break;
+             default:  curr_index++; currLexem = new Lexem(lexems.Unknown, '?', getPosition()); break;
+             }
+        case '&':
+             switch (expression.charAt(curr_index+1)){
+             case '&': curr_index+=2; currLexem = new Lexem(lexems.AND, '&', getPosition()); break;
+             default:  curr_index++; currLexem = new Lexem(lexems.Unknown, '?', getPosition()); break;
+             }
+        case '|':
+             switch (expression.charAt(curr_index+1)){
+             case '|': curr_index+=2; currLexem = new Lexem(lexems.GE, '>', getPosition()); break;
+             default:  curr_index++; currLexem = new Lexem(lexems.GREATER, '>', getPosition()); break;
+             }
     	default:
 	        if (ifEOF()) {
 	        	currLexem = new Lexem(lexems.EOF,'0', getPosition());
@@ -143,7 +156,7 @@ public class Lexer {
 	        	}else 
 	        		currLexem = new Lexem(lexems.Identifier,identifier, getPosition());
 	        }else
-	        	currLexem = new Lexem(lexems.Unknown,'0',getPosition());
+	        	currLexem = new Lexem(lexems.Unknown,'?',getPosition());
         }
 
     }

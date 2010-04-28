@@ -13,9 +13,9 @@ public class Program {
      public String Interpret() throws InterpreterException {
           interpreter = new Interpreter();
 
-          Value result = interpreter.interpret(sequence);
+          IntValue result = (IntValue)interpreter.interpret(sequence);
 
-          return String.valueOf(result.getIntValue());
+          return String.valueOf(result.getValue());
      }
 
      public Program(String program) throws ParserException {
