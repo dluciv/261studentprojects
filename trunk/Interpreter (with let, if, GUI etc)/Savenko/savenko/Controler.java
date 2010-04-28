@@ -1,5 +1,12 @@
 package savenko;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import savenko.ast.Program;
 
 public class Controler {
@@ -12,13 +19,18 @@ public class Controler {
      }
 
      public void interpret() {
-          view.printError(null,null);
+          view.resetConsole();
           try {
                program = new Program(view.getProgramText());
-               view.printResult(program.Interpret());
-          } catch (RightBracketExpectedException e){
+               String result = program.Interpret();
+               if (result == null) {
+                    view.printResult("BuildSuccessfull!");
+               } else {
+                    view.printResult("BuildSuccessfull!\n" + result);
+               }
+          } catch (RightBracketExpectedException e) {
                view.printError("Right bracket expected", e.getPosition());
-          } catch (UnexpectedRightBracketException e){
+          } catch (UnexpectedRightBracketException e) {
                view.printError("UnexpectedRightBracket", e.getPosition());
           } catch (SemicolonExpectedException e) {
                view.printError("Semicolon expected", e.getPosition());
@@ -32,5 +44,46 @@ public class Controler {
      }
 
      public void debug() {
+     }
+
+     public void openFile(String filename) {
+          BufferedReader in = null;
+          view.resetConsole();
+          String programm_text = "";
+
+          try {
+               in = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
+          } catch (FileNotFoundException e1) {
+               view.printError("File " + filename + " not found.", null);
+          }
+          try {
+               while (in.ready()) {
+                    programm_text += in.readLine();
+                    if (in.ready()) {
+                         programm_text += "\n";
+                    }
+               }
+               in.close();
+          } catch (IOException e) {
+               view.printError("Caught IOException while reading " + filename, null);
+          } finally {
+               //in.close();
+          }
+
+          view.setProgramText(programm_text);
+     }
+
+     public void saveFile(String filename, String program) {
+          BufferedWriter out = null;
+          view.resetConsole();
+
+          try {
+               out = new BufferedWriter(new FileWriter(filename));
+               out.write(program);
+               out.close();
+               view.printResult("File saved successfully");
+          } catch (IOException e) {
+               view.printError("Caught IOException while writing " + filename, null);
+          }
      }
 }

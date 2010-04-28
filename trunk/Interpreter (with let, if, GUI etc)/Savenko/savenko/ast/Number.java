@@ -7,7 +7,7 @@ public class Number implements Expression{
 	public Number(int value){
 		number = value;
 	}
-	
+	//delete
 	public int Value(){
 		return number;
 	}
