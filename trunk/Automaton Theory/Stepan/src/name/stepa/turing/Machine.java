@@ -33,13 +33,14 @@ public class Machine {
                     System.out.println(String.format("Selected rule: (%d,%c)->(%d,%c,%s)", rule.oldState, rule.oldValue, rule.newState, rule.newValue, rule.movement.toString()));
                 }
 
-                if (rule.movement == Move.STOP) {
-                    isStopped = true;
-                    return false;
-                }
-
                 if (rule.newValue != MachineRule.ANY_VALUE) {
                     tape.writeValue(rule.newValue);
+                }
+
+                if (rule.movement == Move.HALT) {
+                    isStopped = true;
+                    currentState = rule.newState;
+                    return false;
                 }
 
                 currentState = rule.newState;

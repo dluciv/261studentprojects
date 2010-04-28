@@ -9,7 +9,7 @@ public class Main {
 
         boolean verbose = false;
         int parIndex = 0;
-        if (args[0] == "-t") {
+        if (args[0].equals("-t")) {
             parIndex++;
             verbose = true;
         }
@@ -19,10 +19,10 @@ public class Main {
         m.verbose = verbose;
 
         if (verbose)
-            System.out.print(m);
+            System.out.println(m);
         while (m.iterate())
             if (verbose)
-                System.out.print(m);
-        System.out.print(m);
+                System.out.println(m);
+        System.out.println(m);
     }
 }

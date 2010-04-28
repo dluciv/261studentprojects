@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class InfiniteTape {
 
-    public final static char TAPE_UNKNOWN_VALUE = '*';
+    final static char TAPE_INIT_VALUE = '*';
 
     private HashMap<Integer, Character> map = new HashMap();
 
@@ -44,7 +44,7 @@ public class InfiniteTape {
 
     private Character readValue(int pos) {
         if (!map.containsKey(pos))
-            return TAPE_UNKNOWN_VALUE;
+            return TAPE_INIT_VALUE;
         else
             return map.get(pos);
     }
@@ -60,8 +60,8 @@ public class InfiniteTape {
     public String toString() {
         StringBuilder res = new StringBuilder();
 
-        int maxIndex = 0;
-        int minIndex = 0;
+        int maxIndex = position;
+        int minIndex = position;
         for (Integer i : map.keySet()) {
             if (maxIndex < i)
                 maxIndex = i;

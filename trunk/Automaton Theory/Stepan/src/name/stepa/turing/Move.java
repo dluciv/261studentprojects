@@ -4,7 +4,7 @@ package name.stepa.turing;
  * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
 public enum Move {
-    LEFT, RIGHT, NONE, STOP;
+    LEFT, RIGHT, NONE, HALT;
 
 
     @Override
@@ -15,7 +15,7 @@ public enum Move {
             return "R";
         if (this == NONE)
             return "N";
-        if (this == STOP)
+        if (this == HALT)
             return "H";
 
         return "?";
