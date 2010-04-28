@@ -24,7 +24,7 @@ public class MachineFactory {
                 if (data[4].equals("L"))
                     mv = Move.LEFT;
                 if (data[4].equals("H"))
-                    mv = Move.STOP;
+                    mv = Move.HALT;
 
                 MachineRule rule = new MachineRule(Integer.parseInt(data[0]), data[1].charAt(0),
                         Integer.parseInt(data[2]), data[3].charAt(0), mv);
@@ -41,7 +41,7 @@ public class MachineFactory {
         return res.toArray(new MachineRule[0]);
     }
 
-    public static Machine createMachine(String state, String fileName) {
+    public static Machine createMachine(String fileName, String state) {
         return new Machine(0, state, loadRules(fileName));
     }
 }
