@@ -61,7 +61,6 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
           executeButton = new javax.swing.JButton();
           DebugButton = new javax.swing.JButton();
           NextButton = new javax.swing.JButton();
-          Exit = new javax.swing.JButton();
           jMenuBar1 = new javax.swing.JMenuBar();
           fileMenu = new javax.swing.JMenu();
           openMenuItem = new javax.swing.JMenuItem();
@@ -103,7 +102,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
 
           jTextArea2.setBackground(java.awt.SystemColor.activeCaption);
           jTextArea2.setColumns(20);
-          jTextArea2.setFont(new java.awt.Font("Bookman Old Style", 1, 10)); // NOI18N
+          jTextArea2.setFont(new java.awt.Font("Bookman Old Style", 1, 10));
           jTextArea2.setRows(5);
           jTextArea2.setText("About:\n\nMain programmer: Savenko Maria\nSupervisor: Victor Polozov\n\nUsed: Eclipse 3.5, NetBeans IDE 6.8\n\nWas created in February - May 2010\n\n\n\n\n\n\n\nall image's rights belong to their \ncreators");
           jTextArea2.setDisabledTextColor(new java.awt.Color(0, 0, 0));
@@ -148,7 +147,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
 
           cancelSaveDButton.setText("Just Exit");
 
-          saveDLabel.setFont(new java.awt.Font("Bookman Old Style", 1, 12)); // NOI18N
+          saveDLabel.setFont(new java.awt.Font("Bookman Old Style", 1, 12));
           saveDLabel.setText("Document was changed. Save the changes?");
 
           javax.swing.GroupLayout saveDialogLayout = new javax.swing.GroupLayout(saveDialog.getContentPane());
@@ -239,18 +238,6 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
           NextButton.setMaximumSize(new java.awt.Dimension(31, 31));
           NextButton.setMinimumSize(new java.awt.Dimension(31, 31));
 
-          Exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/savenko/icons/i24/stop.png"))); // NOI18N
-          Exit.setToolTipText("Exit");
-          Exit.setFocusable(false);
-          Exit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-          Exit.setMaximumSize(new java.awt.Dimension(31, 31));
-          Exit.setMinimumSize(new java.awt.Dimension(31, 31));
-          Exit.addActionListener(new java.awt.event.ActionListener() {
-               public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    exitButtonClick(evt);
-               }
-          });
-
           javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
           jPanel1.setLayout(jPanel1Layout);
           jPanel1Layout.setHorizontalGroup(
@@ -266,15 +253,12 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
                     .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(NextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
-                    .addComponent(Exit, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap())
+                    .addContainerGap(233, Short.MAX_VALUE))
           );
           jPanel1Layout.setVerticalGroup(
                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                         .addComponent(Exit, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                          .addComponent(openRecentFileButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                          .addComponent(executeButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                          .addComponent(saveFileButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
@@ -494,7 +478,6 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
      }
      // Variables declaration - do not modify//GEN-BEGIN:variables
      private javax.swing.JButton DebugButton;
-     private javax.swing.JButton Exit;
      private javax.swing.JButton NextButton;
      private javax.swing.JDialog aboutDialog;
      private javax.swing.JMenuItem aboutMenuItem;
