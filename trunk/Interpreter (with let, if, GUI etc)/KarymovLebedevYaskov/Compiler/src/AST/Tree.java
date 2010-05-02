@@ -2,7 +2,4 @@
 package AST;
 
 public abstract class Tree {
-//    public int evaluate();
-//
-//    public void print();
 }
