@@ -1,6 +1,5 @@
 package savenko;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
 import savenko.ast.Begin;
 import savenko.ast.BoolValue;
 import savenko.ast.GE;

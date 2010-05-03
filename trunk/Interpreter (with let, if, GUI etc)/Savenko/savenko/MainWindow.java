@@ -6,6 +6,7 @@
 package savenko;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Graphics;
 import java.awt.Shape;
 import java.io.File;
@@ -61,6 +62,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
           executeButton = new javax.swing.JButton();
           DebugButton = new javax.swing.JButton();
           NextButton = new javax.swing.JButton();
+          progressBar = new javax.swing.JLabel();
           jMenuBar1 = new javax.swing.JMenuBar();
           fileMenu = new javax.swing.JMenu();
           openMenuItem = new javax.swing.JMenuItem();
@@ -140,6 +142,8 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
           );
 
+          saveDialog.setTitle("save?");
+
           okSaveDButton.setText("OK");
           okSaveDButton.setMaximumSize(new java.awt.Dimension(65, 23));
           okSaveDButton.setMinimumSize(new java.awt.Dimension(65, 23));
@@ -180,15 +184,18 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
 
           setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
           setTitle("Interpreter");
+          setMinimumSize(new java.awt.Dimension(492, 469));
           setName("main_frame"); // NOI18N
-          setResizable(false);
 
           programmTextField.setName("programmTextField"); // NOI18N
           jScrollPane1.setViewportView(programmTextField);
           programmTextField.getAccessibleContext().setAccessibleName("ProgrammTextField");
 
+          jScrollPane2.setMinimumSize(new java.awt.Dimension(114, 74));
+
           consoleTextField.setColumns(20);
           consoleTextField.setRows(5);
+          consoleTextField.setMinimumSize(new java.awt.Dimension(104, 64));
           jScrollPane2.setViewportView(consoleTextField);
           consoleTextField.getAccessibleContext().setAccessibleName("consoleTextField");
 
@@ -253,7 +260,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
                     .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(NextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(233, Short.MAX_VALUE))
+                    .addContainerGap(194, Short.MAX_VALUE))
           );
           jPanel1Layout.setVerticalGroup(
                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,6 +273,9 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
                          .addComponent(DebugButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGap(20, 20, 20))
           );
+
+          progressBar.setText("progressBar");
+          progressBar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
           fileMenu.setText("File");
 
@@ -332,17 +342,23 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
           layout.setHorizontalGroup(
                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-               .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
-               .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+               .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+               .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+               .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                    .addContainerGap())
           );
           layout.setVerticalGroup(
                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                .addGroup(layout.createSequentialGroup()
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap())
           );
 
@@ -370,38 +386,22 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
     private void exitButtonClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonClick
          System.exit(0);
     }//GEN-LAST:event_exitButtonClick
-     final JFileChooser fc = new JFileChooser();
-     File file = null;
 
+    final JFileChooser fc = new JFileChooser();
+    File file = null;
+    String current_filepath;
     private void openAsClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAsClick
+         programmTextField.setText(null);
          fc.showOpenDialog(this.openFDialogFrame);
-         fc.setAcceptAllFileFilterUsed(false);
-         fc.setFileFilter(new FileFilter() {
+         //fc.setAcceptAllFileFilterUsed(false);
 
-              @Override
-              public boolean accept(File f) {
-                   if (f.isDirectory()) {
-                        return true;
-                   }
-                   String extension = Utils.getExtension(f);
-                   if (extension != null) {
-                        if (extension.equals(Utils.txt)) {
-                             return true;
-                        } else {
-                             return false;
-                        }
-                   }
+         File file = fc.getSelectedFile();
+         if (file != null)
+              controler.openFile(file.getPath());
 
-                   return false;
-              }
-
-              @Override
-              public String getDescription() {
-                   throw new UnsupportedOperationException("Not supported yet.");
-              }
-         });
-
-         //controler.openFile(fc.SELECTED_FILES_CHANGED_PROPERTY);
+         recentFilesMenuItem.add(file.getName());
+         //recentFilesMenuItem.getComponent(0).(
+         //        evt,controler.openFile(file.getPath()));
     }//GEN-LAST:event_openAsClick
 
     private void aboutMIClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMIClick
@@ -413,7 +413,12 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
     }//GEN-LAST:event_okAboutDButtonClick
 
     private void saveAsButtonClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsButtonClick
-         // TODO add your handling code here:
+         programmTextField.setText(null);
+         fc.showSaveDialog(this.openFDialogFrame);
+
+         File file = fc.getSelectedFile();
+         if (file != null)
+              controler.saveFile(file.getPath(),programmTextField.getText());
     }//GEN-LAST:event_saveAsButtonClick
 
      public static void main(String args[]) {
@@ -463,6 +468,16 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
      }
 
      @Override
+     public void setProgressBarText(String progress){
+          progressBar.setText(progress);
+     }
+
+     @Override
+     public void resetProgressBar(){
+          progressBar.setText(null);
+     }
+
+     @Override
      public void resetConsole() {
           consoleTextField.setText(null);
      }
@@ -500,6 +515,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
      private javax.swing.JMenuItem openMenuItem;
      private javax.swing.JButton openRecentFileButton;
      private javax.swing.JTextPane programmTextField;
+     private javax.swing.JLabel progressBar;
      private javax.swing.JMenu recentFilesMenuItem;
      private javax.swing.JMenuItem saveAsMenuItem;
      private javax.swing.JLabel saveDLabel;
