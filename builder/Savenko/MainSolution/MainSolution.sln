@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainSolution", "MainSolution\MainSolution.csproj", "{166E803A-C69B-4CF4-B6DD-1E61DC70BE23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLibrary1", "..\TestLibrary1\TestLibrary1.csproj", "{73F2B9DA-8632-4492-9792-2257F8C0BC96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{166E803A-C69B-4CF4-B6DD-1E61DC70BE23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166E803A-C69B-4CF4-B6DD-1E61DC70BE23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166E803A-C69B-4CF4-B6DD-1E61DC70BE23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166E803A-C69B-4CF4-B6DD-1E61DC70BE23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73F2B9DA-8632-4492-9792-2257F8C0BC96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73F2B9DA-8632-4492-9792-2257F8C0BC96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73F2B9DA-8632-4492-9792-2257F8C0BC96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73F2B9DA-8632-4492-9792-2257F8C0BC96}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

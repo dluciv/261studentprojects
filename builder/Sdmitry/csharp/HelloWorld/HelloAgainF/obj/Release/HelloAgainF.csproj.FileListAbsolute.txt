@@ -1,0 +1,5 @@
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloAgainF\bin\Release\HelloAgainF.dll
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloAgainF\bin\Release\HelloAgainF.pdb
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloAgainF\obj\Release\ResolveAssemblyReference.cache
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloAgainF\obj\Release\HelloAgainF.dll
+c:\261Studentproject\builder\Sdmitry\csharp\HelloWorld\HelloAgainF\obj\Release\HelloAgainF.pdb

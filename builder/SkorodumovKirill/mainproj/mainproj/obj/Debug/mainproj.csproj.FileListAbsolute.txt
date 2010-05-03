@@ -1,0 +1,7 @@
+C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\mainproj\bin\Debug\mainproj.exe
+C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\mainproj\bin\Debug\mainproj.pdb
+C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\mainproj\bin\Debug\qsort.dll
+C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\mainproj\bin\Debug\qsort.pdb
+C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\mainproj\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\mainproj\obj\Debug\mainproj.exe
+C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\mainproj\obj\Debug\mainproj.pdb
