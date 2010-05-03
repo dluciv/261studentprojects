@@ -1,0 +1,5 @@
+w:\Visual Studio 2008\Projects\HelloWorld\HelloAgainF\bin\Debug\HelloAgainF.dll
+w:\Visual Studio 2008\Projects\HelloWorld\HelloAgainF\bin\Debug\HelloAgainF.pdb
+w:\Visual Studio 2008\Projects\HelloWorld\HelloAgainF\obj\Debug\ResolveAssemblyReference.cache
+w:\Visual Studio 2008\Projects\HelloWorld\HelloAgainF\obj\Debug\HelloAgainF.dll
+w:\Visual Studio 2008\Projects\HelloWorld\HelloAgainF\obj\Debug\HelloAgainF.pdb
