@@ -21,6 +21,7 @@ public class Controler {
      public void interpret() {
           view.resetConsole();
           try {
+               view.setProgressBarText("Interpreting program...");
                program = new Program(view.getProgramText());
                String result = program.Interpret();
                if (result == null) {
@@ -41,9 +42,13 @@ public class Controler {
           } catch (InterpreterException e) {
                view.printError("Unknown interpreter error", e.getPosition());
           }
+
+          view.resetProgressBar();
      }
 
      public void debug() {
+          view.setProgressBarText("Starting debug...");
+          view.resetProgressBar();
      }
 
      public void openFile(String filename) {
@@ -53,6 +58,7 @@ public class Controler {
 
           try {
                in = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
+               view.setProgressBarText("Opening the file...");
           } catch (FileNotFoundException e1) {
                view.printError("File " + filename + " not found.", null);
           }
@@ -70,6 +76,7 @@ public class Controler {
                //in.close();
           }
 
+          view.resetProgressBar();
           view.setProgramText(programm_text);
      }
 
@@ -79,11 +86,14 @@ public class Controler {
 
           try {
                out = new BufferedWriter(new FileWriter(filename));
+               view.setProgressBarText("Saving to file...");
                out.write(program);
                out.close();
                view.printResult("File saved successfully");
           } catch (IOException e) {
                view.printError("Caught IOException while writing " + filename, null);
           }
+
+          view.resetProgressBar();
      }
 }

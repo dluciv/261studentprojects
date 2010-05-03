@@ -15,4 +15,8 @@ public interface IMainView {
 	public void resetConsole();
 
         public void highlightText(int start_ind, int end_index);
+
+        public void setProgressBarText(String progress);
+
+        public void resetProgressBar();
 }
