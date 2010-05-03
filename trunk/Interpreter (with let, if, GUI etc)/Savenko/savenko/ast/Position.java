@@ -14,6 +14,10 @@ public class Position {
           this.range = range;
      }
 
+     public Position() {
+
+     }
+     
      public int getColNumBeg() {
           return col_num;
      }

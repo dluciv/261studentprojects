@@ -6,19 +6,17 @@
 package savenko;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Graphics;
-import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.JTextComponent;
 import savenko.ast.Program;
 import savenko.ast.Position;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
+import javax.swing.JMenuItem;
 import javax.swing.plaf.basic.BasicTextUI.BasicHighlighter;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -27,6 +25,8 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
 
      Program programm = null;
      Controler controler = null;
+     String current_file_path = "src/savenko/1.txt";
+     Boolean ifProgrammChanged = true;
 
      /** Creates new form MainWindow */
      public MainWindow() {
@@ -143,13 +143,27 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
           );
 
           saveDialog.setTitle("save?");
+          saveDialog.setAlwaysOnTop(true);
+          saveDialog.setMinimumSize(new java.awt.Dimension(373, 117));
+          saveDialog.setModal(true);
+          saveDialog.setResizable(false);
 
           okSaveDButton.setText("OK");
           okSaveDButton.setMaximumSize(new java.awt.Dimension(65, 23));
           okSaveDButton.setMinimumSize(new java.awt.Dimension(65, 23));
           okSaveDButton.setPreferredSize(new java.awt.Dimension(65, 23));
+          okSaveDButton.addActionListener(new java.awt.event.ActionListener() {
+               public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    saveDialogOkButtonClicked(evt);
+               }
+          });
 
           cancelSaveDButton.setText("Just Exit");
+          cancelSaveDButton.addActionListener(new java.awt.event.ActionListener() {
+               public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    saveDialogExitButtonClick(evt);
+               }
+          });
 
           saveDLabel.setFont(new java.awt.Font("Bookman Old Style", 1, 12));
           saveDLabel.setText("Document was changed. Save the changes?");
@@ -186,6 +200,11 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
           setTitle("Interpreter");
           setMinimumSize(new java.awt.Dimension(492, 469));
           setName("main_frame"); // NOI18N
+          addWindowListener(new java.awt.event.WindowAdapter() {
+               public void windowClosing(java.awt.event.WindowEvent evt) {
+                    mainViewClosing(evt);
+               }
+          });
 
           programmTextField.setName("programmTextField"); // NOI18N
           jScrollPane1.setViewportView(programmTextField);
@@ -376,35 +395,54 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
     private void openRecentFileButtonClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openRecentFileButtonClick
          programmTextField.setText(null);
 
-         controler.openFile("src/savenko/1.txt");
+         controler.openFile(current_file_path);
     }//GEN-LAST:event_openRecentFileButtonClick
 
     private void saveButtonClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonClick
-         controler.saveFile("src/savenko/1.txt", programmTextField.getText());
+         controler.saveFile(current_file_path, programmTextField.getText());
     }//GEN-LAST:event_saveButtonClick
 
     private void exitButtonClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonClick
+         if (ifProgrammChanged){
+              saveDialog.setLocation(this.getLocation().x + (this.getWidth()-saveDialog.getWidth())/2,
+                      this.getLocation().y+(this.getHeight()-saveDialog.getHeight())/2);
+              saveDialog.show();
+         }
+
          System.exit(0);
     }//GEN-LAST:event_exitButtonClick
 
     final JFileChooser fc = new JFileChooser();
-    File file = null;
-    String current_filepath;
     private void openAsClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAsClick
          programmTextField.setText(null);
          fc.showOpenDialog(this.openFDialogFrame);
          //fc.setAcceptAllFileFilterUsed(false);
 
          File file = fc.getSelectedFile();
-         if (file != null)
-              controler.openFile(file.getPath());
+         if (file != null){
+              current_file_path = file.getPath();
+              controler.openFile(current_file_path);
 
-         recentFilesMenuItem.add(file.getName());
-         //recentFilesMenuItem.getComponent(0).(
-         //        evt,controler.openFile(file.getPath()));
+              JMenuItem new_item = new JMenuItem(file.getName());
+              new_item.setToolTipText(current_file_path);
+              new_item.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+                         recentFilesItemClick(current_file_path);
+                    }
+               });
+              recentFilesMenuItem.add(new_item);
+         }
     }//GEN-LAST:event_openAsClick
 
+    private void recentFilesItemClick(String filepath){
+         current_file_path = filepath;
+         openRecentFileButtonClick(null);
+    }
+
     private void aboutMIClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMIClick
+         aboutDialog.setLocation(this.getLocation().x + (this.getWidth()-aboutDialog.getWidth())/2,
+                      this.getLocation().y+(this.getHeight()-aboutDialog.getHeight())/2);
          aboutDialog.show();
     }//GEN-LAST:event_aboutMIClick
 
@@ -420,6 +458,19 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
          if (file != null)
               controler.saveFile(file.getPath(),programmTextField.getText());
     }//GEN-LAST:event_saveAsButtonClick
+
+    private void mainViewClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_mainViewClosing
+         exitButtonClick(null);
+    }//GEN-LAST:event_mainViewClosing
+
+    private void saveDialogOkButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDialogOkButtonClicked
+         saveDialog.hide();
+         saveButtonClick(evt);         
+    }//GEN-LAST:event_saveDialogOkButtonClicked
+
+    private void saveDialogExitButtonClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDialogExitButtonClick
+         saveDialog.hide();
+    }//GEN-LAST:event_saveDialogExitButtonClick
 
      public static void main(String args[]) {
           java.awt.EventQueue.invokeLater(new Runnable() {
