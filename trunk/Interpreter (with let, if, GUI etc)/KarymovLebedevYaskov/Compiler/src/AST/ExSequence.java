@@ -2,17 +2,15 @@
 // not yet
 package AST;
 
-// import java.util.LinkedList;
+import java.util.LinkedList;
 
-public class Sequence extends Expression {
-
-//    private LinkedList<Tree> TreeList;
+public class ExSequence extends Expression {
+    private LinkedList<Tree> treeList;
 //    private int position = 0;
 //
-//    public Sequence(LinkedList<Tree> TreeList) {
-//        super();
-//        this.TreeList = TreeList;
-//    }
+    public ExSequence(LinkedList<Tree> treeList) {
+        this.treeList = treeList;
+    }
 //
 //    public void setPosition(int i) {
 //        position = i;
