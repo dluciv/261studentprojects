@@ -22,6 +22,7 @@ import savenko.ast.Minus;
 import savenko.ast.Divide;
 import savenko.ast.Equal;
 import savenko.ast.IntValue;
+import savenko.ast.Position;
 import savenko.ast.Tree;
 
 public class Interpreter {
@@ -96,7 +97,7 @@ public class Interpreter {
           if (val != null) {
                return val;
           } else {
-               throw new NullIDException(null);
+               throw new NullIDException(null); //-------pos------
           }
      }
 
@@ -201,7 +202,7 @@ public class Interpreter {
           } else if (node instanceof Equal) {
                return interpret((Equal) node);
           } else {
-               throw new InterpreterException(null);
+               throw new InterpreterException(null); //-------pos------
           }
      }
 }

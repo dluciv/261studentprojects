@@ -18,6 +18,10 @@ public class Controler {
           view = mainv;
      }
 
+     public void colorKeywords(){
+     
+     }
+
      public void interpret() {
           view.resetConsole();
           try {
@@ -62,6 +66,7 @@ public class Controler {
           } catch (FileNotFoundException e1) {
                view.printError("File " + filename + " not found.", null);
           }
+          
           try {
                while (in.ready()) {
                     programm_text += in.readLine();
@@ -72,8 +77,6 @@ public class Controler {
                in.close();
           } catch (IOException e) {
                view.printError("Caught IOException while reading " + filename, null);
-          } finally {
-               //in.close();
           }
 
           view.resetProgressBar();
