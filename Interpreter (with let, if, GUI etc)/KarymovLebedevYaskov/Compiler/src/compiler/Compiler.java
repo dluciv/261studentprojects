@@ -6,17 +6,16 @@
 package compiler;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
-/**
- *
- * @author leeevd
- */
 public class Compiler {
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        FileLoader fileLoader = new FileLoader("c:\\documents and settings\\we\\мои документы\\" +
-                "netbeansprojects\\compiler\\src\\samples\\tst.mls");
+        FileLoader fileLoader = new FileLoader("d:\\mlProg.txt");
         String input = fileLoader.loadFile();
-        Lexer lexer = new Lexer(input);
+
+        System.out.println(input);
+        
+        /*Lexer lexer = new Lexer(input);
 
         for (Token token : lexer.getTokenStream()) {
             System.out.print("<" + token.getType() + " " + token.getAttribute() + "> ");
@@ -25,7 +24,7 @@ public class Compiler {
         for (TableCell cell : lexer.getVarTable()) {
             System.out.print("<" + cell.getVarName() + " = " + cell.getVarValue() + ">\n");
         }
-        /*Num num1 = new Num(null, null, 0);
+        Num num1 = new Num(null, null, 0);
         Num num2 = new Num(null, null, 4);
         Minus minus = new Minus(num2, num1);
         Plus plus2 = new Plus(num1, minus);
