@@ -6,7 +6,7 @@
 package AST;
 
 public class LogEquality extends BinaryOperation {
-    public LogEquality(LogOperand left, LogOperand right) {
+    public LogEquality(ArOperand left, ArOperand right) {
         super(left, right);
     }
 }
