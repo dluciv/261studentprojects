@@ -1,10 +1,10 @@
 //Lebedev Dmitry 2010 (c)
 package AST;
 
-public class Num extends Tree {
+public class ArOperand extends Operand {
     private int value;
 
-    public Num(int value) {
+    public ArOperand(int value) {
         this.value = value;
     }
 

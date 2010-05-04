@@ -2,18 +2,18 @@
 package AST;
 
 public abstract class BinaryOperation extends Tree {
-    private Tree left, right;
+    private Operand left, right;
 
-    public BinaryOperation(Tree left, Tree right) {
+    public BinaryOperation(Operand left, Operand right) {
         this.left = left;
         this.right = right;
     }
 
-    public Tree getLeft() {
+    public Operand getLeft() {
         return left;
     }
 
-    public Tree getRight() {
+    public Operand getRight() {
         return right;
     }
 

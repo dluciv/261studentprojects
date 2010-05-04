@@ -2,8 +2,7 @@
 package AST;
 
 public class ArMultiplication extends BinaryOperation {
-
-    public ArMultiplication(Tree left, Tree right) {
+    public ArMultiplication(ArOperand left, ArOperand right) {
         super(left, right);
     }
 //    @Override

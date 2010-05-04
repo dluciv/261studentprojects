@@ -6,13 +6,13 @@
 package AST;
 
 public abstract class UnaryOperation extends Tree{
-    private Tree operand;
+    private Operand operand;
 
-    public UnaryOperation(Tree operand) {
+    public UnaryOperation(Operand operand) {
         this.operand = operand;
     }
 
-    public Tree getOperand() {
+    public Operand getOperand() {
         return operand;
     }
 }

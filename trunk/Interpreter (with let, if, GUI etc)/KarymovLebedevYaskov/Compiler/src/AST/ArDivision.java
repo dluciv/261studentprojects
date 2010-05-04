@@ -2,7 +2,7 @@
 package AST;
 
 public class ArDivision extends BinaryOperation {
-    public ArDivision(Tree left, Tree right) {
+    public ArDivision(ArOperand left, ArOperand right) {
         super(left, right);
     }
 

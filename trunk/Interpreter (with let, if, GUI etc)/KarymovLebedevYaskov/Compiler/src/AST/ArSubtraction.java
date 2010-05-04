@@ -2,7 +2,7 @@
 package AST;
 
 public class ArSubtraction extends BinaryOperation {
-    public ArSubtraction(Tree left, Tree right) {
+    public ArSubtraction(ArOperand left, ArOperand right) {
         super(left, right);
     }
 
