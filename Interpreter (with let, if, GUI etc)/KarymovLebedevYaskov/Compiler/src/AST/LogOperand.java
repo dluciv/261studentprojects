@@ -5,7 +5,7 @@
 
 package AST;
 
-public class LogOperand extends Tree {
+public class LogOperand extends Operand {
     private boolean value;
 
     public LogOperand(boolean value) {

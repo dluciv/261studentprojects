@@ -5,10 +5,6 @@
 
 package AST;
 
-/**
- *
- * @author we
- */
 public class LogAnd extends BinaryOperation {
     public LogAnd(LogOperand left, LogOperand right) {
         super(left, right);
