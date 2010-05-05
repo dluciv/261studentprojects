@@ -1,19 +1,19 @@
 //Lebedev Dmitry 2010 (c)
 package AST;
 
-public abstract class BinaryOperation extends Tree {
-    private Operand left, right;
+public abstract class BinaryOperation extends Expression {
+    private Tree left, right;
 
-    public BinaryOperation(Operand left, Operand right) {
+    public BinaryOperation(Tree left, Tree right) {
         this.left = left;
         this.right = right;
     }
 
-    public Operand getLeft() {
+    public Tree getLeft() {
         return left;
     }
 
-    public Operand getRight() {
+    public Tree getRight() {
         return right;
     }
 

@@ -5,7 +5,7 @@
 
 package AST;
 
-public class LogOperand extends Operand {
+public class LogOperand extends Expression {
     private boolean value;
 
     public LogOperand(boolean value) {

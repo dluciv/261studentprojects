@@ -5,6 +5,8 @@
 
 package compiler;
 
+import AST.*;
+import Yaskov.Interpreter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -13,8 +15,6 @@ public class Compiler {
         FileLoader fileLoader = new FileLoader("d:\\mlProg.txt");
         String input = fileLoader.loadFile();
 
-        System.out.println(input);
-        
         /*Lexer lexer = new Lexer(input);
 
         for (Token token : lexer.getTokenStream()) {

@@ -2,7 +2,7 @@
 package AST;
 
 public class LogNot extends UnaryOperation {
-    public LogNot(LogOperand logOperand) {
+    public LogNot(Tree logOperand) {
         super(logOperand);
     }
 }
