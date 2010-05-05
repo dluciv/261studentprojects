@@ -5,14 +5,14 @@
 
 package AST;
 
-public abstract class UnaryOperation extends Tree{
-    private Operand operand;
+public abstract class UnaryOperation extends Expression {
+    private Tree operand;
 
-    public UnaryOperation(Operand operand) {
+    public UnaryOperation(Tree operand) {
         this.operand = operand;
     }
 
-    public Operand getOperand() {
+    public Tree getOperand() {
         return operand;
     }
 }

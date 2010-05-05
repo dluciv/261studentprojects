@@ -6,7 +6,7 @@
 package AST;
 
 public class LogOr extends BinaryOperation {
-    public LogOr(LogOperand left, LogOperand right) {
+    public LogOr(Tree left, Tree right) {
         super(left, right);
     }
 }
