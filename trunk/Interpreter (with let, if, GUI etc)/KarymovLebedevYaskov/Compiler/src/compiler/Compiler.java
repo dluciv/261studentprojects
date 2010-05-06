@@ -6,7 +6,7 @@
 package compiler;
 
 import AST.*;
-import Yaskov.Interpreter;
+import yaskov1.Interpreter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

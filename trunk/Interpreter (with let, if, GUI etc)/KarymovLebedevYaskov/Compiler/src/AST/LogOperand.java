@@ -6,13 +6,13 @@
 package AST;
 
 public class LogOperand extends Expression {
-    private boolean value;
+    private Boolean value;
 
-    public LogOperand(boolean value) {
+    public LogOperand(Boolean value) {
         this.value = value;
     }
 
-    public boolean getValue() {
+    public Boolean getValue() {
         return value;
     }
 }
