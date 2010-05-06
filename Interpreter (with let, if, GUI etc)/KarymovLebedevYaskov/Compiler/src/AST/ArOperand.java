@@ -2,13 +2,13 @@
 package AST;
 
 public class ArOperand extends Expression {
-    private int value;
+    private Integer value;
 
-    public ArOperand(int value) {
+    public ArOperand(Integer value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public Integer getValue() {
         return value;
     }
 
