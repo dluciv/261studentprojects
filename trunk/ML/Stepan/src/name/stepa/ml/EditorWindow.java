@@ -53,7 +53,7 @@ public class EditorWindow extends JFrame {
                     }
                     Environment.get().interpreter.interpret();
                 } catch (Exception e1) {
-                    addToLog(e1.getMessage());
+                    addToLog(e1.getClass() + ":" + e1.getMessage());
                     e1.printStackTrace();
                 }
             }
@@ -156,7 +156,7 @@ public class EditorWindow extends JFrame {
     public void addToLog(String s) {
         try {
             Document d = logTextPane.getDocument();
-            d.insertString(d.getLength(), s + "\n", null);
+            d.insertString(d.getLength(), s+"\n", null);
         } catch (BadLocationException e) {
         }
     }

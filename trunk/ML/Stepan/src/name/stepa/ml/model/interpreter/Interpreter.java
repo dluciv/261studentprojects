@@ -19,27 +19,27 @@ public class Interpreter {
     Context context;
     int nextLine;
     IOutput output = null;
+    IInterpreterStateListener stateListener = null;
 
     public void setProgram(String program) {
         if (program == null) {
             lines = null;
         } else {
             lines = program.split(";\n");
+            if (lines[lines.length - 1].endsWith(";"))
+                lines[lines.length - 1] = lines[lines.length - 1].substring(0, lines[lines.length - 1].length() - 1);
             context = new Context();
-            nextLine = 0;
+            nextLine = -1;
+            notifyStateChanging();
         }
+    }
+
+    public void setStateListener(IInterpreterStateListener stateListener) {
+        this.stateListener = stateListener;
     }
 
     public void setOutput(IOutput output) {
         this.output = output;
-    }
-
-    public void interpret() throws Exception {
-        if ((lines != null) && (nextLine < lines.length)) {
-            processLine(lines[nextLine]);
-            nextLine++;
-        } else
-            println("Reached end of document.");
     }
 
     private void println(String s) {
@@ -47,39 +47,49 @@ public class Interpreter {
             output.println(s);
     }
 
-    private void processLine(String line) throws Exception {
-        if (line.startsWith("print")) {
-            String params = line.substring("print(".length(), line.length() - 1);
-            println(Double.toString(calcExpression(params)));
-        } else if (line.startsWith("let")) {
-            String[] data = line.substring(4).split("=");
-            double val = calcExpression(data[1]);
-            if (context.containsKey(data[0]))
-                context.remove(data[0]);
-            context.put(data[0], val);
-            println("set value " + val + " -> " + data[0]);
-        } else if (!line.isEmpty()) {
-            throw new Exception("Wrong expression!");
+    private void notifyStateChanging() {
+        if (stateListener != null)
+            stateListener.onLineChanged(nextLine);
+    }
+
+    public void interpret() throws Exception {
+        if ((lines != null) && (++nextLine < lines.length)) {
+            //println("Processing: " + lines[nextLine]);
+            calcExpression(lines[nextLine]);
+            notifyStateChanging();
+        } else
+            println("Reached end of document.");
+    }
+
+    private void calcExpression(String expression) throws Exception {
+        Lexeme[] lexeems = new Lexer().parse(expression);
+        //println("lexemes: " + Arrays.toString(lexeems));
+        SyntaxTreeNode syntax = new SyntaxProcessor().process(lexeems);
+        //println("syntax: " + syntax.toString());
+        if (syntax instanceof AssignNode) {
+            double value = calcAlgebraic(syntax.left);
+            String name = ((AssignNode) syntax).variable;
+            context.put(name, value);
+            println("set value " + value + " -> " + name);
+        } else if (syntax instanceof FunctionTreeNode) {
+            String functionName = ((FunctionTreeNode) syntax).function;
+            double argument = calcAlgebraic(syntax.left);
+
+            if (functionName.equals("print")) {
+                println(Double.toString(argument));
+            }
         }
     }
 
-    private double calcExpression(String expression) throws Exception {
-        Lexeme[] lexems = new Lexer().parse(expression);
-        println("lexemes: " + Arrays.toString(lexems));
-        SyntaxTreeNode syntax = new SyntaxProcessor().process(lexems);
-        println("syntax: " + syntax.toString());
-        return calcExpression(syntax);
-    }
-
-    private double calcExpression(SyntaxTreeNode node) throws Exception {
+    private double calcAlgebraic(SyntaxTreeNode node) throws Exception {
         if (node instanceof ValueTreeNode)
             return ((ValueTreeNode) node).value;
         if (node instanceof VariableTreeNode)
             return context.get(((VariableTreeNode) node).variable);
         else {
             BinaryOperationTreeNode op = (BinaryOperationTreeNode) node;
-            double left = calcExpression(node.left);
-            double right = calcExpression(node.right);
+            double left = calcAlgebraic(node.left);
+            double right = calcAlgebraic(node.right);
             if (op.operation == '+')
                 return left + right;
             else if (op.operation == '-')
@@ -92,5 +102,4 @@ public class Interpreter {
 
         throw new Exception("Calculation error!");
     }
-
 }
