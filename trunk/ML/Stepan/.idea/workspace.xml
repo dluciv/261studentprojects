@@ -60,13 +60,22 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="SyntaxProcessor.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="93" column="15" selection-start="3312" selection-end="3312" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Interpreter.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Interpreter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="43" selection-start="1929" selection-end="1929" vertical-scroll-proportion="0.42967743">
+            <state line="16" column="13" selection-start="455" selection-end="455" vertical-scroll-proportion="-2.2052877">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#calcAlgebraic#0;class#Interpreter#0" expanded="false" />
+                <element signature="method#interpret#2;class#Interpreter#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -82,22 +91,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Context.java" />
-        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/Environment.java" />
-        <option value="$PROJECT_DIR$/src/name/stepa/ml/EditorWindow.form" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/IInterpreterStateListener.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/SpasesLexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/EqualityLexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ComparisonLexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/AssignLexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/FunctionNameNode.java" />
-        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexer.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/AssignNode.java" />
-        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/FunctionTreeNode.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/IOutput.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/EditorWindow.java" />
+        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Context.java" />
+        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexer.java" />
+        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/LogicOperationTreeNode.java" />
+        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/CaparisonTreeNode.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Interpreter.java" />
+        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java" />
       </list>
     </option>
   </component>
@@ -251,6 +260,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="syntax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Stepan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Stepan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ml" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interpreter" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lexer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -437,9 +476,9 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20095949" sideWeight="0.8901221" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20095949" sideWeight="0.7436182" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39955604" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.10210877" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24861266" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -487,44 +526,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/EditorWindow.form">
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/Environment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="189" selection-end="189" vertical-scroll-proportion="0.23076923">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/AssignLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="13" column="22" selection-start="317" selection-end="317" vertical-scroll-proportion="0.33333334">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ComparisonLexeme.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="41" selection-start="292" selection-end="292" vertical-scroll-proportion="0.102564104">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxTreeNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="126" selection-end="126" vertical-scroll-proportion="0.09725401">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/ValueTreeNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="126" selection-end="126" vertical-scroll-proportion="0.09725401">
           <folding />
         </state>
       </provider>
@@ -536,30 +540,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexeme.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="125" selection-end="125" vertical-scroll-proportion="0.12820514">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/AssignNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="19" column="34" selection-start="516" selection-end="516" vertical-scroll-proportion="0.4871795">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="26" selection-start="1972" selection-end="1972" vertical-scroll-proportion="0.74358976">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="12" selection-start="954" selection-end="954" vertical-scroll-proportion="0.64102566">
           <folding />
         </state>
       </provider>
@@ -585,19 +568,75 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Context.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="51" selection-start="184" selection-end="184" vertical-scroll-proportion="0.1361556">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="20" selection-start="1413" selection-end="1413" vertical-scroll-proportion="0.3437014">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexeme.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="125" selection-end="125" vertical-scroll-proportion="0.13219285">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ComparisonLexeme.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="29" selection-start="217" selection-end="233" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/CaparisonTreeNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="7" selection-start="332" selection-end="332" vertical-scroll-proportion="0.3437014">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/ValueTreeNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="126" selection-end="126" vertical-scroll-proportion="0.13219285">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxTreeNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="126" selection-end="126" vertical-scroll-proportion="0.13219285">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/EditorWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="31" selection-start="4704" selection-end="4704" vertical-scroll-proportion="0.63047284">
+        <state line="54" column="0" selection-start="1657" selection-end="1657" vertical-scroll-proportion="0.295972">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="15" selection-start="3312" selection-end="3312" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Interpreter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="43" selection-start="1929" selection-end="1929" vertical-scroll-proportion="0.42967743">
+        <state line="16" column="13" selection-start="455" selection-end="455" vertical-scroll-proportion="-2.2052877">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#calcAlgebraic#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#interpret#2;class#Interpreter#0" expanded="false" />
           </folding>
         </state>
       </provider>

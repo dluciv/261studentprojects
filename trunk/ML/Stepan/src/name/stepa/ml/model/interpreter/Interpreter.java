@@ -1,5 +1,6 @@
 package name.stepa.ml.model.interpreter;
 
+import name.stepa.ml.model.interpreter.lexer.ComparisonLexeme;
 import name.stepa.ml.model.interpreter.lexer.Lexeme;
 import name.stepa.ml.model.interpreter.lexer.Lexer;
 import name.stepa.ml.model.interpreter.syntax.*;
@@ -54,52 +55,95 @@ public class Interpreter {
 
     public void interpret() throws Exception {
         if ((lines != null) && (++nextLine < lines.length)) {
-            //println("Processing: " + lines[nextLine]);
-            calcExpression(lines[nextLine]);
+            calcLine(lines[nextLine]);
             notifyStateChanging();
         } else
             println("Reached end of document.");
     }
 
-    private void calcExpression(String expression) throws Exception {
+    private void calcLine(String expression) throws Exception {
+        println("line: " + lines[nextLine]);
         Lexeme[] lexeems = new Lexer().parse(expression);
-        //println("lexemes: " + Arrays.toString(lexeems));
+        println("lexemes: " + Arrays.toString(lexeems));
         SyntaxTreeNode syntax = new SyntaxProcessor().process(lexeems);
-        //println("syntax: " + syntax.toString());
+        println("syntax: " + syntax.toString());
         if (syntax instanceof AssignNode) {
-            double value = calcAlgebraic(syntax.left);
+            Object value = interpret(syntax.left);
             String name = ((AssignNode) syntax).variable;
             context.put(name, value);
             println("set value " + value + " -> " + name);
         } else if (syntax instanceof FunctionTreeNode) {
             String functionName = ((FunctionTreeNode) syntax).function;
-            double argument = calcAlgebraic(syntax.left);
+            Object argument = interpret(syntax.left);
 
             if (functionName.equals("print")) {
-                println(Double.toString(argument));
+                println(argument.toString());
             }
         }
     }
 
-    private double calcAlgebraic(SyntaxTreeNode node) throws Exception {
+    private Object interpret(SyntaxTreeNode node) throws Exception {
+        if (node instanceof CaparisonTreeNode)
+            return interpret((CaparisonTreeNode) node);
         if (node instanceof ValueTreeNode)
-            return ((ValueTreeNode) node).value;
+            return interpret((ValueTreeNode) node);
         if (node instanceof VariableTreeNode)
-            return context.get(((VariableTreeNode) node).variable);
-        else {
-            BinaryOperationTreeNode op = (BinaryOperationTreeNode) node;
-            double left = calcAlgebraic(node.left);
-            double right = calcAlgebraic(node.right);
-            if (op.operation == '+')
-                return left + right;
-            else if (op.operation == '-')
-                return left - right;
-            else if (op.operation == '*')
-                return left * right;
-            else if (op.operation == '/')
-                return left / right;
+            return interpret((VariableTreeNode) node);
+        if (node instanceof BinaryOperationTreeNode)
+            return interpret((BinaryOperationTreeNode) node);
+
+        throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
+    }
+
+
+    private Object interpret(CaparisonTreeNode node) throws Exception {
+        Double left = (Double) interpret(node.left);
+        Double right = (Double) interpret(node.right);
+        switch (node.operation) {
+            case ComparisonLexeme.EQUALITY:
+                return left == right;
+            case ComparisonLexeme.G:
+                return left > right;
+            case ComparisonLexeme.GE:
+                return left >= right;
+            case ComparisonLexeme.L:
+                return left < right;
+            case ComparisonLexeme.LE:
+                return left <= right;
         }
 
-        throw new Exception("Calculation error!");
+        throw new Exception("Invalid comparison operation: " + node.operation);
+    }
+
+    private Object interpret(ValueTreeNode node) {
+        return ((ValueTreeNode) node).value;
+    }
+
+    private Object interpret(VariableTreeNode node) {
+        return context.get(((VariableTreeNode) node).variable);
+    }
+
+    private Object interpret(BinaryOperationTreeNode node) throws Exception {
+        Double left = getAlgebraicValue(interpret(node.left));
+        Double right = getAlgebraicValue(interpret(node.right));
+        if (node.operation == '+')
+            return left + right;
+        else if (node.operation == '-')
+            return left - right;
+        else if (node.operation == '*')
+            return left * right;
+        else if (node.operation == '/')
+            return left / right;
+
+        throw new Exception("Invalid binary operation: " + node.operation);
+    }
+
+    private Double getAlgebraicValue(Object value) throws Exception {
+        if (value instanceof Double)
+            return (Double) value;
+        if (value instanceof Boolean)
+            return ((Boolean) value) ? 1.0 : 0;
+
+        throw new Exception("Unsupported value: " + value.getClass().getSimpleName());
     }
 }

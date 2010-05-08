@@ -14,6 +14,8 @@ public class Lexer {
     private static final int SYMBOL_BINARY_OPERATION = 4;
     private static final int SYMBOL_SPACE = 5;
     private static final int SYMBOL_EQUALITY = 6;
+    private static final int SYMBOL_EXCLAMATION = 7;
+    private static final int SYMBOL_COMPARISON = 8;
 
     private static final int SYMBOL_UNKNOWN = -1;
 
@@ -22,6 +24,7 @@ public class Lexer {
 
         char[] data = text.toCharArray();
         int pos = 0;
+        int nexSymbol;
         while (pos < data.length) {
             int symType = getSymbolType(data[pos]);
             switch (symType) {
@@ -43,8 +46,32 @@ public class Lexer {
                     }
                     break;
                 case SYMBOL_EQUALITY:
-                    pos++;
-                    res.add(new AssignLexeme());
+                    nexSymbol = getSymbolType(data[pos + 1]);
+                    if (nexSymbol != SYMBOL_EQUALITY) {
+                        pos++;
+                        res.add(new AssignLexeme());
+                        break;
+                    } else {
+                        // "=="
+                        pos += 2;
+                        res.add(new ComparisonLexeme(ComparisonLexeme.EQUALITY));
+                        break;
+                    }
+                case SYMBOL_COMPARISON:
+                    nexSymbol = getSymbolType(data[pos + 1]);
+                    if (nexSymbol != SYMBOL_EQUALITY) {
+                        if (data[pos] == '>')
+                            res.add(new ComparisonLexeme(ComparisonLexeme.G));
+                        else
+                            res.add(new ComparisonLexeme(ComparisonLexeme.L));
+                        pos++;
+                    } else {
+                        if (data[pos] == '>')
+                            res.add(new ComparisonLexeme(ComparisonLexeme.GE));
+                        else
+                            res.add(new ComparisonLexeme(ComparisonLexeme.LE));
+                        pos += 2;
+                    }
                     break;
                 case SYMBOL_OPEN_BRACKET:
                     res.add((new OpenBracketLexeme()));
@@ -87,8 +114,15 @@ public class Lexer {
         if (c == ')')
             return SYMBOL_CLOSE_BRACKET;
 
+        if (c == '>')
+            return SYMBOL_COMPARISON;
+        if (c == '<')
+            return SYMBOL_COMPARISON;
+
         if (c == '=')
             return SYMBOL_EQUALITY;
+        if (c == '!')
+            return SYMBOL_EXCLAMATION;
 
         return SYMBOL_UNKNOWN;
     }
