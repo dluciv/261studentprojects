@@ -20,14 +20,24 @@ public class SyntaxProcessor {
             if (((IdentifierLexeme) data[0]).value.equals("let")) {
                 String variable = ((IdentifierLexeme) data[1]).value;
                 pointer += 3;
-                return new AssignNode(variable, processAlgebraic(data));
+                return new AssignNode(variable, processComparison(data));
             } else {
                 String variable = ((IdentifierLexeme) data[0]).value;
                 pointer++;
-                return new FunctionTreeNode(variable, processAlgebraic(data));
+                return new FunctionTreeNode(variable, processComparison(data));
             }
         } else
             throw new Exception("Wrong expression!");
+    }
+
+    private SyntaxTreeNode processComparison(Lexeme[] data) throws Exception {
+        SyntaxTreeNode left = processAlgebraic(data);
+        if (!(data[pointer] instanceof ComparisonLexeme)) {
+            return left;
+        }
+        ComparisonLexeme lex = (ComparisonLexeme) data[pointer];
+        pointer++;
+        return new CaparisonTreeNode(lex.type, left, processAlgebraic(data));
     }
 
     private SyntaxTreeNode processAlgebraic(Lexeme[] data) throws Exception {
@@ -82,7 +92,7 @@ public class SyntaxProcessor {
 
     private SyntaxTreeNode processBracket(Lexeme[] data) throws Exception {
         pointer++;
-        SyntaxTreeNode res = processAlgebraic(data);
+        SyntaxTreeNode res = processComparison(data);
         if (!(data[pointer] instanceof CloseBracketLexeme))
             throw new Exception("Syntax error!");
         pointer++;
