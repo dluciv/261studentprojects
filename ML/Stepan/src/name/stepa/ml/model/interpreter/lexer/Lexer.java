@@ -12,6 +12,9 @@ public class Lexer {
     private static final int SYMBOL_CLOSE_BRACKET = 2;
     private static final int SYMBOL_LETTER = 3;
     private static final int SYMBOL_BINARY_OPERATION = 4;
+    private static final int SYMBOL_SPACE = 5;
+    private static final int SYMBOL_EQUALITY = 6;
+
     private static final int SYMBOL_UNKNOWN = -1;
 
     public Lexeme[] parse(String text) throws Exception {
@@ -32,7 +35,16 @@ public class Lexer {
                     String var = Character.toString(data[pos++]);
                     while ((pos < data.length) && ((getSymbolType(data[pos]) == SYMBOL_LETTER) || (getSymbolType(data[pos]) == SYMBOL_DIGIT)))
                         var += Character.toString(data[pos++]);
-                    res.add(new VariableLexeme(var));
+                    res.add(new IdentifierLexeme(var));
+                    break;
+                case SYMBOL_SPACE:
+                    while ((pos < data.length) && (getSymbolType(data[pos]) == SYMBOL_SPACE)) {
+                        pos++;
+                    }
+                    break;
+                case SYMBOL_EQUALITY:
+                    pos++;
+                    res.add(new AssignLexeme());
                     break;
                 case SYMBOL_OPEN_BRACKET:
                     res.add((new OpenBracketLexeme()));
@@ -59,6 +71,8 @@ public class Lexer {
             return SYMBOL_DIGIT;
         if (Character.isLetter(c))
             return SYMBOL_LETTER;
+        if (Character.isWhitespace(c))
+            return SYMBOL_SPACE;
         if (c == '+')
             return SYMBOL_BINARY_OPERATION;
         if (c == '-')
@@ -72,6 +86,9 @@ public class Lexer {
             return SYMBOL_OPEN_BRACKET;
         if (c == ')')
             return SYMBOL_CLOSE_BRACKET;
+
+        if (c == '=')
+            return SYMBOL_EQUALITY;
 
         return SYMBOL_UNKNOWN;
     }
