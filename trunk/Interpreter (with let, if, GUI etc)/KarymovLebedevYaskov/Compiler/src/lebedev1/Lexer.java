@@ -1,19 +1,18 @@
 //Lebedev Dmitry 2010 (c)
-package lebedev1;
+package lebedev;
 
 public class Lexer {
 
     public enum LexemKind {
+
         plus, minus, divide, multiply, openbracket, closebracket, number, unknown, semicolon, let, eof, eol, print, begin, end, fun,
     }
-
     private String programm;
     private int symbolPosition;
     private int linePosition;
     private int absPosition;
     private int counter;
     private Lexem lexem;
-
 
     public Lexer(String arg) {
         absPosition = 0;
@@ -24,17 +23,25 @@ public class Lexer {
         return symbolPosition;
     }
 
+    public int getAbsPosition() {
+        return absPosition;
+    }
+
+    public int getLinePosition() {
+        return linePosition;
+    }
+
     public String getCurrent() {
         if (programm.length() > absPosition) {
             if (programm.charAt(absPosition) >= '0' && programm.charAt(absPosition) <= '9') {
                 String result = "";
                 counter = absPosition;
-                while (programm.length()>counter && programm.charAt(counter) >= '0' && programm.charAt(counter) <= '9') {
+                while (programm.length() > counter && programm.charAt(counter) >= '0' && programm.charAt(counter) <= '9') {
                     result += programm.charAt(counter);
                 }
                 return result;
             } else {
-                if(programm.charAt(absPosition) == '/' && programm.charAt(absPosition + 1) == 'n'){
+                if (programm.charAt(absPosition) == '/' && programm.charAt(absPosition + 1) == 'n') {
                     return "/n";
                 }
             }
@@ -43,14 +50,11 @@ public class Lexer {
             return "eol";
         }
     }
-
     String CurrLexem = getCurrent();
 
     public Lexem getCurrentLexem() {
         return lexem;
     }
-
-
 
     public void moveNext() {
         if (programm.length() > absPosition) {
@@ -105,7 +109,7 @@ public class Lexer {
             }
 
         } else {
-            if (programm.length() == absPosition ) {
+            if (programm.length() == absPosition) {
                 programm = "eof";
             }
         }

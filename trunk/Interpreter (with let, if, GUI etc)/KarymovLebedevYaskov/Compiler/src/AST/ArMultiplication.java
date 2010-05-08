@@ -5,7 +5,11 @@ public class ArMultiplication extends BinaryOperation {
     public ArMultiplication(ArOperand left, ArOperand right) {
         super(left, right);
     }
-//    @Override
+
+    public ArMultiplication(Tree left, Tree right) {
+        super(left, right);
+    }
+//@Override
 //    public int evaluate() {
 //        return this.getLeft().evaluate() * this.getRight().evaluate();
 //    }
