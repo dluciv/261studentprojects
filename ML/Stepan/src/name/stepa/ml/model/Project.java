@@ -12,10 +12,6 @@ public class Project {
 
     public String projectPath = "\\";
 
-    public Project() {
-
-    }
-
     public Project(String projectPath) throws IOException {
         this.projectPath = projectPath;
         BufferedReader br = new BufferedReader(new FileReader(new File(projectPath + "hmls.proj")));
@@ -49,5 +45,25 @@ public class Project {
 
     public void saveText(String projectFile, String text) throws IOException {
         saveFile(projectFile, text.getBytes());
+    }
+
+    public void addFile(String fileName) throws IOException {
+        files.add(fileName);
+        saveFile(fileName, new byte[0]);
+        saveProject();
+    }
+
+    public void removeFile(String fileName) throws IOException {
+        files.remove(fileName);
+        new File(projectPath + fileName).delete();
+        saveProject();
+    }
+
+    public void saveProject() throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File(projectPath + "hmls.proj")));
+        for (String f : files) {
+            bw.write(f + "\n");
+        }
+        bw.close();
     }
 }

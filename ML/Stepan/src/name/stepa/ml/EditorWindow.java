@@ -19,6 +19,10 @@ public class EditorWindow extends JFrame {
     private JEditorPane editorPane;
     private JTree projectTree;
     private JLabel statusLabel;
+    private JTextPane logTextPane;
+
+    private JMenuItem miNewFile;
+    private JMenuItem miRemoveFile;
 
     public EditorWindow() {
         setContentPane(contentPane);
@@ -32,13 +36,13 @@ public class EditorWindow extends JFrame {
         buttonSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Environment env = Environment.get();
-                if (!env.selectedFile.equals(Environment.NONE)) {
+                if (env.getSelectedFile() != null) {
                     try {
-                        env.project.saveText(env.selectedFile, editorPane.getText());
-                        statusLabel.setText("File " + env.selectedFile + " saved...");
+                        env.project.saveText(env.getSelectedFile(), editorPane.getText());
+                        statusLabel.setText("File " + env.getSelectedFile() + " saved...");
                     } catch (IOException e1) {
                         e1.printStackTrace();
-                        statusLabel.setText("Error while saving " + env.selectedFile + "...");
+                        statusLabel.setText("Error while saving " + env.getSelectedFile() + "...");
                     }
                 } else {
                     getToolkit().beep();
@@ -68,38 +72,42 @@ public class EditorWindow extends JFrame {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+        projectTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         projectTree.addTreeSelectionListener(new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-                        projectTree.getLastSelectedPathComponent();
-                if ((!node.isRoot())&&(!node.isLeaf())) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) projectTree.getLastSelectedPathComponent();
+                if ((node != null) && (!node.isRoot()) && (node.isLeaf())) {
                     String path = (String) node.getUserObject();
 
                     try {
                         String text = Environment.get().project.loadText(path);
                         editorPane.setText(text);
                         editorPane.setEnabled(true);
-                        Environment.get().selectedFile = path;
+                        Environment.get().setSelectedFile(path);
 
                         statusLabel.setText("Selected file " + path);
+                        miRemoveFile.setEnabled(true);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
                 } else {
-                    Environment.get().selectedFile = Environment.NONE;
+                    Environment.get().setSelectedFile(null);
 
-                    if (Environment.get().project.files.size() == 0)
+                    if ((Environment.get().project != null) && (Environment.get().project.files.size() == 0))
                         editorPane.setText("Open project...");
                     else
                         editorPane.setText("Select file...");
 
                     editorPane.setEnabled(false);
+                    miRemoveFile.setEnabled(false);
                     statusLabel.setText("Please, select file...");
                 }
             }
         });
         fillTree();
+
+        projectTree.setSelectionRow(0);
     }
 
     private void setupMenu() {
@@ -107,6 +115,8 @@ public class EditorWindow extends JFrame {
 
         JMenu mFile = new JMenu("File");
         JMenuItem miOpen = new JMenuItem("Open");
+        miNewFile = new JMenuItem("New file...");
+        miRemoveFile = new JMenuItem("Remove selected file");
 
         miOpen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -142,6 +152,36 @@ public class EditorWindow extends JFrame {
 
             }
         });
+
+        miNewFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String s = JOptionPane.showInputDialog("Enter file name");
+                if (s == null)
+                    return;
+                try {
+                    Environment.get().project.addFile(s);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                fillTree();
+            }
+        });
+
+        miRemoveFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (Environment.get().getSelectedFile() != null)
+                        Environment.get().project.removeFile(Environment.get().getSelectedFile());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                fillTree();
+            }
+        });
+
+
+        mFile.add(miRemoveFile);
+        mFile.add(miNewFile);
         mFile.add(miOpen);
 
         mb.add(mFile);
@@ -156,9 +196,13 @@ public class EditorWindow extends JFrame {
     private void fillTree() {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode("Project");
 
-        for (String i : Environment.get().project.files) {
-            node.add(new DefaultMutableTreeNode(i));
-        }
+        if (Environment.get().project != null) {
+            for (String i : Environment.get().project.files) {
+                node.add(new DefaultMutableTreeNode(i));
+            }
+            miNewFile.setEnabled(true);
+        } else
+            miNewFile.setEnabled(false);
 
         projectTree.setModel(new DefaultTreeModel(node));
 

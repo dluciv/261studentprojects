@@ -7,8 +7,6 @@ import java.io.IOException;
  */
 public class Environment {
 
-    public static final String NONE = "none";
-
     private static Environment instance = null;
 
     static {
@@ -30,12 +28,20 @@ public class Environment {
     public Project project;
 
     private Environment() {
-        project = new Project();
+        project = null;
     }
 
     private Environment(String projectPath) throws IOException {
         project = new Project(projectPath);
     }
 
-    public String selectedFile = NONE;
+    public void setSelectedFile(String selectedFile) {
+        this.selectedFile = selectedFile;
+    }
+
+    public String getSelectedFile() {
+        return selectedFile;
+    }
+
+    private String selectedFile = null;
 }
