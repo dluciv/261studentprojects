@@ -1,5 +1,7 @@
 package name.stepa.ml.model;
 
+import name.stepa.ml.model.interpreter.Interpreter;
+
 import java.io.IOException;
 
 /**
@@ -21,18 +23,18 @@ public class Environment {
         return instance;
     }
 
-    public static void loadProject(String projectPath) throws IOException {
-        instance = new Environment(projectPath);
+    public void loadProject(String projectPath) throws IOException {
+        project = new Project(projectPath);
     }
 
     public Project project;
+    private String selectedFile;
+    public Interpreter interpreter;
 
     private Environment() {
         project = null;
-    }
-
-    private Environment(String projectPath) throws IOException {
-        project = new Project(projectPath);
+        selectedFile = null;
+        interpreter = new Interpreter();
     }
 
     public void setSelectedFile(String selectedFile) {
@@ -43,5 +45,7 @@ public class Environment {
         return selectedFile;
     }
 
-    private String selectedFile = null;
+    public void setInterpretationProgram(String data) {
+        interpreter.setProgram(data);
+    }
 }
