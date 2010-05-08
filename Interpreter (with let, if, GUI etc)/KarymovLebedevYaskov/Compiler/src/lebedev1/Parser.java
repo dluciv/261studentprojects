@@ -1,53 +1,48 @@
 //Lebedev Dmitry 2010 (c)
-package lebedev1;
+package lebedev;
 
-import ast.Lexer.LexemKind;
-import java.io.File;
-import java.io.FileNotFoundException;
+//import LexemKind;
+import AST.*;
 import java.util.LinkedList;
-import java.util.Scanner;
+import AST.Tree;
+import lebedev.Lexer.LexemKind;
 
 public class Parser {
+
+    private static Lexer lexer;
 
     public Parser(String programm) {
         Parser.lexer = new Lexer(programm);
     }
 
-    public static void main() throws Exception {
+    public static void main(String programm) throws Exception {
         Tree seq;
-        int result = 0;
+        //int result = 0;
+        Parser parser = new Parser(programm);
         try {
-            scan = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-            return;
-        }
-        Parser parser = new Parser(scan);
-
-        try {
-            System.out.print("input your programm");
-
-          
             seq = parser.seq();
             //tree = parser.expr();
-            String position = String.valueOf(lexer.getPosition());
-            if (lexer.getCurrentLexem().getLeft() != Lexer.LexemKind.eol) {
-                if (lexer.getCurrentLexem().getLeft() == Lexer.LexemKind.unknown) {
-                    System.out.printf("%s %s %s", "Error in the input string (unknown symbol)", "at", position);
+
+            //String position = String.valueOf(lexer.getPosition());
+            if (lexer.getCurrentLexem().getLexemKind() != LexemKind.eof) {
+                if (lexer.getCurrentLexem().getLexemKind() == LexemKind.unknown) {
+                    System.out.printf("%s %s %i %s %i %s", "Error in the input string (unknown symbol)",
+                            "at", lexer.getSymbolPosition(), "line", lexer.getSymbolPosition(), "column");
                 }
 
-                if (lexer.getCurrentLexem().getLeft() == Lexer.LexemKind.closebracket) {
-                    System.out.printf("%s %s %s", "Error in the input string (unexpected closebracket)", "at", position);
+                if (lexer.getCurrentLexem().getLexemKind() == LexemKind.closebracket) {
+                    System.out.printf("%s %s %i %s %i %s", "Error in the input string (unexpected closebracket)",
+                            "at", lexer.getLinePosition(), "line", lexer.getSymbolPosition(), "column");
                 }
                 return;
             }
 
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             return;
         }
-        result = seq.evaluate();
-        System.out.println(result);
-        seq.print();
+        //result = seq.evaluate();
+        //System.out.println(result);
+        //seq.print();
         System.out.println();
     }
 
@@ -55,24 +50,24 @@ public class Parser {
         LinkedList<Tree> programm = new LinkedList();
         Tree left = expr();
         programm.add(left);
-        while (lexer.getCurrentLexem().getLeft() == LexemKind.semicolon) {
+        while (lexer.getCurrentLexem().getLexemKind() == LexemKind.semicolon) {
             lexer.moveNext();
             Tree right = expr();
             programm.add(right);
         }
-        return new Sequence(programm);
+        return new ExSequence(programm);
     }
 
     public Tree expr() throws Exception {
         Tree left = term();
-        while (lexer.getCurrentLexem().getLeft() == LexemKind.plus || lexer.getCurrentLexem().getLeft() == LexemKind.minus) {
-            LexemKind sign = lexer.getCurrentLexem().getLeft();
+        while (lexer.getCurrentLexem().getLexemKind() == LexemKind.plus || lexer.getCurrentLexem().getLexemKind() == LexemKind.minus) {
+            LexemKind sign = lexer.getCurrentLexem().getLexemKind();
             lexer.moveNext();
             Tree right = term();
             if (sign == LexemKind.plus) {
-                left = new Addition(left, right);
+                left = new ArAddition(left, right);
             } else {
-                left = new Subtraction(left, right);
+                left = new ArSubtraction(left, right);
             }
         }
         return left;
@@ -80,14 +75,14 @@ public class Parser {
 
     public Tree term() throws Exception {
         Tree left = factor();
-        while (lexer.getCurrentLexem().getLeft() == LexemKind.multiply || lexer.getCurrentLexem().getLeft() == LexemKind.divide) {
-            LexemKind sign = lexer.getCurrentLexem().getLeft();
+        while (lexer.getCurrentLexem().getLexemKind() == LexemKind.multiply || lexer.getCurrentLexem().getLexemKind() == LexemKind.divide) {
+            LexemKind sign = lexer.getCurrentLexem().getLexemKind();
             lexer.moveNext();
             Tree right = factor();
             if (sign == LexemKind.multiply) {
-                left = new Multiplication(left, right);
+                left = new ArMultiplication(left, right);
             } else {
-                left = new Division(left, right);
+                left = new ArDivision(left, right);
             }
         }
         return left;
@@ -96,27 +91,29 @@ public class Parser {
     public Tree factor() throws Exception {
         int value;
         Tree left;
-        if (lexer.getCurrentLexem().getLeft() == LexemKind.number) {
-            value = Integer.parseInt(lexer.getCurrentLexem().getRight());
+        if (lexer.getCurrentLexem().getLexemKind() == LexemKind.number) {
+            value = lexer.getCurrentLexem().getValue();
             lexer.moveNext();
-            return new Number(value);
+            return new ArOperand(value);
         } else {
-            if (lexer.getCurrentLexem().getLeft() == LexemKind.openbracket) {
+            if (lexer.getCurrentLexem().getLexemKind() == LexemKind.openbracket) {
                 lexer.moveNext();
                 left = expr();
-                if (lexer.getCurrentLexem().getLeft() == LexemKind.unknown) {
-                    System.out.printf("%s %s %i", "Error in the input string (unknown symbol)", "at", lexer.getPosition());
+                if (lexer.getCurrentLexem().getLexemKind() == LexemKind.unknown) {
+                    System.out.printf("%s %s %i %s %i %s", "Error in the input string (unknown symbol)",
+                            "at", lexer.getLinePosition(), "line", lexer.getSymbolPosition(), "column");
                     throw new Exception();
                 }
 
-                if (lexer.getCurrentLexem().getLeft() != LexemKind.closebracket) {
-                    System.out.printf("%s %s %i", "Error in the input string (missing right bracket)", "at", lexer.getPosition());
+                if (lexer.getCurrentLexem().getLexemKind() != LexemKind.closebracket) {
+                    System.out.printf("%s %s %i %s %i %s", "Error in the input string (missing right bracket)",
+                            "at", lexer.getLinePosition(), "line", lexer.getSymbolPosition(), "column");
                     throw new Exception();
                 }
                 lexer.moveNext();
                 return left;
             } else {
-                System.out.printf("%s %s %i", "Error in the input string ", "at", lexer.getPosition());
+                System.out.printf("%s %s %i", "Error in the input string ", "at", lexer.getSymbolPosition());
                 throw new Exception();
             }
         }

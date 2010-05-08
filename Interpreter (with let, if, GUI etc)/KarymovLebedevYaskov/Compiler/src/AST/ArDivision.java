@@ -6,6 +6,10 @@ public class ArDivision extends BinaryOperation {
         super(left, right);
     }
 
+    public ArDivision(Tree left, Tree right) {
+        super(left, right);
+    }
+
 //    @Override
 //    public int evaluate() {
 //        return this.getLeft().evaluate() / this.getRight().evaluate();

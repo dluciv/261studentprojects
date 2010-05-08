@@ -1,4 +1,4 @@
-package lebedev1;
+package lebedev;
 
 public class Lexem {
     private int value;
