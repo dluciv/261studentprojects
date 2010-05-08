@@ -2,10 +2,12 @@ package name.stepa.ml;
 
 import name.stepa.ml.highlight.MlEditorKit;
 import name.stepa.ml.model.Environment;
+import name.stepa.ml.model.interpreter.IOutput;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,9 +22,12 @@ public class EditorWindow extends JFrame {
     private JTree projectTree;
     private JLabel statusLabel;
     private JTextPane logTextPane;
+    private JButton buttonInterpret;
 
     private JMenuItem miNewFile;
     private JMenuItem miRemoveFile;
+
+    private boolean isSaved = false;
 
     public EditorWindow() {
         setContentPane(contentPane);
@@ -35,18 +40,21 @@ public class EditorWindow extends JFrame {
 
         buttonSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Environment env = Environment.get();
-                if (env.getSelectedFile() != null) {
-                    try {
-                        env.project.saveText(env.getSelectedFile(), editorPane.getText());
-                        statusLabel.setText("File " + env.getSelectedFile() + " saved...");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                        statusLabel.setText("Error while saving " + env.getSelectedFile() + "...");
+                save();
+            }
+        });
+
+        buttonInterpret.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (!isSaved) {
+                        save();
+                        Environment.get().setInterpretationProgram(editorPane.getText());
                     }
-                } else {
-                    getToolkit().beep();
-                    statusLabel.setText("Error! Nothing to save!");
+                    Environment.get().interpreter.interpret();
+                } catch (Exception e1) {
+                    addToLog(e1.getMessage());
+                    e1.printStackTrace();
                 }
             }
         });
@@ -57,15 +65,12 @@ public class EditorWindow extends JFrame {
             }
         });
 
-// call onCancel() when cross is clicked
-        //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onCancel();
             }
         });
 
-// callonCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -83,11 +88,13 @@ public class EditorWindow extends JFrame {
                     try {
                         String text = Environment.get().project.loadText(path);
                         editorPane.setText(text);
+                        Environment.get().setInterpretationProgram(text);
                         editorPane.setEnabled(true);
+                        isSaved = true;
                         Environment.get().setSelectedFile(path);
-
                         statusLabel.setText("Selected file " + path);
-                        miRemoveFile.setEnabled(true);
+
+                        onProjectFileSelectionChanged();
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -98,9 +105,8 @@ public class EditorWindow extends JFrame {
                         editorPane.setText("Open project...");
                     else
                         editorPane.setText("Select file...");
-
                     editorPane.setEnabled(false);
-                    miRemoveFile.setEnabled(false);
+                    onProjectFileSelectionChanged();
                     statusLabel.setText("Please, select file...");
                 }
             }
@@ -108,6 +114,66 @@ public class EditorWindow extends JFrame {
         fillTree();
 
         projectTree.setSelectionRow(0);
+
+        editorPane.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                onTextChanged();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                onTextChanged();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                onTextChanged();
+            }
+        });
+
+        Environment.get().interpreter.setOutput(new IOutput() {
+            public void println(String s) {
+                addToLog(s);
+            }
+        });
+    }
+
+    public void save() {
+        Environment env = Environment.get();
+        if (env.getSelectedFile() != null) {
+            try {
+                env.project.saveText(env.getSelectedFile(), editorPane.getText());
+                statusLabel.setText("File " + env.getSelectedFile() + " saved...");
+                isSaved = true;
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                statusLabel.setText("Error while saving " + env.getSelectedFile() + "...");
+            }
+        } else {
+            getToolkit().beep();
+            statusLabel.setText("Error! Nothing to save!");
+        }
+    }
+
+    public void addToLog(String s) {
+        try {
+            Document d = logTextPane.getDocument();
+            d.insertString(d.getLength(), s + "\n", null);
+        } catch (BadLocationException e) {
+        }
+    }
+
+    public void onTextChanged() {
+        isSaved = false;
+        Environment.get().setInterpretationProgram(null);
+    }
+
+    public void onProjectFileSelectionChanged() {
+        if (Environment.get().getSelectedFile() == null) {
+            miRemoveFile.setEnabled(false);
+            buttonInterpret.setEnabled(false);
+        } else {
+            miRemoveFile.setEnabled(true);
+            buttonInterpret.setEnabled(true);
+        }
     }
 
     private void setupMenu() {
@@ -141,7 +207,7 @@ public class EditorWindow extends JFrame {
                 if (res != JFileChooser.CANCEL_OPTION) {
                     String path = chooser.getSelectedFile().getParent() + "\\";
                     try {
-                        Environment.loadProject(path);
+                        Environment.get().loadProject(path);
                         fillTree();
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -186,10 +252,6 @@ public class EditorWindow extends JFrame {
 
         mb.add(mFile);
 
-
-        /*for (int i = 0; i < menus.length; i++)
-        mb.add(menus[i]);*/
-
         setJMenuBar(mb);
     }
 
@@ -210,7 +272,6 @@ public class EditorWindow extends JFrame {
     }
 
     private void onCancel() {
-// add your code here if necessary
         dispose();
     }
 
@@ -222,16 +283,12 @@ public class EditorWindow extends JFrame {
                     UIManager.getSystemLookAndFeelClassName());
         }
         catch (UnsupportedLookAndFeelException e) {
-            // handle exception
         }
         catch (ClassNotFoundException e) {
-            // handle exception
         }
         catch (InstantiationException e) {
-            // handle exception
         }
         catch (IllegalAccessException e) {
-            // handle exception
         }
 
 
