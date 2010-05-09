@@ -1,0 +1,3 @@
+let a = !!(34>5);
+let b = !a;
+let c = a&!b

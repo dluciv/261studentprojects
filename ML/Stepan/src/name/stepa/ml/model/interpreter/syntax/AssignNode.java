@@ -9,14 +9,15 @@ package name.stepa.ml.model.interpreter.syntax;
  */
 public class AssignNode extends SyntaxTreeNode {
     public String variable;
+    public SyntaxTreeNode assignExpression;
 
     public AssignNode(String variable, SyntaxTreeNode assignExpression) {
-        super(assignExpression, null);
+        this.assignExpression = assignExpression;
         this.variable = variable;
     }
 
     @Override
     public String toString() {
-        return "[assign " + variable + " <- " + left.toString() + "]";
+        return "[assign " + variable + " <- " + assignExpression.toString() + "]";
     }
 }

@@ -12,26 +12,40 @@ import name.stepa.ml.model.interpreter.lexer.ComparisonLexeme;
 public class CaparisonTreeNode extends SyntaxTreeNode {
 
     public int operation;
+    public SyntaxTreeNode left;
+    public SyntaxTreeNode right;
+
 
     public CaparisonTreeNode(int operation, SyntaxTreeNode left, SyntaxTreeNode right) {
-        super(left, right);
+        this.right = right;
+        this.left = left;
         this.operation = operation;
     }
 
     @Override
     public String toString() {
+
+        String res = "[" + left.toString() + " ";
         switch (operation) {
-            case ComparisonLexeme.EQUALITY:
-                return "==";
+            case ComparisonLexeme.E:
+                res += "==";
+                break;
             case ComparisonLexeme.LE:
-                return "<=";
+                res += "<=";
+                break;
             case ComparisonLexeme.L:
-                return "<";
+                res += "<";
+                break;
             case ComparisonLexeme.GE:
-                return ">=";
+                res += ">=";
+                break;
             case ComparisonLexeme.G:
-                return ">";
+                res += ">";
+                break;
+            default:
+                res += "<error>";
         }
-        return "<error>";
+        res += " " + right.toString();
+        return res;
     }
 }

@@ -1,13 +1,14 @@
 package name.stepa.ml;
 
+import name.stepa.ml.components.LinePainter;
 import name.stepa.ml.highlight.MlEditorKit;
 import name.stepa.ml.model.Environment;
+import name.stepa.ml.model.interpreter.IInterpreterStateListener;
 import name.stepa.ml.model.interpreter.IOutput;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+import javax.swing.text.*;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -28,6 +29,7 @@ public class EditorWindow extends JFrame {
     private JMenuItem miRemoveFile;
 
     private boolean isSaved = false;
+    private LinePainter painter;
 
     public EditorWindow() {
         setContentPane(contentPane);
@@ -129,9 +131,24 @@ public class EditorWindow extends JFrame {
             }
         });
 
+        //editorPane.setHighlighter(new MyHighlighter());
+        painter = new LinePainter(editorPane);
+
         Environment.get().interpreter.setOutput(new IOutput() {
             public void println(String s) {
                 addToLog(s);
+            }
+        });
+        Environment.get().interpreter.setStateListener(new IInterpreterStateListener() {
+            public void onLineChanged(int row, int chPos, int lastCh) {
+                painter.setOffset(chPos);
+                editorPane.setCaretPosition(chPos);
+                /*editorPane.getHighlighter().removeAllHighlights();
+                try {
+                    editorPane.getHighlighter().addHighlight(chPos, lastCh, new DefaultHighlighter.DefaultHighlightPainter(Color.cyan));
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }*/
             }
         });
     }
@@ -156,7 +173,7 @@ public class EditorWindow extends JFrame {
     public void addToLog(String s) {
         try {
             Document d = logTextPane.getDocument();
-            d.insertString(d.getLength(), s+"\n", null);
+            d.insertString(d.getLength(), s + "\n", null);
         } catch (BadLocationException e) {
         }
     }
@@ -302,3 +319,4 @@ public class EditorWindow extends JFrame {
 
     }
 }
+
