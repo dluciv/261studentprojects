@@ -3,10 +3,6 @@ package AST;
 
 public class ArSubtraction extends BinaryOperation {
 
-    public ArSubtraction(ArOperand left, ArOperand right) {
-        super(left, right);
-    }
-
     public ArSubtraction(Tree left, Tree right) {
         super(left,right);
     }
