@@ -8,11 +8,12 @@ package name.stepa.ml.model.interpreter.lexer;
  * To change this template use File | Settings | File Templates.
  */
 public class ComparisonLexeme extends Lexeme {
-    public static final int EQUALITY = 0;
-    public static final int LE = 1;
-    public static final int L = 2;
-    public static final int GE = 3;
-    public static final int G = 4;
+    public static final int E = 0;
+    public static final int NE = 1;
+    public static final int LE = 2;
+    public static final int L = 3;
+    public static final int GE = 4;
+    public static final int G = 5;
 
     public int type;
 
@@ -23,7 +24,7 @@ public class ComparisonLexeme extends Lexeme {
     @Override
     public String toString() {
         switch (type) {
-            case EQUALITY:
+            case E:
                 return "==";
             case LE:
                 return "<=";
@@ -33,6 +34,8 @@ public class ComparisonLexeme extends Lexeme {
                 return ">=";
             case G:
                 return ">";
+            case NE:
+                return "!=";
         }
         return "<error>";
     }

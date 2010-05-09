@@ -2,6 +2,7 @@
   <dictionary name="Ex3NDR">
     <words>
       <w>println</w>
+      <w>unary</w>
     </words>
   </dictionary>
 </component>

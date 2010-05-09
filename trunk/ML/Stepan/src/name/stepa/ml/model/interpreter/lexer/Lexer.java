@@ -54,7 +54,7 @@ public class Lexer {
                     } else {
                         // "=="
                         pos += 2;
-                        res.add(new ComparisonLexeme(ComparisonLexeme.EQUALITY));
+                        res.add(new ComparisonLexeme(ComparisonLexeme.E));
                         break;
                     }
                 case SYMBOL_COMPARISON:
@@ -73,6 +73,16 @@ public class Lexer {
                         pos += 2;
                     }
                     break;
+                case SYMBOL_EXCLAMATION:
+                    nexSymbol = getSymbolType(data[pos + 1]);
+                    if (nexSymbol != SYMBOL_EQUALITY) {
+                        res.add(new NotLexeme());
+                        pos++;
+                    } else {
+                        res.add(new ComparisonLexeme(ComparisonLexeme.NE));
+                        pos += 2;
+                    }
+                    break;
                 case SYMBOL_OPEN_BRACKET:
                     res.add((new OpenBracketLexeme()));
                     pos++;
@@ -82,7 +92,7 @@ public class Lexer {
                     pos++;
                     break;
                 case SYMBOL_BINARY_OPERATION:
-                    res.add(new BinaryOperationLexeme(data[pos++]));
+                    res.add(new OperationLexeme(data[pos++]));
                     break;
                 case SYMBOL_UNKNOWN:
                     throw new Exception("Unexpected symbol");
@@ -107,6 +117,8 @@ public class Lexer {
         if (c == '/')
             return SYMBOL_BINARY_OPERATION;
         if (c == '*')
+            return SYMBOL_BINARY_OPERATION;
+        if (c == '&')
             return SYMBOL_BINARY_OPERATION;
 
         if (c == '(')

@@ -3,3 +3,5 @@ lib2.ocaml
 lib3
 SyntaxTest
 SyntaxProcessorTest
+LogicTest
+Spaces

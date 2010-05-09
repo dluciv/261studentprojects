@@ -5,14 +5,18 @@ package name.stepa.ml.model.interpreter.syntax;
  */
 public class BinaryOperationTreeNode extends SyntaxTreeNode {
     public char operation;
+    public SyntaxTreeNode left;
+    public SyntaxTreeNode right;
+
 
     public BinaryOperationTreeNode(SyntaxTreeNode left, SyntaxTreeNode right, char operation) {
-        super(left, right);
+        this.left = left;
+        this.right = right;
         this.operation = operation;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " " + Character.toString(operation);
+        return "[" + left.toString() + " " + Character.toString(operation) + " " + right.toString() + "]";
     }
 }

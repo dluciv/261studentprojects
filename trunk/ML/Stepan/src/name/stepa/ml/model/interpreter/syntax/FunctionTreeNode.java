@@ -9,14 +9,15 @@ package name.stepa.ml.model.interpreter.syntax;
  */
 public class FunctionTreeNode extends SyntaxTreeNode {
     public String function;
+    public SyntaxTreeNode argument;
 
     public FunctionTreeNode(String function, SyntaxTreeNode argument) {
-        super(argument, null);
+        this.argument = argument;
         this.function = function;
     }
 
     @Override
     public String toString() {
-        return "[call " +function + " " + left.toString() + "]";
+        return "[call " +function + " " + argument.toString() + "]";
     }
 }
