@@ -7,7 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import savenko.ast.Lexer;
 import savenko.ast.Program;
+import savenko.ast.Lexer.lexems;
 
 public class Controler {
 
@@ -19,13 +22,20 @@ public class Controler {
      }
 
      public void colorKeywords(){
-     
+    	 Lexer lexer = new Lexer(view.getProgramText());
+    	 
+    	 lexer.moveNext();
+    	 while (lexer.getCurrent().getTypeLexem() != lexems.EOF){
+    		 if (lexer.ifKeyword(lexer.getCurrent().getStringLexem()))
+    			 view.colorKeyword(lexer.getCurrent().getPosition().getCurrInd(), lexer.getCurrent().getPosition().getEndInd());
+    		 lexer.moveNext();
+    	 }
      }
 
      public void interpret() {
           view.resetConsole();
           try {
-               view.setProgressBarText("Interpreting program...");
+               view.setProgressBarText("I interpreting program...");
                program = new Program(view.getProgramText());
                String result = program.Interpret();
                if (result == null) {
@@ -78,7 +88,7 @@ public class Controler {
           } catch (IOException e) {
                view.printError("Caught IOException while reading " + filename, null);
           }
-
+          
           view.resetProgressBar();
           view.setProgramText(programm_text);
      }

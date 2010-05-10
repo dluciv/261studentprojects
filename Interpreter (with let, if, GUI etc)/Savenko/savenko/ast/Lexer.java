@@ -42,7 +42,7 @@ public class Lexer {
     	return currLexem;
     }
     
-    private boolean ifKeyword(String keyword){        
+    public boolean ifKeyword(String keyword){
         return (keywords.containsKey(keyword));
     }
     
@@ -94,22 +94,25 @@ public class Lexer {
     
     public void moveNext(){    	
         char currChar = ' ';
-
+     
         if (curr_index < expression.length()){
-            currChar = expression.charAt(curr_index);
-        
-        while (currChar == ' ' || currChar == '\r' || currChar == '\n') {
-        	curr_index++;
-        	if (currChar == '\n'){
-        		col_num = 0;
-        		row_num++;
-        	}else col_num++;
-        	currChar =  expression.charAt(curr_index);
-        }
+        	currChar = expression.charAt(curr_index);
+        	
+	        while ((currChar == ' ' || currChar == '\r' || currChar == '\n')&&curr_index < expression.length()-1) {
+	        	curr_index++;
+	        	if (currChar == '\n'){
+	        		col_num = 0;
+	        		row_num++;
+	        	}else col_num++;
+	        	currChar =  expression.charAt(curr_index);
+	        }
         }
 
         old_index = curr_index;
         
+        if (ifEOF()) {
+        	currLexem = new Lexem(lexems.EOF,'0', getPosition());
+        }else 
         switch (currChar) {
         case '+': curr_index++; currLexem = new Lexem(lexems.Plus,'+', getPosition()); break;        
         case '-': curr_index++; currLexem = new Lexem(lexems.Minus,'-', getPosition());break;
@@ -142,9 +145,6 @@ public class Lexer {
              default:  curr_index++; currLexem = new Lexem(lexems.GREATER, '>', getPosition()); break;
              }
     	default:
-	        if (ifEOF()) {
-	        	currLexem = new Lexem(lexems.EOF,'0', getPosition());
-	        }else 
 	        if (ifNumber()){
 	        	currLexem = new Lexem(lexems.Number,getNumber(),getPosition());
 	        }else
