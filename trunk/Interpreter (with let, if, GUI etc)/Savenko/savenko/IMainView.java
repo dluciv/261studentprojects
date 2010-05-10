@@ -13,6 +13,8 @@ public interface IMainView {
 	public void printResult(String result);
 	
 	public void resetConsole();
+	
+	public void colorKeyword(int start_ind, int end_index);
 
         public void highlightText(int start_ind, int end_index);
 
