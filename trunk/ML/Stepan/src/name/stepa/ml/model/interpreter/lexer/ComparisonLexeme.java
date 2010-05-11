@@ -17,7 +17,8 @@ public class ComparisonLexeme extends Lexeme {
 
     public int type;
 
-    public ComparisonLexeme(int type) {
+    public ComparisonLexeme(int type, int pos, int end) {
+        super(pos, end);
         this.type = type;
     }
 
