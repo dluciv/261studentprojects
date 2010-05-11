@@ -16,16 +16,24 @@ public class SyntaxProcessor {
 
 
     private SyntaxTreeNode processExpr(Lexeme[] data) throws Exception {
-        if (data[0] instanceof LetLexeme) {
-            String variable = ((IdentifierLexeme) data[1]).value;
+        if (data[pointer] instanceof LetLexeme) {
+            String variable = ((IdentifierLexeme) data[pointer + 1]).value;
             pointer += 3;
-            return new AssignNode(variable, processLogic(data));
-        } else if (data[0] instanceof IdentifierLexeme) {
-            String variable = ((IdentifierLexeme) data[0]).value;
-            pointer++;
-            return new FunctionTreeNode(variable, processLogic(data));
-        } else
-            throw new Exception("Wrong expression!");
+            AssignNode assign = new AssignNode(variable, processLogic(data));
+            if ((data.length > pointer) && ((data[pointer] instanceof InLexeme))) {
+                pointer++;
+                return new InTreeNode(assign, processExpr(data));
+            } else
+                return assign;
+        } else {
+            //if (data[0] instanceof IdentifierLexeme)
+            //String variable = ((IdentifierLexeme) data[0]).value;
+            //pointer++;
+            //new FunctionTreeNode(variable, processLogic(data));
+            return processLogic(data);
+        }
+        /*else
+            throw new Exception("Wrong expression!");*/
     }
 
     private SyntaxTreeNode processLogic(Lexeme[] data) throws Exception {
