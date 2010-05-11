@@ -2,29 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="8c8a988e-9569-400b-94ca-02c0e5180a6c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/OpenBracketLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/OpenBracketLexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/EditorWindow.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/EditorWindow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HotMLStudio.iml" afterPath="$PROJECT_DIR$/HotMLStudio.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/NumberLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/NumberLexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/NotLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/NotLexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ValueLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ValueLexeme.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/hmls.proj" afterPath="$PROJECT_DIR$/project/hmls.proj" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Interpreter.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Interpreter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/InLexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/EOFLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/EOFLexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/AssignLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/AssignLexeme.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/CloseBracketLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/CloseBracketLexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ComparisonLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ComparisonLexeme.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/LetLexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/OperationLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/OperationLexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/VariableLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/VariableLexeme.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/BinaryOperationLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/BinaryOperationLexeme.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexer.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/InTreeNode.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/IdentifierLexeme.java" afterPath="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/IdentifierLexeme.java" />
     </list>
     <ignored path="HotMLStudio.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -83,26 +66,7 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="SyntaxProcessor.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="106" column="44" selection-start="3865" selection-end="3865" vertical-scroll-proportion="0.7884232">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Lexer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="38" selection-start="1871" selection-end="1871" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -112,8 +76,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/BinaryOperationLexeme.java" />
-        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/CloseBracketLexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ComparisonLexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/EOFLexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/IdentifierLexeme.java" />
@@ -125,9 +87,11 @@
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/VariableLexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/LetLexeme.java" />
-        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/InLexeme.java" />
         <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexer.java" />
+        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/InTreeNode.java" />
+        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java" />
+        <option value="$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Interpreter.java" />
       </list>
     </option>
   </component>
@@ -169,9 +133,9 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Favorites" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -584,21 +548,21 @@
     <frame x="-4" y="-4" width="1288" height="938" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18815896" sideWeight="0.7839196" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.08353609" sideWeight="0.7839196" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39949748" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32788944" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2424623" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2733171" sideWeight="0.6633166" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2725061" sideWeight="0.7487437" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18090452" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18815896" sideWeight="0.7839196" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263041" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -620,7 +584,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавил ключевые слова in и let в лексер." />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавил обработку In в интерпретаторе и синтаксическом анализаторе." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -634,6 +598,7 @@
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="Добавил ключевые слова in и let в лексер." />
+    <MESSAGE value="Добавил обработку In в интерпретаторе и синтаксическом анализаторе." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -643,116 +608,84 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/CloseBracketLexeme.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="30" selection-start="234" selection-end="234" vertical-scroll-proportion="0.19932999">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/EOFLexeme.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="21" selection-start="172" selection-end="172" vertical-scroll-proportion="0.17085427">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/IdentifierLexeme.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="39" selection-start="277" selection-end="277" vertical-scroll-proportion="0.2562814">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/NotLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="30" selection-start="308" selection-end="308" vertical-scroll-proportion="0.31323284">
-          <folding />
-        </state>
+        <state line="11" column="30" selection-start="308" selection-end="308" vertical-scroll-proportion="0.31323284" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/NumberLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="24" selection-start="265" selection-end="265" vertical-scroll-proportion="0.2562814">
-          <folding />
-        </state>
+        <state line="9" column="24" selection-start="265" selection-end="265" vertical-scroll-proportion="0.2562814" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/OpenBracketLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="30" selection-start="232" selection-end="232" vertical-scroll-proportion="0.19932999">
-          <folding />
-        </state>
+        <state line="7" column="30" selection-start="232" selection-end="232" vertical-scroll-proportion="0.19932999" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/OperationLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="26" selection-start="266" selection-end="266" vertical-scroll-proportion="0.2562814">
-          <folding />
-        </state>
+        <state line="9" column="26" selection-start="266" selection-end="266" vertical-scroll-proportion="0.2562814" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ValueLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="24" selection-start="263" selection-end="263" vertical-scroll-proportion="0.2562814">
-          <folding />
-        </state>
+        <state line="9" column="24" selection-start="263" selection-end="263" vertical-scroll-proportion="0.2562814" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/VariableLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="39" selection-start="273" selection-end="273" vertical-scroll-proportion="0.2562814">
-          <folding />
-        </state>
+        <state line="9" column="39" selection-start="273" selection-end="273" vertical-scroll-proportion="0.2562814" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/ComparisonLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="217" selection-end="217" vertical-scroll-proportion="-0.100323625">
-          <folding />
-        </state>
+        <state line="9" column="13" selection-start="217" selection-end="217" vertical-scroll-proportion="-0.100323625" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/UnaryOperationTreeNode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="218" selection-end="218" vertical-scroll-proportion="0.24757281">
-          <folding />
-        </state>
+        <state line="9" column="13" selection-start="218" selection-end="218" vertical-scroll-proportion="0.24757281" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/LetLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="23" selection-start="386" selection-end="386" vertical-scroll-proportion="0.44012946">
-          <folding />
-        </state>
+        <state line="16" column="23" selection-start="386" selection-end="386" vertical-scroll-proportion="0.44012946" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="4" selection-start="4" selection-end="4" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="4" selection-start="4" selection-end="4" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/InLexeme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="22" selection-start="377" selection-end="377" vertical-scroll-proportion="0.44012946">
-          <folding />
-        </state>
+        <state line="16" column="22" selection-start="377" selection-end="377" vertical-scroll-proportion="0.44012946" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/lexer/Lexer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="38" selection-start="1871" selection-end="1871" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="44" column="25" selection-start="1859" selection-end="1859" vertical-scroll-proportion="0.39600664" />
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files (x86)/Java/jdk1.5.0_04/src.zip!/java/util/TreeMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="454" column="13" selection-start="17660" selection-end="17660" vertical-scroll-proportion="0.33333334" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/InTreeNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="80" selection-start="608" selection-end="608" vertical-scroll-proportion="0.55016184" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/syntax/SyntaxProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="44" selection-start="3865" selection-end="3865" vertical-scroll-proportion="0.7884232">
-          <folding />
-        </state>
+        <state line="24" column="0" selection-start="765" selection-end="765" vertical-scroll-proportion="0.2394822" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="157" column="28" selection-start="5468" selection-end="5468" vertical-scroll-proportion="0.33333334" />
       </provider>
     </entry>
   </component>

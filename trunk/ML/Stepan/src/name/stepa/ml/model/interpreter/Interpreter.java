@@ -80,19 +80,7 @@ public class Interpreter {
         println("lexemes: " + Arrays.toString(lexemes));
         SyntaxTreeNode syntax = new SyntaxProcessor().process(lexemes);
         println("syntax: " + syntax.toString());
-        if (syntax instanceof AssignNode) {
-            Object value = interpret(((AssignNode) syntax).assignExpression);
-            String name = ((AssignNode) syntax).variable;
-            context.put(name, value);
-            println("set value " + value + " -> " + name);
-        } else if (syntax instanceof FunctionTreeNode) {
-            String functionName = ((FunctionTreeNode) syntax).function;
-            Object argument = interpret(((FunctionTreeNode) syntax).argument);
-
-            if (functionName.equals("print")) {
-                println(argument.toString());
-            }
-        }
+        println("result: " + interpret(syntax).toString());
     }
 
     private Object interpret(SyntaxTreeNode node) throws Exception {
@@ -106,9 +94,49 @@ public class Interpreter {
             return interpret((BinaryOperationTreeNode) node);
         if (node instanceof UnaryOperationTreeNode)
             return interpret((UnaryOperationTreeNode) node);
+        if (node instanceof AssignNode)
+            return interpret((AssignNode) node);
+        if (node instanceof FunctionTreeNode)
+            return interpret((FunctionTreeNode) node);
+        if (node instanceof InTreeNode)
+            return interpret((InTreeNode) node);
 
         throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
     }
+
+    private Object interpret(InTreeNode node) throws Exception {
+        Object old = null;
+        if (context.containsKey(node.assignment.variable))
+            old = context.get(node.assignment.variable);
+
+
+        interpret(node.assignment);
+        Object res = interpret(node.expression);
+
+        if (old != null)
+            context.put(node.assignment.variable, old);
+
+        return res;
+    }
+
+    private Object interpret(AssignNode node) throws Exception {
+        Object value = interpret(node.assignExpression);
+        String name = node.variable;
+        context.put(name, value);
+        println("set value " + value + " -> " + name);
+        return value;
+    }
+
+    private Object interpret(FunctionTreeNode node) throws Exception {
+        String functionName = node.function;
+        Object argument = interpret(node.argument);
+        if (functionName.equals("print")) {
+            println(argument.toString());
+            return "void";
+        }
+        throw new Exception("Wrong function name: " + functionName);
+    }
+
 
     private Object interpret(UnaryOperationTreeNode node) throws Exception {
         if (node.operation == UnaryOperationTreeNode.MINUS) {

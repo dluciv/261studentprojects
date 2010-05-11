@@ -39,9 +39,10 @@ public class Lexer {
                     String var = Character.toString(data[pos++]);
                     while ((pos < data.length) && ((getSymbolType(data[pos]) == SYMBOL_LETTER) || (getSymbolType(data[pos]) == SYMBOL_DIGIT)))
                         var += Character.toString(data[pos++]);
+
                     if (var.equals("let"))
                         res.add(new LetLexeme(posStart));
-                    if (var.equals("in"))
+                    else if (var.equals("in"))
                         res.add(new InLexeme(posStart));
                     else
                         res.add(new IdentifierLexeme(var, posStart));
