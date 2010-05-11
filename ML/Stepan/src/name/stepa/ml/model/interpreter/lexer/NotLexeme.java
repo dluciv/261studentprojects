@@ -8,6 +8,10 @@ package name.stepa.ml.model.interpreter.lexer;
  * To change this template use File | Settings | File Templates.
  */
 public class NotLexeme extends Lexeme {
+    public NotLexeme(int start) {
+        super(start, start + 1);
+    }
+
     @Override
     public String toString() {
         return "<not>";

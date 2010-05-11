@@ -63,7 +63,7 @@ public class Interpreter {
 
     public void interpret() throws Exception {
         if (lines != null) {
-            while ((++nextLine < lines.length) && (lines[nextLine].isEmpty())) ;
+            while ((++nextLine < lines.length) && (lines[nextLine].trim().equals(""))) ;
             if (lines.length <= nextLine)
                 println("Reached end of document.");
             else {

@@ -16,16 +16,14 @@ public class SyntaxProcessor {
 
 
     private SyntaxTreeNode processExpr(Lexeme[] data) throws Exception {
-        if (data[0] instanceof IdentifierLexeme) {
-            if (((IdentifierLexeme) data[0]).value.equals("let")) {
-                String variable = ((IdentifierLexeme) data[1]).value;
-                pointer += 3;
-                return new AssignNode(variable, processLogic(data));
-            } else {
-                String variable = ((IdentifierLexeme) data[0]).value;
-                pointer++;
-                return new FunctionTreeNode(variable, processLogic(data));
-            }
+        if (data[0] instanceof LetLexeme) {
+            String variable = ((IdentifierLexeme) data[1]).value;
+            pointer += 3;
+            return new AssignNode(variable, processLogic(data));
+        } else if (data[0] instanceof IdentifierLexeme) {
+            String variable = ((IdentifierLexeme) data[0]).value;
+            pointer++;
+            return new FunctionTreeNode(variable, processLogic(data));
         } else
             throw new Exception("Wrong expression!");
     }

@@ -6,7 +6,8 @@ package name.stepa.ml.model.interpreter.lexer;
 public class ValueLexeme extends Lexeme {
     public double value;
 
-    public ValueLexeme(double value) {
+    public ValueLexeme(double value, int start, int end) {
+        super(start, end);
         this.value = value;
     }
 

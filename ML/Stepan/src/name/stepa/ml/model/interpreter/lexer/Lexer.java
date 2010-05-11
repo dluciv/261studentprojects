@@ -27,18 +27,24 @@ public class Lexer {
         int nexSymbol;
         while (pos < data.length) {
             int symType = getSymbolType(data[pos]);
+            int posStart = pos;
             switch (symType) {
                 case SYMBOL_DIGIT:
                     String num = Character.toString(data[pos++]);
                     while ((pos < data.length) && (getSymbolType(data[pos]) == SYMBOL_DIGIT))
                         num += Character.toString(data[pos++]);
-                    res.add(new ValueLexeme(Double.parseDouble(num)));
+                    res.add(new ValueLexeme(Double.parseDouble(num), posStart, posStart + data.length));
                     break;
                 case SYMBOL_LETTER:
                     String var = Character.toString(data[pos++]);
                     while ((pos < data.length) && ((getSymbolType(data[pos]) == SYMBOL_LETTER) || (getSymbolType(data[pos]) == SYMBOL_DIGIT)))
                         var += Character.toString(data[pos++]);
-                    res.add(new IdentifierLexeme(var));
+                    if (var.equals("let"))
+                        res.add(new LetLexeme(posStart));
+                    if (var.equals("in"))
+                        res.add(new InLexeme(posStart));
+                    else
+                        res.add(new IdentifierLexeme(var, posStart));
                     break;
                 case SYMBOL_SPACE:
                     while ((pos < data.length) && (getSymbolType(data[pos]) == SYMBOL_SPACE)) {
@@ -49,50 +55,50 @@ public class Lexer {
                     nexSymbol = getSymbolType(data[pos + 1]);
                     if (nexSymbol != SYMBOL_EQUALITY) {
                         pos++;
-                        res.add(new AssignLexeme());
+                        res.add(new AssignLexeme(posStart));
                         break;
                     } else {
                         // "=="
                         pos += 2;
-                        res.add(new ComparisonLexeme(ComparisonLexeme.E));
+                        res.add(new ComparisonLexeme(ComparisonLexeme.E, posStart, posStart + 2));
                         break;
                     }
                 case SYMBOL_COMPARISON:
                     nexSymbol = getSymbolType(data[pos + 1]);
                     if (nexSymbol != SYMBOL_EQUALITY) {
                         if (data[pos] == '>')
-                            res.add(new ComparisonLexeme(ComparisonLexeme.G));
+                            res.add(new ComparisonLexeme(ComparisonLexeme.G, posStart, posStart + 1));
                         else
-                            res.add(new ComparisonLexeme(ComparisonLexeme.L));
+                            res.add(new ComparisonLexeme(ComparisonLexeme.L, posStart, posStart + 1));
                         pos++;
                     } else {
                         if (data[pos] == '>')
-                            res.add(new ComparisonLexeme(ComparisonLexeme.GE));
+                            res.add(new ComparisonLexeme(ComparisonLexeme.GE, posStart, posStart + 2));
                         else
-                            res.add(new ComparisonLexeme(ComparisonLexeme.LE));
+                            res.add(new ComparisonLexeme(ComparisonLexeme.LE, posStart, posStart + 2));
                         pos += 2;
                     }
                     break;
                 case SYMBOL_EXCLAMATION:
                     nexSymbol = getSymbolType(data[pos + 1]);
                     if (nexSymbol != SYMBOL_EQUALITY) {
-                        res.add(new NotLexeme());
+                        res.add(new NotLexeme(posStart));
                         pos++;
                     } else {
-                        res.add(new ComparisonLexeme(ComparisonLexeme.NE));
+                        res.add(new ComparisonLexeme(ComparisonLexeme.NE, posStart, posStart + 2));
                         pos += 2;
                     }
                     break;
                 case SYMBOL_OPEN_BRACKET:
-                    res.add((new OpenBracketLexeme()));
+                    res.add((new OpenBracketLexeme(posStart)));
                     pos++;
                     break;
                 case SYMBOL_CLOSE_BRACKET:
-                    res.add((new CloseBracketLexeme()));
+                    res.add((new CloseBracketLexeme(posStart)));
                     pos++;
                     break;
                 case SYMBOL_BINARY_OPERATION:
-                    res.add(new OperationLexeme(data[pos++]));
+                    res.add(new OperationLexeme(data[pos++], posStart));
                     break;
                 case SYMBOL_UNKNOWN:
                     throw new Exception("Unexpected symbol");

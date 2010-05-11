@@ -6,7 +6,8 @@ package name.stepa.ml.model.interpreter.lexer;
 public class IdentifierLexeme extends Lexeme {
     public String value;
 
-    public IdentifierLexeme(String value) {
+    public IdentifierLexeme(String value, int pos) {
+        super(pos, pos + value.length());
         this.value = value;
     }
 
