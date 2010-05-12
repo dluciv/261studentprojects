@@ -1,7 +1,5 @@
 package name.stepa.ml.model;
 
-import name.stepa.ml.model.interpreter.Interpreter;
-
 import java.io.IOException;
 
 /**

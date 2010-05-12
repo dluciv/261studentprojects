@@ -3,7 +3,7 @@ package name.stepa.ml;
 import name.stepa.ml.highlight.MlEditorKit;
 import name.stepa.ml.model.Environment;
 import name.stepa.ml.model.interpreter.IInterpreterStateListener;
-import name.stepa.ml.model.interpreter.IOutput;
+import name.stepa.ml.model.interpreter.IO;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -129,7 +129,7 @@ public class EditorWindow extends JFrame {
             }
         });
 
-        Environment.get().interpreter.setOutput(new IOutput() {
+        IO.setOutputInterface(new IO.IOutput() {
             public void println(String s) {
                 addToLog(s);
             }

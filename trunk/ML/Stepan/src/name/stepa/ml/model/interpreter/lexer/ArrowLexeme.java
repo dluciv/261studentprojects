@@ -2,18 +2,18 @@ package name.stepa.ml.model.interpreter.lexer;
 
 /**
  * Created by IntelliJ IDEA.
- * User: m08ksa
- * Date: 11.05.2010
- * Time: 12:20:23
+ * User: Ex3NDR
+ * Date: 12.05.2010
+ * Time: 16:39:53
  * To change this template use File | Settings | File Templates.
  */
-public class InLexeme extends Lexeme {
-    public InLexeme(int pos) {
-        super(pos, pos + 2);
+public class ArrowLexeme extends Lexeme {
+    public ArrowLexeme(int start) {
+        super(start, start + 2);
     }
 
     @Override
     public String toString() {
-        return "<in>";
+        return "[->]";
     }
 }

@@ -1,5 +1,7 @@
 package name.stepa.ml.model.interpreter.lexer;
 
+import name.stepa.ml.model.interpreter.lexer.keywords.*;
+
 import java.util.ArrayList;
 
 /**
@@ -56,6 +58,8 @@ public class Lexer {
                         res.add(new ThenLexeme(posStart));
                     else if (var.equals("else"))
                         res.add(new ElseLexeme(posStart));
+                    else if (var.equals("fun"))
+                        res.add(new FunLexeme(posStart));
                     else
                         res.add(new IdentifierLexeme(var, posStart));
                     break;
@@ -115,7 +119,14 @@ public class Lexer {
                     pos++;
                     break;
                 case SYMBOL_BINARY_OPERATION:
-                    res.add(new OperationLexeme(data[pos++], posStart));
+                    if (data[pos] == '-') {
+                        if (data[pos + 1] == '>') {
+                            pos += 2;
+                            res.add(new ArrowLexeme(posStart));
+                        } else
+                            res.add(new OperationLexeme(data[pos++], posStart));
+                    } else
+                        res.add(new OperationLexeme(data[pos++], posStart));
                     break;
                 case SYMBOL_UNKNOWN:
                     throw new Exception("Unexpected symbol");
