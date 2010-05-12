@@ -22,11 +22,11 @@ public class Interpreter {
 
     String program;
     IInterpreterStateListener stateListener = null;
-    InterpretationCore core = new InterpretationCore(new Context());
+    public InterpretationCore core = new InterpretationCore();
 
     public void setProgram(String program) {
         this.program = program;
-        core.context = new Context();
+        core.resetContext();
         if (this.program == null) {
             notifyStateChanging();
         } else {

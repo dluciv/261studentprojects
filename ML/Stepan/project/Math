@@ -1,0 +1,2 @@
+print asin(sin(PI/6));
+print asin(sin(1));

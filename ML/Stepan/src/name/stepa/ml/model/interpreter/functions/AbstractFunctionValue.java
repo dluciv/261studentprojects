@@ -9,4 +9,11 @@ package name.stepa.ml.model.interpreter.functions;
  */
 public abstract class AbstractFunctionValue {
     public abstract Object execute(Object arg) throws Exception;
+
+    protected Double getNumericArgument(Object arg) throws Exception {
+        if (arg instanceof Double)
+            return (Double) arg;
+        else
+            throw new Exception("Type mismatch! Expected Double, got " + arg.getClass().getSimpleName());
+    }
 }

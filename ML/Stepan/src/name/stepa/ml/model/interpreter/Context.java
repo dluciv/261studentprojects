@@ -31,4 +31,8 @@ public class Context {
     public Context clone() {
         return new Context((TreeMap<String, Object>) this.values.clone());
     }
+
+    public void clear() {
+        this.values.clear();
+    }
 }

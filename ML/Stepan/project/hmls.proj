@@ -5,4 +5,7 @@ SyntaxTest
 SyntaxProcessorTest
 LogicTest
 Spaces
-inTest
+InAndListTest
+IfThenElse
+FunTest
+Math
