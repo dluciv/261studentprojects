@@ -1,5 +1,6 @@
 package name.stepa.ml.model.interpreter;
 
+import name.stepa.ml.model.interpreter.values.ExecutionStateValue;
 import name.stepa.ml.model.interpreter.values.functions.*;
 import name.stepa.ml.model.interpreter.lexer.ComparisonLexeme;
 import name.stepa.ml.model.interpreter.syntax.*;
@@ -36,57 +37,127 @@ public class InterpretationCore {
         context.put("PI", Math.PI);
     }
 
+    ExecutionStack executionStack;
+    ExecutionStack.ExecutionStackItem currentItem;
 
-    public Context context;
-
-    public InterpretationCore(Context context) {
-        this.context = context;
+    public InterpretationCore(SyntaxTreeNode root) {
+        this.executionStack = new ExecutionStack();
+        Context rootContext = new Context();
+        initContext(rootContext);
+        this.executionStack.push(new ExecutionStack.ExecutionStackItem(root, new ExecutionStateValue(), rootContext));
+        currentItem = getExecutionItem();
     }
 
-    public InterpretationCore() {
-        this.context = new Context();
-        resetContext();
+    private void pushToStack(SyntaxTreeNode node) {
+        IO.println("Adding to execution stack: " + node.toString());
+        this.executionStack.push(new ExecutionStack.ExecutionStackItem(node, new ExecutionStateValue(), currentItem.context.clone()));
     }
 
-    public void resetContext() {
-        this.context.clear();
-        initContext(this.context);
+    private ExecutionStack.ExecutionStackItem getExecutionItem() {
+        if (executionStack.size() == 0)
+            return null;
+        else
+            return executionStack.peek();
     }
+
+    public Object step() throws Exception {
+        currentItem = getExecutionItem();
+        if (currentItem == null)
+            return null;
+
+        SyntaxTreeNode node = currentItem.parent;
+        ExecutionStateValue state = currentItem.state;
+
+        Object res = null;
+        if (node instanceof CaparisonTreeNode)
+            res = interpret((CaparisonTreeNode) node);
+        else if (node instanceof ValueTreeNode)
+            res = interpret((ValueTreeNode) node);
+        else if (node instanceof VariableTreeNode)
+            res = interpret((VariableTreeNode) node);
+        else if (node instanceof BinaryOperationTreeNode)
+            res = interpret((BinaryOperationTreeNode) node);
+        else if (node instanceof UnaryOperationTreeNode)
+            res = interpret((UnaryOperationTreeNode) node);
+        else if (node instanceof AssignNode)
+            res = interpret((AssignNode) node);
+        else if (node instanceof InTreeNode)
+            res = interpret((InTreeNode) node);
+        else if (node instanceof ExpressionListTreeNode)
+            res = interpret((ExpressionListTreeNode) node, state);
+        else if (node instanceof IfTreeNode)
+            res = interpret((IfTreeNode) node);
+        else if (node instanceof FunctionDeclarationTreeNode)
+            res = interpret((FunctionDeclarationTreeNode) node);
+        else if (node instanceof ExpressionCallTreeNode)
+            res = interpret((ExpressionCallTreeNode) node);
+        else
+            throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
+
+        if (state.state == -1) {
+            executionStack.pop();
+            currentItem = getExecutionItem();
+            if (currentItem != null)
+                currentItem.calculatedExpressions.add(res);
+            return res;
+        } else
+            return null;
+    }
+
 
     public Object interpret(SyntaxTreeNode node) throws Exception {
+        currentItem = getExecutionItem();
+        if (currentItem == null)
+            return null;
+
+        Object res = null;
         if (node instanceof CaparisonTreeNode)
-            return interpret((CaparisonTreeNode) node);
-        if (node instanceof ValueTreeNode)
-            return interpret((ValueTreeNode) node);
-        if (node instanceof VariableTreeNode)
-            return interpret((VariableTreeNode) node);
-        if (node instanceof BinaryOperationTreeNode)
-            return interpret((BinaryOperationTreeNode) node);
-        if (node instanceof UnaryOperationTreeNode)
-            return interpret((UnaryOperationTreeNode) node);
-        if (node instanceof AssignNode)
-            return interpret((AssignNode) node);
-        if (node instanceof InTreeNode)
-            return interpret((InTreeNode) node);
-        if (node instanceof ExpressionListTreeNode)
-            return interpret((ExpressionListTreeNode) node);
-        if (node instanceof IfTreeNode)
-            return interpret((IfTreeNode) node);
-        if (node instanceof FunctionDeclarationTreeNode)
-            return interpret((FunctionDeclarationTreeNode) node);
-        if (node instanceof ExpressionCallTreeNode)
-            return interpret((ExpressionCallTreeNode) node);
+            res = interpret((CaparisonTreeNode) node);
+        else if (node instanceof ValueTreeNode)
+            res = interpret((ValueTreeNode) node);
+        else if (node instanceof VariableTreeNode)
+            res = interpret((VariableTreeNode) node);
+        else if (node instanceof BinaryOperationTreeNode)
+            res = interpret((BinaryOperationTreeNode) node);
+        else if (node instanceof UnaryOperationTreeNode)
+            res = interpret((UnaryOperationTreeNode) node);
+        else if (node instanceof AssignNode)
+            res = interpret((AssignNode) node);
+        else if (node instanceof InTreeNode)
+            res = interpret((InTreeNode) node);
+        else if (node instanceof ExpressionListTreeNode)
+            res = interpret((ExpressionListTreeNode) node);
+        else if (node instanceof IfTreeNode)
+            res = interpret((IfTreeNode) node);
+        else if (node instanceof FunctionDeclarationTreeNode)
+            res = interpret((FunctionDeclarationTreeNode) node);
+        else if (node instanceof ExpressionCallTreeNode)
+            res = interpret((ExpressionCallTreeNode) node);
+        else
+            throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
 
-
-        throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
+        return res;
     }
 
-    private Object interpret(ExpressionListTreeNode node) throws Exception {
-        Object res = null;
-        for (SyntaxTreeNode i : node.nodes) {
-            res = interpret(i);
+    private Object interpret(ExpressionListTreeNode node, ExecutionStateValue state) throws Exception {
+        if (state != null) {
+            Object res = null;
+            if (state.state == -1)
+                state.state = 0;
+            if (state.state < node.nodes.length) {
+                pushToStack(node.nodes[state.state]);
+                state.state++;
+                return null;
+            }
+            state.state = -1;
+            return currentItem.calculatedExpressions.get(0);
+        } else {
+            Object res = null;
+            for (SyntaxTreeNode i : node.nodes) {
+                res = interpret(i);
+            }
+            return res;
         }
-        return res;
     }
 
     private Object interpret(ExpressionCallTreeNode node) throws Exception {
@@ -98,7 +169,7 @@ public class InterpretationCore {
     }
 
     private Object interpret(FunctionDeclarationTreeNode node) throws Exception {
-        return new FunctionValue(this.context.clone(), node.expression, node.argumentName);
+        return new FunctionValue(currentItem.context.clone(), node.expression, node.argumentName, this);
     }
 
     private Object interpret(IfTreeNode node) throws Exception {
@@ -109,16 +180,15 @@ public class InterpretationCore {
     }
 
     private Object interpret(InTreeNode node) throws Exception {
-        Object old = context.put(node.assignment.variable, interpret(node.assignment.assignExpression));
+        currentItem.context.put(node.assignment.variable, interpret(node.assignment.assignExpression));
         Object res = interpret(node.expression);
-        context.put(node.assignment.variable, old);
         return res;
     }
 
     private Object interpret(AssignNode node) throws Exception {
         Object value = interpret(node.assignExpression);
         String name = node.variable;
-        context.put(name, value);
+        currentItem.context.put(name, value);
         IO.println("set value " + value + " -> " + name);
         return value;
     }
@@ -133,7 +203,7 @@ public class InterpretationCore {
         throw new Exception("Unsupported unary operation: " + node.operation);
     }
 
-    private Object interpret(CaparisonTreeNode node) throws Exception {
+    private Object interpret(CaparisonTreeNode node, ExecutionStateValue state) throws Exception {
         if ((node.operation == ComparisonLexeme.E) || (node.operation == ComparisonLexeme.NE)) {
             Object left = interpret(node.left);
             Object right = interpret(node.right);
@@ -166,7 +236,7 @@ public class InterpretationCore {
     }
 
     private Object interpret(VariableTreeNode node) {
-        return context.get(node.variable);
+        return currentItem.context.get(node.variable);
     }
 
     private Object interpret(BinaryOperationTreeNode node) throws Exception {
@@ -209,6 +279,9 @@ public class InterpretationCore {
     }
 
     private Double getAlgebraicValue(Object value) throws Exception {
+        if (value == null)
+            throw new Exception("Type mismatch! Expected Double, got NULL");
+
         if (value instanceof Double)
             return (Double) value;
 
@@ -216,6 +289,9 @@ public class InterpretationCore {
     }
 
     private Boolean getLogicValue(Object value) throws Exception {
+        if (value == null)
+            throw new Exception("Type mismatch! Expected Double, got NULL");
+
         if (value instanceof Boolean)
             return (Boolean) value;
 

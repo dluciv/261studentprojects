@@ -18,16 +18,15 @@ public class FunctionValue extends AbstractFunctionValue {
     InterpretationCore core;
     String argumentName;
 
-    public FunctionValue(Context context, SyntaxTreeNode expression, String argumentName) {
+    public FunctionValue(Context context, SyntaxTreeNode expression, String argumentName, InterpretationCore core) {
         this.context = context;
         this.expression = expression;
-        this.core = new InterpretationCore(context);
         this.argumentName = argumentName;
+        this.core = core;
     }
 
     @Override
     public Object execute(Object arg) throws Exception {
-        context.put(argumentName, arg);
         return core.interpret(expression);
     }
 

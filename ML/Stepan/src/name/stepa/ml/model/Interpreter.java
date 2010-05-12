@@ -20,17 +20,20 @@ import java.util.Arrays;
  */
 public class Interpreter {
 
-    String program;
     IInterpreterStateListener stateListener = null;
-    public InterpretationCore core = new InterpretationCore();
+    public InterpretationCore core = null;
 
-    public void setProgram(String program) {
-        this.program = program;
-        core.resetContext();
-        if (this.program == null) {
-            notifyStateChanging();
-        } else {
-            notifyStateChanging();
+    public void setProgram(String program) throws Exception {
+        if (program != null) {
+            IO.println("Expression:");
+            IO.println(program);
+            Lexeme[] lexemes = new Lexer().parse(program);
+            IO.println("lexemes:");
+            IO.println(Arrays.toString(lexemes));
+            SyntaxTreeNode syntax = new SyntaxProcessor().process(lexemes);
+            IO.println("syntax:");
+            IO.println(syntax.toString());
+            core = new InterpretationCore(syntax);
         }
     }
 
@@ -44,22 +47,10 @@ public class Interpreter {
         }
     }
 
-    public void interpret() throws Exception {
-        if (program != null)
-            interpret(program);
+    public void step() throws Exception {
+        if (core != null)
+            core.step();
         else
             IO.println("Nothing to interpret.");
-    }
-
-    private void interpret(String expression) throws Exception {
-        IO.println("Expression:");
-        IO.println(expression);
-        Lexeme[] lexemes = new Lexer().parse(expression);
-        IO.println("lexemes:");
-        IO.println(Arrays.toString(lexemes));
-        SyntaxTreeNode syntax = new SyntaxProcessor().process(lexemes);
-        IO.println("syntax:");
-        IO.println(syntax.toString());
-        IO.println("result: " + core.interpret(syntax).toString());
     }
 }

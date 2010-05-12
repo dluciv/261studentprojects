@@ -43,7 +43,7 @@ public class Environment {
         return selectedFile;
     }
 
-    public void setInterpretationProgram(String data) {
+    public void setInterpretationProgram(String data) throws Exception {
         interpreter.setProgram(data);
     }
 }
