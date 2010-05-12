@@ -22,6 +22,9 @@ public enum TokenType {
     THEN,
     ELSE,
 
+    BEGIN,
+    END,
+
     LOG_OPERAND,
 
     AND,
@@ -45,7 +48,6 @@ public enum TokenType {
 
     LET,
     IN,
-    END,
 
     UNKNOWN,
     EOL,

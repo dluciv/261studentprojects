@@ -13,7 +13,6 @@ import java.util.LinkedList;
 public class Parser {
 
     private LinkedList<Token> tokenStream;
-    private LinkedList<Expression> sequence = new LinkedList<Expression>();
     private String parseErrorLog = "";
     private Expression output;
     private int tokenNo = 0;
@@ -39,21 +38,11 @@ public class Parser {
 
     public void parseProgramm() {
         if (errorCounter == 0) {
-            output = parseExpression(); //parseSequence();
+            output = parseExpression();
         } else {
             fixError("there are lexical errors");
             output = null;
         }
-    }
-
-    public Expression parseSequence() {
-
-        do {
-            sequence.add(parseExpression());
-            // System.out.println(curToken.getType());
-        } while (curToken.getType() == TokenType.SEMICOLON);
-
-        return new ExSequence(sequence);
     }
 
     private Expression parseExpression() {
@@ -236,11 +225,23 @@ public class Parser {
                 }
             }
         } else if (curToken.getType() == TokenType.IF) {
-            //nextToken();
             Expression conditional = new ExConditional(parseExpression(), parseExpression(), parseExpression());
 
             return conditional;
-        } else {
+        } else if (curToken.getType() == TokenType.BEGIN) {
+            ExSequence seqExpr = null;
+            while (curToken.getType() != TokenType.END) {
+                seqExpr = new ExSequence(seqExpr, parseExpression());
+                System.out.println(curToken.getType());
+                if (curToken.getType() != TokenType.SEMICOLON && curToken.getType() != TokenType.END) {
+                    fixError("strange symbol, error code: 7");
+                    return null;
+                }
+            }
+            nextToken();
+            return seqExpr;
+        }
+        else{
             fixError("strange symbol, error code: 1");
             return null;
         }

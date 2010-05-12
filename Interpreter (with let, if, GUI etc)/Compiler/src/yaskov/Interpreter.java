@@ -253,13 +253,17 @@ public class Interpreter {
 
     // узлы типа "выражение";
 
-    private ExSequence interpret(ExSequence sequence) {
-        LinkedList<Expression> res = new LinkedList<Expression>();
-
-        for (int i = 0; i < sequence.getList().size(); ++i) {
-            res.add((Expression) interpretNode(sequence.getList().get(i)));
+    private Nothing interpret(ExSequence sequence) {
+        //LinkedList<Expression> res = new LinkedList<Expression>();
+        if (sequence.getLeft() != null) {
+            interpretNode(sequence.getLeft());
         }
-        return new ExSequence(res);
+        interpretNode(sequence.getRight());
+
+//        for (int i = 0; i < sequence.getList().size(); ++i) {
+//            res.add((Expression) interpretNode(sequence.getList().get(i)));
+//        }
+        return new Nothing();
     }
     
     private Expression interpret(ExBinding node) { // binding;

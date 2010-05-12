@@ -67,8 +67,6 @@ public class Lexer {
                     tokenStream.add(new Token(TokenType.LET));
                 } else if (word.equals("in")) {
                     tokenStream.add(new Token(TokenType.IN));
-                } else if (word.equals("end")) {
-                    tokenStream.add(new Token(TokenType.END));
                 } else if (word.equals("if")) {
                     tokenStream.add(new Token(TokenType.IF));
                 } else if (word.equals("then")) {
@@ -81,6 +79,10 @@ public class Lexer {
                     tokenStream.add(new Token(TokenType.LOG_OPERAND, 1));
                 } else if (word.equals("false")) {
                     tokenStream.add(new Token(TokenType.LOG_OPERAND, 0));
+                } else if (word.equals("begin")) {
+                    tokenStream.add(new Token(TokenType.BEGIN));
+                } else if (word.equals("end")) {
+                    tokenStream.add(new Token(TokenType.END));
                 } else {
                     fixVariable(word);
                 }
