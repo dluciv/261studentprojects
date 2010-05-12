@@ -1,8 +1,7 @@
-package name.stepa.ml.model.interpreter.functions;
+package name.stepa.ml.model.interpreter.values.functions;
 
 import name.stepa.ml.model.interpreter.Context;
 import name.stepa.ml.model.interpreter.InterpretationCore;
-import name.stepa.ml.model.interpreter.functions.AbstractFunctionValue;
 import name.stepa.ml.model.interpreter.syntax.SyntaxTreeNode;
 
 /**

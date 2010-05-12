@@ -1,6 +1,7 @@
-package name.stepa.ml.model.interpreter.functions;
+package name.stepa.ml.model.interpreter.values.functions;
 
 import name.stepa.ml.model.interpreter.IO;
+import name.stepa.ml.model.interpreter.values.Unit;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,7 +15,7 @@ public class SystemFunctions {
         @Override
         public Object execute(Object arg) throws Exception {
             IO.println(arg.toString());
-            return "void";
+            return Unit.VALUE;
         }
     }
 }
