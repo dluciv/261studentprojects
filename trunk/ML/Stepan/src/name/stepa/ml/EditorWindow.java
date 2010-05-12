@@ -305,9 +305,9 @@ public class EditorWindow extends JFrame {
 
 
         EditorWindow dialog = new EditorWindow();
+        dialog.pack();
         dialog.setVisible(true);
         dialog.setSize(700, 500);
-        dialog.pack();
         Toolkit toolkit = dialog.getToolkit();
         Dimension size = toolkit.getScreenSize();
         dialog.setLocation((size.width - dialog.getWidth()) / 2, (size.height - dialog.getHeight()) / 2);

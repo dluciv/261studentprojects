@@ -65,14 +65,32 @@ public class SyntaxProcessor {
             SyntaxTreeNode expression = processExpression(data);
             return new FunctionDeclarationTreeNode(expression, argument);
         } else {
-            //if (data[0] instanceof IdentifierLexeme)
-            //String variable = ((IdentifierLexeme) data[0]).value;
-            //pointer++;
-            //new FunctionTreeNode(variable, processLogic(data));
-            return processLogic(data);
+            SyntaxTreeNode res = processLogic(data);
+            if (isEndOfExpression(data[pointer]))
+                return res;
+            else {
+                return new ExpressionCallTreeNode(res, processExpression(data));
+            }
         }
         /*else
             throw new Exception("Wrong expression!");*/
+    }
+
+    private boolean isEndOfExpression(Lexeme lex) {
+        if (lex instanceof SemicolonLexeme)
+            return true;
+        if (lex instanceof ThenLexeme)
+            return true;
+        if (lex instanceof ElseLexeme)
+            return true;
+        if (lex instanceof InLexeme)
+            return true;
+        if (lex instanceof EOFLexeme)
+            return true;
+        if (lex instanceof CloseBracketLexeme)
+            return true;
+
+        return false;
     }
 
     private SyntaxTreeNode processLogic(Lexeme[] data) throws Exception {

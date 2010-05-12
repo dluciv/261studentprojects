@@ -1,6 +1,6 @@
 package name.stepa.ml.model.interpreter;
 
-import name.stepa.ml.model.interpreter.functions.FunctionValue;
+import name.stepa.ml.model.interpreter.functions.*;
 import name.stepa.ml.model.interpreter.lexer.ComparisonLexeme;
 import name.stepa.ml.model.interpreter.syntax.*;
 
@@ -13,10 +13,44 @@ import name.stepa.ml.model.interpreter.syntax.*;
  */
 public class InterpretationCore {
 
+    private static final void initContext(Context context) {
+        // System
+        context.put("print", new SystemFunctions.PrintlnFunctionValue());
+
+        // Math
+        context.put("abs", new MathFunctions.AbsFunctionValue());
+        context.put("acos", new MathFunctions.AcosFunctionValue());
+        context.put("asin", new MathFunctions.AsinFunctionValue());
+        context.put("atan", new MathFunctions.AtanFunctionValue());
+        context.put("ceil", new MathFunctions.CeilFunctionValue());
+        context.put("cos", new MathFunctions.CosFunctionValue());
+        context.put("exp", new MathFunctions.ExpFunctionValue());
+        context.put("floor", new MathFunctions.FloorFunctionValue());
+        context.put("log10", new MathFunctions.Log10FunctionValue());
+        context.put("log", new MathFunctions.LogFunctionValue());
+        context.put("round", new MathFunctions.RoundFunctionValue());
+        context.put("sin", new MathFunctions.SinFunctionValue());
+        context.put("sqrt", new MathFunctions.SqrtFunctionValue());
+        context.put("tan", new MathFunctions.TanFunctionValue());
+
+        context.put("PI", Math.PI);
+    }
+
+
     public Context context;
 
     public InterpretationCore(Context context) {
         this.context = context;
+    }
+
+    public InterpretationCore() {
+        this.context = new Context();
+        resetContext();
+    }
+
+    public void resetContext() {
+        this.context.clear();
+        initContext(this.context);
     }
 
     public Object interpret(SyntaxTreeNode node) throws Exception {
@@ -40,6 +74,8 @@ public class InterpretationCore {
             return interpret((IfTreeNode) node);
         if (node instanceof FunctionDeclarationTreeNode)
             return interpret((FunctionDeclarationTreeNode) node);
+        if (node instanceof ExpressionCallTreeNode)
+            return interpret((ExpressionCallTreeNode) node);
 
 
         throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
@@ -51,6 +87,14 @@ public class InterpretationCore {
             res = interpret(i);
         }
         return res;
+    }
+
+    private Object interpret(ExpressionCallTreeNode node) throws Exception {
+        Object expression = interpret(node.expression);
+        if (expression instanceof AbstractFunctionValue) {
+            return ((AbstractFunctionValue) expression).execute(interpret(node.argument));
+        } else
+            return expression;
     }
 
     private Object interpret(FunctionDeclarationTreeNode node) throws Exception {
@@ -78,17 +122,6 @@ public class InterpretationCore {
         IO.println("set value " + value + " -> " + name);
         return value;
     }
-
-/*    private Object interpret(FunctionTreeNode node) throws Exception {
-        String functionName = node.function;
-        Object argument = interpret(node.argument);
-        if (functionName.equals("print")) {
-            IO.println(argument.toString());
-            return "void";
-        }
-        throw new Exception("Wrong function name: " + functionName);
-    }*/
-
 
     private Object interpret(UnaryOperationTreeNode node) throws Exception {
         if (node.operation == UnaryOperationTreeNode.MINUS) {
@@ -129,11 +162,11 @@ public class InterpretationCore {
     }
 
     private Object interpret(ValueTreeNode node) {
-        return ((ValueTreeNode) node).value;
+        return node.value;
     }
 
     private Object interpret(VariableTreeNode node) {
-        return context.get(((VariableTreeNode) node).variable);
+        return context.get(node.variable);
     }
 
     private Object interpret(BinaryOperationTreeNode node) throws Exception {
