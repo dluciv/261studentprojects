@@ -51,7 +51,7 @@ public class EditorWindow extends JFrame {
                         save();
                         Environment.get().setInterpretationProgram(editorPane.getText());
                     }
-                    Environment.get().interpreter.interpret();
+                    Environment.get().interpreter.step();
                 } catch (Exception e1) {
                     addToLog(e1.getClass() + ":" + e1.getMessage());
                     e1.printStackTrace();
@@ -88,13 +88,18 @@ public class EditorWindow extends JFrame {
                     try {
                         String text = Environment.get().project.loadText(path);
                         editorPane.setText(text);
-                        Environment.get().setInterpretationProgram(text);
+                        try {
+                            Environment.get().setInterpretationProgram(text);
+                        } catch (Exception e1) {
+                            e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
                         editorPane.setEnabled(true);
                         isSaved = true;
                         Environment.get().setSelectedFile(path);
                         statusLabel.setText("Selected file " + path);
 
                         onProjectFileSelectionChanged();
+
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -174,7 +179,11 @@ public class EditorWindow extends JFrame {
     public void onTextChanged() {
         if (isSaved) {
             isSaved = false;
-            Environment.get().setInterpretationProgram(null);
+            try {
+                Environment.get().setInterpretationProgram(null);
+            } catch (Exception e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
     }
 
