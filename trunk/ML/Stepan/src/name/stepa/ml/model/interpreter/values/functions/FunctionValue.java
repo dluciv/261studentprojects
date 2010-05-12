@@ -11,26 +11,18 @@ import name.stepa.ml.model.interpreter.syntax.SyntaxTreeNode;
  * Time: 16:08:13
  * To change this template use File | Settings | File Templates.
  */
-public class FunctionValue extends AbstractFunctionValue {
+public class FunctionValue {
 
-    Context context;
-    SyntaxTreeNode expression;
-    InterpretationCore core;
-    String argumentName;
+    public Context context;
+    public SyntaxTreeNode expression;
+    public InterpretationCore core;
+    public String argumentName;
 
     public FunctionValue(Context context, SyntaxTreeNode expression, String argumentName, InterpretationCore core) {
         this.context = context;
         this.expression = expression;
         this.argumentName = argumentName;
         this.core = core;
-    }
-
-    @Override
-    public Object execute(Object arg) throws Exception {
-        core.rootContext = context;
-        context.put(argumentName, arg);
-        Object res = core.interpret(expression, false);
-        return res;
     }
 
     @Override

@@ -42,13 +42,13 @@ public class InterpretationCore {
         context.put("PI", Math.PI);
     }
 
-    //ExecutionStack executionStack;
-    //ExecutionStackItem currentItem;
     public SyntaxTreeNode root;
     public Context rootContext;
     public boolean paused = false;
     public IInterpreterStateListener stateListener;
     public ExecutionStack stack;
+    public boolean isStepInto = false;
+    private Thread executionThread;
 
     public InterpretationCore(SyntaxTreeNode root) {
         this.root = root;
@@ -57,14 +57,48 @@ public class InterpretationCore {
         initContext(this.rootContext);
     }
 
-    public void run() throws Exception {
-        interpret(root, false);
+    public void run() {
+        if (executionThread != null)
+            executionThread.interrupt();
+
+        executionThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    interpret(root, false);
+                    notifyStop();
+                } catch (Exception e) {
+                    IO.println(e.getClass() + ":" + e.getMessage());
+                    if (stateListener != null)
+                        stateListener.onExecutionStopped();
+                    e.printStackTrace();
+                }
+            }
+        };
+        executionThread.start();
+
+    }
+
+    public void step() {
+        isStepInto = false;
+        paused = false;
+    }
+
+    public void stepInto() {
+        isStepInto = true;
+        paused = false;
     }
 
     private void notifyListener() {
         if (stateListener != null) {
             ExecutionStackItem head = stack.peek();
             stateListener.onLineChanged(head.parent.start.start, head.parent.end.end);
+        }
+    }
+
+    private void notifyStop() {
+        if (stateListener != null) {
+            stateListener.onExecutionStopped();
         }
     }
 
@@ -78,10 +112,6 @@ public class InterpretationCore {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void step() {
-        paused = false;
     }
 
     public Object interpret(SyntaxTreeNode node, boolean breakExecution) throws Exception {
@@ -141,6 +171,12 @@ public class InterpretationCore {
         Object expression = interpret(node.expression, false);
         if (expression instanceof AbstractFunctionValue) {
             return ((AbstractFunctionValue) expression).execute(interpret(node.argument, false));
+        } else if (expression instanceof FunctionValue) {
+            FunctionValue fun = (FunctionValue) expression;
+            Object argument = interpret(node.argument, isStepInto);
+            this.rootContext = fun.context;
+            this.rootContext.put(fun.argumentName, argument);
+            return interpret(fun.expression, isStepInto);
         } else
             return expression;
     }
@@ -150,22 +186,22 @@ public class InterpretationCore {
     }
 
     private Object interpret(IfTreeNode node) throws Exception {
-        if (getLogicValue(interpret(node.ifExpr, false))) {
-            return interpret(node.thenExpr, false);
+        if (getLogicValue(interpret(node.ifExpr, isStepInto))) {
+            return interpret(node.thenExpr, isStepInto);
         } else
-            return interpret(node.elseExpr, false);
+            return interpret(node.elseExpr, isStepInto);
     }
 
     private Object interpret(InTreeNode node) throws Exception {
 
-        Object assignVal = interpret(node.assignment.assignExpression, false);
+        Object assignVal = interpret(node.assignment.assignExpression, isStepInto);
         rootContext.put(node.assignment.variable, assignVal);
-        Object res = interpret(node.expression, false);
+        Object res = interpret(node.expression, isStepInto);
         return res;
     }
 
     private Object interpret(AssignNode node) throws Exception {
-        Object value = interpret(node.assignExpression, false);
+        Object value = interpret(node.assignExpression, isStepInto);
         String name = node.variable;
         rootContext.put(name, value);
         IO.println("set value " + value + " -> " + name);

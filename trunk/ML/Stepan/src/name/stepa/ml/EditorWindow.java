@@ -25,6 +25,7 @@ public class EditorWindow extends JFrame {
     private JTextPane logTextPane;
     private JButton buttonInterpret;
     private JButton buttonStartStepByStep;
+    private JButton stepIntoButton;
 
     private JMenuItem miNewFile;
     private JMenuItem miRemoveFile;
@@ -54,6 +55,8 @@ public class EditorWindow extends JFrame {
                         Environment.get().setInterpretationProgram(editorPane.getText());
                     }
                     Environment.get().interpreter.startStepByStep();
+                    buttonInterpret.setEnabled(true);
+                    stepIntoButton.setEnabled(true);
                 } catch (Exception e1) {
                     addToLog(e1.getClass() + ":" + e1.getMessage());
                     e1.printStackTrace();
@@ -66,6 +69,17 @@ public class EditorWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Environment.get().interpreter.core.step();
+                } catch (Exception e1) {
+                    addToLog(e1.getClass() + ":" + e1.getMessage());
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        stepIntoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Environment.get().interpreter.core.stepInto();
                 } catch (Exception e1) {
                     addToLog(e1.getClass() + ":" + e1.getMessage());
                     e1.printStackTrace();
@@ -162,7 +176,18 @@ public class EditorWindow extends JFrame {
                     e.printStackTrace();
                 }
             }
+
+            public void onExecutionStopped() {
+                buttonInterpret.setEnabled(false);
+                stepIntoButton.setEnabled(false);
+                editorPane.getHighlighter().removeAllHighlights();
+                getToolkit().beep();
+                addToLog("Execution stopped.");
+            }
         });
+
+        stepIntoButton.setEnabled(false);
+        buttonInterpret.setEnabled(false);
     }
 
     public void save() {
@@ -204,10 +229,10 @@ public class EditorWindow extends JFrame {
     public void onProjectFileSelectionChanged() {
         if (Environment.get().getSelectedFile() == null) {
             miRemoveFile.setEnabled(false);
-            buttonInterpret.setEnabled(false);
+            buttonStartStepByStep.setEnabled(false);
         } else {
             miRemoveFile.setEnabled(true);
-            buttonInterpret.setEnabled(true);
+            buttonStartStepByStep.setEnabled(true);
         }
     }
 
