@@ -45,7 +45,7 @@ public class CaparisonTreeNode extends SyntaxTreeNode {
             default:
                 res += "<error>";
         }
-        res += " " + right.toString();
+        res += " " + right.toString() + " ]";
         return res;
     }
 }

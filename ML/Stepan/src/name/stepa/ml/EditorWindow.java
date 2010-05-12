@@ -1,6 +1,5 @@
 package name.stepa.ml;
 
-import name.stepa.ml.components.LinePainter;
 import name.stepa.ml.highlight.MlEditorKit;
 import name.stepa.ml.model.Environment;
 import name.stepa.ml.model.interpreter.IInterpreterStateListener;
@@ -29,7 +28,6 @@ public class EditorWindow extends JFrame {
     private JMenuItem miRemoveFile;
 
     private boolean isSaved = false;
-    private LinePainter painter;
 
     public EditorWindow() {
         setContentPane(contentPane);

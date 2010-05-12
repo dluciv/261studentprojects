@@ -17,6 +17,7 @@ public class ExpressionListTreeNode extends SyntaxTreeNode {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append('\n');
         sb.append("[expressions start]");
         sb.append('\n');
         for (int i = 0; i < nodes.length; i++) {
@@ -24,6 +25,7 @@ public class ExpressionListTreeNode extends SyntaxTreeNode {
             sb.append('\n');
         }
         sb.append("[expressions end]");
+        sb.append('\n');
         return sb.toString();
     }
 }
