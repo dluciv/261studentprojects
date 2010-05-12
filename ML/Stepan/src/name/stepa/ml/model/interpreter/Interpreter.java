@@ -16,21 +16,17 @@ import java.util.Arrays;
  */
 public class Interpreter {
 
-    String[] lines;
+    String program;
     Context context;
-    int nextLine;
     IOutput output = null;
     IInterpreterStateListener stateListener = null;
 
     public void setProgram(String program) {
-        if (program == null) {
-            lines = null;
+        this.program = program;
+        context = new Context();
+        if (this.program == null) {
+            notifyStateChanging();
         } else {
-            lines = program.split(";\n");
-            if (lines[lines.length - 1].endsWith(";"))
-                lines[lines.length - 1] = lines[lines.length - 1].substring(0, lines[lines.length - 1].length() - 1);
-            context = new Context();
-            nextLine = -1;
             notifyStateChanging();
         }
     }
@@ -50,19 +46,16 @@ public class Interpreter {
 
     private void notifyStateChanging() {
         if (stateListener != null) {
-            if ((lines.length > nextLine) && (nextLine >= 0)) {
-                int chPos = 0;
-                for (int i = 0; i < nextLine; i++) {
-                    chPos += 2 + lines[i].length();
-                }
-
-                stateListener.onLineChanged(nextLine, chPos, chPos + lines[nextLine].length());
-            }
+            stateListener.onLineChanged(0, 0);
         }
     }
 
     public void interpret() throws Exception {
-        if (lines != null) {
+        if (program != null)
+            interpret(program);
+        else
+            println("Nothing to interpret.");
+/*        if (lines != null) {
             while ((++nextLine < lines.length) && (lines[nextLine].trim().equals(""))) ;
             if (lines.length <= nextLine)
                 println("Reached end of document.");
@@ -71,11 +64,11 @@ public class Interpreter {
                 notifyStateChanging();
             }
         } else
-            println("Reached end of document.");
+            println("Reached end of document.");*/
     }
 
     private void interpret(String expression) throws Exception {
-        println("line: " + lines[nextLine]);
+        println("Expression: " + expression);
         Lexeme[] lexemes = new Lexer().parse(expression);
         println("lexemes: " + Arrays.toString(lexemes));
         SyntaxTreeNode syntax = new SyntaxProcessor().process(lexemes);
@@ -100,22 +93,24 @@ public class Interpreter {
             return interpret((FunctionTreeNode) node);
         if (node instanceof InTreeNode)
             return interpret((InTreeNode) node);
+        if (node instanceof ExpressionListTreeNode)
+            return interpret((ExpressionListTreeNode) node);
 
         throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
     }
 
+    private Object interpret(ExpressionListTreeNode node) throws Exception {
+        Object res = null;
+        for (SyntaxTreeNode i : node.nodes) {
+            res = interpret(i);
+        }
+        return res;
+    }
+
     private Object interpret(InTreeNode node) throws Exception {
-        Object old = null;
-        if (context.containsKey(node.assignment.variable))
-            old = context.get(node.assignment.variable);
-
-
-        interpret(node.assignment);
+        Object old = context.put(node.assignment.variable, interpret(node.assignment.assignExpression));
         Object res = interpret(node.expression);
-
-        if (old != null)
-            context.put(node.assignment.variable, old);
-
+        context.put(node.assignment.variable, old);
         return res;
     }
 
