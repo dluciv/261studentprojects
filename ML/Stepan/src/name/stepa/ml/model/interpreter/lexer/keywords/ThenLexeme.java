@@ -1,4 +1,6 @@
-package name.stepa.ml.model.interpreter.lexer;
+package name.stepa.ml.model.interpreter.lexer.keywords;
+
+import name.stepa.ml.model.interpreter.lexer.Lexeme;
 
 /**
  * Created by IntelliJ IDEA.

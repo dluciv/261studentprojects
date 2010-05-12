@@ -1,85 +1,25 @@
 package name.stepa.ml.model.interpreter;
 
+import name.stepa.ml.model.interpreter.functions.FunctionValue;
 import name.stepa.ml.model.interpreter.lexer.ComparisonLexeme;
-import name.stepa.ml.model.interpreter.lexer.Lexeme;
-import name.stepa.ml.model.interpreter.lexer.Lexer;
 import name.stepa.ml.model.interpreter.syntax.*;
-
-import java.util.Arrays;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Ex3NDR
- * Date: 08.05.2010
- * Time: 18:24:20
+ * Date: 12.05.2010
+ * Time: 16:17:33
  * To change this template use File | Settings | File Templates.
  */
-public class Interpreter {
+public class InterpretationCore {
 
-    String program;
-    Context context;
-    IOutput output = null;
-    IInterpreterStateListener stateListener = null;
+    public Context context;
 
-    public void setProgram(String program) {
-        this.program = program;
-        context = new Context();
-        if (this.program == null) {
-            notifyStateChanging();
-        } else {
-            notifyStateChanging();
-        }
+    public InterpretationCore(Context context) {
+        this.context = context;
     }
 
-    public void setStateListener(IInterpreterStateListener stateListener) {
-        this.stateListener = stateListener;
-    }
-
-    public void setOutput(IOutput output) {
-        this.output = output;
-    }
-
-    private void println(String s) {
-        if (output != null)
-            output.println(s);
-    }
-
-    private void notifyStateChanging() {
-        if (stateListener != null) {
-            stateListener.onLineChanged(0, 0);
-        }
-    }
-
-    public void interpret() throws Exception {
-        if (program != null)
-            interpret(program);
-        else
-            println("Nothing to interpret.");
-/*        if (lines != null) {
-            while ((++nextLine < lines.length) && (lines[nextLine].trim().equals(""))) ;
-            if (lines.length <= nextLine)
-                println("Reached end of document.");
-            else {
-                interpret(lines[nextLine]);
-                notifyStateChanging();
-            }
-        } else
-            println("Reached end of document.");*/
-    }
-
-    private void interpret(String expression) throws Exception {
-        println("Expression:");
-        println(expression);
-        Lexeme[] lexemes = new Lexer().parse(expression);
-        println("lexemes:");
-        println(Arrays.toString(lexemes));
-        SyntaxTreeNode syntax = new SyntaxProcessor().process(lexemes);
-        println("syntax:");
-        println(syntax.toString());
-        println("result: " + interpret(syntax).toString());
-    }
-
-    private Object interpret(SyntaxTreeNode node) throws Exception {
+    public Object interpret(SyntaxTreeNode node) throws Exception {
         if (node instanceof CaparisonTreeNode)
             return interpret((CaparisonTreeNode) node);
         if (node instanceof ValueTreeNode)
@@ -92,14 +32,15 @@ public class Interpreter {
             return interpret((UnaryOperationTreeNode) node);
         if (node instanceof AssignNode)
             return interpret((AssignNode) node);
-        if (node instanceof FunctionTreeNode)
-            return interpret((FunctionTreeNode) node);
         if (node instanceof InTreeNode)
             return interpret((InTreeNode) node);
         if (node instanceof ExpressionListTreeNode)
             return interpret((ExpressionListTreeNode) node);
         if (node instanceof IfTreeNode)
             return interpret((IfTreeNode) node);
+        if (node instanceof FunctionDeclarationTreeNode)
+            return interpret((FunctionDeclarationTreeNode) node);
+
 
         throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
     }
@@ -110,6 +51,10 @@ public class Interpreter {
             res = interpret(i);
         }
         return res;
+    }
+
+    private Object interpret(FunctionDeclarationTreeNode node) throws Exception {
+        return new FunctionValue(this.context.clone(), node.expression, node.argumentName);
     }
 
     private Object interpret(IfTreeNode node) throws Exception {
@@ -130,19 +75,19 @@ public class Interpreter {
         Object value = interpret(node.assignExpression);
         String name = node.variable;
         context.put(name, value);
-        println("set value " + value + " -> " + name);
+        IO.println("set value " + value + " -> " + name);
         return value;
     }
 
-    private Object interpret(FunctionTreeNode node) throws Exception {
+/*    private Object interpret(FunctionTreeNode node) throws Exception {
         String functionName = node.function;
         Object argument = interpret(node.argument);
         if (functionName.equals("print")) {
-            println(argument.toString());
+            IO.println(argument.toString());
             return "void";
         }
         throw new Exception("Wrong function name: " + functionName);
-    }
+    }*/
 
 
     private Object interpret(UnaryOperationTreeNode node) throws Exception {

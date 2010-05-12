@@ -1,6 +1,7 @@
 package name.stepa.ml.model.interpreter.syntax;
 
 import name.stepa.ml.model.interpreter.lexer.*;
+import name.stepa.ml.model.interpreter.lexer.keywords.*;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public class SyntaxProcessor {
         if (data[pointer] instanceof LetLexeme) {
             String variable = ((IdentifierLexeme) data[pointer + 1]).value;
             pointer += 3;
-            AssignNode assign = new AssignNode(variable, processLogic(data));
+            AssignNode assign = new AssignNode(variable, processExpression(data));
             if ((data.length > pointer) && ((data[pointer] instanceof InLexeme))) {
                 pointer++;
                 return new InTreeNode(assign, processExpressionList(data));
@@ -55,6 +56,14 @@ public class SyntaxProcessor {
             pointer++;
             SyntaxTreeNode elseExpr = processExpression(data);
             return new IfTreeNode(comp, thenExpr, elseExpr);
+        } else if (data[pointer] instanceof FunLexeme) {
+            String argument = ((IdentifierLexeme) data[++pointer]).value;
+            if (!(data[++pointer] instanceof ArrowLexeme))
+                throw new Exception("Syntax error! Expected: ->");
+            pointer++;
+
+            SyntaxTreeNode expression = processExpression(data);
+            return new FunctionDeclarationTreeNode(expression, argument);
         } else {
             //if (data[0] instanceof IdentifierLexeme)
             //String variable = ((IdentifierLexeme) data[0]).value;
@@ -152,7 +161,7 @@ public class SyntaxProcessor {
 
     private SyntaxTreeNode processBracket(Lexeme[] data) throws Exception {
         pointer++;
-        SyntaxTreeNode res = processComparison(data);
+        SyntaxTreeNode res = processExpression(data);
         if (!(data[pointer] instanceof CloseBracketLexeme))
             throw new Exception("Syntax error!");
         pointer++;
