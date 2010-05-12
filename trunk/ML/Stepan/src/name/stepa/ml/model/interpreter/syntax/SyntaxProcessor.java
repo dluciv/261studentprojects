@@ -22,7 +22,7 @@ public class SyntaxProcessor {
             pointer++;
             nodes.add(processExpression(data));
             // Skip semicolons by "++pointer"
-            while ((pointer < data.length-1) && (!(data[++pointer] instanceof EndLexeme))) {
+            while ((pointer < data.length - 1) && (!(data[++pointer] instanceof EndLexeme))) {
                 nodes.add(processExpression(data));
             }
             //Skip end
@@ -43,6 +43,18 @@ public class SyntaxProcessor {
                 return new InTreeNode(assign, processExpressionList(data));
             } else
                 return assign;
+        } else if (data[pointer] instanceof IfLexeme) {
+            pointer++;
+            SyntaxTreeNode comp = processExpression(data);
+            if (!(data[pointer] instanceof ThenLexeme))
+                throw new Exception("Syntax error! Expected: then");
+            pointer++;
+            SyntaxTreeNode thenExpr = processExpression(data);
+            if (!(data[pointer] instanceof ElseLexeme))
+                throw new Exception("Syntax error! Expected: else");
+            pointer++;
+            SyntaxTreeNode elseExpr = processExpression(data);
+            return new IfTreeNode(comp, thenExpr, elseExpr);
         } else {
             //if (data[0] instanceof IdentifierLexeme)
             //String variable = ((IdentifierLexeme) data[0]).value;
@@ -88,26 +100,13 @@ public class SyntaxProcessor {
     }
 
 
-    private SyntaxTreeNode processMult(Lexeme[] data) throws Exception {
-        SyntaxTreeNode left = processValue(data);
-        if (!(data[pointer] instanceof OperationLexeme)) {
-            return left;
-        }
-        OperationLexeme lex = (OperationLexeme) data[pointer];
-        if ((lex.operation == '*') || (lex.operation == '/')) {
-            pointer++;
-            return new BinaryOperationTreeNode(left, processMult(data), lex.operation);
-        } else
-            return left;
-    }
-
     private SyntaxTreeNode processAdditive(Lexeme[] data) throws Exception {
         if ((data[pointer] instanceof OperationLexeme) && (((OperationLexeme) data[pointer]).operation == '-')) {
             pointer++;
             return new UnaryOperationTreeNode(UnaryOperationTreeNode.MINUS, processAdditive(data));
         }
 
-        SyntaxTreeNode left = processMult(data);
+        SyntaxTreeNode left = processFraction(data);
         if (!(data[pointer] instanceof OperationLexeme)) {
             return left;
         }
@@ -115,6 +114,19 @@ public class SyntaxProcessor {
         if ((lex.operation == '+') || (lex.operation == '-')) {
             pointer++;
             return new BinaryOperationTreeNode(left, processAdditive(data), lex.operation);
+        } else
+            return left;
+    }
+
+    private SyntaxTreeNode processFraction(Lexeme[] data) throws Exception {
+        SyntaxTreeNode left = processValue(data);
+        if (!(data[pointer] instanceof OperationLexeme)) {
+            return left;
+        }
+        OperationLexeme lex = (OperationLexeme) data[pointer];
+        if ((lex.operation == '*') || (lex.operation == '/')) {
+            pointer++;
+            return new BinaryOperationTreeNode(left, processFraction(data), lex.operation);
         } else
             return left;
     }

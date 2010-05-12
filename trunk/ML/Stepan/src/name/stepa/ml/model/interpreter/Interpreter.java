@@ -68,11 +68,14 @@ public class Interpreter {
     }
 
     private void interpret(String expression) throws Exception {
-        println("Expression: " + expression);
+        println("Expression:");
+        println(expression);
         Lexeme[] lexemes = new Lexer().parse(expression);
-        println("lexemes: " + Arrays.toString(lexemes));
+        println("lexemes:");
+        println(Arrays.toString(lexemes));
         SyntaxTreeNode syntax = new SyntaxProcessor().process(lexemes);
-        println("syntax: " + syntax.toString());
+        println("syntax:");
+        println(syntax.toString());
         println("result: " + interpret(syntax).toString());
     }
 
@@ -95,6 +98,8 @@ public class Interpreter {
             return interpret((InTreeNode) node);
         if (node instanceof ExpressionListTreeNode)
             return interpret((ExpressionListTreeNode) node);
+        if (node instanceof IfTreeNode)
+            return interpret((IfTreeNode) node);
 
         throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
     }
@@ -105,6 +110,13 @@ public class Interpreter {
             res = interpret(i);
         }
         return res;
+    }
+
+    private Object interpret(IfTreeNode node) throws Exception {
+        if (getLogicValue(interpret(node.ifExpr))) {
+            return interpret(node.thenExpr);
+        } else
+            return interpret(node.elseExpr);
     }
 
     private Object interpret(InTreeNode node) throws Exception {
@@ -144,21 +156,28 @@ public class Interpreter {
     }
 
     private Object interpret(CaparisonTreeNode node) throws Exception {
-        Double left = (Double) interpret(node.left);
-        Double right = (Double) interpret(node.right);
-        switch (node.operation) {
-            case ComparisonLexeme.E:
-                return left == right;
-            case ComparisonLexeme.NE:
-                return left != right;
-            case ComparisonLexeme.G:
-                return left > right;
-            case ComparisonLexeme.GE:
-                return left >= right;
-            case ComparisonLexeme.L:
-                return left < right;
-            case ComparisonLexeme.LE:
-                return left <= right;
+        if ((node.operation == ComparisonLexeme.E) || (node.operation == ComparisonLexeme.NE)) {
+            Object left = interpret(node.left);
+            Object right = interpret(node.right);
+            switch (node.operation) {
+                case ComparisonLexeme.E:
+                    return left.equals(right);
+                case ComparisonLexeme.NE:
+                    return !left.equals(right);
+            }
+        } else {
+            Double left = (Double) interpret(node.left);
+            Double right = (Double) interpret(node.right);
+            switch (node.operation) {
+                case ComparisonLexeme.G:
+                    return left > right;
+                case ComparisonLexeme.GE:
+                    return left >= right;
+                case ComparisonLexeme.L:
+                    return left < right;
+                case ComparisonLexeme.LE:
+                    return left <= right;
+            }
         }
 
         throw new Exception("Invalid comparison operation: " + node.operation);

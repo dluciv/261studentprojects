@@ -50,6 +50,12 @@ public class Lexer {
                         res.add(new BeginLexeme(posStart));
                     else if (var.equals("end"))
                         res.add(new EndLexeme(posStart));
+                    else if (var.equals("if"))
+                        res.add(new IfLexeme(posStart));
+                    else if (var.equals("then"))
+                        res.add(new ThenLexeme(posStart));
+                    else if (var.equals("else"))
+                        res.add(new ElseLexeme(posStart));
                     else
                         res.add(new IdentifierLexeme(var, posStart));
                     break;
