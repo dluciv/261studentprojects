@@ -8,5 +8,5 @@ package name.stepa.ml.model.interpreter;
  * To change this template use File | Settings | File Templates.
  */
 public interface IInterpreterStateListener {
-    public void onLineChanged(int row, int characterPos, int lastCh);
+    public void onLineChanged(int start, int end);
 }

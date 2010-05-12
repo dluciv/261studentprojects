@@ -2,6 +2,8 @@ package name.stepa.ml.model.interpreter.syntax;
 
 import name.stepa.ml.model.interpreter.lexer.*;
 
+import java.util.ArrayList;
+
 /**
  * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
@@ -11,18 +13,34 @@ public class SyntaxProcessor {
 
     public SyntaxTreeNode process(Lexeme[] data) throws Exception {
         pointer = 0;
-        return processExpr(data);
+        return processExpressionList(data);
+    }
+
+    private SyntaxTreeNode processExpressionList(Lexeme[] data) throws Exception {
+        if (data[pointer] instanceof BeginLexeme) {
+            ArrayList<SyntaxTreeNode> nodes = new ArrayList<SyntaxTreeNode>();
+            pointer++;
+            nodes.add(processExpression(data));
+            // Skip semicolons by "++pointer"
+            while ((pointer < data.length-1) && (!(data[++pointer] instanceof EndLexeme))) {
+                nodes.add(processExpression(data));
+            }
+            //Skip end
+            pointer++;
+            return new ExpressionListTreeNode(nodes.toArray(new SyntaxTreeNode[0]));
+        } else
+            return processExpression(data);
     }
 
 
-    private SyntaxTreeNode processExpr(Lexeme[] data) throws Exception {
+    private SyntaxTreeNode processExpression(Lexeme[] data) throws Exception {
         if (data[pointer] instanceof LetLexeme) {
             String variable = ((IdentifierLexeme) data[pointer + 1]).value;
             pointer += 3;
             AssignNode assign = new AssignNode(variable, processLogic(data));
             if ((data.length > pointer) && ((data[pointer] instanceof InLexeme))) {
                 pointer++;
-                return new InTreeNode(assign, processExpr(data));
+                return new InTreeNode(assign, processExpressionList(data));
             } else
                 return assign;
         } else {

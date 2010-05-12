@@ -16,11 +16,13 @@ public class Lexer {
     private static final int SYMBOL_EQUALITY = 6;
     private static final int SYMBOL_EXCLAMATION = 7;
     private static final int SYMBOL_COMPARISON = 8;
+    private static final int SYMBOL_SEMICOLON = 9;
 
     private static final int SYMBOL_UNKNOWN = -1;
 
     public Lexeme[] parse(String text) throws Exception {
         ArrayList<Lexeme> res = new ArrayList<Lexeme>();
+        res.add(new BeginLexeme());
 
         char[] data = text.toCharArray();
         int pos = 0;
@@ -44,8 +46,16 @@ public class Lexer {
                         res.add(new LetLexeme(posStart));
                     else if (var.equals("in"))
                         res.add(new InLexeme(posStart));
+                    else if (var.equals("begin"))
+                        res.add(new BeginLexeme(posStart));
+                    else if (var.equals("end"))
+                        res.add(new EndLexeme(posStart));
                     else
                         res.add(new IdentifierLexeme(var, posStart));
+                    break;
+                case SYMBOL_SEMICOLON:
+                    res.add(new SemicolonLexeme(pos));
+                    pos++;
                     break;
                 case SYMBOL_SPACE:
                     while ((pos < data.length) && (getSymbolType(data[pos]) == SYMBOL_SPACE)) {
@@ -105,6 +115,7 @@ public class Lexer {
                     throw new Exception("Unexpected symbol");
             }
         }
+        res.add(new EndLexeme());
         res.add(new EOFLexeme());
         return res.toArray(new Lexeme[0]);
     }
@@ -142,6 +153,9 @@ public class Lexer {
             return SYMBOL_EQUALITY;
         if (c == '!')
             return SYMBOL_EXCLAMATION;
+
+        if (c == ';')
+            return SYMBOL_SEMICOLON;
 
         return SYMBOL_UNKNOWN;
     }
