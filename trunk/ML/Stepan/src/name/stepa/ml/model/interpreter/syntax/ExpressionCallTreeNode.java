@@ -12,6 +12,7 @@ public class ExpressionCallTreeNode extends SyntaxTreeNode {
     public SyntaxTreeNode argument;
 
     public ExpressionCallTreeNode(SyntaxTreeNode expression, SyntaxTreeNode argument) {
+        super(expression.start, argument.end);
         this.expression = expression;
         this.argument = argument;
     }

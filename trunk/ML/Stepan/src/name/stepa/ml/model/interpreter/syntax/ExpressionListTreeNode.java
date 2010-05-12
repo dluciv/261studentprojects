@@ -1,5 +1,8 @@
 package name.stepa.ml.model.interpreter.syntax;
 
+import name.stepa.ml.model.interpreter.lexer.BeginLexeme;
+import name.stepa.ml.model.interpreter.lexer.keywords.EndLexeme;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Ex3NDR
@@ -10,7 +13,8 @@ package name.stepa.ml.model.interpreter.syntax;
 public class ExpressionListTreeNode extends SyntaxTreeNode {
     public SyntaxTreeNode[] nodes;
 
-    public ExpressionListTreeNode(SyntaxTreeNode[] nodes) {
+    public ExpressionListTreeNode(SyntaxTreeNode[] nodes, BeginLexeme start, EndLexeme end) {
+        super(start, end);
         this.nodes = nodes;
     }
 

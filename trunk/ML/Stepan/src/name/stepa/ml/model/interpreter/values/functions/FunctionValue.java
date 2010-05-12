@@ -27,7 +27,10 @@ public class FunctionValue extends AbstractFunctionValue {
 
     @Override
     public Object execute(Object arg) throws Exception {
-        return core.interpret(expression);
+        context.put(argumentName, arg);
+        core.getExecutionItem().context = context;
+        Object res = core.interpret(expression);
+        return res;
     }
 
     @Override

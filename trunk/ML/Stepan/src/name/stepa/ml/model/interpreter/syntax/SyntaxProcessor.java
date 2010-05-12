@@ -19,6 +19,7 @@ public class SyntaxProcessor {
 
     private SyntaxTreeNode processExpressionList(Lexeme[] data) throws Exception {
         if (data[pointer] instanceof BeginLexeme) {
+            BeginLexeme begin = (BeginLexeme) data[pointer];
             ArrayList<SyntaxTreeNode> nodes = new ArrayList<SyntaxTreeNode>();
             pointer++;
             nodes.add(processExpression(data));
@@ -26,9 +27,8 @@ public class SyntaxProcessor {
             while ((pointer < data.length - 1) && (!(data[++pointer] instanceof EndLexeme))) {
                 nodes.add(processExpression(data));
             }
-            //Skip end
-            pointer++;
-            return new ExpressionListTreeNode(nodes.toArray(new SyntaxTreeNode[0]));
+            EndLexeme end = (EndLexeme) data[pointer++];
+            return new ExpressionListTreeNode(nodes.toArray(new SyntaxTreeNode[0]), begin, end);
         } else
             return processExpression(data);
     }
@@ -36,15 +36,17 @@ public class SyntaxProcessor {
 
     private SyntaxTreeNode processExpression(Lexeme[] data) throws Exception {
         if (data[pointer] instanceof LetLexeme) {
+            LetLexeme lexeme = (LetLexeme) data[pointer];
             String variable = ((IdentifierLexeme) data[pointer + 1]).value;
             pointer += 3;
-            AssignNode assign = new AssignNode(variable, processExpression(data));
+            AssignNode assign = new AssignNode(variable, processExpression(data), lexeme);
             if ((data.length > pointer) && ((data[pointer] instanceof InLexeme))) {
                 pointer++;
                 return new InTreeNode(assign, processExpressionList(data));
             } else
                 return assign;
         } else if (data[pointer] instanceof IfLexeme) {
+            IfLexeme lexeme = (IfLexeme) data[pointer];
             pointer++;
             SyntaxTreeNode comp = processExpression(data);
             if (!(data[pointer] instanceof ThenLexeme))
@@ -55,15 +57,16 @@ public class SyntaxProcessor {
                 throw new Exception("Syntax error! Expected: else");
             pointer++;
             SyntaxTreeNode elseExpr = processExpression(data);
-            return new IfTreeNode(comp, thenExpr, elseExpr);
+            return new IfTreeNode(comp, thenExpr, elseExpr, lexeme);
         } else if (data[pointer] instanceof FunLexeme) {
+            FunLexeme lexeme = (FunLexeme) data[pointer];
             String argument = ((IdentifierLexeme) data[++pointer]).value;
             if (!(data[++pointer] instanceof ArrowLexeme))
                 throw new Exception("Syntax error! Expected: ->");
             pointer++;
 
             SyntaxTreeNode expression = processExpression(data);
-            return new FunctionDeclarationTreeNode(expression, argument);
+            return new FunctionDeclarationTreeNode(expression, argument, lexeme);
         } else {
             SyntaxTreeNode res = processLogic(data);
             if (isEndOfExpression(data[pointer]))
@@ -95,8 +98,9 @@ public class SyntaxProcessor {
 
     private SyntaxTreeNode processLogic(Lexeme[] data) throws Exception {
         if (data[pointer] instanceof NotLexeme) {
+            Lexeme lexeme = data[pointer];
             pointer++;
-            return new UnaryOperationTreeNode(UnaryOperationTreeNode.NOT, processLogic(data));
+            return new UnaryOperationTreeNode(UnaryOperationTreeNode.NOT, processLogic(data), lexeme);
         }
         SyntaxTreeNode left = processComparison(data);
         if (!(data[pointer] instanceof OperationLexeme)) {
@@ -129,8 +133,9 @@ public class SyntaxProcessor {
 
     private SyntaxTreeNode processAdditive(Lexeme[] data) throws Exception {
         if ((data[pointer] instanceof OperationLexeme) && (((OperationLexeme) data[pointer]).operation == '-')) {
+            Lexeme lexeme = data[pointer];
             pointer++;
-            return new UnaryOperationTreeNode(UnaryOperationTreeNode.MINUS, processAdditive(data));
+            return new UnaryOperationTreeNode(UnaryOperationTreeNode.MINUS, processAdditive(data), lexeme);
         }
 
         SyntaxTreeNode left = processFraction(data);
@@ -161,15 +166,11 @@ public class SyntaxProcessor {
     private SyntaxTreeNode processValue(Lexeme[] data) throws Exception {
         if (data[pointer] instanceof ValueLexeme) {
 
-            ValueTreeNode res = new ValueTreeNode(((ValueLexeme) data[pointer]).value);
-            pointer++;
-            return res;
+            return new ValueTreeNode(((ValueLexeme) data[pointer]).value, (ValueLexeme) data[pointer++]);
         }
         if (data[pointer] instanceof IdentifierLexeme) {
 
-            VariableTreeNode res = new VariableTreeNode(((IdentifierLexeme) data[pointer]).value);
-            pointer++;
-            return res;
+            return new VariableTreeNode(((IdentifierLexeme) data[pointer]).value, (IdentifierLexeme) data[pointer++]);
         }
         if (data[pointer] instanceof OpenBracketLexeme) {
             return processBracket(data);
@@ -178,11 +179,13 @@ public class SyntaxProcessor {
     }
 
     private SyntaxTreeNode processBracket(Lexeme[] data) throws Exception {
+        OpenBracketLexeme start = (OpenBracketLexeme) data[pointer];
         pointer++;
         SyntaxTreeNode res = processExpression(data);
         if (!(data[pointer] instanceof CloseBracketLexeme))
             throw new Exception("Syntax error!");
+        CloseBracketLexeme end = (CloseBracketLexeme) data[pointer];
         pointer++;
-        return res;
+        return new BracketsTreeNode(res, start, end);
     }
 }

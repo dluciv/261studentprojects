@@ -1,5 +1,7 @@
 package name.stepa.ml.model.interpreter.syntax;
 
+import name.stepa.ml.model.interpreter.lexer.Lexeme;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Ex3NDR
@@ -13,7 +15,8 @@ public class UnaryOperationTreeNode extends SyntaxTreeNode {
     public int operation;
     public SyntaxTreeNode argument;
 
-    public UnaryOperationTreeNode(int operation, SyntaxTreeNode argument) {
+    public UnaryOperationTreeNode(int operation, SyntaxTreeNode argument, Lexeme lexeme) {
+        super(lexeme, argument.end);
         this.argument = argument;
         this.operation = operation;
     }

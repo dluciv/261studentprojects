@@ -2,6 +2,7 @@ package name.stepa.ml;
 
 import name.stepa.ml.highlight.MlEditorKit;
 import name.stepa.ml.model.Environment;
+import name.stepa.ml.model.interpreter.ExecutionStack;
 import name.stepa.ml.model.interpreter.IInterpreterStateListener;
 import name.stepa.ml.model.interpreter.IO;
 
@@ -52,6 +53,11 @@ public class EditorWindow extends JFrame {
                         Environment.get().setInterpretationProgram(editorPane.getText());
                     }
                     Environment.get().interpreter.step();
+                    ExecutionStack.ExecutionStackItem item = Environment.get().interpreter.core.getExecutionItem();
+                    editorPane.getHighlighter().removeAllHighlights();
+                    if (item != null) {
+                        editorPane.getHighlighter().addHighlight(item.parent.start.start, item.parent.end.end, new DefaultHighlighter.DefaultHighlightPainter(Color.cyan));
+                    }
                 } catch (Exception e1) {
                     addToLog(e1.getClass() + ":" + e1.getMessage());
                     e1.printStackTrace();
