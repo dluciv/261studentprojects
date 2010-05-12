@@ -1,6 +1,6 @@
 package name.stepa.ml.model.interpreter;
 
-import name.stepa.ml.model.interpreter.functions.*;
+import name.stepa.ml.model.interpreter.values.functions.*;
 import name.stepa.ml.model.interpreter.lexer.ComparisonLexeme;
 import name.stepa.ml.model.interpreter.syntax.*;
 

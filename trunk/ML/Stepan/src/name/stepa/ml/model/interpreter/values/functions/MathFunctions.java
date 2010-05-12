@@ -1,4 +1,4 @@
-package name.stepa.ml.model.interpreter.functions;
+package name.stepa.ml.model.interpreter.values.functions;
 
 /**
  * Created by IntelliJ IDEA.
