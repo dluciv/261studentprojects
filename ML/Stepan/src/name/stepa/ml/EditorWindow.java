@@ -2,7 +2,7 @@ package name.stepa.ml;
 
 import name.stepa.ml.highlight.MlEditorKit;
 import name.stepa.ml.model.Environment;
-import name.stepa.ml.model.interpreter.ExecutionStack;
+import name.stepa.ml.model.interpreter.execution.ExecutionStack;
 import name.stepa.ml.model.interpreter.IInterpreterStateListener;
 import name.stepa.ml.model.interpreter.IO;
 
@@ -24,6 +24,7 @@ public class EditorWindow extends JFrame {
     private JLabel statusLabel;
     private JTextPane logTextPane;
     private JButton buttonInterpret;
+    private JButton buttonStartStepByStep;
 
     private JMenuItem miNewFile;
     private JMenuItem miRemoveFile;
@@ -45,19 +46,26 @@ public class EditorWindow extends JFrame {
             }
         });
 
-        buttonInterpret.addActionListener(new ActionListener() {
+        buttonStartStepByStep.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (!isSaved) {
                         save();
                         Environment.get().setInterpretationProgram(editorPane.getText());
                     }
-                    Environment.get().interpreter.step();
-                    ExecutionStack.ExecutionStackItem item = Environment.get().interpreter.core.getExecutionItem();
-                    editorPane.getHighlighter().removeAllHighlights();
-                    if (item != null) {
-                        editorPane.getHighlighter().addHighlight(item.parent.start.start, item.parent.end.end, new DefaultHighlighter.DefaultHighlightPainter(Color.cyan));
-                    }
+                    Environment.get().interpreter.startStepByStep();
+                } catch (Exception e1) {
+                    addToLog(e1.getClass() + ":" + e1.getMessage());
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+
+        buttonInterpret.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Environment.get().interpreter.core.step();
                 } catch (Exception e1) {
                     addToLog(e1.getClass() + ":" + e1.getMessage());
                     e1.printStackTrace();
@@ -149,7 +157,7 @@ public class EditorWindow extends JFrame {
             public void onLineChanged(int start, int last) {
                 try {
                     editorPane.getHighlighter().removeAllHighlights();
-                    editorPane.getHighlighter().addHighlight(start, last, new DefaultHighlighter.DefaultHighlightPainter(Color.cyan));
+                    editorPane.getHighlighter().addHighlight(start, last, new DefaultHighlighter.DefaultHighlightPainter(Color.orange));
                 } catch (BadLocationException e) {
                     e.printStackTrace();
                 }
