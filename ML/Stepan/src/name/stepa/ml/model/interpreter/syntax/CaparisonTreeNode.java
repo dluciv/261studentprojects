@@ -17,7 +17,7 @@ public class CaparisonTreeNode extends SyntaxTreeNode {
 
 
     public CaparisonTreeNode(int operation, SyntaxTreeNode left, SyntaxTreeNode right) {
-        super(left.start, left.end);
+        super(left.start, right.end);
         this.right = right;
         this.left = left;
         this.operation = operation;

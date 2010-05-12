@@ -9,4 +9,6 @@ package name.stepa.ml.model.interpreter;
  */
 public interface IInterpreterStateListener {
     public void onLineChanged(int start, int end);
+
+    public void onExecutionStopped();
 }
