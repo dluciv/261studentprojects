@@ -1,5 +1,7 @@
 package name.stepa.ml.model.interpreter.syntax;
 
+import name.stepa.ml.model.interpreter.lexer.keywords.IfLexeme;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Ex3NDR
@@ -10,7 +12,8 @@ package name.stepa.ml.model.interpreter.syntax;
 public class IfTreeNode extends SyntaxTreeNode {
     public SyntaxTreeNode ifExpr, thenExpr, elseExpr;
 
-    public IfTreeNode(SyntaxTreeNode ifExpr, SyntaxTreeNode thenExpr, SyntaxTreeNode elseExpr) {
+    public IfTreeNode(SyntaxTreeNode ifExpr, SyntaxTreeNode thenExpr, SyntaxTreeNode elseExpr, IfLexeme lexeme) {
+        super(lexeme, elseExpr.end);
         this.ifExpr = ifExpr;
         this.thenExpr = thenExpr;
         this.elseExpr = elseExpr;

@@ -10,6 +10,7 @@ public class BinaryOperationTreeNode extends SyntaxTreeNode {
 
 
     public BinaryOperationTreeNode(SyntaxTreeNode left, SyntaxTreeNode right, char operation) {
+        super(left.start, right.end);
         this.left = left;
         this.right = right;
         this.operation = operation;

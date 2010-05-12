@@ -53,7 +53,7 @@ public class InterpretationCore {
         this.executionStack.push(new ExecutionStack.ExecutionStackItem(node, new ExecutionStateValue(), currentItem.context.clone()));
     }
 
-    private ExecutionStack.ExecutionStackItem getExecutionItem() {
+    public ExecutionStack.ExecutionStackItem getExecutionItem() {
         if (executionStack.size() == 0)
             return null;
         else
@@ -82,7 +82,7 @@ public class InterpretationCore {
         else if (node instanceof AssignNode)
             res = interpret((AssignNode) node);
         else if (node instanceof InTreeNode)
-            res = interpret((InTreeNode) node);
+            res = interpret((InTreeNode) node, state);
         else if (node instanceof ExpressionListTreeNode)
             res = interpret((ExpressionListTreeNode) node, state);
         else if (node instanceof IfTreeNode)
@@ -91,6 +91,8 @@ public class InterpretationCore {
             res = interpret((FunctionDeclarationTreeNode) node);
         else if (node instanceof ExpressionCallTreeNode)
             res = interpret((ExpressionCallTreeNode) node);
+        else if (node instanceof BracketsTreeNode)
+            res = interpret((BracketsTreeNode) node);
         else
             throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
 
@@ -109,6 +111,7 @@ public class InterpretationCore {
         currentItem = getExecutionItem();
         if (currentItem == null)
             return null;
+        Context old = currentItem.context.clone();
 
         Object res = null;
         if (node instanceof CaparisonTreeNode)
@@ -124,17 +127,21 @@ public class InterpretationCore {
         else if (node instanceof AssignNode)
             res = interpret((AssignNode) node);
         else if (node instanceof InTreeNode)
-            res = interpret((InTreeNode) node);
+            res = interpret((InTreeNode) node, null);
         else if (node instanceof ExpressionListTreeNode)
-            res = interpret((ExpressionListTreeNode) node);
+            res = interpret((ExpressionListTreeNode) node, null);
         else if (node instanceof IfTreeNode)
             res = interpret((IfTreeNode) node);
         else if (node instanceof FunctionDeclarationTreeNode)
             res = interpret((FunctionDeclarationTreeNode) node);
         else if (node instanceof ExpressionCallTreeNode)
             res = interpret((ExpressionCallTreeNode) node);
+        else if (node instanceof BracketsTreeNode)
+            res = interpret((BracketsTreeNode) node);
         else
             throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
+
+        currentItem.context = old;
 
         return res;
     }
@@ -142,15 +149,16 @@ public class InterpretationCore {
     private Object interpret(ExpressionListTreeNode node, ExecutionStateValue state) throws Exception {
         if (state != null) {
             Object res = null;
-            if (state.state == -1)
+            if (state.state == -1) {
                 state.state = 0;
-            if (state.state < node.nodes.length) {
-                pushToStack(node.nodes[state.state]);
-                state.state++;
+                for (int i = node.nodes.length - 1; i >= 0; i--) {
+                    pushToStack(node.nodes[i]);
+                }
                 return null;
+            } else {
+                state.state = -1;
+                return currentItem.calculatedExpressions.get(0);
             }
-            state.state = -1;
-            return currentItem.calculatedExpressions.get(0);
         } else {
             Object res = null;
             for (SyntaxTreeNode i : node.nodes) {
@@ -159,6 +167,12 @@ public class InterpretationCore {
             return res;
         }
     }
+
+
+    private Object interpret(BracketsTreeNode node) throws Exception {
+        return interpret(node.inner);
+    }
+
 
     private Object interpret(ExpressionCallTreeNode node) throws Exception {
         Object expression = interpret(node.expression);
@@ -179,13 +193,37 @@ public class InterpretationCore {
             return interpret(node.elseExpr);
     }
 
-    private Object interpret(InTreeNode node) throws Exception {
-        currentItem.context.put(node.assignment.variable, interpret(node.assignment.assignExpression));
-        Object res = interpret(node.expression);
-        return res;
+    private Object interpret(InTreeNode node, ExecutionStateValue state) throws Exception {
+
+        if (state == null) {
+            Object assignVal = interpret(node.assignment.assignExpression);
+            currentItem.context.put(node.assignment.variable, assignVal);
+            Object res = interpret(node.expression);
+            return res;
+        } else {
+            if (state.state == -1) {
+                state.state = 0;
+                pushToStack(node.assignment.assignExpression);
+                return null;
+            } else if (state.state == 0) {
+                state.state = 1;
+                currentItem.context.put(node.assignment.variable, currentItem.calculatedExpressions.get(0));
+                return null;
+            } else if (state.state == 1) {
+                state.state = 2;
+                pushToStack(node.expression);
+                return null;
+            } else {
+                state.state = -1;
+                return currentItem.calculatedExpressions.get(0);
+            }
+
+        }
     }
 
-    private Object interpret(AssignNode node) throws Exception {
+    private Object interpret
+            (AssignNode
+                    node) throws Exception {
         Object value = interpret(node.assignExpression);
         String name = node.variable;
         currentItem.context.put(name, value);
@@ -193,7 +231,9 @@ public class InterpretationCore {
         return value;
     }
 
-    private Object interpret(UnaryOperationTreeNode node) throws Exception {
+    private Object interpret
+            (UnaryOperationTreeNode
+                    node) throws Exception {
         if (node.operation == UnaryOperationTreeNode.MINUS) {
             return -getAlgebraicValue(interpret(node.argument));
         } else if (node.operation == UnaryOperationTreeNode.NOT) {
@@ -203,7 +243,9 @@ public class InterpretationCore {
         throw new Exception("Unsupported unary operation: " + node.operation);
     }
 
-    private Object interpret(CaparisonTreeNode node, ExecutionStateValue state) throws Exception {
+    private Object interpret
+            (CaparisonTreeNode
+                    node) throws Exception {
         if ((node.operation == ComparisonLexeme.E) || (node.operation == ComparisonLexeme.NE)) {
             Object left = interpret(node.left);
             Object right = interpret(node.right);
@@ -231,15 +273,21 @@ public class InterpretationCore {
         throw new Exception("Invalid comparison operation: " + node.operation);
     }
 
-    private Object interpret(ValueTreeNode node) {
+    private Object interpret
+            (ValueTreeNode
+                    node) {
         return node.value;
     }
 
-    private Object interpret(VariableTreeNode node) {
+    private Object interpret
+            (VariableTreeNode
+                    node) {
         return currentItem.context.get(node.variable);
     }
 
-    private Object interpret(BinaryOperationTreeNode node) throws Exception {
+    private Object interpret
+            (BinaryOperationTreeNode
+                    node) throws Exception {
         if (isAlgebraicOperation(node.operation)) {
             Double left = getAlgebraicValue(interpret(node.left));
             Double right = getAlgebraicValue(interpret(node.right));
@@ -265,7 +313,9 @@ public class InterpretationCore {
         throw new Exception("Invalid binary operation: " + node.operation);
     }
 
-    private boolean isAlgebraicOperation(char c) {
+    private boolean isAlgebraicOperation
+            (
+                    char c) {
         if (c == '+')
             return true;
         else if (c == '-')
@@ -278,7 +328,9 @@ public class InterpretationCore {
             return false;
     }
 
-    private Double getAlgebraicValue(Object value) throws Exception {
+    private Double getAlgebraicValue
+            (Object
+                    value) throws Exception {
         if (value == null)
             throw new Exception("Type mismatch! Expected Double, got NULL");
 
@@ -288,9 +340,11 @@ public class InterpretationCore {
         throw new Exception("Type mismatch! Expected Double, got " + value.getClass().getSimpleName());
     }
 
-    private Boolean getLogicValue(Object value) throws Exception {
+    private Boolean getLogicValue
+            (Object
+                    value) throws Exception {
         if (value == null)
-            throw new Exception("Type mismatch! Expected Double, got NULL");
+            throw new Exception("Type mismatch! Expected Boolean, got NULL");
 
         if (value instanceof Boolean)
             return (Boolean) value;
