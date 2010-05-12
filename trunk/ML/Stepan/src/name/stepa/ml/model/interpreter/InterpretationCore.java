@@ -1,9 +1,14 @@
 package name.stepa.ml.model.interpreter;
 
+import name.stepa.ml.model.interpreter.execution.ExecutionStack;
+import name.stepa.ml.model.interpreter.execution.ExecutionStackItem;
 import name.stepa.ml.model.interpreter.values.ExecutionStateValue;
 import name.stepa.ml.model.interpreter.values.functions.*;
 import name.stepa.ml.model.interpreter.lexer.ComparisonLexeme;
 import name.stepa.ml.model.interpreter.syntax.*;
+
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,36 +42,53 @@ public class InterpretationCore {
         context.put("PI", Math.PI);
     }
 
-    ExecutionStack executionStack;
-    ExecutionStack.ExecutionStackItem currentItem;
+    //ExecutionStack executionStack;
+    //ExecutionStackItem currentItem;
+    public SyntaxTreeNode root;
+    public Context rootContext;
+    public boolean paused = false;
+    public IInterpreterStateListener stateListener;
+    public ExecutionStack stack;
 
     public InterpretationCore(SyntaxTreeNode root) {
-        this.executionStack = new ExecutionStack();
-        Context rootContext = new Context();
-        initContext(rootContext);
-        this.executionStack.push(new ExecutionStack.ExecutionStackItem(root, new ExecutionStateValue(), rootContext));
-        currentItem = getExecutionItem();
+        this.root = root;
+        this.rootContext = new Context();
+        this.stack = new ExecutionStack();
+        initContext(this.rootContext);
     }
 
-    private void pushToStack(SyntaxTreeNode node) {
-        IO.println("Adding to execution stack: " + node.toString());
-        this.executionStack.push(new ExecutionStack.ExecutionStackItem(node, new ExecutionStateValue(), currentItem.context.clone()));
+    public void run() throws Exception {
+        interpret(root, false);
     }
 
-    public ExecutionStack.ExecutionStackItem getExecutionItem() {
-        if (executionStack.size() == 0)
-            return null;
-        else
-            return executionStack.peek();
+    private void notifyListener() {
+        if (stateListener != null) {
+            ExecutionStackItem head = stack.peek();
+            stateListener.onLineChanged(head.parent.start.start, head.parent.end.end);
+        }
     }
 
-    public Object step() throws Exception {
-        currentItem = getExecutionItem();
-        if (currentItem == null)
-            return null;
+    private void breakInterpretation() {
+        notifyListener();
+        paused = true;
+        while (paused) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-        SyntaxTreeNode node = currentItem.parent;
-        ExecutionStateValue state = currentItem.state;
+    public void step() {
+        paused = false;
+    }
+
+    public Object interpret(SyntaxTreeNode node, boolean breakExecution) throws Exception {
+        stack.add(new ExecutionStackItem(node, rootContext.clone()));
+
+        if (breakExecution)
+            breakInterpretation();
 
         Object res = null;
         if (node instanceof CaparisonTreeNode)
@@ -82,9 +104,9 @@ public class InterpretationCore {
         else if (node instanceof AssignNode)
             res = interpret((AssignNode) node);
         else if (node instanceof InTreeNode)
-            res = interpret((InTreeNode) node, state);
+            res = interpret((InTreeNode) node);
         else if (node instanceof ExpressionListTreeNode)
-            res = interpret((ExpressionListTreeNode) node, state);
+            res = interpret((ExpressionListTreeNode) node);
         else if (node instanceof IfTreeNode)
             res = interpret((IfTreeNode) node);
         else if (node instanceof FunctionDeclarationTreeNode)
@@ -96,159 +118,74 @@ public class InterpretationCore {
         else
             throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
 
-        if (state.state == -1) {
-            executionStack.pop();
-            currentItem = getExecutionItem();
-            if (currentItem != null)
-                currentItem.calculatedExpressions.add(res);
-            return res;
-        } else
-            return null;
-    }
-
-
-    public Object interpret(SyntaxTreeNode node) throws Exception {
-        currentItem = getExecutionItem();
-        if (currentItem == null)
-            return null;
-        Context old = currentItem.context.clone();
-
-        Object res = null;
-        if (node instanceof CaparisonTreeNode)
-            res = interpret((CaparisonTreeNode) node);
-        else if (node instanceof ValueTreeNode)
-            res = interpret((ValueTreeNode) node);
-        else if (node instanceof VariableTreeNode)
-            res = interpret((VariableTreeNode) node);
-        else if (node instanceof BinaryOperationTreeNode)
-            res = interpret((BinaryOperationTreeNode) node);
-        else if (node instanceof UnaryOperationTreeNode)
-            res = interpret((UnaryOperationTreeNode) node);
-        else if (node instanceof AssignNode)
-            res = interpret((AssignNode) node);
-        else if (node instanceof InTreeNode)
-            res = interpret((InTreeNode) node, null);
-        else if (node instanceof ExpressionListTreeNode)
-            res = interpret((ExpressionListTreeNode) node, null);
-        else if (node instanceof IfTreeNode)
-            res = interpret((IfTreeNode) node);
-        else if (node instanceof FunctionDeclarationTreeNode)
-            res = interpret((FunctionDeclarationTreeNode) node);
-        else if (node instanceof ExpressionCallTreeNode)
-            res = interpret((ExpressionCallTreeNode) node);
-        else if (node instanceof BracketsTreeNode)
-            res = interpret((BracketsTreeNode) node);
-        else
-            throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
-
-        currentItem.context = old;
+        rootContext = stack.pop().context;
 
         return res;
     }
 
-    private Object interpret(ExpressionListTreeNode node, ExecutionStateValue state) throws Exception {
-        if (state != null) {
-            Object res = null;
-            if (state.state == -1) {
-                state.state = 0;
-                for (int i = node.nodes.length - 1; i >= 0; i--) {
-                    pushToStack(node.nodes[i]);
-                }
-                return null;
-            } else {
-                state.state = -1;
-                return currentItem.calculatedExpressions.get(0);
-            }
-        } else {
-            Object res = null;
-            for (SyntaxTreeNode i : node.nodes) {
-                res = interpret(i);
-            }
-            return res;
+    private Object interpret(ExpressionListTreeNode node) throws Exception {
+        Object res = null;
+        for (SyntaxTreeNode i : node.nodes) {
+            res = interpret(i, true);
         }
+        return res;
     }
 
 
     private Object interpret(BracketsTreeNode node) throws Exception {
-        return interpret(node.inner);
+        return interpret(node.inner, false);
     }
 
 
     private Object interpret(ExpressionCallTreeNode node) throws Exception {
-        Object expression = interpret(node.expression);
+        Object expression = interpret(node.expression, false);
         if (expression instanceof AbstractFunctionValue) {
-            return ((AbstractFunctionValue) expression).execute(interpret(node.argument));
+            return ((AbstractFunctionValue) expression).execute(interpret(node.argument, false));
         } else
             return expression;
     }
 
     private Object interpret(FunctionDeclarationTreeNode node) throws Exception {
-        return new FunctionValue(currentItem.context.clone(), node.expression, node.argumentName, this);
+        return new FunctionValue(rootContext.clone(), node.expression, node.argumentName, this);
     }
 
     private Object interpret(IfTreeNode node) throws Exception {
-        if (getLogicValue(interpret(node.ifExpr))) {
-            return interpret(node.thenExpr);
+        if (getLogicValue(interpret(node.ifExpr, false))) {
+            return interpret(node.thenExpr, false);
         } else
-            return interpret(node.elseExpr);
+            return interpret(node.elseExpr, false);
     }
 
-    private Object interpret(InTreeNode node, ExecutionStateValue state) throws Exception {
+    private Object interpret(InTreeNode node) throws Exception {
 
-        if (state == null) {
-            Object assignVal = interpret(node.assignment.assignExpression);
-            currentItem.context.put(node.assignment.variable, assignVal);
-            Object res = interpret(node.expression);
-            return res;
-        } else {
-            if (state.state == -1) {
-                state.state = 0;
-                pushToStack(node.assignment.assignExpression);
-                return null;
-            } else if (state.state == 0) {
-                state.state = 1;
-                currentItem.context.put(node.assignment.variable, currentItem.calculatedExpressions.get(0));
-                return null;
-            } else if (state.state == 1) {
-                state.state = 2;
-                pushToStack(node.expression);
-                return null;
-            } else {
-                state.state = -1;
-                return currentItem.calculatedExpressions.get(0);
-            }
-
-        }
+        Object assignVal = interpret(node.assignment.assignExpression, false);
+        rootContext.put(node.assignment.variable, assignVal);
+        Object res = interpret(node.expression, false);
+        return res;
     }
 
-    private Object interpret
-            (AssignNode
-                    node) throws Exception {
-        Object value = interpret(node.assignExpression);
+    private Object interpret(AssignNode node) throws Exception {
+        Object value = interpret(node.assignExpression, false);
         String name = node.variable;
-        currentItem.context.put(name, value);
+        rootContext.put(name, value);
         IO.println("set value " + value + " -> " + name);
         return value;
     }
 
-    private Object interpret
-            (UnaryOperationTreeNode
-                    node) throws Exception {
+    private Object interpret(UnaryOperationTreeNode node) throws Exception {
         if (node.operation == UnaryOperationTreeNode.MINUS) {
-            return -getAlgebraicValue(interpret(node.argument));
+            return -getAlgebraicValue(interpret(node.argument, false));
         } else if (node.operation == UnaryOperationTreeNode.NOT) {
-            return !getLogicValue(interpret(node.argument));
+            return !getLogicValue(interpret(node.argument, false));
         }
 
         throw new Exception("Unsupported unary operation: " + node.operation);
     }
 
-    private Object interpret
-            (CaparisonTreeNode
-                    node) throws Exception {
+    private Object interpret(CaparisonTreeNode node) throws Exception {
         if ((node.operation == ComparisonLexeme.E) || (node.operation == ComparisonLexeme.NE)) {
-            Object left = interpret(node.left);
-            Object right = interpret(node.right);
+            Object left = interpret(node.left, false);
+            Object right = interpret(node.right, false);
             switch (node.operation) {
                 case ComparisonLexeme.E:
                     return left.equals(right);
@@ -256,8 +193,8 @@ public class InterpretationCore {
                     return !left.equals(right);
             }
         } else {
-            Double left = (Double) interpret(node.left);
-            Double right = (Double) interpret(node.right);
+            Double left = (Double) interpret(node.left, false);
+            Double right = (Double) interpret(node.right, false);
             switch (node.operation) {
                 case ComparisonLexeme.G:
                     return left > right;
@@ -273,24 +210,18 @@ public class InterpretationCore {
         throw new Exception("Invalid comparison operation: " + node.operation);
     }
 
-    private Object interpret
-            (ValueTreeNode
-                    node) {
+    private Object interpret(ValueTreeNode node) {
         return node.value;
     }
 
-    private Object interpret
-            (VariableTreeNode
-                    node) {
-        return currentItem.context.get(node.variable);
+    private Object interpret(VariableTreeNode node) {
+        return rootContext.get(node.variable);
     }
 
-    private Object interpret
-            (BinaryOperationTreeNode
-                    node) throws Exception {
+    private Object interpret(BinaryOperationTreeNode node) throws Exception {
         if (isAlgebraicOperation(node.operation)) {
-            Double left = getAlgebraicValue(interpret(node.left));
-            Double right = getAlgebraicValue(interpret(node.right));
+            Double left = getAlgebraicValue(interpret(node.left, false));
+            Double right = getAlgebraicValue(interpret(node.right, false));
             if (node.operation == '+')
                 return left + right;
             else if (node.operation == '-')
@@ -300,8 +231,8 @@ public class InterpretationCore {
             else if (node.operation == '/')
                 return left / right;
         } else {
-            Boolean left = getLogicValue(interpret(node.left));
-            Boolean right = getLogicValue(interpret(node.right));
+            Boolean left = getLogicValue(interpret(node.left, false));
+            Boolean right = getLogicValue(interpret(node.right, false));
             if (node.operation == '&')
                 return left & right;
             else if (node.operation == '|')
@@ -313,9 +244,7 @@ public class InterpretationCore {
         throw new Exception("Invalid binary operation: " + node.operation);
     }
 
-    private boolean isAlgebraicOperation
-            (
-                    char c) {
+    private boolean isAlgebraicOperation(char c) {
         if (c == '+')
             return true;
         else if (c == '-')
@@ -328,9 +257,7 @@ public class InterpretationCore {
             return false;
     }
 
-    private Double getAlgebraicValue
-            (Object
-                    value) throws Exception {
+    private Double getAlgebraicValue(Object value) throws Exception {
         if (value == null)
             throw new Exception("Type mismatch! Expected Double, got NULL");
 
@@ -340,9 +267,7 @@ public class InterpretationCore {
         throw new Exception("Type mismatch! Expected Double, got " + value.getClass().getSimpleName());
     }
 
-    private Boolean getLogicValue
-            (Object
-                    value) throws Exception {
+    private Boolean getLogicValue(Object value) throws Exception {
         if (value == null)
             throw new Exception("Type mismatch! Expected Boolean, got NULL");
 

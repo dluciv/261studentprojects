@@ -34,23 +34,39 @@ public class Interpreter {
             IO.println("syntax:");
             IO.println(syntax.toString());
             core = new InterpretationCore(syntax);
+            core.stateListener = stateListener;
         }
     }
 
     public void setStateListener(IInterpreterStateListener stateListener) {
         this.stateListener = stateListener;
+        if (core != null)
+            core.stateListener = stateListener;
     }
 
-    private void notifyStateChanging() {
-        if (stateListener != null) {
-            stateListener.onLineChanged(0, 0);
+    Thread executionThread = null;
+
+    public void startStepByStep() {
+        if (core != null) {
+            executionThread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        core.run();
+                    } catch (Exception e) {
+                        IO.println(e.getClass() + ":" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            };
+            executionThread.start();
         }
     }
 
-    public void step() throws Exception {
+/*    public void step() throws Exception {
         if (core != null)
             core.step();
         else
             IO.println("Nothing to interpret.");
-    }
+    }*/
 }
