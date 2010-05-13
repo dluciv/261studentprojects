@@ -44,7 +44,7 @@ public enum TokenType {
     EQUALS_SIGN,
     PRINT,
 
-    SEMICOLON, // td
+    SEMICOLON,
 
     LET,
     IN,

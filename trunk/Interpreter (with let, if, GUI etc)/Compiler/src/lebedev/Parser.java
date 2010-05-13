@@ -51,6 +51,15 @@ public class Parser {
             Expression toFind = parseDisjunctor();
             result = new LogOr(result, toFind);
         }
+
+        /*if (curToken.getType() != TokenType.EOF)
+            parseExpression();*/
+        //System.out.println(curToken.getType());
+        /*if (curToken.getType() != TokenType.EOF) { // если не конец, то добавить применение;
+            prevToken();
+            return new ExApplication(result, parseExpression());
+        }*/
+        
         return result;
     }
 
@@ -252,6 +261,7 @@ public class Parser {
             }
         }
         else {
+            System.out.println(curToken.getType());
             fixError("strange symbol, error code: 3");
             return null;
         }
@@ -260,6 +270,11 @@ public class Parser {
     private void nextToken() {
         curToken = tokenStream.get(tokenNo);
         tokenNo++;
+    }
+
+    private void prevToken() {
+        tokenNo--;
+        curToken = tokenStream.get(tokenNo);
     }
 
     private void fixError(String message) {
