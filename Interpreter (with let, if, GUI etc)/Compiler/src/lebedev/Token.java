@@ -12,7 +12,6 @@
 package lebedev;
 
 public class Token {
-    //private final int NONE = 0;
     private TokenType tokenType;
     private int attribute;
 
@@ -23,7 +22,6 @@ public class Token {
 
     public Token(TokenType token) {
         this.tokenType = token;
-        //this.attribute = NONE;
     }
 
     public TokenType getType() {

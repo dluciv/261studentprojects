@@ -9,7 +9,6 @@
 package yaskov;
 
 import ast.*;
-import lebedev.TableCell;
 import java.util.LinkedList;
 
 public class Interpreter {
@@ -17,17 +16,18 @@ public class Interpreter {
     public Tree result;
     private String interpreterErrorLog = "";
     private String output = "";
-    public LinkedList<StackCell> stack = new LinkedList<StackCell>();
-    public LinkedList<TableCell> varTable = new LinkedList<TableCell>();
-    public LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
+    private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
     private int errorCounter = 0;
+    private int nodeNo = 0;
+    private int lastNodeNo;
 
-    public Interpreter(Tree parserOutput, LinkedList<TableCell> varTable, int parseErrorQnt) {
+
+    public Interpreter(Tree parserOutput, int parseErrorQnt, int lastNodeNo) {
         if (parseErrorQnt == 0) {
             input = parserOutput;
-            this.varTable = varTable;
+            this.lastNodeNo = lastNodeNo;
             //interpretSequence(parserOutput);
-            System.out.println("--------------\n");
+            //System.out.println("--------------\n");
         }
         else {
             fixError("there are parse or/and lexical errors");
@@ -51,98 +51,83 @@ public class Interpreter {
     }
 
     public Expression interpretNode(Tree node) {
-        if (node instanceof ArOperand) {
-            System.out.println(node.getClass().getSimpleName());
-            return (ArOperand) node;
-        }
-        else if (node instanceof ArAddition) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((ArAddition) node);
-        }
-        else if (node instanceof ArSubtraction) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((ArSubtraction) node);
-        }
-        else if (node instanceof ArMultiplication) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((ArMultiplication) node);
-        }
-        else if (node instanceof ArDivision) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((ArDivision) node);
-        }
-        else if (node instanceof ArNegate) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((ArNegate) node);
-        }
-        else if (node instanceof LogOperand) {
-            //LogOperand nd = (LogOperand) node;
-            System.out.println(node.getClass().getSimpleName());
-            return (LogOperand) node;
-        }
-        else if (node instanceof LogAnd) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((LogAnd) node);
-        }
-        else if (node instanceof LogOr) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((LogOr) node);
-        }
-        else if (node instanceof LogNot) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((LogNot) node);
-        }
-        else if (node instanceof LogEquality) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((LogEquality) node);
-        }
-        else if (node instanceof LogInequality) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((LogInequality) node);
-        }
-        else if (node instanceof LogGreater) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((LogGreater) node);
-        }
-        else if (node instanceof LogLess) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((LogLess) node);
-        }
-        else if (node instanceof LogGE) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((LogGE) node);
-        }
-        else if (node instanceof LogLE) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((LogLE) node);
-        }
-        else if (node instanceof Variable) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((Variable) node);
-        }
-        else if (node instanceof ExBinding) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((ExBinding) node);
-        }
-        else if (node instanceof ExSequence) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((ExSequence) node);
-        }
-        else if (node instanceof ExPrint) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((ExPrint) node);
-        }
-        else if (node instanceof ExConditional) {
-            System.out.println(node.getClass().getSimpleName());
-            return interpret((ExConditional) node);
+        nodeNo++;
+
+        if(lastNodeNo == -1 || nodeNo < lastNodeNo) {
+            if (lastNodeNo == -1) {
+                System.out.println(node.getClass().getSimpleName());
+                System.out.println(nodeNo);
+            }
+
+            if (node instanceof ArOperand) {
+                return (ArOperand) node;
+            }
+            else if (node instanceof ArAddition) {
+                return interpret((ArAddition) node);
+            }
+            else if (node instanceof ArSubtraction) {
+                return interpret((ArSubtraction) node);
+            }
+            else if (node instanceof ArMultiplication) {
+                return interpret((ArMultiplication) node);
+            }
+            else if (node instanceof ArDivision) {
+                return interpret((ArDivision) node);
+            }
+            else if (node instanceof ArNegate) {
+                return interpret((ArNegate) node);
+            }
+            else if (node instanceof LogOperand) {
+                return (LogOperand) node;
+            }
+            else if (node instanceof LogAnd) {
+                return interpret((LogAnd) node);
+            }
+            else if (node instanceof LogOr) {
+                return interpret((LogOr) node);
+            }
+            else if (node instanceof LogNot) {
+                return interpret((LogNot) node);
+            }
+            else if (node instanceof LogEquality) {
+                return interpret((LogEquality) node);
+            }
+            else if (node instanceof LogInequality) {
+                return interpret((LogInequality) node);
+            }
+            else if (node instanceof LogGreater) {
+                return interpret((LogGreater) node);
+            }
+            else if (node instanceof LogLess) {
+                return interpret((LogLess) node);
+            }
+            else if (node instanceof LogGE) {
+                return interpret((LogGE) node);
+            }
+            else if (node instanceof LogLE) {
+                return interpret((LogLE) node);
+            }
+            else if (node instanceof Variable) {
+                return interpret((Variable) node);
+            }
+            else if (node instanceof ExBinding) {
+                return interpret((ExBinding) node);
+            }
+            else if (node instanceof ExSequence) {
+                return interpret((ExSequence) node);
+            }
+            else if (node instanceof ExPrint) {
+                return interpret((ExPrint) node);
+            }
+            else if (node instanceof ExConditional) {
+                return interpret((ExConditional) node);
+            }
+            else if (node instanceof ExFunction) {
+                return (ExFunction) node;
+            }
         }
         return null;
     }
-
-//    void interpret(ExSequence node) {
-//        interpretNode(node.getLeft());
-//        interpretNode(node.getRight());
-//    }
 
     // арифметические узлы;
 
@@ -254,21 +239,34 @@ public class Interpreter {
     // узлы типа "выражение";
 
     private Nothing interpret(ExSequence sequence) {
-        //LinkedList<Expression> res = new LinkedList<Expression>();
         if (sequence.getLeft() != null) {
             interpretNode(sequence.getLeft());
         }
         interpretNode(sequence.getRight());
 
-//        for (int i = 0; i < sequence.getList().size(); ++i) {
-//            res.add((Expression) interpretNode(sequence.getList().get(i)));
-//        }
         return new Nothing();
     }
     
     private Expression interpret(ExBinding node) { // binding;
-        ArOperand letExpession = (ArOperand) interpretNode(node.getLetExpression());
-        EnvironmentCell environmentCell = new EnvironmentCell(node.getId(), letExpession.getValue());
+        Expression letExpression = interpretNode(node.getLetExpression());
+        EnvironmentCell environmentCell;
+
+        if (letExpression instanceof ArOperand) {
+            ArOperand arLetExpession = (ArOperand) letExpression;
+            environmentCell = new EnvironmentCell(node.getId(), arLetExpession);
+        }
+        else if (letExpression instanceof LogOperand) {
+            LogOperand logLetExpession = (LogOperand) letExpression;
+            environmentCell = new EnvironmentCell(node.getId(), logLetExpession);
+        }
+        else if (letExpression instanceof ExFunction) {
+            ExFunction funLetExpression = (ExFunction) letExpression;
+            environmentCell = new EnvironmentCell(node.getId(), funLetExpression);
+        }
+        else {
+            fixError("smth strange, code: 0");
+            return null;
+        }
 
         environment.add(environmentCell);
         Expression inExpression = interpretNode(node.getInExpression());
@@ -288,18 +286,7 @@ public class Interpreter {
     }
 
     private Expression interpret(Variable node) {
-        Object varValue = findVar(node.getId()).getValue();
-        
-        if (varValue instanceof Boolean) {
-            return new LogOperand((Boolean) varValue);
-        }
-        else if (varValue instanceof Integer) {
-            return new ArOperand((Integer) varValue);
-        }
-        else {
-            fixError("smth strange");
-            return null;
-        }
+        return findVar(node.getId()).getValue();
     }
 
     private Nothing interpret(ExPrint node) {
@@ -309,9 +296,13 @@ public class Interpreter {
             ArOperand arExToPrint = (ArOperand) exToPrint;
             output += arExToPrint.getValue().toString() + "\n";
         }
-        else { // peredelat'
+        else if (exToPrint instanceof LogOperand) { // peredelat'
             LogOperand logExToPrint = (LogOperand) exToPrint;
             output += logExToPrint.getValue().toString() + "\n";
+        }
+        else {
+            //ExFunction funExToPrint = (ExFunction) exToPrint;
+            output += "there is attempt to print function\n";
         }
         
  //       System.out.println(exToPrint.getValue());
@@ -321,16 +312,13 @@ public class Interpreter {
 
     private Expression interpret(ExConditional node) {
         LogOperand cnd = (LogOperand)interpretNode(node.getLogExpression());
-        Expression res;
 
         if (cnd.getValue() == true) {
-            res = interpretNode(node.getThenExpression());
+            return interpretNode(node.getThenExpression());
         }
         else {
-            res = interpretNode(node.getElsePart());
+            return interpretNode(node.getElsePart());
         }
-
-        return res;
     }
 
     // вспомогательные функции;
@@ -342,6 +330,8 @@ public class Interpreter {
             }
         }
 
+        //output += "id " + id + " undefined\n";
+        //System.exit(0);
         fixError("no such id");
         return null;
     }
