@@ -43,7 +43,7 @@ public class Parser {
             output = null;
         }
     }
-
+    
     private Expression parseExpression() {
         Expression result = parseDisjunctor();
         
@@ -205,16 +205,21 @@ public class Parser {
             }
         } else if (curToken.getType() == TokenType.LET) {
             nextToken();
+            if(curToken.getType() != TokenType.ID) {
+                fixError("invalid/missed identifier");
+                return null;
+            } else {
             int id = curToken.getAttribute();
 
             nextToken();
             if (curToken.getType() != TokenType.EQUALS_SIGN) {
-                fixError("strange symbol, error code: 2");
+                fixError("strange symbol, error code: 2 (missed equals sign)");
                 return null;
             } else {
                 Expression binding = new ExBinding(id, parseExpression(), parseExpression());
                 return binding;
             }
+        }
         } else if (curToken.getType() == TokenType.PRINT) {
             nextToken();
             if (curToken.getType() != TokenType.LEFT_BRACKET) {
