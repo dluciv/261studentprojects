@@ -11,7 +11,6 @@ import ast.*;
 import java.util.LinkedList;
 
 public class Parser {
-
     private LinkedList<Token> tokenStream;
     private String parseErrorLog = "";
     private Expression output;
@@ -164,7 +163,7 @@ public class Parser {
         }
     }
 
-    private Expression parsePrime() {
+    private Expression parsePrime() { //System.out.println(curToken.getType());
         if (curToken.getType() == TokenType.NUMBER) {
             Expression result = new ArOperand(curToken.getAttribute());
             nextToken();
@@ -201,7 +200,7 @@ public class Parser {
 
             nextToken();
             if (curToken.getType() != TokenType.EQUALS_SIGN) {
-                fixError("strange symbol, error code: 0");
+                fixError("strange symbol, error code: 2");
                 return null;
             } else {
                 Expression binding = new ExBinding(id, parseExpression(), parseExpression());
@@ -232,7 +231,6 @@ public class Parser {
             ExSequence seqExpr = null;
             while (curToken.getType() != TokenType.END) {
                 seqExpr = new ExSequence(seqExpr, parseExpression());
-                System.out.println(curToken.getType());
                 if (curToken.getType() != TokenType.SEMICOLON && curToken.getType() != TokenType.END) {
                     fixError("strange symbol, error code: 7");
                     return null;
@@ -240,9 +238,21 @@ public class Parser {
             }
             nextToken();
             return seqExpr;
+        } else if (curToken.getType() == TokenType.FUNCTION) {
+            nextToken();
+            int id = curToken.getAttribute();
+
+            nextToken();
+            if (curToken.getType() != TokenType.ARROW) {
+                fixError("strange symbol, error code: 4");
+                return null;
+            } else {
+                Expression function = new ExFunction(id, parseExpression());
+                return function;
+            }
         }
-        else{
-            fixError("strange symbol, error code: 1");
+        else {
+            fixError("strange symbol, error code: 3");
             return null;
         }
     }

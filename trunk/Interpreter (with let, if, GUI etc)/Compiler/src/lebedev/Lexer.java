@@ -83,6 +83,8 @@ public class Lexer {
                     tokenStream.add(new Token(TokenType.BEGIN));
                 } else if (word.equals("end")) {
                     tokenStream.add(new Token(TokenType.END));
+                } else if (word.equals("fun")) {
+                    tokenStream.add(new Token(TokenType.FUNCTION));
                 } else {
                     fixVariable(word);
                 }
@@ -96,6 +98,7 @@ public class Lexer {
             getNextChar();
         }
         tokenStream.add(new Token(TokenType.EOF));
+        printTokenStream();
     }
 
     private void fixVariable(String word) {
@@ -155,7 +158,14 @@ public class Lexer {
                 return TokenType.PLUS;
 
             case '-':
-                return TokenType.MINUS;
+                getNextChar();
+                if (curSym == '>') {
+                    return TokenType.ARROW;
+                }
+                else {
+                    ungetChar();
+                    return TokenType.MINUS;
+                }
 
             case '*':
                 return TokenType.MULTIPLICATION;
@@ -307,5 +317,12 @@ public class Lexer {
         errorCounter++;
         lexErrorLog += "lexer error: " + message + " in line: " + lineNo + ";\n";
         //  System.out.println("lexer error: " + message + " in line: " + lineNo + ";\n");
+    }
+
+    // temp;
+    private void printTokenStream() {
+        for (Token token : tokenStream) {
+            System.out.print("<" + token.getType() + " " + token.getAttribute() + "> ");
+        }
     }
 }

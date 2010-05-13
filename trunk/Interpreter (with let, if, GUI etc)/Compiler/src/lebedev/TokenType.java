@@ -49,6 +49,9 @@ public enum TokenType {
     LET,
     IN,
 
+    FUNCTION,
+    ARROW,
+
     UNKNOWN,
     EOL,
     EOF

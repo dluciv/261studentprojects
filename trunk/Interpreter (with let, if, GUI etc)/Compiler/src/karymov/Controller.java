@@ -86,7 +86,7 @@ public class Controller {
         Parser parser = new Parser(lexer.getTokenStream(), lexer.getErrorQnt());
         parser.parseProgramm();
 
-        Interpreter interpreter = new Interpreter(parser.getOutput(), lexer.getVarTable(), parser.getErrorQnt());
+        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), -1);
         interpreter.interpretProgram();
 
         if (lexer.getErrorQnt() + parser.getErrorQnt() + interpreter.getErrorQnt() > 0) {
@@ -98,19 +98,3 @@ public class Controller {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
