@@ -333,7 +333,8 @@ public class Interpreter {
         //output += "id " + id + " undefined\n";
         //System.exit(0);
         fixError("no such id");
-        return null;
+        return new EnvironmentCell(environment.size(), new ArOperand(0)); // позволяет завершить работу ин-
+                                                                          // терпретатора, но с ошибкой;
     }
 
     private void fixError(String message) {
