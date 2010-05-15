@@ -1,20 +1,17 @@
 // Lebedev Dmitry 2010 (c)
-
 package ast;
 
+import java.util.LinkedList;
+
 public class ExSequence extends Expression {
-    private Expression left, right;
 
-    public ExSequence(Expression left, Expression right) {
-        this.left = left;
-        this.right = right;
+    private LinkedList<Expression> treeList;
+
+    public ExSequence(LinkedList<Expression> treeList) {
+        this.treeList = treeList;
     }
 
-    public Tree getLeft() {
-        return left;
-    }
-
-    public Tree getRight() {
-        return right;
+    public LinkedList<Expression> getList() {
+        return treeList;
     }
 }

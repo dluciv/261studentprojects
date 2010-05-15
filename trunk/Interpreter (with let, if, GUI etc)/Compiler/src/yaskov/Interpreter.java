@@ -5,13 +5,13 @@
  * (c) Яськов Сергей, 261, 2010;
  *
  */
-
 package yaskov;
 
 import ast.*;
 import java.util.LinkedList;
 
 public class Interpreter {
+
     public Tree input;
     public Tree result;
     private String interpreterErrorLog = "";
@@ -21,15 +21,13 @@ public class Interpreter {
     private int nodeNo = 0;
     private int lastNodeNo;
 
-
     public Interpreter(Tree parserOutput, int parseErrorQnt, int lastNodeNo) {
         if (parseErrorQnt == 0) {
             input = parserOutput;
             this.lastNodeNo = lastNodeNo;
             //interpretSequence(parserOutput);
             //System.out.println("--------------\n");
-        }
-        else {
+        } else {
             fixError("there are parse or/and lexical errors");
         }
     }
@@ -53,7 +51,7 @@ public class Interpreter {
     public Expression interpretNode(Tree node) {
         nodeNo++;
 
-        if(lastNodeNo == -1 || nodeNo < lastNodeNo) {
+        if (lastNodeNo == -1 || nodeNo < lastNodeNo) {
             if (lastNodeNo == -1) {
                 System.out.println(node.getClass().getSimpleName());
                 System.out.println(nodeNo);
@@ -61,68 +59,47 @@ public class Interpreter {
 
             if (node instanceof ArOperand) {
                 return (ArOperand) node;
-            }
-            else if (node instanceof ArAddition) {
+            } else if (node instanceof ArAddition) {
                 return interpret((ArAddition) node);
-            }
-            else if (node instanceof ArSubtraction) {
+            } else if (node instanceof ArSubtraction) {
                 return interpret((ArSubtraction) node);
-            }
-            else if (node instanceof ArMultiplication) {
+            } else if (node instanceof ArMultiplication) {
                 return interpret((ArMultiplication) node);
-            }
-            else if (node instanceof ArDivision) {
+            } else if (node instanceof ArDivision) {
                 return interpret((ArDivision) node);
-            }
-            else if (node instanceof ArNegate) {
+            } else if (node instanceof ArNegate) {
                 return interpret((ArNegate) node);
-            }
-            else if (node instanceof LogOperand) {
+            } else if (node instanceof LogOperand) {
                 return (LogOperand) node;
-            }
-            else if (node instanceof LogAnd) {
+            } else if (node instanceof LogAnd) {
                 return interpret((LogAnd) node);
-            }
-            else if (node instanceof LogOr) {
+            } else if (node instanceof LogOr) {
                 return interpret((LogOr) node);
-            }
-            else if (node instanceof LogNot) {
+            } else if (node instanceof LogNot) {
                 return interpret((LogNot) node);
-            }
-            else if (node instanceof LogEquality) {
+            } else if (node instanceof LogEquality) {
                 return interpret((LogEquality) node);
-            }
-            else if (node instanceof LogInequality) {
+            } else if (node instanceof LogInequality) {
                 return interpret((LogInequality) node);
-            }
-            else if (node instanceof LogGreater) {
+            } else if (node instanceof LogGreater) {
                 return interpret((LogGreater) node);
-            }
-            else if (node instanceof LogLess) {
+            } else if (node instanceof LogLess) {
                 return interpret((LogLess) node);
-            }
-            else if (node instanceof LogGE) {
+            } else if (node instanceof LogGE) {
                 return interpret((LogGE) node);
-            }
-            else if (node instanceof LogLE) {
+            } else if (node instanceof LogLE) {
                 return interpret((LogLE) node);
-            }
-            else if (node instanceof Variable) {
+            } else if (node instanceof Variable) {
                 return interpret((Variable) node);
-            }
-            else if (node instanceof ExBinding) {
+            } else if (node instanceof ExBinding) {
                 return interpret((ExBinding) node);
-            }
-            else if (node instanceof ExSequence) {
+            } else if (node instanceof ExSequence) {
                 return interpret((ExSequence) node);
-            }
-            else if (node instanceof ExPrint) {
+            } else if (node instanceof ExPrint) {
                 return interpret((ExPrint) node);
-            }
-            else if (node instanceof ExConditional) {
+            } else if (node instanceof ExConditional) {
                 return interpret((ExConditional) node);
-            }
-            else if (node instanceof ExFunction) {
+            } else if (node instanceof ExFunction) {
                 return (ExFunction) node;
             }
         }
@@ -130,7 +107,6 @@ public class Interpreter {
     }
 
     // арифметические узлы;
-
     private ArOperand interpret(ArAddition node) {
         ArOperand leftNumber = (ArOperand) interpretNode(node.getLeft());
         ArOperand rightNumber = (ArOperand) interpretNode(node.getRight());
@@ -159,8 +135,7 @@ public class Interpreter {
 
         if (divider != 0) {
             return new ArOperand(leftNumber.getValue() / divider);
-        }
-        else {
+        } else {
             fixError("devide by zero");
             return null;
         }
@@ -173,7 +148,6 @@ public class Interpreter {
     }
 
     // логические узлы;
-
     private LogOperand interpret(LogAnd node) { // &&;
         LogOperand leftOperand = (LogOperand) interpretNode(node.getLeft());
         LogOperand rightOperand = (LogOperand) interpretNode(node.getRight());
@@ -237,16 +211,24 @@ public class Interpreter {
     }
 
     // узлы типа "выражение";
+//    private Nothing interpret(ExSequence sequence) {
+//        if (sequence.getLeft() != null) {
+//            interpretNode(sequence.getLeft());
+//        }
+//        interpretNode(sequence.getRight());
+//
+//        return new Nothing();
+//    }
 
-    private Nothing interpret(ExSequence sequence) {
-        if (sequence.getLeft() != null) {
-            interpretNode(sequence.getLeft());
+    private ExSequence interpret(ExSequence sequence) {
+        LinkedList<Expression> res = new LinkedList<Expression>();
+
+        for (int i = 0; i < sequence.getList().size(); ++i) {
+            res.add((Expression) interpretNode(sequence.getList().get(i)));
         }
-        interpretNode(sequence.getRight());
-
-        return new Nothing();
+        return new ExSequence(res);
     }
-    
+
     private Expression interpret(ExBinding node) { // binding;
         Expression letExpression = interpretNode(node.getLetExpression());
         EnvironmentCell environmentCell;
@@ -254,16 +236,13 @@ public class Interpreter {
         if (letExpression instanceof ArOperand) {
             ArOperand arLetExpession = (ArOperand) letExpression;
             environmentCell = new EnvironmentCell(node.getId(), arLetExpession);
-        }
-        else if (letExpression instanceof LogOperand) {
+        } else if (letExpression instanceof LogOperand) {
             LogOperand logLetExpession = (LogOperand) letExpression;
             environmentCell = new EnvironmentCell(node.getId(), logLetExpession);
-        }
-        else if (letExpression instanceof ExFunction) {
+        } else if (letExpression instanceof ExFunction) {
             ExFunction funLetExpression = (ExFunction) letExpression;
             environmentCell = new EnvironmentCell(node.getId(), funLetExpression);
-        }
-        else {
+        } else {
             fixError("smth strange, code: 0");
             return null;
         }
@@ -275,12 +254,10 @@ public class Interpreter {
         if (inExpression instanceof ArOperand) {
             ArOperand arOperand = (ArOperand) inExpression;
             return new ArOperand(arOperand.getValue());
-        }
-        else if (inExpression instanceof LogOperand) { // приделать чё надо;
+        } else if (inExpression instanceof LogOperand) { // приделать чё надо;
             LogOperand logOperand = (LogOperand) inExpression;
             return new LogOperand(logOperand.getValue());
-        }
-        else {
+        } else {
             return new Nothing();
         }
     }
@@ -295,34 +272,30 @@ public class Interpreter {
         if (exToPrint instanceof ArOperand) { // peredelat'
             ArOperand arExToPrint = (ArOperand) exToPrint;
             output += arExToPrint.getValue().toString() + "\n";
-        }
-        else if (exToPrint instanceof LogOperand) { // peredelat'
+        } else if (exToPrint instanceof LogOperand) { // peredelat'
             LogOperand logExToPrint = (LogOperand) exToPrint;
             output += logExToPrint.getValue().toString() + "\n";
-        }
-        else {
+        } else {
             //ExFunction funExToPrint = (ExFunction) exToPrint;
             output += "there is attempt to print function\n";
         }
-        
- //       System.out.println(exToPrint.getValue());
+
+        //       System.out.println(exToPrint.getValue());
 
         return new Nothing();
     }
 
     private Expression interpret(ExConditional node) {
-        LogOperand cnd = (LogOperand)interpretNode(node.getLogExpression());
+        LogOperand cnd = (LogOperand) interpretNode(node.getLogExpression());
 
         if (cnd.getValue() == true) {
             return interpretNode(node.getThenExpression());
-        }
-        else {
+        } else {
             return interpretNode(node.getElsePart());
         }
     }
 
     // вспомогательные функции;
-    
     private EnvironmentCell findVar(int id) {
         for (int i = 0; i < environment.size(); ++i) {
             if (environment.get(i).getId() == id) {
@@ -334,7 +307,7 @@ public class Interpreter {
         //System.exit(0);
         fixError("no such id");
         return new EnvironmentCell(environment.size(), new ArOperand(0)); // позволяет завершить работу ин-
-                                                                          // терпретатора, но с ошибкой;
+        // терпретатора, но с ошибкой;
     }
 
     private void fixError(String message) {
