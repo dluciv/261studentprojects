@@ -276,8 +276,7 @@ public class Interpreter {
             LogOperand logExToPrint = (LogOperand) exToPrint;
             output += logExToPrint.getValue().toString() + "\n";
         } else {
-            //ExFunction funExToPrint = (ExFunction) exToPrint;
-            output += "there is attempt to print function\n";
+            fixError("\"print(_)\" can not print function");
         }
 
         //       System.out.println(exToPrint.getValue());

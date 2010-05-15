@@ -14,14 +14,17 @@ package lebedev;
 public class Token {
     private TokenType tokenType;
     private int attribute;
+    private Position position;
 
-    public Token(TokenType token, int attribute) {
+    public Token(TokenType token, int attribute, Position position) {
         this.tokenType = token;
         this.attribute = attribute;
+        this.position = position;
     }
 
-    public Token(TokenType token) {
+    public Token(TokenType token, Position position) {
         this.tokenType = token;
+        this.position = position;
     }
 
     public TokenType getType() {
@@ -30,5 +33,9 @@ public class Token {
 
     public int getAttribute() {
         return attribute;
+    }
+
+    public Position getPosition() {
+        return position;
     }
 }
