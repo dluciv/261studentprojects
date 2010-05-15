@@ -165,8 +165,8 @@ public class Parser {
     private Expression parseFactor() {
         nextToken();
         if (curToken.getType() == TokenType.NOT) {
-            nextToken();
-            return new LogNot(parsePrime());
+            //nextToken();
+            return new LogNot(parseFactor());
         } else if (curToken.getType() == TokenType.MINUS) {
             nextToken();
             return new ArNegate(parsePrime());
@@ -176,12 +176,14 @@ public class Parser {
     }
 
     private Expression parsePrime() { //System.out.println(curToken.getType());
+        Expression result;
         if (curToken.getType() == TokenType.NUMBER) {
-            Expression result = new ArOperand(curToken.getAttribute());
+            //Expression result = new ArOperand(curToken.getAttribute());
+            result = new ArOperand(curToken.getAttribute());
             nextToken();
-            return result;
+            //return result;
         } else if (curToken.getType() == TokenType.LOG_OPERAND) {
-            Expression result;
+            //Expression result;
 
             if (curToken.getAttribute() == 0) {
                 result = new LogOperand(false);
@@ -190,43 +192,50 @@ public class Parser {
             }
             nextToken();
 
-            return result;
+            //return result;
         } else if (curToken.getType() == TokenType.ID) {
-            Expression result = new Variable(curToken.getAttribute());
+            //Expression result = new Variable(curToken.getAttribute());
+            result = new Variable(curToken.getAttribute());
             nextToken();
 
-            return result;
+            //return result;
         } else if (curToken.getType() == TokenType.LEFT_BRACKET) {
             Expression toFind = parseExpression();
 
             if (curToken.getType() != TokenType.RIGHT_BRACKET) {
                 fixError("strange symbol, ')' expected");
-                return null;
+                //return null;
+                result = null;
             } else {
                 nextToken();
-                return toFind;
+                //return toFind;
+                result = toFind;
             }
         } else if (curToken.getType() == TokenType.LET) {
             nextToken();
             if (curToken.getType() != TokenType.ID) {
                 fixError("missed identifier");
-                return null;
+                //return null;
+                result = null;
             } else {
                 int id = curToken.getAttribute();
 
                 nextToken();
                 if (curToken.getType() != TokenType.EQUALS_SIGN) {
                     fixError("strange symbol, error code: 2 (missed equals sign)");
-                    return null;
+                    //return null;
+                    result = null;
                 } else {
                     Expression letExpression = parseExpression();
                     if (curToken.getType() != TokenType.IN) {
                         fixError("missed IN expression");
-                        return null;
+                        //return null;
+                        result = null;
                     } else {
                         Expression inExpression = parseExpression();
                         Expression binding = new ExBinding(id, letExpression, inExpression);
-                        return binding;
+                        //return binding;
+                        result = binding;
                     }
                 }
             }
@@ -234,47 +243,74 @@ public class Parser {
             nextToken();
             if (curToken.getType() != TokenType.LEFT_BRACKET) {
                 fixError("strange symbol, error code: 5");
-                return null;
+                //return null;
+                result = null;
             } else {
                 ExPrint exPrint = new ExPrint(parseExpression());
                 if (curToken.getType() != TokenType.RIGHT_BRACKET) {
                     fixError("strange symbol, error code: 6");
-                    return null;
+                    //return null;
+                    result = null;
                 } else {
                     nextToken();
-                    return exPrint;
+                    //return exPrint;
+                    result = exPrint;
                 }
             }
         } else if (curToken.getType() == TokenType.IF) {
             Expression conditional = new ExConditional(parseExpression(), parseExpression(), parseExpression());
 
-            return conditional;
+            //return conditional;
+            result = conditional;
         } else if (curToken.getType() == TokenType.BEGIN) {
             Expression seqExpr = parseSequence();
             if (curToken.getType() != TokenType.END) {
                 fixError("strange symbol, error code: 7(missed end statement)");
-                return null;
+                //return null;
+                result = null;
             }
 
             nextToken();
-            return seqExpr;
+            //return seqExpr;
+            result = seqExpr;
         } else if (curToken.getType() == TokenType.FUNCTION) {
             nextToken();
-            int id = curToken.getAttribute();
-
-            nextToken();
-            if (curToken.getType() != TokenType.ARROW) {
-                fixError("strange symbol, error code: 4");
-                return null;
+            if (curToken.getType() != TokenType.ID) {
+                fixError("invalid variable");
+                result = null;
+                //return null;
             } else {
-                Expression function = new ExFunction(id, parseExpression());
-                return function;
+                int id = curToken.getAttribute();
+                nextToken();
+                if (curToken.getType() != TokenType.ARROW) {
+                    fixError("strange symbol, error code: 4");
+                    //return null;
+                    result = null;
+                } else {
+                    Expression function = new ExFunction(id, parseExpression());
+                    //return function;
+                    result = function;
+                }
             }
         } else {
             System.out.println(curToken.getType());
             fixError("strange symbol, error code: 3");
-            return null;
+            //return null;
+            result = null;
         }
+        //nextToken();
+        if(result !=null && (curToken.getType() == TokenType.NUMBER || curToken.getType() == TokenType.LOG_OPERAND
+                ||curToken.getType() == TokenType.ID || curToken.getType() == TokenType.BEGIN 
+                ||curToken.getType() == TokenType.LET ||curToken.getType() == TokenType.FUNCTION
+                ||curToken.getType() == TokenType.LEFT_BRACKET)) {
+            prevToken();
+            Expression a = parseExpression();
+            System.out.println(a);
+            System.out.println("fafasdfasfdas");
+            result = new ExApplication(result, a);
+        } else {
+        }
+        return result;
     }
 
     private void nextToken() {
