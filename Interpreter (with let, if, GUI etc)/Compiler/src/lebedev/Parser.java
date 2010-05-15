@@ -3,7 +3,7 @@
  * "Простейший транслятор"
  *
  * (c) Яськов Сергей, 261, 2010;
- *
+ * (с) Лебедев Дмитрий, 261, 2010;
  */
 package lebedev;
 
@@ -11,8 +11,10 @@ import ast.*;
 import java.util.LinkedList;
 
 public class Parser {
+
     private LinkedList<Token> tokenStream;
     private String parseErrorLog = "";
+    private LinkedList<Expression> sequence = new LinkedList<Expression>();
     private Expression output;
     private int tokenNo = 0;
     private int errorCounter;
@@ -37,86 +39,90 @@ public class Parser {
 
     public void parseProgramm() {
         if (errorCounter == 0) {
-            output = parseExpression();
+            output = parseSequence();
         } else {
             fixError("there are lexical errors");
             output = null;
         }
     }
-    
+
+    private Expression parseSequence() {
+
+        do {
+            sequence.add(parseExpression());
+            // System.out.println(curToken.getType());
+        } while (curToken.getType() == TokenType.SEMICOLON);
+
+        return new ExSequence(sequence);
+    }
+
     private Expression parseExpression() {
         Expression result = parseDisjunctor();
-        
+
         while (curToken.getType() == TokenType.OR) {
             Expression toFind = parseDisjunctor();
             result = new LogOr(result, toFind);
         }
 
         /*if (curToken.getType() != TokenType.EOF)
-            parseExpression();*/
+        parseExpression();*/
         //System.out.println(curToken.getType());
         /*if (curToken.getType() != TokenType.EOF) { // если не конец, то добавить применение;
-            prevToken();
-            return new ExApplication(result, parseExpression());
+        prevToken();
+        return new ExApplication(result, parseExpression());
         }*/
-        
+
         return result;
     }
 
     private Expression parseDisjunctor() {
         Expression result = parseConjunctor();
-        
+
         while (curToken.getType() == TokenType.AND) {
             Expression toFind = parseConjunctor();
             result = new LogAnd(result, toFind);
         }
-        
+
         return result;
     }
 
     private Expression parseConjunctor() {
         Expression result = parseMatching();
-        
+
         while (curToken.getType() == TokenType.EQUALITY || curToken.getType() == TokenType.INEQUALITY) {
             Token sign = curToken;
             Expression toFind = parseMatching();
 
             if (sign.getType() == TokenType.EQUALITY) {
                 result = new LogEquality(result, toFind);
-            }
-            else if (sign.getType() == TokenType.INEQUALITY) {
+            } else if (sign.getType() == TokenType.INEQUALITY) {
                 result = new LogEquality(result, toFind);
-            }
-            else {
+            } else {
                 fixError("code: 0");
                 result = null;
             }
         }
-        
+
         return result;
     }
 
     private Expression parseMatching() {
         Expression result = parseCompared();
-        
+
         if (curToken.getType() == TokenType.GREATER || curToken.getType() == TokenType.LESS ||
-            curToken.getType() == TokenType.GE || curToken.getType() == TokenType.LE) {
+                curToken.getType() == TokenType.GE || curToken.getType() == TokenType.LE) {
             Token sign = curToken;
             Expression toFind = parseCompared();
 
             if (sign.getType() == TokenType.GREATER) {
                 result = new LogGreater(result, toFind);
-            }
-            else if (sign.getType() == TokenType.LESS) {
+            } else if (sign.getType() == TokenType.LESS) {
                 result = new LogLess(result, toFind);
-            }
-            else if (sign.getType() == TokenType.GE) {
+            } else if (sign.getType() == TokenType.GE) {
                 result = new LogGE(result, toFind);
-            }
-            else if (sign.getType() == TokenType.LE) {
+            } else if (sign.getType() == TokenType.LE) {
                 result = new LogLE(result, toFind);
-            }
-            else {
+            } else {
                 fixError("code: 1");
                 result = null;
             }
@@ -133,8 +139,7 @@ public class Parser {
             Expression toFind = parseTerm();
             if (sign.getType() == TokenType.PLUS) {
                 result = new ArAddition(result, toFind);
-            }
-            else {
+            } else {
                 result = new ArSubtraction(result, toFind);
             }
         }
@@ -162,12 +167,10 @@ public class Parser {
         if (curToken.getType() == TokenType.NOT) {
             nextToken();
             return new LogNot(parsePrime());
-        }
-        else if (curToken.getType() == TokenType.MINUS) {
+        } else if (curToken.getType() == TokenType.MINUS) {
             nextToken();
             return new ArNegate(parsePrime());
-        }
-        else {
+        } else {
             return parsePrime();
         }
     }
@@ -205,8 +208,8 @@ public class Parser {
             }
         } else if (curToken.getType() == TokenType.LET) {
             nextToken();
-            if(curToken.getType() != TokenType.ID) {
-                fixError("invalid/missed identifier");
+            if (curToken.getType() != TokenType.ID) {
+                fixError("missed identifier");
                 return null;
             } else {
                 int id = curToken.getAttribute();
@@ -216,8 +219,15 @@ public class Parser {
                     fixError("strange symbol, error code: 2 (missed equals sign)");
                     return null;
                 } else {
-                    Expression binding = new ExBinding(id, parseExpression(), parseExpression());
-                    return binding;
+                    Expression letExpression = parseExpression();
+                    if (curToken.getType() != TokenType.IN) {
+                        fixError("missed IN expression");
+                        return null;
+                    } else {
+                        Expression inExpression = parseExpression();
+                        Expression binding = new ExBinding(id, letExpression, inExpression);
+                        return binding;
+                    }
                 }
             }
         } else if (curToken.getType() == TokenType.PRINT) {
@@ -225,14 +235,12 @@ public class Parser {
             if (curToken.getType() != TokenType.LEFT_BRACKET) {
                 fixError("strange symbol, error code: 5");
                 return null;
-            }
-            else {
+            } else {
                 ExPrint exPrint = new ExPrint(parseExpression());
                 if (curToken.getType() != TokenType.RIGHT_BRACKET) {
                     fixError("strange symbol, error code: 6");
                     return null;
-                }
-                else {
+                } else {
                     nextToken();
                     return exPrint;
                 }
@@ -242,14 +250,12 @@ public class Parser {
 
             return conditional;
         } else if (curToken.getType() == TokenType.BEGIN) {
-            ExSequence seqExpr = null;
-            while (curToken.getType() != TokenType.END) {
-                seqExpr = new ExSequence(seqExpr, parseExpression());
-                if (curToken.getType() != TokenType.SEMICOLON && curToken.getType() != TokenType.END) {
-                    fixError("strange symbol, error code: 7");
-                    return null;
-                }
+            Expression seqExpr = parseSequence();
+            if (curToken.getType() != TokenType.END) {
+                fixError("strange symbol, error code: 7(missed end statement)");
+                return null;
             }
+
             nextToken();
             return seqExpr;
         } else if (curToken.getType() == TokenType.FUNCTION) {
@@ -264,8 +270,7 @@ public class Parser {
                 Expression function = new ExFunction(id, parseExpression());
                 return function;
             }
-        }
-        else {
+        } else {
             System.out.println(curToken.getType());
             fixError("strange symbol, error code: 3");
             return null;
