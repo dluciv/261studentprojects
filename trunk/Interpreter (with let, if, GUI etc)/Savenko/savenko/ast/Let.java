@@ -1,8 +1,5 @@
 package savenko.ast;
 
-import savenko.ast.Expression;
-
-
 public class Let implements Expression{
     
     private Expression clause, expression;

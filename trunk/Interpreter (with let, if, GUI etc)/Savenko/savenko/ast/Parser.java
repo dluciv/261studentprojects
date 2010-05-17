@@ -96,6 +96,12 @@ public class Parser {
                     lexer.moveNext();
                     right = comparison();
                     return new Equal(left, right);
+               case TRUE:
+                    lexer.moveNext();
+                    return new BooleanOp(true);
+               case FALSE:
+                    lexer.moveNext();
+                    return new BooleanOp(false);
                default:
                     return left;
           }
@@ -168,6 +174,14 @@ public class Parser {
                left = new Number(lexer.getCurrent().getIntLexem());
                lexer.moveNext();
                return left;
+          } else if (lexer.getCurrent().getTypeLexem() == lexems.TRUE) {
+               left = new BooleanOp(true);
+               lexer.moveNext();
+               return left;
+          } else if (lexer.getCurrent().getTypeLexem() == lexems.FALSE) {
+               left = new BooleanOp(false);
+               lexer.moveNext();
+               return left;
           } else if (lexer.getCurrent().getTypeLexem() == lexems.LeftBracket) {
                lexer.moveNext();
                left = arithmeticExpression();
@@ -180,6 +194,19 @@ public class Parser {
                left = new Identifier(lexer.getCurrent().getStringLexem());
                lexer.moveNext();
                return left;
+          } else if (lexer.getCurrent().getTypeLexem() == lexems.FUN) {
+               lexer.moveNext();
+               if (lexer.getCurrent().getTypeLexem() != lexems.Identifier) {
+                    throw new ParserException(lexer.getCurrent().getPosition());
+               }
+               identifier = new Identifier(lexer.getCurrent().getStringLexem());
+               lexer.moveNext();
+               if (lexer.getCurrent().getTypeLexem() != lexems.ARROW) {
+                    throw new ParserException(lexer.getCurrent().getPosition());
+               }
+               lexer.moveNext();
+               expr = getExpression();
+               return new Function(identifier, expr);
           } else if (lexer.getCurrent().getTypeLexem() == lexems.LET) {
                lexer.moveNext();
                if (lexer.getCurrent().getTypeLexem() != lexems.Identifier) {
@@ -204,16 +231,6 @@ public class Parser {
           } else if (lexer.getCurrent().getTypeLexem() == lexems.IF) {
                Expression else_expr = null;
                lexer.moveNext();
-               /*//????????????????
-               if (lexer.getCurrent().getTypeLexem() != lexems.Identifier) {
-               throw new ParserException(lexer.getCurrent().getPosition());
-               }
-               identifier = new Identifier(lexer.getCurrent().getStringLexem());
-               lexer.moveNext();
-               if (lexer.getCurrent().getTypeLexem() != lexems.Equation) {
-               throw new ParserException(lexer.getCurrent().getPosition());
-               }
-               lexer.moveNext();*/
                expr = getBoolExpression();
                if (lexer.getCurrent().getTypeLexem() != lexems.THEN) {
                     throw new ParserException(lexer.getCurrent().getPosition());
