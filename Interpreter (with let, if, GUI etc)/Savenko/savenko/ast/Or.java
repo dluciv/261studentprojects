@@ -7,7 +7,7 @@ package savenko.ast;
 public class Or extends BinaryOperation{
 
      public Or(Tree leftNode, Tree rightNode) {
-		super(leftNode, rightNode);
+	super(leftNode, rightNode);
      }
 
 }

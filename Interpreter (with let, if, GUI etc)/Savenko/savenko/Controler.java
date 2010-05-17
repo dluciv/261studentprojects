@@ -76,7 +76,6 @@ public class Controler {
           } catch (FileNotFoundException e1) {
                view.printError("File " + filename + " not found.", null);
           }
-          
           try {
                while (in.ready()) {
                     programm_text += in.readLine();

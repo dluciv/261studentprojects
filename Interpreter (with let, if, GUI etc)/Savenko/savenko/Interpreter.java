@@ -1,7 +1,9 @@
 package savenko;
 
+import savenko.ast.And;
 import savenko.ast.Begin;
 import savenko.ast.BoolValue;
+import savenko.ast.BooleanOp;
 import savenko.ast.GE;
 import savenko.ast.Greater;
 import savenko.ast.LE;
@@ -21,7 +23,9 @@ import savenko.ast.Plus;
 import savenko.ast.Minus;
 import savenko.ast.Divide;
 import savenko.ast.Equal;
+import savenko.ast.Function;
 import savenko.ast.IntValue;
+import savenko.ast.Or;
 import savenko.ast.Position;
 import savenko.ast.Tree;
 
@@ -118,6 +122,22 @@ public class Interpreter {
           return val;
      }
 
+     private Value interpret(Function id) throws InterpreterException {
+          Value old_value = null, val;
+
+          if (environment.ifIdentifierExist(id.getIdentifier())) {
+               old_value = environment.addToEnvironment(id.getIdentifier(), interpret(id.getExpression()));
+               val = interpret(id.getExpression());
+               environment.addToEnvironment(id.getIdentifier(), old_value);
+          } else {
+               environment.addToEnvironment(id.getIdentifier(), interpret(id.getExpression()));
+               val = interpret(id.getExpression());
+               environment.removeIdentifier(id.getIdentifier());
+          }
+
+          return val;
+     }
+
      private Value interpret(LE id) throws InterpreterException {
           if (((IntValue)interpret(id.LeftNode())).getValue() <= ((IntValue)interpret(id.RightNode())).getValue())
                return new BoolValue(true);
@@ -160,9 +180,21 @@ public class Interpreter {
           else return new BoolValue(false);
      }
 
+     private Value interpret(Or id) throws InterpreterException {
+         return new BoolValue(((BoolValue)interpret(id.LeftNode())).getValue()||((BoolValue)interpret(id.RightNode())).getValue());
+    }
+
+     private Value interpret(And id) throws InterpreterException {
+         return new BoolValue(((BoolValue)interpret(id.LeftNode())).getValue()&&((BoolValue)interpret(id.RightNode())).getValue());
+    }
+
      private Value interpret(Begin id) throws InterpreterException {
           return interpret(id.getSequence());
      }
+     
+     private Value interpret(BooleanOp id) throws InterpreterException {
+         return new BoolValue(((BooleanOp)id).getBool());
+    }
 
      private Value interpret(Tree node) throws InterpreterException {
           if (node instanceof Sequence) {
@@ -171,6 +203,10 @@ public class Interpreter {
                return interpret((Number) node);
           } else if (node instanceof Binding) {
                return interpret((Binding) node);
+          } else if (node instanceof Or) {
+               return interpret((Or) node);
+          } else if (node instanceof And) {
+               return interpret((And) node);
           } else if (node instanceof Plus) {
                return interpret((Plus) node);
           } else if (node instanceof Minus) {
@@ -183,8 +219,12 @@ public class Interpreter {
                return interpret((Identifier) node);
           } else if (node instanceof Print) {
                return interpret((Print) node);
+          } else if (node instanceof Function) {
+               return interpret((Function) node);
           } else if (node instanceof If) {
                return interpret((If) node);
+          } else if (node instanceof BooleanOp) {
+               return interpret((BooleanOp) node);
           } else if (node instanceof Begin) {
                return interpret((Begin) node);
           } else if (node instanceof LE) {

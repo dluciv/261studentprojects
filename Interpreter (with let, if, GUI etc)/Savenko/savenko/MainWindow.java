@@ -6,6 +6,8 @@
 package savenko;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -22,6 +24,8 @@ import javax.swing.event.CaretListener;
 import javax.swing.plaf.basic.BasicTextUI.BasicHighlighter;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 public class MainWindow extends javax.swing.JFrame implements IMainView {
 
@@ -494,7 +498,8 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
 
     private void saveDialogOkButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDialogOkButtonClicked
          saveDialog.hide();
-         saveButtonClick(evt);         
+         saveButtonClick(evt);
+         System.exit(0);
     }//GEN-LAST:event_saveDialogOkButtonClicked
 
     private void saveDialogExitButtonClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDialogExitButtonClick
@@ -551,15 +556,13 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
           }
      }
-     
+     //Highlighter highlighter2 = new BasicHighlighter();
      @Override
      public void colorKeyword(int start_ind, int end_index){
-         programmTextField.setSelectedTextColor(Color.BLUE);
-         programmTextField.setSelectionColor(Color.red);
-         programmTextField.setSelectionStart(start_ind);
-    	 programmTextField.setSelectionEnd(end_index);
-         programmTextField.setSelectedTextColor(Color.BLUE);
-         programmTextField.setSelectionColor(Color.red);
+    	 //programmTextField.select(start_ind, end_index);
+    	 //programmTextField.setHighlighter ( highlighter2 );
+    	 //programmTextField.setSelectedTextColor(Color.BLUE);
+    	 //programmTextField.getSelectedTextColor();
      }
 
      @Override
