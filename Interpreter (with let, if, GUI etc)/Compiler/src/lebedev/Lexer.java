@@ -101,6 +101,9 @@ public class Lexer {
             getNextChar();
         }
         tokenStream.add(new Token(TokenType.EOF, new Position(lineNo, columnNo)));
+        if(tokenStream.size() == 1) {
+            fixError("try to write some program");
+        }
         printTokenStream();
     }
 

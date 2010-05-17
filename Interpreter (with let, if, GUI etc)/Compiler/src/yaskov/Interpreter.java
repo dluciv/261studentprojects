@@ -220,13 +220,16 @@ public class Interpreter {
 //        return new Nothing();
 //    }
 
-    private ExSequence interpret(ExSequence sequence) {
-        LinkedList<Expression> res = new LinkedList<Expression>();
+    private Expression interpret(ExSequence sequence) {
+        //LinkedList<Expression> res = new LinkedList<Expression>();
+        int i;
 
-        for (int i = 0; i < sequence.getList().size(); ++i) {
-            res.add((Expression) interpretNode(sequence.getList().get(i)));
+        for (i = 0; i < sequence.getList().size() - 1; ++i) {
+            //res.add((Expression) interpretNode(sequence.getList().get(i)));
+            interpretNode(sequence.getList().get(i));
         }
-        return new ExSequence(res);
+        
+        return (Expression) interpretNode(sequence.getList().get(i));
     }
 
     private Expression interpret(ExBinding node) { // binding;
