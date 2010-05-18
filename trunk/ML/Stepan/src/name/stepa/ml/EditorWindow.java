@@ -2,14 +2,22 @@ package name.stepa.ml;
 
 import name.stepa.ml.highlight.MlEditorKit;
 import name.stepa.ml.model.Environment;
-import name.stepa.ml.model.interpreter.execution.ExecutionStack;
+import name.stepa.ml.model.interpreter.Context;
 import name.stepa.ml.model.interpreter.IInterpreterStateListener;
 import name.stepa.ml.model.interpreter.IO;
 
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import javax.swing.tree.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Document;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -26,6 +34,7 @@ public class EditorWindow extends JFrame {
     private JButton buttonInterpret;
     private JButton buttonStartStepByStep;
     private JButton stepIntoButton;
+    private JTable variablesTable;
 
     private JMenuItem miNewFile;
     private JMenuItem miRemoveFile;
@@ -134,10 +143,11 @@ public class EditorWindow extends JFrame {
                 } else {
                     Environment.get().setSelectedFile(null);
 
-                    if ((Environment.get().project != null) && (Environment.get().project.files.size() == 0))
+                    if ((Environment.get().project != null) && (Environment.get().project.files.size() == 0)) {
                         editorPane.setText("Open project...");
-                    else
+                    } else {
                         editorPane.setText("Select file...");
+                    }
                     editorPane.setEnabled(false);
                     onProjectFileSelectionChanged();
                     statusLabel.setText("Please, select file...");
@@ -172,6 +182,7 @@ public class EditorWindow extends JFrame {
                 try {
                     editorPane.getHighlighter().removeAllHighlights();
                     editorPane.getHighlighter().addHighlight(start, last, new DefaultHighlighter.DefaultHighlightPainter(Color.orange));
+                    updateVariablestable();
                 } catch (BadLocationException e) {
                     e.printStackTrace();
                 }
@@ -188,6 +199,8 @@ public class EditorWindow extends JFrame {
 
         stepIntoButton.setEnabled(false);
         buttonInterpret.setEnabled(false);
+
+        updateVariablestable();
     }
 
     public void save() {
@@ -204,6 +217,20 @@ public class EditorWindow extends JFrame {
         } else {
             getToolkit().beep();
             statusLabel.setText("Error! Nothing to save!");
+        }
+    }
+
+    public void updateVariablestable() {
+        DefaultTableModel model = new DefaultTableModel();
+        variablesTable.setModel(model);
+        model.addColumn("Variable");
+        model.addColumn("Value");
+
+        if (Environment.get().interpreter.core != null) {
+            Context context = Environment.get().interpreter.core.rootContext;
+            for (String i : context.values.keySet()) {
+                model.addRow(new Object[]{i, context.get(i)});
+            }
         }
     }
 
@@ -251,10 +278,11 @@ public class EditorWindow extends JFrame {
 
                     @Override
                     public boolean accept(File f) {
-                        if (f.isDirectory())
+                        if (f.isDirectory()) {
                             return true;
-                        else
+                        } else {
                             return f.getName().equals("hmls.proj");
+                        }
                     }
 
                     @Override
@@ -282,8 +310,9 @@ public class EditorWindow extends JFrame {
         miNewFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String s = JOptionPane.showInputDialog("Enter file name");
-                if (s == null)
+                if (s == null) {
                     return;
+                }
                 try {
                     Environment.get().project.addFile(s);
                 } catch (IOException e1) {
@@ -296,8 +325,9 @@ public class EditorWindow extends JFrame {
         miRemoveFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (Environment.get().getSelectedFile() != null)
+                    if (Environment.get().getSelectedFile() != null) {
                         Environment.get().project.removeFile(Environment.get().getSelectedFile());
+                    }
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -323,8 +353,9 @@ public class EditorWindow extends JFrame {
                 node.add(new DefaultMutableTreeNode(i));
             }
             miNewFile.setEnabled(true);
-        } else
+        } else {
             miNewFile.setEnabled(false);
+        }
 
         projectTree.setModel(new DefaultTreeModel(node));
 
