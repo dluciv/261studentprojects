@@ -15,7 +15,7 @@
           </grid>
         </constraints>
         <properties>
-          <dividerLocation value="250"/>
+          <dividerLocation value="204"/>
           <orientation value="0"/>
         </properties>
         <border type="none"/>
@@ -61,24 +61,48 @@
               </splitpane>
             </children>
           </grid>
-          <scrollpane id="feca5">
+          <splitpane id="376b8">
             <constraints>
               <splitpane position="right"/>
             </constraints>
-            <properties/>
-            <border type="line"/>
+            <properties>
+              <dividerLocation value="400"/>
+            </properties>
+            <border type="none"/>
             <children>
-              <component id="54453" class="javax.swing.JTextPane" binding="logTextPane">
-                <constraints/>
-                <properties>
-                  <editable value="true"/>
-                </properties>
-                <clientProperties>
-                  <html.disable class="java.lang.Boolean" value="false"/>
-                </clientProperties>
-              </component>
+              <scrollpane id="feca5">
+                <constraints>
+                  <splitpane position="left"/>
+                </constraints>
+                <properties/>
+                <border type="empty"/>
+                <children>
+                  <component id="54453" class="javax.swing.JTextPane" binding="logTextPane">
+                    <constraints/>
+                    <properties>
+                      <editable value="true"/>
+                    </properties>
+                    <clientProperties>
+                      <html.disable class="java.lang.Boolean" value="false"/>
+                    </clientProperties>
+                  </component>
+                </children>
+              </scrollpane>
+              <scrollpane id="347b2">
+                <constraints>
+                  <splitpane position="right"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="87f9f" class="javax.swing.JTable" binding="variablesTable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
-          </scrollpane>
+          </splitpane>
         </children>
       </splitpane>
       <grid id="94766" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
