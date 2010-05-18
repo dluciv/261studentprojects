@@ -99,6 +99,8 @@ public class Interpreter {
                 return interpret((ExPrint) node);
             } else if (node instanceof ExConditional) {
                 return interpret((ExConditional) node);
+            } else if (node instanceof ExApplication) {
+                return interpret((ExApplication) node);
             } else if (node instanceof ExFunction) {
                 return (ExFunction) node;
             }
@@ -295,6 +297,18 @@ public class Interpreter {
         } else {
             return interpretNode(node.getElsePart());
         }
+    }
+
+    private Expression interpret(ExApplication node) {
+
+        /*Expression arg = interpretNode(node.getArgument());
+        EnvironmentCell environmentCell;
+
+        if (arg instanceof ArOperand) {
+            ArOperand arOperand = (ArOperand) arg;
+            environmentCell = new EnvironmentCell(node., arg)
+        }*/
+        return new Nothing();
     }
 
     // вспомогательные функции;

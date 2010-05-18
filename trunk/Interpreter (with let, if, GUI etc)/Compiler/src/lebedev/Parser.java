@@ -37,14 +37,15 @@ public class Parser {
 		return parseErrorLog;
 	}
 
-	public void parseProgramm() {
-		if (errorCounter == 0) {
-			output = parseExpression();
-		} else {
-			fixError("there are lexical errors");
-			output = null;
-		}
-	}
+    public void parseProgramm() {
+        if (errorCounter == 0) {
+            //output = parseSequence();
+            output = parseExpression();
+        } else {
+            fixError("there are lexical errors");
+            output = null;
+        }
+    }
 
 	private Expression parseSequence() {
 		LinkedList<Expression> sequence = new LinkedList<Expression>();
@@ -246,7 +247,6 @@ public class Parser {
 			Expression conditional = new ExConditional(parseExpression(),
 					parseExpression(), parseExpression(), curToken
 							.getPosition());
-
 			result = conditional;
 		} else if (curToken.getType() == TokenType.BEGIN) {
 			Expression seqExpr = parseSequence();
@@ -292,8 +292,7 @@ public class Parser {
 			case LEFT_BRACKET:
 				prevToken();
 				// System.out.print(curToken.getType() + "!!!");
-				result = new ExApplication(result, parseExpression(), curToken
-						.getPosition());
+				result = new ExApplication(result, parseExpression(), curToken.getPosition());
 				// System.out.println(result.getClass());
 				break;
 			}
