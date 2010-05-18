@@ -1,5 +1,0 @@
-C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\qsort\bin\Release\qsort.dll
-C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\qsort\bin\Release\qsort.pdb
-C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\qsort\obj\Release\ResolveAssemblyReference.cache
-C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\qsort\obj\Release\qsort.dll
-C:\Documents and Settings\Moriturus\My Documents\Visual Studio 2008\Projects\mainproj\qsort\obj\Release\qsort.pdb
