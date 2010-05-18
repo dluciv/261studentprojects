@@ -1,7 +1,0 @@
-W:\261studentprojects\builder\Savenko\MainSolution\MainSolution\bin\Debug\MainSolution.exe
-W:\261studentprojects\builder\Savenko\MainSolution\MainSolution\bin\Debug\MainSolution.pdb
-W:\261studentprojects\builder\Savenko\MainSolution\MainSolution\bin\Debug\TestLibrary1.dll
-W:\261studentprojects\builder\Savenko\MainSolution\MainSolution\bin\Debug\TestLibrary1.pdb
-W:\261studentprojects\builder\Savenko\MainSolution\MainSolution\obj\Debug\ResolveAssemblyReference.cache
-W:\261studentprojects\builder\Savenko\MainSolution\MainSolution\obj\Debug\MainSolution.exe
-W:\261studentprojects\builder\Savenko\MainSolution\MainSolution\obj\Debug\MainSolution.pdb

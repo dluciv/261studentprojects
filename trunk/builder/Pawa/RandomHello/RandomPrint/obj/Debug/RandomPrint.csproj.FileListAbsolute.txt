@@ -1,7 +1,0 @@
-w:\Visual Studio 2008\Projects\RandomHello\RandomPrint\obj\Debug\ResolveAssemblyReference.cache
-w:\Visual Studio 2008\Projects\RandomHello\RandomPrint\bin\Debug\RandomPrint.exe
-w:\Visual Studio 2008\Projects\RandomHello\RandomPrint\bin\Debug\RandomPrint.pdb
-w:\Visual Studio 2008\Projects\RandomHello\RandomPrint\bin\Debug\RandomHelloWorld.dll
-w:\Visual Studio 2008\Projects\RandomHello\RandomPrint\bin\Debug\RandomHelloWorld.pdb
-w:\Visual Studio 2008\Projects\RandomHello\RandomPrint\obj\Debug\RandomPrint.exe
-w:\Visual Studio 2008\Projects\RandomHello\RandomPrint\obj\Debug\RandomPrint.pdb

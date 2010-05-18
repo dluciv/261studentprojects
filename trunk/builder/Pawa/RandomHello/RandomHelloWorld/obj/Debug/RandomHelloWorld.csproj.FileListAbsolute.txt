@@ -1,5 +1,0 @@
-w:\Visual Studio 2008\Projects\RandomHello\RandomHelloWorld\bin\Debug\RandomHelloWorld.dll
-w:\Visual Studio 2008\Projects\RandomHello\RandomHelloWorld\bin\Debug\RandomHelloWorld.pdb
-w:\Visual Studio 2008\Projects\RandomHello\RandomHelloWorld\obj\Debug\ResolveAssemblyReference.cache
-w:\Visual Studio 2008\Projects\RandomHello\RandomHelloWorld\obj\Debug\RandomHelloWorld.dll
-w:\Visual Studio 2008\Projects\RandomHello\RandomHelloWorld\obj\Debug\RandomHelloWorld.pdb
