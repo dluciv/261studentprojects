@@ -5,13 +5,16 @@
 
 package ast;
 
+import lebedev.Position;
+
 public class ExApplication extends Expression {
     private Expression function;
     private Expression argument;
 
-    public ExApplication(Expression function, Expression argument) {
+    public ExApplication(Expression function, Expression argument, Position position) {
         this.function = function;
         this.argument = argument;
+        setPositon(position);
     }
 
     public Expression getFunction() {

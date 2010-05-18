@@ -5,11 +5,14 @@
 
 package ast;
 
+import lebedev.Position;
+
 public abstract class UnaryOperation extends Expression {
     private Tree operand;
 
-    public UnaryOperation(Tree operand) {
+    public UnaryOperation(Tree operand, Position position) {
         this.operand = operand;
+        setPositon(position);
     }
 
     public Tree getOperand() {

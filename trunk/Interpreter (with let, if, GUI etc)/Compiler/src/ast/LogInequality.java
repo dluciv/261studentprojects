@@ -5,8 +5,10 @@
 
 package ast;
 
+import lebedev.Position;
+
 public class LogInequality extends BinaryOperation {
-    public LogInequality(Expression left, Expression right) {
-        super(left, right);
+    public LogInequality(Expression left, Expression right, Position position) {
+        super(left, right, position);
     }
 }
