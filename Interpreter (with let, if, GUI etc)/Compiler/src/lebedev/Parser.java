@@ -273,6 +273,7 @@ public class Parser {
                 ||curToken.getType() == TokenType.LET ||curToken.getType() == TokenType.FUNCTION
                 ||curToken.getType() == TokenType.LEFT_BRACKET)) {
             prevToken();
+
             //System.out.print(curToken.getType() + "!!!");
             result = new ExApplication(result, parseExpression());
         } else {
