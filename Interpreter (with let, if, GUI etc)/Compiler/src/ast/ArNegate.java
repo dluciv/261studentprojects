@@ -5,8 +5,10 @@
 
 package ast;
 
+import lebedev.Position;
+
 public class ArNegate extends UnaryOperation {
-    public ArNegate(Expression arOperand) {
-        super(arOperand);
+    public ArNegate(Expression arOperand, Position position) {
+        super(arOperand, position);
     }
 }

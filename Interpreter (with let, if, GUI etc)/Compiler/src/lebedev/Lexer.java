@@ -60,47 +60,47 @@ public class Lexer {
             if (sourceProgramEnds()) {
                 break;
             } else if (isDigit()) {
-                tokenStream.add(new Token(TokenType.NUMBER, getNumber(), new Position(lineNo, columnNo)));
+                tokenStream.add(new Token(TokenType.NUMBER, getNumber(), new Position( curSym, lineNo, columnNo)));
             } else if (isSign()) {
-                tokenStream.add(new Token(getSign(), new Position(lineNo, columnNo)));
+                tokenStream.add(new Token(getSign(), new Position(curSym, lineNo, columnNo)));
             } else if (isLetter()) {
                 word = getWord();
 
                 if (word.equals("let")) {
-                    tokenStream.add(new Token(TokenType.LET, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.LET, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("in")) {
-                    tokenStream.add(new Token(TokenType.IN, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.IN, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("if")) {
-                    tokenStream.add(new Token(TokenType.IF, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.IF, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("then")) {
-                    tokenStream.add(new Token(TokenType.THEN, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.THEN, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("else")) {
-                    tokenStream.add(new Token(TokenType.ELSE, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.ELSE, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("print")) {
-                    tokenStream.add(new Token(TokenType.PRINT, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.PRINT, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("true")) {
-                    tokenStream.add(new Token(TokenType.LOG_OPERAND, 1, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.LOG_OPERAND, 1, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("false")) {
-                    tokenStream.add(new Token(TokenType.LOG_OPERAND, 0, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.LOG_OPERAND, 0, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("begin")) {
-                    tokenStream.add(new Token(TokenType.BEGIN, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.BEGIN, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("end")) {
-                    tokenStream.add(new Token(TokenType.END, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.END, new Position(curSym, lineNo, columnNo)));
                 } else if (word.equals("fun")) {
-                    tokenStream.add(new Token(TokenType.FUNCTION, new Position(lineNo, columnNo)));
+                    tokenStream.add(new Token(TokenType.FUNCTION, new Position(curSym, lineNo, columnNo)));
                 } else {
                     fixVariable(word);
                 }
             } else if (isLogSign()) {
-                tokenStream.add(new Token(getLogOperation(), new Position(lineNo, columnNo)));
+                tokenStream.add(new Token(getLogOperation(), new Position(curSym, lineNo, columnNo)));
             } else if (isSemicolon()) {
-                tokenStream.add(new Token(TokenType.SEMICOLON, new Position(lineNo, columnNo)));
+                tokenStream.add(new Token(TokenType.SEMICOLON, new Position(curSym, lineNo, columnNo)));
             } else {
                 fixError("unknown symbol");
             }
             getNextChar();
         }
-        tokenStream.add(new Token(TokenType.EOF, new Position(lineNo, columnNo)));
+        tokenStream.add(new Token(TokenType.EOF, new Position(curSym, lineNo, columnNo)));
         if(tokenStream.size() == 1) {
             fixError("try to write some program");
         }
@@ -110,10 +110,10 @@ public class Lexer {
     private void fixVariable(String word) {
         if (!isInTable(word)) {
             varTable.add(new TableCell(idCounter, word));
-            tokenStream.add(new Token(TokenType.ID, idCounter, new Position(lineNo, columnNo)));
+            tokenStream.add(new Token(TokenType.ID, idCounter, new Position(curSym, lineNo, columnNo)));
             idCounter++;
         } else {
-            tokenStream.add(new Token(TokenType.ID, findVarNamed(word).getId(), new Position(lineNo, columnNo)));
+            tokenStream.add(new Token(TokenType.ID, findVarNamed(word).getId(), new Position(curSym, lineNo, columnNo)));
         }
     }
 

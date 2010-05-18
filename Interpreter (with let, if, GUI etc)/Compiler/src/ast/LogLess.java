@@ -5,8 +5,10 @@
 
 package ast;
 
+import lebedev.Position;
+
 public class LogLess extends BinaryOperation {
-    public LogLess(Expression left, Expression right) {
-        super(left, right);
+    public LogLess(Expression left, Expression right, Position position) {
+        super(left, right, position);
     }
 }

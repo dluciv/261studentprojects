@@ -5,11 +5,14 @@
 
 package ast;
 
+import lebedev.Position;
+
 public class LogOperand extends Expression {
     private Boolean value;
 
-    public LogOperand(Boolean value) {
+    public LogOperand(Boolean value, Position position) {
         this.value = value;
+        setPositon(position);
     }
 
     public Boolean getValue() {
