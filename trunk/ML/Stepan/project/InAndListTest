@@ -3,5 +3,5 @@ let x = 1 in
    let z = 4 in 
      let t = 5 in
         begin
-	t+5-x-z*y;
+	print t+5-x-z*y;
         end;
