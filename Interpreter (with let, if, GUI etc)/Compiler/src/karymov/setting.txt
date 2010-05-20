@@ -1,1 +1,7 @@
-height=666;
+height=389
+width=832
+coordinateX=266
+coordinateY=119
+C:\Users\Антон\Desktop\789.txt
+C:\Users\Антон\Desktop\5445.txt
+C:\Users\Антон\Desktop\history.txt

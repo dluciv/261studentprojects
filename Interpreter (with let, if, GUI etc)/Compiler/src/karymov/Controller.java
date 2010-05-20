@@ -1,46 +1,49 @@
 package karymov;
 
-import ast.*;
 import java.awt.FileDialog;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.StringTokenizer;
 import lebedev.*;
-import yaskov.*;
+import yaskov.Interpreter;
 
 public class Controller {
 
     private IMainForm iMainForm;
-    //private byte[] buf;
+    private byte[] buf;
+    // String szCurrentFilename = "";
+
     public Controller(IMainForm iMainForm) {
         this.iMainForm = iMainForm;
     }
 
-    public String openFile(String fileName) {
-
-              String textProgramm = "";
+    public void openFile(File file) {
+        iMainForm.clearConsolePanel();
         try {
-            BufferedReader stdin = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
-            while (stdin.ready()) {
-                textProgramm += stdin.readLine();
-                 if (stdin.ready()) {
-                         textProgramm += "\n";
-                    }
-            }
-          iMainForm.setTextInConsolePanel("File "+fileName+" opened.");
+            InputStream fileInpStream = new FileInputStream(file);
+            int size = fileInpStream.available();
+            fileInpStream.close();
+            char[] buff = new char[size];
+            Reader fileReadStream = new FileReader(file);
+            int count = fileReadStream.read(buff);
+            iMainForm.getTextPanel().setText(String.copyValueOf(buff));
+            fileReadStream.close();
         } catch (FileNotFoundException Exception) {
             iMainForm.setTextInConsolePanel("File can not open");
         } catch (IOException Exception) {
             iMainForm.setTextInConsolePanel("File can't be read");
         }
-        
-        return textProgramm;
 
     }
 
@@ -55,26 +58,22 @@ public class Controller {
 //   
 //  
 //   }
-    public void saveFile(String textProgramm,String fileName) throws FileNotFoundException, IOException {
-//        FileOutputStream out = new FileOutputStream(fileName);
-//        buf = textProgramm.getBytes();
-//        BufferedOutputStream bout = new BufferedOutputStream(out);
-//        bout.write(buf);
-//        bout.close();
-       // BufferedWriter out = null;
-          iMainForm.clearConsolePanel();
+    public void saveFile(String textProgramm, String fileName) throws FileNotFoundException, IOException {
 
-          try {
-               BufferedWriter stdout = new BufferedWriter(new FileWriter(fileName));
-               stdout.write(textProgramm);
-               stdout.close();
-               iMainForm.setTextInConsolePanel("File saved successfully");
-          } catch (IOException e) {
-               iMainForm.setTextInConsolePanel("Caught IOException while writing " + fileName);
-          }
-     }
+        FileOutputStream outputStream = null;
+        buf = textProgramm.getBytes();
 
-    
+        try {
+            outputStream = new FileOutputStream(fileName);
+            outputStream.write(buf);
+            outputStream.close();
+
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        } catch (SecurityException ex) {
+            System.out.println(ex.toString());
+        }
+    }
 
     public void saveAsFile(String textProgramm, String fileName) {
     }
@@ -87,7 +86,7 @@ public class Controller {
         parser.parseProgramm();
 
         Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), -1);
-        interpreter.run();
+        interpreter.interpretProgram();
 
         if (lexer.getErrorQnt() + parser.getErrorQnt() + interpreter.getErrorQnt() > 0) {
             String errorLog = lexer.getErrorLog() + parser.getErrorLog() + interpreter.getErrorLog();
@@ -98,3 +97,19 @@ public class Controller {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

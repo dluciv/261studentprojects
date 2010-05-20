@@ -10,15 +10,30 @@
  */
 package karymov;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.Font;
+import java.awt.TextArea;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -27,12 +42,25 @@ import javax.swing.UIManager;
 public class MainForm extends javax.swing.JFrame implements IMainForm {
 
     Controller controller = null;
-    String fileName;
+    String currentFileName = "";
+    String textOpenedProgramm;
+    byte buf[];
+    int height;
+    int width;
+    int coordinateX;
+    int coordinateY;
+    // String fileName;
+    LinkedList<String> list;
 
     /** Creates new form MainForm */
     public MainForm() {
         initComponents();
         controller = new Controller(this);
+        height = Memento.getMemento().getHeight();
+        width = Memento.getMemento().getWidth();
+        coordinateX = Memento.getMemento().getCoordinateX();
+        coordinateY = Memento.getMemento().getCoordinateY();
+        list = Memento.getMemento().getList();
     }
 
     /** This method is called from within the constructor to
@@ -44,13 +72,20 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        FrameFileChooser = new javax.swing.JFrame();
-        FileChooser = new javax.swing.JFileChooser();
         FrameAbout = new javax.swing.JFrame();
         FirstDeveloper = new javax.swing.JLabel();
         SecondDeveloper = new javax.swing.JLabel();
         ThirdDeveloper = new javax.swing.JLabel();
         CloseAboutButton = new javax.swing.JButton();
+        SaveFrame = new javax.swing.JFrame();
+        SaveFileChooser = new javax.swing.JFileChooser();
+        OpenFrame = new javax.swing.JFrame();
+        OpenFileChooser = new javax.swing.JFileChooser();
+        FileChangedWarningFrame = new javax.swing.JFrame();
+        SaveWarningButton = new javax.swing.JButton();
+        NotSaveButtonWarning = new javax.swing.JButton();
+        CanselButtonWarning = new javax.swing.JButton();
+        FileChangedLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         SaveButton = new javax.swing.JButton();
         RunButton = new javax.swing.JButton();
@@ -66,35 +101,10 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         OpenMenuItem = new javax.swing.JMenuItem();
         SaveMenuItem = new javax.swing.JMenuItem();
         SaveAsMenuItem = new javax.swing.JMenuItem();
-        RecentFilesMuItem = new javax.swing.JMenuItem();
         ExitMenuItem = new javax.swing.JMenuItem();
+        RecentFileMenu = new javax.swing.JMenu();
         HelpMenu = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
-
-        FrameFileChooser.setMinimumSize(new java.awt.Dimension(565, 389));
-
-        FileChooser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FileChooserActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout FrameFileChooserLayout = new javax.swing.GroupLayout(FrameFileChooser.getContentPane());
-        FrameFileChooser.getContentPane().setLayout(FrameFileChooserLayout);
-        FrameFileChooserLayout.setHorizontalGroup(
-            FrameFileChooserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FrameFileChooserLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(FileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        FrameFileChooserLayout.setVerticalGroup(
-            FrameFileChooserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FrameFileChooserLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(FileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         FrameAbout.setTitle("About");
         FrameAbout.setMinimumSize(new java.awt.Dimension(400, 300));
@@ -140,9 +150,120 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 .addGap(41, 41, 41))
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        SaveFrame.setMinimumSize(new java.awt.Dimension(600, 400));
+
+        SaveFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        SaveFileChooser.setFileFilter(null);
+
+        javax.swing.GroupLayout SaveFrameLayout = new javax.swing.GroupLayout(SaveFrame.getContentPane());
+        SaveFrame.getContentPane().setLayout(SaveFrameLayout);
+        SaveFrameLayout.setHorizontalGroup(
+            SaveFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(SaveFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SaveFrameLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(SaveFileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        SaveFrameLayout.setVerticalGroup(
+            SaveFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(SaveFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SaveFrameLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(SaveFileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        OpenFrame.setMinimumSize(new java.awt.Dimension(600, 400));
+
+        javax.swing.GroupLayout OpenFrameLayout = new javax.swing.GroupLayout(OpenFrame.getContentPane());
+        OpenFrame.getContentPane().setLayout(OpenFrameLayout);
+        OpenFrameLayout.setHorizontalGroup(
+            OpenFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 586, Short.MAX_VALUE)
+            .addGroup(OpenFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(OpenFrameLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(OpenFileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        OpenFrameLayout.setVerticalGroup(
+            OpenFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 377, Short.MAX_VALUE)
+            .addGroup(OpenFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(OpenFrameLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(OpenFileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        FileChangedWarningFrame.setTitle("Warning!!!");
+        FileChangedWarningFrame.setMinimumSize(new java.awt.Dimension(450, 200));
+
+        SaveWarningButton.setText("Сохранить");
+        SaveWarningButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveWarningButtonActionPerformed(evt);
+            }
+        });
+
+        NotSaveButtonWarning.setText("Не сохранять");
+        NotSaveButtonWarning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NotSaveButtonWarningActionPerformed(evt);
+            }
+        });
+
+        CanselButtonWarning.setText("Отмена");
+        CanselButtonWarning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CanselButtonWarningActionPerformed(evt);
+            }
+        });
+
+        FileChangedLabel.setText("FileChangedLabel");
+
+        javax.swing.GroupLayout FileChangedWarningFrameLayout = new javax.swing.GroupLayout(FileChangedWarningFrame.getContentPane());
+        FileChangedWarningFrame.getContentPane().setLayout(FileChangedWarningFrameLayout);
+        FileChangedWarningFrameLayout.setHorizontalGroup(
+            FileChangedWarningFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FileChangedWarningFrameLayout.createSequentialGroup()
+                .addGroup(FileChangedWarningFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, FileChangedWarningFrameLayout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(FileChangedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
+                    .addGroup(FileChangedWarningFrameLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(SaveWarningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(NotSaveButtonWarning, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(CanselButtonWarning, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)))
+                .addGap(22, 22, 22))
+        );
+        FileChangedWarningFrameLayout.setVerticalGroup(
+            FileChangedWarningFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FileChangedWarningFrameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(FileChangedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(FileChangedWarningFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(SaveWarningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NotSaveButtonWarning, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CanselButtonWarning, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Compiler");
         setMinimumSize(new java.awt.Dimension(565, 389));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         SaveButton.setText("Save");
         SaveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -152,11 +273,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         });
 
         RunButton.setText("Run");
-        RunButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                RunButtonMouseClicked(evt);
-            }
-        });
         RunButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RunButtonActionPerformed(evt);
@@ -199,7 +315,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 .addComponent(StepNextButton)
                 .addGap(18, 18, 18)
                 .addComponent(StepOverButton)
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,14 +367,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         });
         FileMenu.add(SaveAsMenuItem);
 
-        RecentFilesMuItem.setText("Recent Files");
-        RecentFilesMuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RecentFilesMuItemActionPerformed(evt);
-            }
-        });
-        FileMenu.add(RecentFilesMuItem);
-
         ExitMenuItem.setText("Exit");
         ExitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -266,6 +374,9 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             }
         });
         FileMenu.add(ExitMenuItem);
+
+        RecentFileMenu.setText("Open Recent File");
+        FileMenu.add(RecentFileMenu);
 
         jMenuBar1.add(FileMenu);
 
@@ -289,12 +400,12 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -303,8 +414,8 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -312,18 +423,51 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     }// </editor-fold>//GEN-END:initComponents
 
     private void OpenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenMenuItemActionPerformed
-        FrameFileChooser.setTitle("Open File");
-        FrameFileChooser.show();
-        FileChooser.setVisible(true);
-//        String fileName ="src/Karymov/programm.txt";
-//        TextPanel.setText(controller.openFile(fileName));
-
+        OpenFrame.setTitle("Open File");
+        setCenterPosition(OpenFrame);
+        javax.swing.filechooser.FileFilter fileFilter = new MyFilter(".txt");
+        OpenFileChooser.addChoosableFileFilter(fileFilter);
+        if (OpenFileChooser.showOpenDialog(null) != OpenFileChooser.APPROVE_OPTION) {
+            return;//Нажали Cancel
+        }
+        ;
+        File file = OpenFileChooser.getSelectedFile();
+        if (file != null) {
+            currentFileName = OpenFileChooser.getSelectedFile().getPath();
+            controller.openFile(file);
+            if (weNeedAddRecentFile(list, currentFileName)) {
+                additionRecentFile(list, currentFileName);
+                createRecentFile(file);
+            }
+            textOpenedProgramm = TextPanel.getText();
+        }
     }//GEN-LAST:event_OpenMenuItemActionPerformed
+    private void createRecentFile(File file) {
+        final JMenuItem newItem = new JMenuItem(file.getName());
+        newItem.setToolTipText(file.getPath());
+        newItem.addActionListener(new ActionListener() {
 
+            public void actionPerformed(ActionEvent e) {
+                recentFilesItemClick(newItem.getToolTipText());
+            }
+
+            private void recentFilesItemClick(String toolTipText) {
+                File file = new File(toolTipText);
+                controller.openFile(file);
+                currentFileName = toolTipText;
+            }
+        });
+        RecentFileMenu.add(newItem);
+    }
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
-        //String fileName ="src/Karymov/programm.txt";
         try {
-            controller.saveFile(TextPanel.getText(), fileName);
+            if (currentFileName.equals("")) {
+                SaveAsMenuItemActionPerformed(null);
+            } else {
+                controller.saveFile(TextPanel.getText(), currentFileName);
+                textOpenedProgramm = TextPanel.getText();
+                ConsolePanel.setText("File saved in " + currentFileName);
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -331,18 +475,27 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     }//GEN-LAST:event_SaveButtonActionPerformed
     }
         private void ExitMenuItem(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuItem
+            String textCurrentProgramm = TextPanel.getText();
+            if (textCurrentProgramm.equals(textOpenedProgramm) || textCurrentProgramm.equals("")) {
+//                int beforeEscapeHight = MainForm.this.getHeight();
+//                int beforeEscapeWidth = MainForm.this.getWidth();
+//                int beforeEscapeCoordinateX = MainForm.this.getX();
+//                int beforeEscapeCoordinateY = MainForm.this.getY();
+//                LinkedList<String> blist = this.list;
+                Memento.getMemento().saveBounds(MainForm.this.getHeight(),
+                        MainForm.this.getWidth(), MainForm.this.getX(), MainForm.this.getY(), this.list);
+                System.exit(0);
+            } else {
+                FileChangedLabel.setText("Сохранить изменения в файле: " + currentFileName + "???");
+                setCenterPosition(FileChangedWarningFrame);
+                FileChangedWarningFrame.setVisible(true);
+            }
 
-            //int beforeEscapeHight=Memento.getMemento().getHeight();
-            int beforeEscapeHight=MainForm.this.getHeight();
-            String settingDirectory ="src/Karymov/setting.txt" ;
-            ParseSetting.writeHeight(settingDirectory,ParseSetting.setHeight(beforeEscapeHight));
-         //   System.out.println(Memento.getMemento().getHeight());
-            System.exit(0);
         }//GEN-LAST:event_ExitMenuItem
 
         private void RunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunButtonActionPerformed
-
-            //controller.runProgram(TextPanel.getText());
+            printInConsole(controller.runProgram(TextPanel.getText()));
+            //controller.runProgramm(TextPanel.getText());
         }//GEN-LAST:event_RunButtonActionPerformed
 
         private void CloseAboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseAboutButtonActionPerformed
@@ -350,6 +503,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_CloseAboutButtonActionPerformed
 
         private void AboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutActionPerformed
+            setCenterPosition(FrameAbout);
             FrameAbout.show();
             FirstDeveloper.setVisible(true);
             SecondDeveloper.setVisible(true);
@@ -370,31 +524,38 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_StepOverButtonActionPerformed
 
         private void SaveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveMenuItemActionPerformed
-            try {
-                controller.saveFile(TextPanel.getText(), fileName);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            SaveButtonActionPerformed(null);
         }//GEN-LAST:event_SaveMenuItemActionPerformed
-    }
+
         private void SaveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsMenuItemActionPerformed
-            // TODO add your handling code here:
+            SaveFrame.setTitle("Save As...");
+            setCenterPosition(SaveFrame);
+            javax.swing.filechooser.FileFilter filter = new MyFilter(".txt");
+            SaveFileChooser.addChoosableFileFilter(filter);
+            if (SaveFileChooser.showSaveDialog(null) != SaveFileChooser.APPROVE_OPTION) {
+                return;//Нажали Cancel
+            }
+            ;
+            currentFileName = SaveFileChooser.getSelectedFile().getPath() + ".txt";
+            SaveButtonActionPerformed(null);
         }//GEN-LAST:event_SaveAsMenuItemActionPerformed
 
-        private void RecentFilesMuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecentFilesMuItemActionPerformed
-            // TODO add your handling code here:
-        }//GEN-LAST:event_RecentFilesMuItemActionPerformed
+        private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+            ExitMenuItem(null);
+        }//GEN-LAST:event_formWindowClosing
 
-        private void FileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileChooserActionPerformed
-            fileName = FileChooser.getSelectedFile().getPath();
-            TextPanel.setText(controller.openFile(fileName));
-            FrameFileChooser.hide();
-        }//GEN-LAST:event_FileChooserActionPerformed
+        private void CanselButtonWarningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CanselButtonWarningActionPerformed
+            FileChangedWarningFrame.hide();
+        }//GEN-LAST:event_CanselButtonWarningActionPerformed
 
-        private void RunButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RunButtonMouseClicked
-            setTextInConsolePanel(controller.runProgram(TextPanel.getText()));
-        }//GEN-LAST:event_RunButtonMouseClicked
+        private void NotSaveButtonWarningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NotSaveButtonWarningActionPerformed
+            System.exit(0);
+        }//GEN-LAST:event_NotSaveButtonWarningActionPerformed
+
+        private void SaveWarningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveWarningButtonActionPerformed
+            SaveButtonActionPerformed(null);
+            FileChangedWarningFrame.hide();
+        }//GEN-LAST:event_SaveWarningButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -405,34 +566,50 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception exception) {}
+                } catch (Exception exception) {
+                }
+                Memento.getMemento().loadBounds();
                 MainForm mainForm = new MainForm();
-                mainForm.TextPanel.setFont(new Font("Times New Roman",Font.BOLD,14));
-                mainForm.ConsolePanel.setFont(new Font("Times New Roman",Font.BOLD,14));
-                String settingDirectory ="src/Karymov/setting.txt" ;
-                int height = ParseSetting.getHeight(ParseSetting.findHeight(settingDirectory));
-                mainForm.setSize(150,height);
+                loadReacentFile(mainForm);
+                mainForm.TextPanel.setFont(new Font("Times New Roman", Font.BOLD, 14));
+                mainForm.ConsolePanel.setFont(new Font("Times New Roman", Font.BOLD, 14));
+                mainForm.setBounds(mainForm.coordinateX, mainForm.coordinateY, mainForm.width, mainForm.height);
                 mainForm.setVisible(true);
+            }
+
+            private void loadReacentFile(MainForm mainForm) {
+                for (String rfile : mainForm.list) {
+
+                    File file = new File(rfile);
+                    mainForm.createRecentFile(file);
+                }
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CanselButtonWarning;
     private javax.swing.JButton CloseAboutButton;
     private javax.swing.JTextArea ConsolePanel;
     private javax.swing.JButton DebugButton;
     private javax.swing.JMenuItem ExitMenuItem;
-    private javax.swing.JFileChooser FileChooser;
+    private javax.swing.JLabel FileChangedLabel;
+    private javax.swing.JFrame FileChangedWarningFrame;
     private javax.swing.JMenu FileMenu;
     private javax.swing.JLabel FirstDeveloper;
     private javax.swing.JFrame FrameAbout;
-    private javax.swing.JFrame FrameFileChooser;
     private javax.swing.JMenu HelpMenu;
+    private javax.swing.JButton NotSaveButtonWarning;
+    private javax.swing.JFileChooser OpenFileChooser;
+    private javax.swing.JFrame OpenFrame;
     private javax.swing.JMenuItem OpenMenuItem;
-    private javax.swing.JMenuItem RecentFilesMuItem;
+    private javax.swing.JMenu RecentFileMenu;
     private javax.swing.JButton RunButton;
     private javax.swing.JMenuItem SaveAsMenuItem;
     private javax.swing.JButton SaveButton;
+    private javax.swing.JFileChooser SaveFileChooser;
+    private javax.swing.JFrame SaveFrame;
     private javax.swing.JMenuItem SaveMenuItem;
+    private javax.swing.JButton SaveWarningButton;
     private javax.swing.JLabel SecondDeveloper;
     private javax.swing.JButton StepNextButton;
     private javax.swing.JButton StepOverButton;
@@ -467,5 +644,40 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
 
     public void printInConsole(String text) {
         ConsolePanel.setText(text);
+    }
+
+    public JTextArea getTextPanel() {
+        return TextPanel;
+    }
+
+    public boolean weNeedAddRecentFile(LinkedList<String> list, String addingRecentFile) {
+        for (String havingRecentFile : list) {
+            if (havingRecentFile.equals(addingRecentFile)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void additionRecentFile(LinkedList<String> list, String addingRecentFile) {
+        for (String havingRecentFile : list) {
+            if (havingRecentFile.equals(addingRecentFile)) {
+                list.remove(havingRecentFile);
+            }
+        }
+        list.add(addingRecentFile);
+
+    }
+
+    private static void setCenterPosition(JFrame frame) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = frame.getPreferredSize();
+        if (frameSize.height > screenSize.height) {
+            frameSize.height = screenSize.height;
+        }
+        if (frameSize.width > screenSize.width) {
+            frameSize.width = screenSize.width;
+        }
+        frame.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
 }
