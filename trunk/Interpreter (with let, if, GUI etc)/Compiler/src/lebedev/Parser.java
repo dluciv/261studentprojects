@@ -39,8 +39,8 @@ public class Parser {
 
     public void parseProgramm() {
         if (errorCounter == 0) {
-            //output = parseSequence();
-            output = parseExpression();
+            output = parseSequence();
+            //output = parseExpression();
         } else {
             fixError("there are lexical errors");
             output = null;

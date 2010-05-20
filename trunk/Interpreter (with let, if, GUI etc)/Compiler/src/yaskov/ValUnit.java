@@ -7,6 +7,5 @@ package yaskov;
 
 public class ValUnit extends Value {
     public ValUnit() {
-
     }
 }

@@ -221,21 +221,10 @@ public class Interpreter {
     }
 
     // узлы типа "выражение";
-//    private Nothing interpret(ExSequence sequence) {
-//        if (sequence.getLeft() != null) {
-//            interpretNode(sequence.getLeft());
-//        }
-//        interpretNode(sequence.getRight());
-//
-//        return new Nothing();
-//    }
-
     private Value interpret(ExSequence sequence) {
-        //LinkedList<Expression> res = new LinkedList<Expression>();
         int i;
 
         for (i = 0; i < sequence.getList().size() - 1; ++i) {
-            //res.add((Expression) interpretNode(sequence.getList().get(i)));
             interpretNode(sequence.getList().get(i));
         }
         
@@ -255,9 +244,9 @@ public class Interpreter {
         if (inExpressionValue instanceof ValInt) {
             ValInt arVal = (ValInt) inExpressionValue;
             return new ValInt((Integer) arVal.getValue());
-        } else if (inExpressionValue instanceof ValBoolean) { // приделать чё надо;
-            ValBoolean logOperand = (ValBoolean) inExpressionValue;
-            return new ValBoolean((Boolean) logOperand.getValue());
+        } else if (inExpressionValue instanceof ValBoolean) {
+            ValBoolean logVal = (ValBoolean) inExpressionValue;
+            return new ValBoolean((Boolean) logVal.getValue());
         } else {
             return new ValUnit();
         }
@@ -270,14 +259,11 @@ public class Interpreter {
     private Value interpret(ExPrint node) {
         Value exToPrintValue = interpretNode(node.getExToPrint());
 
-        if (exToPrintValue instanceof ValInt) { // peredelat'
-            ValInt arExToPrintValue = (ValInt) exToPrintValue;
-            output += arExToPrintValue.getValue().toString() + "\n";
-        } else if (exToPrintValue instanceof ValBoolean) { // peredelat'
-            ValBoolean logExToPrintValue = (ValBoolean) exToPrintValue;
-            output += logExToPrintValue.getValue().toString() + "\n";
-        } else {
+        if (exToPrintValue instanceof ValFun) {
             fixError("\"print(expr)\" can not print function");
+        }
+        else {
+            output += exToPrintValue.getValue().toString() + "\n";
         }
 
         return new ValUnit();
@@ -306,14 +292,14 @@ public class Interpreter {
     }
 
     private Value interpret(ExFunction node) {
-        return new ValFun(node.getFunctionBody());
+        return new ValFun(node.getFunctionBody(), environment);
     }
 
     // вспомогательные функции;
     private EnvironmentCell findVar(int id) {
-        for (int i = 0; i < environment.size(); ++i) {
-            if (environment.get(i).getId() == id) {
-                return environment.get(i);
+        for (EnvironmentCell cell: environment) {
+            if (cell.getId() == id) {
+                return cell;
             }
         }
 
