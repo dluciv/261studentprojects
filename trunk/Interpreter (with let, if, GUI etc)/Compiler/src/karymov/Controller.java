@@ -87,7 +87,7 @@ public class Controller {
         parser.parseProgramm();
 
         Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), -1);
-        interpreter.interpretProgram();
+        interpreter.run();
 
         if (lexer.getErrorQnt() + parser.getErrorQnt() + interpreter.getErrorQnt() > 0) {
             String errorLog = lexer.getErrorLog() + parser.getErrorLog() + interpreter.getErrorLog();

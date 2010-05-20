@@ -342,7 +342,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
 
         private void RunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunButtonActionPerformed
 
-            //controller.runProgramm(TextPanel.getText());
+            //controller.runProgram(TextPanel.getText());
         }//GEN-LAST:event_RunButtonActionPerformed
 
         private void CloseAboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseAboutButtonActionPerformed
