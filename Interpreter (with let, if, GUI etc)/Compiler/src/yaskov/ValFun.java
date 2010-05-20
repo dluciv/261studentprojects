@@ -6,9 +6,17 @@
 package yaskov;
 
 import ast.Expression;
+import java.util.LinkedList;
 
 public class ValFun extends Value {
-    public ValFun(Expression value) {
+    private LinkedList<EnvironmentCell> funEnv = new LinkedList<EnvironmentCell>();
+
+    public ValFun(Expression value, LinkedList<EnvironmentCell> env) {
         this.value = value;
+        funEnv = env;
+    }
+    
+    public LinkedList<EnvironmentCell> getFunEnv() {
+        return funEnv;
     }
 }
