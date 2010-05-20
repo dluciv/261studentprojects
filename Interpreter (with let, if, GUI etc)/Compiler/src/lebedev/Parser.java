@@ -179,8 +179,7 @@ public class Parser {
 		Expression result;
 
 		if (curToken.getType() == TokenType.NUMBER) {
-			result = new ArOperand(curToken.getAttribute(), curToken
-					.getPosition());
+			result = new ArOperand(curToken.getAttribute(), curToken.getPosition());
 			nextToken();
 		} else if (curToken.getType() == TokenType.LOG_OPERAND) {
 			if (curToken.getAttribute() == 0) {
@@ -269,8 +268,7 @@ public class Parser {
 					fixError("strange symbol, error code: 4");
 					result = null;
 				} else {
-					Expression function = new ExFunction(id, parseExpression(),
-							curToken.getPosition());
+					ExFunction function = new ExFunction(id, parseExpression(), curToken.getPosition());
 					result = function;
 				}
 			}
