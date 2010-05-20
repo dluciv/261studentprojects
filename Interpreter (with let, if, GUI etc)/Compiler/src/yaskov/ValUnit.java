@@ -3,8 +3,10 @@
  * and open the template in the editor.
  */
 
-package ast;
+package yaskov;
 
-public class Nothing extends Expression {
+public class ValUnit extends Value {
+    public ValUnit() {
 
+    }
 }
