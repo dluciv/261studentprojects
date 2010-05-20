@@ -13,7 +13,7 @@ import java.util.LinkedList;
 public class Interpreter {
 
     public Tree input;
-    public Tree result;
+    public Value result;
     private String interpreterErrorLog = "";
     private String output = "";
     private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
@@ -48,7 +48,7 @@ public class Interpreter {
         result = interpretNode(input);
     }
 
-    public Expression interpretNode(Tree node) {
+    public Value interpretNode(Tree node) {
         nodeNo++;
 
         if (lastNodeNo == -1 || nodeNo < lastNodeNo) {
@@ -58,7 +58,7 @@ public class Interpreter {
             }
 
             if (node instanceof ArOperand) {
-                return (ArOperand) node;
+                return interpret((ArOperand) node);
             } else if (node instanceof ArAddition) {
                 return interpret((ArAddition) node);
             } else if (node instanceof ArSubtraction) {
@@ -70,7 +70,7 @@ public class Interpreter {
             } else if (node instanceof ArNegate) {
                 return interpret((ArNegate) node);
             } else if (node instanceof LogOperand) {
-                return (LogOperand) node;
+                return interpret((LogOperand) node);
             } else if (node instanceof LogAnd) {
                 return interpret((LogAnd) node);
             } else if (node instanceof LogOr) {
@@ -102,114 +102,122 @@ public class Interpreter {
             } else if (node instanceof ExApplication) {
                 return interpret((ExApplication) node);
             } else if (node instanceof ExFunction) {
-                return (ExFunction) node;
+                return interpret((ExFunction) node);
             }
         }
         return null;
     }
 
     // арифметические узлы;
-    private ArOperand interpret(ArAddition node) {
-        ArOperand leftNumber = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightNumber = (ArOperand) interpretNode(node.getRight());
-
-        return new ArOperand(leftNumber.getValue() + rightNumber.getValue());
+    private Value interpret(ArOperand node) {
+        return new ValInt(node.getValue());
     }
 
-    private ArOperand interpret(ArSubtraction node) {
-        ArOperand leftNumber = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightNumber = (ArOperand) interpretNode(node.getRight());
+    private Value interpret(ArAddition node) {
+        ValInt leftNumber = (ValInt) interpretNode(node.getLeft());
+        ValInt rightNumber = (ValInt) interpretNode(node.getRight());
 
-        return new ArOperand(leftNumber.getValue() - rightNumber.getValue());
+        return new ValInt((Integer) leftNumber.getValue() + (Integer) rightNumber.getValue());
     }
 
-    private ArOperand interpret(ArMultiplication node) {
-        ArOperand leftNumber = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightNumber = (ArOperand) interpretNode(node.getRight());
+    private Value interpret(ArSubtraction node) {
+        ValInt leftNumber = (ValInt) interpretNode(node.getLeft());
+        ValInt rightNumber = (ValInt) interpretNode(node.getRight());
 
-        return new ArOperand(leftNumber.getValue() * rightNumber.getValue());
+        return new ValInt((Integer) leftNumber.getValue() - (Integer) rightNumber.getValue());
     }
 
-    private ArOperand interpret(ArDivision node) {
-        ArOperand leftNumber = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightNumber = (ArOperand) interpretNode(node.getRight());
-        int divider = rightNumber.getValue();
+    private Value interpret(ArMultiplication node) {
+        ValInt leftNumber = (ValInt) interpretNode(node.getLeft());
+        ValInt rightNumber = (ValInt) interpretNode(node.getRight());
+
+        return new ValInt((Integer) leftNumber.getValue() * (Integer) rightNumber.getValue());
+    }
+
+    private Value interpret(ArDivision node) {
+        ValInt leftNumber = (ValInt) interpretNode(node.getLeft());
+        ValInt rightNumber = (ValInt) interpretNode(node.getRight());
+        Integer divider = (Integer) rightNumber.getValue();
 
         if (divider != 0) {
-            return new ArOperand(leftNumber.getValue() / divider);
+            return new ValInt((Integer) leftNumber.getValue() / (Integer) rightNumber.getValue());
         } else {
             fixError("devide by zero");
             return null;
         }
     }
 
-    private ArOperand interpret(ArNegate node) { // !;
-        ArOperand operand = (ArOperand) interpretNode(node.getOperand());
+    private Value interpret(ArNegate node) { // !;
+        ValInt operand = (ValInt) interpretNode(node.getOperand());
 
-        return new ArOperand(-operand.getValue());
+        return new ValInt(-(Integer) operand.getValue());
     }
 
     // логические узлы;
-    private LogOperand interpret(LogAnd node) { // &&;
-        LogOperand leftOperand = (LogOperand) interpretNode(node.getLeft());
-        LogOperand rightOperand = (LogOperand) interpretNode(node.getRight());
-
-        return new LogOperand(leftOperand.getValue() && rightOperand.getValue());
+    private Value interpret(LogOperand node) {
+        return new ValBoolean(node.getValue());
     }
 
-    private LogOperand interpret(LogOr node) { // ||;
-        LogOperand leftOperand = (LogOperand) interpretNode(node.getLeft());
-        LogOperand rightOperand = (LogOperand) interpretNode(node.getRight());
+    private Value interpret(LogAnd node) { // &&;
+        ValBoolean leftOperand = (ValBoolean) interpretNode(node.getLeft());
+        ValBoolean rightOperand = (ValBoolean) interpretNode(node.getRight());
 
-        return new LogOperand(leftOperand.getValue() || rightOperand.getValue());
+        return new ValBoolean((Boolean) leftOperand.getValue() && (Boolean) rightOperand.getValue());
     }
 
-    private LogOperand interpret(LogNot node) { // !;
-        LogOperand operand = (LogOperand) interpretNode(node.getOperand());
+    private Value interpret(LogOr node) { // ||;
+        ValBoolean leftOperand = (ValBoolean) interpretNode(node.getLeft());
+        ValBoolean rightOperand = (ValBoolean) interpretNode(node.getRight());
 
-        return new LogOperand(!operand.getValue());
+        return new ValBoolean((Boolean) leftOperand.getValue() || (Boolean) rightOperand.getValue());
     }
 
-    private LogOperand interpret(LogEquality node) { // ==;
-        ArOperand leftOperand = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightOperand = (ArOperand) interpretNode(node.getRight());
+    private Value interpret(LogNot node) { // !;
+        ValBoolean operand = (ValBoolean) interpretNode(node.getOperand());
 
-        return new LogOperand(leftOperand.getValue() == rightOperand.getValue());
+        return new ValBoolean(!(Boolean) operand.getValue());
     }
 
-    private LogOperand interpret(LogInequality node) { // !=;
-        ArOperand leftOperand = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightOperand = (ArOperand) interpretNode(node.getRight());
+    private Value interpret(LogEquality node) { // ==;
+        Value leftOperand = (Value) interpretNode(node.getLeft());
+        Value rightOperand = (Value) interpretNode(node.getRight());
 
-        return new LogOperand(leftOperand.getValue() != rightOperand.getValue());
+        return new ValBoolean(leftOperand.getValue() == rightOperand.getValue());
     }
 
-    private LogOperand interpret(LogGreater node) { // >;
-        ArOperand leftOperand = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightOperand = (ArOperand) interpretNode(node.getRight());
+    private Value interpret(LogInequality node) { // !=;
+        Value leftOperand = (Value) interpretNode(node.getLeft());
+        Value rightOperand = (Value) interpretNode(node.getRight());
 
-        return new LogOperand(leftOperand.getValue() > rightOperand.getValue());
+        return new ValBoolean(leftOperand.getValue() == rightOperand.getValue());
     }
 
-    private LogOperand interpret(LogLess node) { // <;
-        ArOperand leftOperand = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightOperand = (ArOperand) interpretNode(node.getRight());
+    private Value interpret(LogGreater node) { // >;
+        ValInt leftOperand = (ValInt) interpretNode(node.getLeft());
+        ValInt rightOperand = (ValInt) interpretNode(node.getRight());
 
-        return new LogOperand(leftOperand.getValue() < rightOperand.getValue());
+        return new ValBoolean((Integer) leftOperand.getValue() > (Integer) rightOperand.getValue());
     }
 
-    private LogOperand interpret(LogGE node) { // >=;
-        ArOperand leftOperand = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightOperand = (ArOperand) interpretNode(node.getRight());
+    private Value interpret(LogLess node) { // <;
+        ValInt leftOperand = (ValInt) interpretNode(node.getLeft());
+        ValInt rightOperand = (ValInt) interpretNode(node.getRight());
 
-        return new LogOperand(leftOperand.getValue() >= rightOperand.getValue());
+        return new ValBoolean((Integer) leftOperand.getValue() < (Integer) rightOperand.getValue());
     }
 
-    private LogOperand interpret(LogLE node) { // <=;
-        ArOperand leftOperand = (ArOperand) interpretNode(node.getLeft());
-        ArOperand rightOperand = (ArOperand) interpretNode(node.getRight());
+    private Value interpret(LogGE node) { // >=;
+        ValInt leftOperand = (ValInt) interpretNode(node.getLeft());
+        ValInt rightOperand = (ValInt) interpretNode(node.getRight());
 
-        return new LogOperand(leftOperand.getValue() <= rightOperand.getValue());
+        return new ValBoolean((Integer) leftOperand.getValue() >= (Integer) rightOperand.getValue());
+    }
+
+    private Value interpret(LogLE node) { // <=;
+        ValInt leftOperand = (ValInt) interpretNode(node.getLeft());
+        ValInt rightOperand = (ValInt) interpretNode(node.getRight());
+
+        return new ValBoolean((Integer) leftOperand.getValue() <= (Integer) rightOperand.getValue());
     }
 
     // узлы типа "выражение";
@@ -222,7 +230,7 @@ public class Interpreter {
 //        return new Nothing();
 //    }
 
-    private Expression interpret(ExSequence sequence) {
+    private Value interpret(ExSequence sequence) {
         //LinkedList<Expression> res = new LinkedList<Expression>();
         int i;
 
@@ -231,75 +239,61 @@ public class Interpreter {
             interpretNode(sequence.getList().get(i));
         }
         
-        return (Expression) interpretNode(sequence.getList().get(i));
+        return (Value) interpretNode(sequence.getList().get(i));
     }
 
-    private Expression interpret(ExBinding node) { // binding;
-        Expression letExpression = interpretNode(node.getLetExpression());
+    private Value interpret(ExBinding node) { // binding;
+        Value letExpressionValue = interpretNode(node.getLetExpression());
         EnvironmentCell environmentCell;
 
-        if (letExpression instanceof ArOperand) {
-            ArOperand arLetExpession = (ArOperand) letExpression;
-            environmentCell = new EnvironmentCell(node.getId(), arLetExpession);
-        } else if (letExpression instanceof LogOperand) {
-            LogOperand logLetExpession = (LogOperand) letExpression;
-            environmentCell = new EnvironmentCell(node.getId(), logLetExpession);
-        } else if (letExpression instanceof ExFunction) {
-            ExFunction funLetExpression = (ExFunction) letExpression;
-            environmentCell = new EnvironmentCell(node.getId(), funLetExpression);
-        } else {
-            fixError("smth strange, code: 0");
-            return null;
-        }
+        environmentCell = new EnvironmentCell(node.getId(), letExpressionValue);
 
         environment.add(environmentCell);
-        Expression inExpression = interpretNode(node.getInExpression());
+        Value inExpressionValue = interpretNode(node.getInExpression());
         environment.remove(environmentCell);
 
-        if (inExpression instanceof ArOperand) {
-            ArOperand arOperand = (ArOperand) inExpression;
-            return new ArOperand(arOperand.getValue());
-        } else if (inExpression instanceof LogOperand) { // приделать чё надо;
-            LogOperand logOperand = (LogOperand) inExpression;
-            return new LogOperand(logOperand.getValue());
+        if (inExpressionValue instanceof ValInt) {
+            ValInt arVal = (ValInt) inExpressionValue;
+            return new ValInt((Integer) arVal.getValue());
+        } else if (inExpressionValue instanceof ValBoolean) { // приделать чё надо;
+            ValBoolean logOperand = (ValBoolean) inExpressionValue;
+            return new ValBoolean((Boolean) logOperand.getValue());
         } else {
-            return new Nothing();
+            return new ValUnit();
         }
     }
 
-    private Expression interpret(Variable node) {
+    private Value interpret(Variable node) {
         return findVar(node.getId()).getValue();
     }
 
-    private Nothing interpret(ExPrint node) {
-        Expression exToPrint = interpretNode(node.getExToPrint());
+    private Value interpret(ExPrint node) {
+        Value exToPrintValue = interpretNode(node.getExToPrint());
 
-        if (exToPrint instanceof ArOperand) { // peredelat'
-            ArOperand arExToPrint = (ArOperand) exToPrint;
-            output += arExToPrint.getValue().toString() + "\n";
-        } else if (exToPrint instanceof LogOperand) { // peredelat'
-            LogOperand logExToPrint = (LogOperand) exToPrint;
-            output += logExToPrint.getValue().toString() + "\n";
+        if (exToPrintValue instanceof ValInt) { // peredelat'
+            ValInt arExToPrintValue = (ValInt) exToPrintValue;
+            output += arExToPrintValue.getValue().toString() + "\n";
+        } else if (exToPrintValue instanceof ValBoolean) { // peredelat'
+            ValBoolean logExToPrintValue = (ValBoolean) exToPrintValue;
+            output += logExToPrintValue.getValue().toString() + "\n";
         } else {
-            fixError("\"print(_)\" can not print function");
+            fixError("\"print(expr)\" can not print function");
         }
 
-        //       System.out.println(exToPrint.getValue());
-
-        return new Nothing();
+        return new ValUnit();
     }
 
-    private Expression interpret(ExConditional node) {
-        LogOperand cnd = (LogOperand) interpretNode(node.getLogExpression());
+    private Value interpret(ExConditional node) {
+        ValBoolean cnd = (ValBoolean) interpretNode(node.getLogExpression());
 
-        if (cnd.getValue() == true) {
+        if ((Boolean) cnd.getValue() == true) {
             return interpretNode(node.getThenExpression());
         } else {
             return interpretNode(node.getElsePart());
         }
     }
 
-    private Expression interpret(ExApplication node) {
+    private Value interpret(ExApplication node) {
 
         /*Expression arg = interpretNode(node.getArgument());
         EnvironmentCell environmentCell;
@@ -308,7 +302,11 @@ public class Interpreter {
             ArOperand arOperand = (ArOperand) arg;
             environmentCell = new EnvironmentCell(node., arg)
         }*/
-        return new Nothing();
+        return new ValUnit();
+    }
+
+    private Value interpret(ExFunction node) {
+        return new ValFun(node.getFunctionBody());
     }
 
     // вспомогательные функции;
@@ -322,7 +320,7 @@ public class Interpreter {
         //output += "id " + id + " undefined\n";
         //System.exit(0);
         fixError("no such id");
-        return new EnvironmentCell(environment.size(), new ArOperand(0)); // позволяет завершить работу ин-
+        return new EnvironmentCell(environment.size(), new ValInt(0)); // позволяет завершить работу ин-
         // терпретатора, но с ошибкой;
     }
 

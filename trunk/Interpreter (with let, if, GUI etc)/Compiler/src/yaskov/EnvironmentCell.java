@@ -5,13 +5,11 @@
 
 package yaskov;
 
-import ast.Expression;
-
 public class EnvironmentCell {
     private int id;
-    private Expression value; // может быть целым числом, логическим операндом или функцией;
+    private Value value; // может быть целым числом, логическим операндом или функцией;
 
-    public EnvironmentCell(int id, Expression value) {
+    public EnvironmentCell(int id, Value value) {
         this.id = id;
         this.value = value;
     }
@@ -20,11 +18,11 @@ public class EnvironmentCell {
         return id;
     }
 
-    public void setValue(Expression value) {
+    public void setValue(Value value) {
         this.value = value;
     }
 
-    public Expression getValue() {
+    public Value getValue() {
         return value;
     }
 }
