@@ -10,7 +10,7 @@ package yaskov;
 import ast.*;
 import java.util.LinkedList;
 
-public class Interpreter {
+public class Interpreter extends Thread {
 
     public Tree input;
     public Value result;
@@ -44,7 +44,8 @@ public class Interpreter {
         return output;
     }
 
-    public void interpretProgram() {
+    @Override
+    public void run() {
         result = interpretNode(input);
     }
 
