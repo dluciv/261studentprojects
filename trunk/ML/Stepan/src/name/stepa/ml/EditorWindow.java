@@ -1,27 +1,21 @@
 package name.stepa.ml;
 
+import name.stepa.ml.controller.Controller;
 import name.stepa.ml.highlight.MlEditorKit;
-import name.stepa.ml.model.Environment;
-import name.stepa.ml.model.interpreter.Context;
-import name.stepa.ml.model.interpreter.IInterpreterStateListener;
-import name.stepa.ml.model.interpreter.IO;
+import name.stepa.ml.model.Project;
+import name.stepa.ml.model.interpreter.values.functions.AbstractFunctionValue;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Document;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeSelectionModel;
+import javax.swing.text.*;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Map;
 
 public class EditorWindow extends JFrame {
     private JPanel contentPane;
@@ -39,7 +33,111 @@ public class EditorWindow extends JFrame {
     private JMenuItem miNewFile;
     private JMenuItem miRemoveFile;
 
-    private boolean isSaved = false;
+    Controller controller;
+    Project project;
+
+    public void updateContext(Map<String, Object> values) {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Variable");
+        model.addColumn("Name");
+        for (String id : values.keySet()) {
+            Object value = values.get(id);
+            if (!(value instanceof AbstractFunctionValue))
+                model.addRow(new Object[]{id, value});
+        }
+        variablesTable.setModel(model);
+    }
+
+    public void setStatus(String status) {
+        statusLabel.setText(status);
+    }
+
+    public void setProject(Project p) {
+        this.project = p;
+
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode("Project");
+
+        if (p != null) {
+            for (String i : p.files) {
+                node.add(new DefaultMutableTreeNode(i));
+            }
+            miNewFile.setEnabled(true);
+        } else
+            miNewFile.setEnabled(false);
+
+        projectTree.setModel(new DefaultTreeModel(node));
+
+        controller.setSelectedFile(null);
+    }
+
+    public void writeToLog(String s) {
+        try {
+            Document d = logTextPane.getDocument();
+            d.insertString(d.getLength(), s + "\n", null);
+        } catch (BadLocationException e) {
+        }
+    }
+
+    public void beep() {
+        getToolkit().beep();
+    }
+
+    public String getProgramText() {
+        return editorPane.getText();
+    }
+
+    public void setProgramText(String text) {
+        editorPane.setText(text);
+    }
+
+    public void enableStartInterpretControls() {
+        buttonStartStepByStep.setEnabled(true);
+    }
+
+    public void disableStartInterpretControls() {
+        buttonStartStepByStep.setEnabled(false);
+    }
+
+    public void enableInterpretControls() {
+        buttonInterpret.setEnabled(true);
+        stepIntoButton.setEnabled(true);
+    }
+
+    public void disableInterpretControls() {
+        buttonInterpret.setEnabled(false);
+        stepIntoButton.setEnabled(false);
+    }
+
+    public void enableEditor() {
+        editorPane.setEnabled(true);
+    }
+
+    public void disableEditor() {
+        editorPane.setEnabled(false);
+    }
+
+    public void disableMenuForFiles() {
+        miRemoveFile.setEnabled(false);
+        buttonStartStepByStep.setEnabled(false);
+    }
+
+    public void enableMenuForFiles() {
+        miRemoveFile.setEnabled(false);
+        buttonStartStepByStep.setEnabled(false);
+    }
+
+    public void highlight(int start, int last) {
+        removeHighlight();
+        try {
+            editorPane.getHighlighter().addHighlight(start, last, new DefaultHighlighter.DefaultHighlightPainter(Color.orange));
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeHighlight() {
+        editorPane.getHighlighter().removeAllHighlights();
+    }
 
     public EditorWindow() {
         setContentPane(contentPane);
@@ -50,67 +148,48 @@ public class EditorWindow extends JFrame {
 
         setupMenu();
 
+        controller = new Controller(this);
+
         buttonSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                save();
+                controller.saveProgram();
             }
         });
 
         buttonStartStepByStep.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    if (!isSaved) {
-                        save();
-                        Environment.get().setInterpretationProgram(editorPane.getText());
-                    }
-                    Environment.get().interpreter.startStepByStep();
-                    buttonInterpret.setEnabled(true);
-                    stepIntoButton.setEnabled(true);
-                } catch (Exception e1) {
-                    addToLog(e1.getClass() + ":" + e1.getMessage());
-                    e1.printStackTrace();
-                }
+                controller.startStepByStep();
             }
         });
 
 
         buttonInterpret.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    Environment.get().interpreter.core.step();
-                } catch (Exception e1) {
-                    addToLog(e1.getClass() + ":" + e1.getMessage());
-                    e1.printStackTrace();
-                }
+                controller.step();
             }
         });
 
         stepIntoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    Environment.get().interpreter.core.stepInto();
-                } catch (Exception e1) {
-                    addToLog(e1.getClass() + ":" + e1.getMessage());
-                    e1.printStackTrace();
-                }
+                controller.stepInto();
             }
         });
 
         buttonClose.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onCancel();
+                controller.close();
             }
         });
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onCancel();
+                controller.close();
             }
         });
 
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onCancel();
+                controller.close();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
@@ -121,146 +200,28 @@ public class EditorWindow extends JFrame {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) projectTree.getLastSelectedPathComponent();
                 if ((node != null) && (!node.isRoot()) && (node.isLeaf())) {
                     String path = (String) node.getUserObject();
-
-                    try {
-                        String text = Environment.get().project.loadText(path);
-                        editorPane.setText(text);
-                        try {
-                            Environment.get().setInterpretationProgram(text);
-                        } catch (Exception e1) {
-                            e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                        }
-                        editorPane.setEnabled(true);
-                        isSaved = true;
-                        Environment.get().setSelectedFile(path);
-                        statusLabel.setText("Selected file " + path);
-
-                        onProjectFileSelectionChanged();
-
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
+                    controller.setSelectedFile(path);
                 } else {
-                    Environment.get().setSelectedFile(null);
-
-                    if ((Environment.get().project != null) && (Environment.get().project.files.size() == 0)) {
-                        editorPane.setText("Open project...");
-                    } else {
-                        editorPane.setText("Select file...");
-                    }
-                    editorPane.setEnabled(false);
-                    onProjectFileSelectionChanged();
-                    statusLabel.setText("Please, select file...");
+                    controller.setSelectedFile(null);
                 }
             }
         });
-        fillTree();
-
-        projectTree.setSelectionRow(0);
 
         editorPane.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
-                onTextChanged();
+                controller.onTextChanged();
             }
 
             public void removeUpdate(DocumentEvent e) {
-                onTextChanged();
+                controller.onTextChanged();
             }
 
             public void changedUpdate(DocumentEvent e) {
-                onTextChanged();
+                controller.onTextChanged();
             }
         });
 
-        IO.setOutputInterface(new IO.IOutput() {
-            public void println(String s) {
-                addToLog(s);
-            }
-        });
-        Environment.get().interpreter.setStateListener(new IInterpreterStateListener() {
-            public void onLineChanged(int start, int last) {
-                try {
-                    editorPane.getHighlighter().removeAllHighlights();
-                    editorPane.getHighlighter().addHighlight(start, last, new DefaultHighlighter.DefaultHighlightPainter(Color.orange));
-                    updateVariablestable();
-                } catch (BadLocationException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            public void onExecutionStopped() {
-                buttonInterpret.setEnabled(false);
-                stepIntoButton.setEnabled(false);
-                editorPane.getHighlighter().removeAllHighlights();
-                getToolkit().beep();
-                addToLog("Execution stopped.");
-            }
-        });
-
-        stepIntoButton.setEnabled(false);
-        buttonInterpret.setEnabled(false);
-
-        updateVariablestable();
-    }
-
-    public void save() {
-        Environment env = Environment.get();
-        if (env.getSelectedFile() != null) {
-            try {
-                env.project.saveText(env.getSelectedFile(), editorPane.getText());
-                statusLabel.setText("File " + env.getSelectedFile() + " saved...");
-                isSaved = true;
-            } catch (IOException e1) {
-                e1.printStackTrace();
-                statusLabel.setText("Error while saving " + env.getSelectedFile() + "...");
-            }
-        } else {
-            getToolkit().beep();
-            statusLabel.setText("Error! Nothing to save!");
-        }
-    }
-
-    public void updateVariablestable() {
-        DefaultTableModel model = new DefaultTableModel();
-        variablesTable.setModel(model);
-        model.addColumn("Variable");
-        model.addColumn("Value");
-
-        if (Environment.get().interpreter.core != null) {
-            Context context = Environment.get().interpreter.core.rootContext;
-            for (String i : context.values.keySet()) {
-                model.addRow(new Object[]{i, context.get(i)});
-            }
-        }
-    }
-
-    public void addToLog(String s) {
-        try {
-            Document d = logTextPane.getDocument();
-            d.insertString(d.getLength(), s + "\n", null);
-        } catch (BadLocationException e) {
-        }
-    }
-
-    public void onTextChanged() {
-        if (isSaved) {
-            isSaved = false;
-            try {
-                Environment.get().setInterpretationProgram(null);
-            } catch (Exception e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        }
-    }
-
-    public void onProjectFileSelectionChanged() {
-        if (Environment.get().getSelectedFile() == null) {
-            miRemoveFile.setEnabled(false);
-            buttonStartStepByStep.setEnabled(false);
-        } else {
-            miRemoveFile.setEnabled(true);
-            buttonStartStepByStep.setEnabled(true);
-        }
+        controller.updateProject();
     }
 
     private void setupMenu() {
@@ -278,11 +239,10 @@ public class EditorWindow extends JFrame {
 
                     @Override
                     public boolean accept(File f) {
-                        if (f.isDirectory()) {
+                        if (f.isDirectory())
                             return true;
-                        } else {
+                        else
                             return f.getName().equals("hmls.proj");
-                        }
                     }
 
                     @Override
@@ -294,44 +254,21 @@ public class EditorWindow extends JFrame {
                 int res = chooser.showOpenDialog(EditorWindow.this);
                 if (res != JFileChooser.CANCEL_OPTION) {
                     String path = chooser.getSelectedFile().getParent() + "\\";
-                    try {
-                        Environment.get().loadProject(path);
-                        fillTree();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                        statusLabel.setText("Error loading project!");
-                    }
+                    controller.loadProject(path);
                 }
-
-
             }
         });
 
         miNewFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String s = JOptionPane.showInputDialog("Enter file name");
-                if (s == null) {
-                    return;
-                }
-                try {
-                    Environment.get().project.addFile(s);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                fillTree();
+                controller.addFile(s);
             }
         });
 
         miRemoveFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    if (Environment.get().getSelectedFile() != null) {
-                        Environment.get().project.removeFile(Environment.get().getSelectedFile());
-                    }
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                fillTree();
+                controller.removeSelectedFile();
             }
         });
 
@@ -342,24 +279,19 @@ public class EditorWindow extends JFrame {
 
         mb.add(mFile);
 
-        setJMenuBar(mb);
-    }
 
-    private void fillTree() {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode("Project");
-
-        if (Environment.get().project != null) {
-            for (String i : Environment.get().project.files) {
-                node.add(new DefaultMutableTreeNode(i));
+        JMenu mHelp = new JMenu("Help");
+        JMenuItem miAbout = new JMenuItem("About");
+        miAbout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.showAbout();
             }
-            miNewFile.setEnabled(true);
-        } else {
-            miNewFile.setEnabled(false);
-        }
+        });
 
-        projectTree.setModel(new DefaultTreeModel(node));
+        mHelp.add(miAbout);
+        mb.add(mHelp);
 
-        statusLabel.setText("Project loaded...");
+        setJMenuBar(mb);
     }
 
     private void onCancel() {
@@ -384,6 +316,9 @@ public class EditorWindow extends JFrame {
 
 
         EditorWindow dialog = new EditorWindow();
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        URL image = Thread.currentThread().getContextClassLoader().getResource("images/small_90.png");
+        dialog.setIconImage(tk.getImage(image));
         dialog.pack();
         dialog.setVisible(true);
         dialog.setSize(700, 500);
