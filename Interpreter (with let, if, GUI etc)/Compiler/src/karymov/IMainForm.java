@@ -1,21 +1,21 @@
 package karymov;
 
-import java.awt.TextArea;
-import javax.swing.JTextArea;
+//import java.awt.TextPane;
+import javax.swing.JTextPane;
 
 public interface IMainForm {
 
     public void setTextInTextPanel(String text);
 
-    public String getTextInTextPanel();
+    public void setTextInOutputPane(String text);
 
-    public void setTextInConsolePanel(String text);
-
-    public void printInConsole(String text);
+    public void setTextInErrorPane(String text);
 
     public void clearTextPanel();
 
-    public JTextArea  getTextPanel();
+    public JTextPane getTextPanel();
 
-    public void clearConsolePanel();
+    public void clearOutputPane();
+
+    public void clearErrorPane();
 }

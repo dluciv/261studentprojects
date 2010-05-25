@@ -1,7 +1,13 @@
-height=389
-width=832
-coordinateX=266
-coordinateY=119
+height=452
+width=565
+coordinateX=318
+coordinateY=190
 C:\Users\Антон\Desktop\789.txt
 C:\Users\Антон\Desktop\5445.txt
 C:\Users\Антон\Desktop\history.txt
+C:\Users\Антон\Desktop\123.txt
+C:\Users\Антон\Desktop\asdasd.txt
+C:\Users\Антон\Desktop\setting.txt
+C:\Users\Антон\Documents\sdfsdfs
+C:\Users\Антон\Documents\вапвпа
+C:\Users\Антон\Documents\ываыа
