@@ -10,7 +10,9 @@ public class About extends JDialog {
 
     public About() {
         setContentPane(contentPane);
-        setModal(true);
+        pack();
+        setModal(false);
+        setSize(300, 100);
         getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(new ActionListener() {
