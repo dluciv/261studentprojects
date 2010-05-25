@@ -280,6 +280,11 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         });
 
         DebugButton.setText("Debug");
+        DebugButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DebugButtonMouseClicked(evt);
+            }
+        });
         DebugButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DebugButtonActionPerformed(evt);
@@ -315,7 +320,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 .addComponent(StepNextButton)
                 .addGap(18, 18, 18)
                 .addComponent(StepOverButton)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,7 +499,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_ExitMenuItem
 
         private void RunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunButtonActionPerformed
-            printInConsole(controller.runProgram(TextPanel.getText()));
+            printInConsole(controller.runProgram(TextPanel.getText(), false));
             //controller.runProgramm(TextPanel.getText());
         }//GEN-LAST:event_RunButtonActionPerformed
 
@@ -513,10 +518,13 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
 
         private void DebugButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DebugButtonActionPerformed
             // TODO add your handling code here:
+            // todo!!!
+            // создать два потока, первый - интерпретатор, второй как-то связан с кнопкой некст
+            // или может один поток, который прерывается из другого
         }//GEN-LAST:event_DebugButtonActionPerformed
 
         private void StepNextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepNextButtonActionPerformed
-            // TODO add your handling code here:
+            controller.stepNext();
         }//GEN-LAST:event_StepNextButtonActionPerformed
 
         private void StepOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepOverButtonActionPerformed
@@ -556,6 +564,10 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             SaveButtonActionPerformed(null);
             FileChangedWarningFrame.hide();
         }//GEN-LAST:event_SaveWarningButtonActionPerformed
+
+        private void DebugButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DebugButtonMouseClicked
+            printInConsole(controller.runProgram(TextPanel.getText(), true));
+        }//GEN-LAST:event_DebugButtonMouseClicked
 
     /**
      * @param args the command line arguments

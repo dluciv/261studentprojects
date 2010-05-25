@@ -19,7 +19,7 @@ public final class Memento {
     private int width;
     private int coordinateX;
     private int coordinateY;
-    private String fileName = "src/Karymov/setting.txt";
+    private String fileName = "D:\\spbsu\\261studentprojects\\Interpreter (with let, if, GUI etc)\\Compiler\\src";
     private LinkedList<String> list = new LinkedList<String>();
 
     public static Memento getMemento() {
@@ -55,7 +55,9 @@ public final class Memento {
     }
 
     public static int identifyHeight(String line) {
+        
         String currentWord = line.substring(0, 6);
+        //System.out.println(line);
         if (currentWord.equals("height") && line.substring(6, 7).equals("=")) {
             return getNumber(line.substring(7));
         } else {
@@ -64,7 +66,10 @@ public final class Memento {
     }
 
     public static int identifyWidth(String line) {
+        //System.out.println(line);
         String currentWord = line.substring(0, 5);
+
+        System.out.println(currentWord);
         if (currentWord.equals("width") && line.substring(5, 6).equals("=")) {
             return getNumber(line.substring(6));
         } else {
