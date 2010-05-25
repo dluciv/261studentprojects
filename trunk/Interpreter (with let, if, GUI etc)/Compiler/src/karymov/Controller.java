@@ -1,37 +1,25 @@
 package karymov;
 
-import java.awt.FileDialog;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import ast.*;
+import java.awt.Color;
+import java.io.*;
+import javax.swing.JTextPane;
+import javax.swing.text.*;
 import lebedev.*;
-import yaskov.Interpreter;
+import yaskov.*;
 
 public class Controller {
 
     private IMainForm iMainForm;
-    private byte[] buf;
-    // String szCurrentFilename = "";
 
     public Controller(IMainForm iMainForm) {
         this.iMainForm = iMainForm;
     }
 
     public void openFile(File file) {
-        iMainForm.clearConsolePanel();
+        iMainForm.clearOutputPane();
+        iMainForm.clearErrorPane();
         try {
             InputStream fileInpStream = new FileInputStream(file);
             int size = fileInpStream.available();
@@ -42,90 +30,90 @@ public class Controller {
             iMainForm.getTextPanel().setText(String.copyValueOf(buff));
             fileReadStream.close();
         } catch (FileNotFoundException Exception) {
-            iMainForm.setTextInConsolePanel("File can not open");
+            iMainForm.setTextInErrorPane("File can not open");
         } catch (IOException Exception) {
-            iMainForm.setTextInConsolePanel("File can't be read");
+            iMainForm.setTextInErrorPane("File can't be read");
         }
 
     }
 
-//   public void runProgramm(textProgramm){
-//   Programm programm = new Programm(textProgramm);
-//   try{
-//       iMainForm.clearConsolePanel();
-//       programm.interpret();
-//   } catch(Exception e){
-//       iMainForm.setTextInConsolePanel("File can not open");
-//      }
-//   
-//  
-//   }
-    public void saveFile(String textProgramm, String fileName) throws FileNotFoundException, IOException {
-
-        FileOutputStream outputStream = null;
-        buf = textProgramm.getBytes();
-
+    public void saveFile(String textProgramm, String fileName) {
         try {
-            outputStream = new FileOutputStream(fileName);
-            outputStream.write(buf);
-            outputStream.close();
-
-        } catch (IOException ex) {
-            System.out.println(ex.toString());
-        } catch (SecurityException ex) {
-            System.out.println(ex.toString());
+            FileWriter fileWriter = new FileWriter(fileName);
+            fileWriter.write(textProgramm);
+            fileWriter.close();
+        } catch (IOException Exception) {
+            iMainForm.setTextInErrorPane("File can't be write");
+        } catch (SecurityException Exception) {
+            iMainForm.setTextInErrorPane("File can not find");
         }
     }
 
-    public void saveAsFile(String textProgramm, String fileName) {
-    }
-
-    public String runProgram(String input, boolean isUnderDebug) {
-        String result = "";
-
-        if (isUnderDebug) {
-            result += "debug:\n";
-        }
-        else {
-            result += "run:\n";
-        }
+    public String runProgram(String input) {
         Lexer lexer = new Lexer(input + '\0');
         lexer.analyzeSourceProgram();
 
         Parser parser = new Parser(lexer.getTokenStream(), lexer.getErrorQnt());
         parser.parseProgramm();
 
-        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), isUnderDebug);
+        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), false);
         interpreter.interpretProgram();
 
         if (lexer.getErrorQnt() + parser.getErrorQnt() + interpreter.getErrorQnt() > 0) {
             String errorLog = lexer.getErrorLog() + parser.getErrorLog() + interpreter.getErrorLog();
-            result += "there are some errors in source program:\n" + errorLog;
+            return "there are some errors in source program:\n" + errorLog;
+        } else {
+            return interpreter.getOutput();
         }
-        else {
-            result += interpreter.getOutput();
-        }
-
-        return result;
     }
 
-    public void stepNext() {
-        Interpreter.isBlocked = false;
+    public void lightKeywords(JTextPane pane) {
+        MutableAttributeSet attr = new SimpleAttributeSet();
+        StyleConstants.setForeground(attr, Color.blue);
+        String[] keywordList = {"true", "false", "let", "in", "begin", "end", "if", "then", "print","else"};
+        StyledDocument doc = pane.getStyledDocument();
+        String currentTextProgramm = pane.getText();
+
+        doc.setCharacterAttributes(0, pane.getText().length(), new SimpleAttributeSet(), true);
+
+        for (String keyword : keywordList) {
+            int pointer = 0;
+
+            while ((pointer = currentTextProgramm.indexOf(keyword, pointer)) != -1) {
+                boolean isKeyword = true;
+                if (pointer > 0) {
+                    if (((currentTextProgramm.charAt(pointer - 1) >= 'a') && (currentTextProgramm.charAt(pointer - 1) <= 'z')) ||
+                            ((currentTextProgramm.charAt(pointer - 1) >= 'A') && (currentTextProgramm.charAt(pointer - 1) <= 'Z')) ||
+                            ((currentTextProgramm.charAt(pointer - 1) >= '0') && (currentTextProgramm.charAt(pointer - 1) <= '9'))) {
+                        isKeyword = false;
+                    }
+                }
+                if (pointer + keyword.length() < currentTextProgramm.length()) {
+                    if (((currentTextProgramm.charAt(pointer + keyword.length()) >= 'a') && (currentTextProgramm.charAt(pointer + keyword.length()) <= 'z')) ||
+                            ((currentTextProgramm.charAt(pointer + keyword.length()) >= 'A') && (currentTextProgramm.charAt(pointer + keyword.length()) <= 'Z')) ||
+                            ((currentTextProgramm.charAt(pointer + keyword.length()) >= '0') && (currentTextProgramm.charAt(pointer + keyword.length()) <= '9'))) {
+                        isKeyword = false;
+                    }
+                }
+                if (isKeyword) {
+                    doc.setCharacterAttributes(pointer - GetLineNumber(pointer,pane), keyword.length(), attr, false);
+                }
+                pointer++;
+            }
+        }
+        pane.setCharacterAttributes(new SimpleAttributeSet(), true);
     }
+     private int GetLineNumber(int pointer,JTextPane pane) {
+        int i = 0;
+        int line = 0;
+        while (i < pointer) {
+            if (pane.getText().charAt(i) == '\n') {
+                line++;
+            }
+            i++;
+        }
+        return line;
+    }
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
