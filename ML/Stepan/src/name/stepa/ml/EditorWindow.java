@@ -33,6 +33,10 @@ public class EditorWindow extends JFrame {
     private JMenuItem miNewFile;
     private JMenuItem miRemoveFile;
 
+    private JMenuItem miStartStepByStep;
+    private JMenuItem miStepInto;
+    private JMenuItem miStep;
+
     Controller controller;
     Project project;
 
@@ -92,20 +96,26 @@ public class EditorWindow extends JFrame {
 
     public void enableStartInterpretControls() {
         buttonStartStepByStep.setEnabled(true);
+        miStartStepByStep.setEnabled(true);
     }
 
     public void disableStartInterpretControls() {
         buttonStartStepByStep.setEnabled(false);
+        miStartStepByStep.setEnabled(false);
     }
 
     public void enableInterpretControls() {
         buttonInterpret.setEnabled(true);
         stepIntoButton.setEnabled(true);
+        miStep.setEnabled(true);
+        miStepInto.setEnabled(true);
     }
 
     public void disableInterpretControls() {
         buttonInterpret.setEnabled(false);
         stepIntoButton.setEnabled(false);
+        miStep.setEnabled(false);
+        miStepInto.setEnabled(false);
     }
 
     public void enableEditor() {
@@ -118,12 +128,10 @@ public class EditorWindow extends JFrame {
 
     public void disableMenuForFiles() {
         miRemoveFile.setEnabled(false);
-        buttonStartStepByStep.setEnabled(false);
     }
 
     public void enableMenuForFiles() {
         miRemoveFile.setEnabled(false);
-        buttonStartStepByStep.setEnabled(false);
     }
 
     public void highlight(int start, int last) {
@@ -193,6 +201,24 @@ public class EditorWindow extends JFrame {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.startStepByStep();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.stepInto();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.step();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
         projectTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         projectTree.addTreeSelectionListener(new TreeSelectionListener() {
 
@@ -228,9 +254,10 @@ public class EditorWindow extends JFrame {
         JMenuBar mb = new JMenuBar();
 
         JMenu mFile = new JMenu("File");
-        JMenuItem miOpen = new JMenuItem("Open");
+        JMenuItem miOpen = new JMenuItem("Open project...");
         miNewFile = new JMenuItem("New file...");
         miRemoveFile = new JMenuItem("Remove selected file");
+        JMenuItem miExit = new JMenuItem("Exit");
 
         miOpen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -272,13 +299,52 @@ public class EditorWindow extends JFrame {
             }
         });
 
+        miExit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.close();
+            }
+        });
+
 
         mFile.add(miRemoveFile);
         mFile.add(miNewFile);
+        mFile.addSeparator();
         mFile.add(miOpen);
+        mFile.addSeparator();
+        mFile.add(miExit);
 
         mb.add(mFile);
 
+
+        JMenu mInterpret = new JMenu("Interpret");
+
+        miStartStepByStep = new JMenuItem("Start step-by-step");
+        miStartStepByStep.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.startStepByStep();
+            }
+        });
+
+        miStepInto = new JMenuItem("Step Into");
+        miStepInto.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.step();
+            }
+        });
+
+        miStep = new JMenuItem("Step");
+        miStep.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.step();
+            }
+        });
+
+        mInterpret.add(miStartStepByStep);
+        mInterpret.addSeparator();
+        mInterpret.add(miStepInto);
+        mInterpret.add(miStep);
+
+        mb.add(mInterpret);
 
         JMenu mHelp = new JMenu("Help");
         JMenuItem miAbout = new JMenuItem("About");

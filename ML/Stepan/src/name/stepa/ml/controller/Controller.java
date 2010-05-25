@@ -134,7 +134,6 @@ public class Controller {
                 window.enableEditor();
                 window.setStatus("Selected file " + file);
                 window.enableMenuForFiles();
-                window.enableInterpretControls();
                 window.enableStartInterpretControls();
 
                 Environment.get().setSelectedFile(file);
