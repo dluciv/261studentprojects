@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lebedev.*;
 import yaskov.Interpreter;
 
@@ -78,23 +80,37 @@ public class Controller {
     public void saveAsFile(String textProgramm, String fileName) {
     }
 
-    public String runProgram(String input) {
+    public String runProgram(String input, boolean isUnderDebug) {
+        String result = "";
+
+        if (isUnderDebug) {
+            result += "debug:\n";
+        }
+        else {
+            result += "run:\n";
+        }
         Lexer lexer = new Lexer(input + '\0');
         lexer.analyzeSourceProgram();
 
         Parser parser = new Parser(lexer.getTokenStream(), lexer.getErrorQnt());
         parser.parseProgramm();
 
-        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), -1);
+        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), isUnderDebug);
         interpreter.interpretProgram();
 
         if (lexer.getErrorQnt() + parser.getErrorQnt() + interpreter.getErrorQnt() > 0) {
             String errorLog = lexer.getErrorLog() + parser.getErrorLog() + interpreter.getErrorLog();
-            return "there are some errors in source program:\n" + errorLog;
+            result += "there are some errors in source program:\n" + errorLog;
         }
         else {
-            return interpreter.getOutput();
+            result += interpreter.getOutput();
         }
+
+        return result;
+    }
+
+    public void stepNext() {
+        Interpreter.isBlocked = false;
     }
 }
 

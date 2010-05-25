@@ -9,8 +9,10 @@ package yaskov;
 
 import ast.*;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Interpreter extends Thread {
+public class Interpreter {
 
     public Tree input;
     public Value result;
@@ -18,13 +20,15 @@ public class Interpreter extends Thread {
     private String output = "";
     private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
     private int errorCounter = 0;
-    private int nodeNo = 0;
-    private int lastNodeNo;
 
-    public Interpreter(Tree parserOutput, int parseErrorQnt, int lastNodeNo) {
+    public boolean isUnderDebug;
+    public static boolean isBlocked;
+
+    public Interpreter(Tree parserOutput, int parseErrorQnt, boolean isUnderDebug) {
         if (parseErrorQnt == 0) {
             input = parserOutput;
-            this.lastNodeNo = lastNodeNo;
+            this.isUnderDebug = isUnderDebug;
+            isBlocked = false;
             //interpretSequence(parserOutput);
             //System.out.println("--------------\n");
         } else {
@@ -44,67 +48,67 @@ public class Interpreter extends Thread {
         return output;
     }
 
-    @Override
-    public void run() {
+    public void interpretProgram() {
+//        System.out.println(getName());
+//        System.out.println(activeCount());
+        isBlocked = true;
+//        System.out.println("a");
+//        while(isBlocked) {
+//
+//        }
+//        System.out.println("b");
         result = interpretNode(input);
     }
 
     public Value interpretNode(Tree node) {
-        nodeNo++;
+        System.out.println(node.getClass().getSimpleName());
 
-        if (lastNodeNo == -1 || nodeNo < lastNodeNo) {
-            if (lastNodeNo == -1) {
-                System.out.println(node.getClass().getSimpleName());
-                System.out.println(nodeNo);
-            }
-
-            if (node instanceof ArOperand) {
-                return interpret((ArOperand) node);
-            } else if (node instanceof ArAddition) {
-                return interpret((ArAddition) node);
-            } else if (node instanceof ArSubtraction) {
-                return interpret((ArSubtraction) node);
-            } else if (node instanceof ArMultiplication) {
-                return interpret((ArMultiplication) node);
-            } else if (node instanceof ArDivision) {
-                return interpret((ArDivision) node);
-            } else if (node instanceof ArNegate) {
-                return interpret((ArNegate) node);
-            } else if (node instanceof LogOperand) {
-                return interpret((LogOperand) node);
-            } else if (node instanceof LogAnd) {
-                return interpret((LogAnd) node);
-            } else if (node instanceof LogOr) {
-                return interpret((LogOr) node);
-            } else if (node instanceof LogNot) {
-                return interpret((LogNot) node);
-            } else if (node instanceof LogEquality) {
-                return interpret((LogEquality) node);
-            } else if (node instanceof LogInequality) {
-                return interpret((LogInequality) node);
-            } else if (node instanceof LogGreater) {
-                return interpret((LogGreater) node);
-            } else if (node instanceof LogLess) {
-                return interpret((LogLess) node);
-            } else if (node instanceof LogGE) {
-                return interpret((LogGE) node);
-            } else if (node instanceof LogLE) {
-                return interpret((LogLE) node);
-            } else if (node instanceof Variable) {
-                return interpret((Variable) node);
-            } else if (node instanceof ExBinding) {
-                return interpret((ExBinding) node);
-            } else if (node instanceof ExSequence) {
-                return interpret((ExSequence) node);
-            } else if (node instanceof ExPrint) {
-                return interpret((ExPrint) node);
-            } else if (node instanceof ExConditional) {
-                return interpret((ExConditional) node);
-            } else if (node instanceof ExApplication) {
-                return interpret((ExApplication) node);
-            } else if (node instanceof ExFunction) {
-                return interpret((ExFunction) node);
-            }
+        if (node instanceof ArOperand) {
+            return interpret((ArOperand) node);
+        } else if (node instanceof ArAddition) {
+            return interpret((ArAddition) node);
+        } else if (node instanceof ArSubtraction) {
+            return interpret((ArSubtraction) node);
+        } else if (node instanceof ArMultiplication) {
+            return interpret((ArMultiplication) node);
+        } else if (node instanceof ArDivision) {
+            return interpret((ArDivision) node);
+        } else if (node instanceof ArNegate) {
+            return interpret((ArNegate) node);
+        } else if (node instanceof LogOperand) {
+            return interpret((LogOperand) node);
+        } else if (node instanceof LogAnd) {
+            return interpret((LogAnd) node);
+        } else if (node instanceof LogOr) {
+            return interpret((LogOr) node);
+        } else if (node instanceof LogNot) {
+            return interpret((LogNot) node);
+        } else if (node instanceof LogEquality) {
+            return interpret((LogEquality) node);
+        } else if (node instanceof LogInequality) {
+            return interpret((LogInequality) node);
+        } else if (node instanceof LogGreater) {
+            return interpret((LogGreater) node);
+        } else if (node instanceof LogLess) {
+            return interpret((LogLess) node);
+        } else if (node instanceof LogGE) {
+            return interpret((LogGE) node);
+        } else if (node instanceof LogLE) {
+            return interpret((LogLE) node);
+        } else if (node instanceof Variable) {
+            return interpret((Variable) node);
+        } else if (node instanceof ExBinding) {
+            return interpret((ExBinding) node);
+        } else if (node instanceof ExSequence) {
+            return interpret((ExSequence) node);
+        } else if (node instanceof ExPrint) {
+            return interpret((ExPrint) node);
+        } else if (node instanceof ExConditional) {
+            return interpret((ExConditional) node);
+        } else if (node instanceof ExApplication) {
+            return interpret((ExApplication) node);
+        } else if (node instanceof ExFunction) {
+            return interpret((ExFunction) node);
         }
         return null;
     }
@@ -281,7 +285,8 @@ public class Interpreter extends Thread {
     }
 
     private Value interpret(ExApplication node) {
-
+        Value function = interpretNode(node.getFunction());
+        Value arg = interpretNode(node.getArgument());
         /*Expression arg = interpretNode(node.getArgument());
         EnvironmentCell environmentCell;
 
