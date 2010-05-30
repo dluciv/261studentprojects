@@ -13,15 +13,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Interpreter extends Thread {
-    private final int SLEEP_TIME_MS = 200;
 
+    private final int SLEEP_TIME_MS = 200;
     public Tree input;
     public Value result;
     private String interpreterErrorLog = "";
     public String output = "";
     private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
     private int errorCounter = 0;
-
     public boolean isUnderDebug;
     public static boolean isBlocked;
 
@@ -50,8 +49,9 @@ public class Interpreter extends Thread {
 
     @Override
     public void run() {
-        if (errorCounter != 0)
+        if (errorCounter != 0) {
             return;
+        }
 
 //        System.out.println(getName());
 //        System.out.println(activeCount());
@@ -232,11 +232,11 @@ public class Interpreter extends Thread {
         Value res = null;
 
         for (Expression statement : sequence.getList()) {
-           printNodeInfo(statement);
-           waitKeypress();
-           res = interpretNode(statement);
+            printNodeInfo(statement);
+            waitKeypress();
+            res = interpretNode(statement);
         }
-        
+
         return res;
     }
 
@@ -270,8 +270,7 @@ public class Interpreter extends Thread {
 
         if (exToPrintValue instanceof ValClosing) {
             fixError("\"print(expr)\" can not print function");
-        }
-        else {
+        } else {
             //output += exToPrintValue.getValue().toString() + "\n";
             //karymov.MainForm.setTextInOutputPane();
             System.out.print(exToPrintValue.getValue().toString() + "\n");
@@ -293,7 +292,7 @@ public class Interpreter extends Thread {
     private Value interpret(ExApplication node) {
         ValClosing function = (ValClosing) interpretNode(node.getFunction());
         Value arg = interpretNode(node.getArgument());
-        
+
         LinkedList<EnvironmentCell> tempEnvironment = environment;
         environment = function.getEnv();
         environment.add(new EnvironmentCell(function.getId(), arg));
@@ -303,11 +302,11 @@ public class Interpreter extends Thread {
         EnvironmentCell environmentCell;
 
         if (arg instanceof ArOperand) {
-            ArOperand arOperand = (ArOperand) arg;
-            environmentCell = new EnvironmentCell(node., arg)
+        ArOperand arOperand = (ArOperand) arg;
+        environmentCell = new EnvironmentCell(node., arg)
         }*/
         environment = tempEnvironment;
-        
+
         return res;
     }
 
@@ -316,7 +315,6 @@ public class Interpreter extends Thread {
     }
 
     // вспомогательные функции;
-
     private void printNodeInfo(Expression node) {
         if (isUnderDebug) {
             System.out.println(node.getClass().getSimpleName());
@@ -326,7 +324,7 @@ public class Interpreter extends Thread {
 
     private void waitKeypress() {
         if (isUnderDebug) {
-            while(isBlocked) {
+            while (isBlocked) {
                 try {
                     sleep(SLEEP_TIME_MS);
                 } catch (InterruptedException ex) {
@@ -338,7 +336,7 @@ public class Interpreter extends Thread {
     }
 
     private EnvironmentCell findVar(int id) {
-        for (EnvironmentCell cell: environment) {
+        for (EnvironmentCell cell : environment) {
             if (cell.getId() == id) {
                 return cell;
             }

@@ -27,7 +27,6 @@ public class Lexer {
     private int columnNo;
     private int idCounter;
     private int errorCounter;
-    private int tokenLenght;
 
     public Lexer(String input) {
         sourceProgram = input;
@@ -98,18 +97,15 @@ public class Lexer {
             } else if (isLogSign()) {
                 tokenStream.add(new Token(getLogOperation(), curTokenPos));
             } else if (isSemicolon()) {
-                tokenLenght = 1;
-                curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                curTokenPos = new Position(smblNo, smblNo, lineNo, columnNo);
                 tokenStream.add(new Token(TokenType.SEMICOLON, curTokenPos));
             } else {
-                tokenLenght = 1;
-                curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                curTokenPos = new Position(smblNo, smblNo, lineNo, columnNo);
                 fixError("unknown symbol");
             }
             getNextChar();
         }
-        tokenLenght = 1;
-        curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+        curTokenPos = new Position(smblNo, smblNo, lineNo, columnNo);
         tokenStream.add(new Token(TokenType.EOF, curTokenPos));
         if (tokenStream.size() == 1) {
             fixError("try to write some program");
@@ -143,64 +139,51 @@ public class Lexer {
 
     private int getNumber() {
         int number = 0;
-        tokenLenght = 0;
         beginPos = smblNo;
         while (isDigit()) {
             number *= TEN;
             number += symToDigit();
             getNextChar();
-            tokenLenght++;
         }
         ungetChar();
-
 //        if (isLetter()) {
 //            fixError("invalid variable name");
 //        }
 //        ungetChar();
-
         curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
-
-
         return number;
     }
 
     private String getWord() {
         String result = new String();
-        tokenLenght = 0;
-
-
+        beginPos = smblNo;
         //    if (isLetter()) {
         while (isLetter() || isDigit()) {
-            tokenLenght++;
             result += curSym;
             getNextChar();
-
-            beginPos = smblNo;
-            if (isLetter()) {
-                while (isLetter() || isDigit()) {
-                    result += curSym;
-                    getNextChar();
-                }
-            } else {
-                fixError("invalid variable name");
+//
+//            //beginPos = smblNo;
+//            if (isLetter()) {
+//                while (isLetter() || isDigit()) {
+//                    result += curSym;
+//                    getNextChar();
+//                }
+//            } else {
+//                fixError("invalid variable name");
             }
-            ungetChar();
-            //  } else {
-            //     fixError("invalid variable name");
-            //  }
+        ungetChar();
+        //  } else {
+        //     fixError("invalid variable name");
+        //  }
 
-            ungetChar();
-            curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
-
-
-        }
+        //ungetChar();
+        curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
         return result;
-
     }
 
     private TokenType getSign() {
-        tokenLenght = 1;
-        curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+        beginPos = smblNo;
+        curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
         switch (curSym) {
             case '+':
                 return TokenType.PLUS;
@@ -208,6 +191,7 @@ public class Lexer {
             case '-':
                 getNextChar();
                 if (curSym == '>') {
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.ARROW;
                 } else {
                     ungetChar();
@@ -230,91 +214,89 @@ public class Lexer {
                 fixError("getSign error: strange symbol");
                 return null;
         }
+
     }
 
     private TokenType getLogOperation() {
-        tokenLenght = 1;
+        beginPos = smblNo;
         switch (curSym) {
             case '>':
                 getNextChar();
                 if (curSym == '=') {
-                    tokenLenght++;
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.GE;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.GREATER;
                 }
 
             case '<':
                 getNextChar();
                 if (curSym == '=') {
-                    tokenLenght++;
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.LE;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.LESS;
                 }
 
             case '!':
                 getNextChar();
                 if (curSym == '=') {
-                    tokenLenght++;
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.INEQUALITY;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.NOT;
                 }
 
             case '&':
                 getNextChar();
                 if (curSym == '&') {
-                    tokenLenght++;
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.AND;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.UNKNOWN;
                 }
 
             case '|':
                 getNextChar();
                 if (curSym == '|') {
-                    tokenLenght++;
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.OR;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.UNKNOWN;
                 }
 
             case '=':
                 getNextChar();
                 if (curSym == '=') {
-                    tokenLenght++;
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.EQUALITY;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
+                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.EQUALS_SIGN;
                 }
 
             default:
+                curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                 return TokenType.UNKNOWN;
         }
+
     }
 
     private void getNextChar() {
         curSym = sourceProgram.charAt(smblNo++);
         columnNo++;
+
     }
 
     private int symToDigit() {
@@ -324,6 +306,7 @@ public class Lexer {
     private void ungetChar() {
         curSym = sourceProgram.charAt(--smblNo);
         columnNo--;
+
     }
 
     private boolean sourceProgramEnds() {
@@ -361,20 +344,24 @@ public class Lexer {
     }
 
     private boolean isInTable(String wordForCheck) {
-        for (int i = 0; i < varTable.size(); i++) {
+        for (int i = 0; i <
+                varTable.size(); i++) {
             if (varTable.get(i).getVarName().equals(wordForCheck)) {
                 return true;
             }
+
         }
 
         return false;
     }
 
     private TableCell findVarNamed(String varName) {
-        for (int i = 0; i < varTable.size(); i++) {
+        for (int i = 0; i <
+                varTable.size(); i++) {
             if (varTable.get(i).getVarName().equals(varName)) {
                 return varTable.get(i);
             }
+
         }
 
         fixError("findVarNamed error: no such id");
@@ -383,14 +370,14 @@ public class Lexer {
 
     private void fixError(String message) {
         errorCounter++;
-        lexErrorLog += "lexer error: " + message + " at " + lineNo + " line " + columnNo + " symbol;\n";
-        System.out.println("lexer error: " + message + " at " + lineNo + " line " + columnNo + " symbol;\n");
+        Tool.increaseErrorQnt();
+        //lexErrorLog += "lexer error: " + message + " at " + lineNo + " line " + columnNo + " symbol;\n";
+        //System.out.println("lexer error: " + message + " at " + lineNo + " line " + columnNo + " symbol;\n");
         Tool.fixError(message, curTokenPos);
-        lexErrorLog += "lexer error: " + message + " in line: " + lineNo + ", column: " + columnNo + ";\n";
         //  System.out.println("lexer error: " + message + " in line: " + lineNo + ";\n");
     }
 
-    // temp;
+// temp;
     public void printTokenStream() {
         for (Token token : tokenStream) {
             System.out.print("<" + token.getType() + " " + token.getAttribute() + " " + token.getPosition().getLine() + " " + token.getPosition().getColumn() + "> ");

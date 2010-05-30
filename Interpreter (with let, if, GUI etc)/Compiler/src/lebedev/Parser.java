@@ -18,7 +18,7 @@ public class Parser {
     private Expression output;
     private int tokenNo = 0;
     private int errorCounter;
-    private Token curToken;
+    private Token curToken = new Token();
 
     public Parser(LinkedList<Token> tokenStream, int lexErrorQnt) {
         this.tokenStream = tokenStream;
@@ -38,6 +38,7 @@ public class Parser {
     }
 
     public void parseProgramm() {
+        curToken.setPosition(new Position(0, 0, 0, 0));
         if (errorCounter == 0) {
             output = parseSequence();
             //output = parseExpression();
@@ -49,139 +50,171 @@ public class Parser {
 
     private Expression parseSequence() {
         LinkedList<Expression> sequence = new LinkedList<Expression>();
-
+        Position curPosition = curToken.getPosition();
+        //int beginPos = curToken.getPosition().getBegAbs();
         do {
             sequence.add(parseExpression());
         } while (curToken.getType() == TokenType.SEMICOLON);
-
-        return new ExSequence(sequence, curToken.getPosition());
+        curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+        System.out.println("ExSequence " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
+        return new ExSequence(sequence, curPosition);
     }
 
     private Expression parseExpression() {
+        Position curPosition = curToken.getPosition();
         Expression result = parseDisjunctor();
 
         while (curToken.getType() == TokenType.OR) {
             Expression toFind = parseDisjunctor();
-            result = new LogOr(result, toFind, curToken.getPosition());
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+            result = new LogOr(result, toFind, curPosition);
         }
 
+        System.out.println(" Expression " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
         return result;
     }
 
     private Expression parseDisjunctor() {
+        Position curPosition = curToken.getPosition();
         Expression result = parseConjunctor();
 
         while (curToken.getType() == TokenType.AND) {
             Expression toFind = parseConjunctor();
-            result = new LogAnd(result, toFind, curToken.getPosition());
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+            result = new LogAnd(result, toFind, curPosition);
         }
 
+        System.out.println("  Disjunctor " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
         return result;
     }
 
     private Expression parseConjunctor() {
+        Position curPosition = curToken.getPosition();
         Expression result = parseMatching();
 
         while (curToken.getType() == TokenType.EQUALITY || curToken.getType() == TokenType.INEQUALITY) {
             Token sign = curToken;
             Expression toFind = parseMatching();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
 
             if (sign.getType() == TokenType.EQUALITY) {
-                result = new LogEquality(result, toFind, curToken.getPosition());
+                result = new LogEquality(result, toFind, curPosition);
             } else if (sign.getType() == TokenType.INEQUALITY) {
-                result = new LogEquality(result, toFind, curToken.getPosition());
+                result = new LogEquality(result, toFind, curPosition);
             } else {
                 fixError("code: 0");
                 result = null;
             }
         }
 
+        System.out.println("   Conjunctor " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
         return result;
     }
 
     private Expression parseMatching() {
+        Position curPosition = curToken.getPosition();
         Expression result = parseCompared();
 
         if (curToken.getType() == TokenType.GREATER || curToken.getType() == TokenType.LESS || curToken.getType() == TokenType.GE || curToken.getType() == TokenType.LE) {
             Token sign = curToken;
             Expression toFind = parseCompared();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
 
             if (sign.getType() == TokenType.GREATER) {
-                result = new LogGreater(result, toFind, curToken.getPosition());
+                result = new LogGreater(result, toFind, curPosition);
             } else if (sign.getType() == TokenType.LESS) {
-                result = new LogLess(result, toFind, curToken.getPosition());
+                result = new LogLess(result, toFind, curPosition);
             } else if (sign.getType() == TokenType.GE) {
-                result = new LogGE(result, toFind, curToken.getPosition());
+                result = new LogGE(result, toFind, curPosition);
             } else if (sign.getType() == TokenType.LE) {
-                result = new LogLE(result, toFind, curToken.getPosition());
+                result = new LogLE(result, toFind, curPosition);
             } else {
                 fixError("code: 1");
                 result = null;
             }
         }
+        System.out.println("    Matching " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
         return result;
     }
 
     private Expression parseCompared() {
+        Position curPosition = curToken.getPosition();
         Expression result = parseTerm();
 
         while (curToken.getType() == TokenType.PLUS || curToken.getType() == TokenType.MINUS) {
             Token sign = curToken;
-
             Expression toFind = parseTerm();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+
             if (sign.getType() == TokenType.PLUS) {
-                result = new ArAddition(result, toFind, curToken.getPosition());
+                result = new ArAddition(result, toFind, curPosition);
             } else {
-                result = new ArSubtraction(result, toFind, curToken.getPosition());
+                result = new ArSubtraction(result, toFind, curPosition);
             }
         }
+        System.out.println("     Comparing " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
         return result;
     }
 
     private Expression parseTerm() {
+        Position curPosition = curToken.getPosition();
         Expression result = parseFactor();
 
         while (curToken.getType() == TokenType.MULTIPLICATION || curToken.getType() == TokenType.DIVISION) {
             Token sign = curToken;
-
             Expression toFind = parseFactor();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+
             if (sign.getType() == TokenType.MULTIPLICATION) {
-                result = new ArMultiplication(result, toFind, curToken.getPosition());
+                result = new ArMultiplication(result, toFind, curPosition);
             } else {
-                result = new ArDivision(result, toFind, curToken.getPosition());
+                result = new ArDivision(result, toFind, curPosition);
             }
         }
+        System.out.println("      Term " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
         return result;
     }
 
     private Expression parseFactor() {
         nextToken();
+        Position curPosition = curToken.getPosition();
+        Expression result;
         if (curToken.getType() == TokenType.NOT) {
             // nextToken();
-            return new LogNot(parseFactor(), curToken.getPosition());
+            result = parseFactor();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+            System.out.println("       LogNot " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
+            return new LogNot(result, curPosition);
         } else if (curToken.getType() == TokenType.MINUS) {
             nextToken();
-            return new ArNegate(parsePrime(), curToken.getPosition());
+            result = parsePrime();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+            System.out.println("       Negate " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
+            return new ArNegate(result, curPosition);
         } else {
-            return parsePrime();
+            result = parsePrime();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+            System.out.println("       Factor " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
+            return result;
         }
     }
 
     private Expression parsePrime() { // System.out.println(curToken.getType());
         Expression result;
+        Position curPosition = curToken.getPosition();
 
         if (curToken.getType() == TokenType.NUMBER) {
-            result = new ArOperand(curToken.getAttribute(), curToken.getPosition());
+            result = new ArOperand(curToken.getAttribute(), curPosition);
             nextToken();
         } else if (curToken.getType() == TokenType.LOG_OPERAND) {
             if (curToken.getAttribute() == 0) {
-                result = new LogOperand(false, curToken.getPosition());
+                result = new LogOperand(false, curPosition);
             } else {
-                result = new LogOperand(true, curToken.getPosition());
+                result = new LogOperand(true, curPosition);
             }
             nextToken();
         } else if (curToken.getType() == TokenType.ID) {
-            result = new Variable(curToken.getAttribute(), curToken.getPosition());
+            result = new Variable(curToken.getAttribute(), curPosition);
             nextToken();
         } else if (curToken.getType() == TokenType.LEFT_BRACKET) {
             Expression toFind = parseExpression();
@@ -262,13 +295,13 @@ public class Parser {
                     result = function;
                 }
             }
-        } else if (curToken.getType() == TokenType.EOF){
+        } else if (curToken.getType() == TokenType.EOF) {
             //System.out.println(curToken.getType());
-            fixError("no expression after semicolon at " + curToken.getPosition().getAbs());
+            fixError("no expression after semicolon at " + curToken.getPosition().getBegAbs());
             result = null;
         } else {
             System.out.println(curToken.getType());
-            fixError("strange symbol, error code: 3 at " + curToken.getPosition().getAbs());
+            fixError("strange symbol, error code: 3 at " + curToken.getPosition().getBegAbs());
             result = null;
         }
         // nextToken();
@@ -289,6 +322,7 @@ public class Parser {
                     break;
             }
         }
+        System.out.println("        Prime" + curToken.getPosition().getBegAbs());
         return result;
     }
 

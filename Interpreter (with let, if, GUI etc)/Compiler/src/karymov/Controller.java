@@ -1,11 +1,7 @@
 package karymov;
 
-
-import ast.*;
 import java.awt.Color;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTextPane;
 import javax.swing.text.*;
 //import javax.tools.*;
@@ -54,18 +50,13 @@ public class Controller {
     }
 
     public String runProgram(String input, boolean isUnderDebug) {
-        String output;
-
-        //Tool.clearErrorLog();
-        //Lexer lexer = new Lexer(input + '\0');
+        //String output;
+        Tool.clearErrorQnt();
+        Tool.clearErrorLog();
         Lexer lexer = new Lexer(input + '\0');
         lexer.analyzeSourceProgram();
         lexer.printTokenStream();
-        //System.out.println(input);
-//        for (ErrorLogCell error : Tool.getErrorLog()){
-//            System.out.println(error.getErrorMessage() + " at " +error.getPosition().getLine() + " line "+ error.getPosition().getColumn() + " symbol");
-//        }
-        Parser parser = new Parser(lexer.getTokenStream(), lexer.getErrorQnt());
+        Parser parser = new Parser(lexer.getTokenStream(), Tool.getErrorQnt());
         parser.parseProgramm();
 
         Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), isUnderDebug);
@@ -79,8 +70,12 @@ public class Controller {
 //        }
 //        System.out.println("ddddddddddddddddddd");
 
-        if (lexer.getErrorQnt() + parser.getErrorQnt() + interpreter.getErrorQnt() > 0) {
-            String errorLog = lexer.getErrorLog() + parser.getErrorLog() + interpreter.getErrorLog();
+        if (Tool.getErrorQnt()/* + parser.getErrorQnt() + interpreter.getErrorQnt() */ > 0) {
+            String errorLog = "";
+            for (ErrorLogCell error : Tool.getErrorLog()) {
+                errorLog += error.getErrorMessage() + " at " + error.getPosition().getLine() + " line " + error.getPosition().getColumn() + " symbol\n";
+            }
+            //String errorLog = lexer.getErrorLog() + parser.getErrorLog() + interpreter.getErrorLog();
             return "there are some errors in source program:\n" + errorLog;
         } else {
             return interpreter.getOutput();
@@ -91,7 +86,7 @@ public class Controller {
     public void lightKeywords(JTextPane pane) {
         MutableAttributeSet attr = new SimpleAttributeSet();
         StyleConstants.setForeground(attr, Color.blue);
-        String[] keywordList = {"true", "false", "let", "in", "begin", "end", "if", "then", "print","else"};
+        String[] keywordList = {"true", "false", "let", "in", "begin", "end", "if", "then", "print", "else"};
         StyledDocument doc = pane.getStyledDocument();
         String currentTextProgramm = pane.getText();
 
@@ -117,14 +112,15 @@ public class Controller {
                     }
                 }
                 if (isKeyword) {
-                    doc.setCharacterAttributes(pointer - GetLineNumber(pointer,pane), keyword.length(), attr, false);
+                    doc.setCharacterAttributes(pointer - GetLineNumber(pointer, pane), keyword.length(), attr, false);
                 }
                 pointer++;
             }
         }
         pane.setCharacterAttributes(new SimpleAttributeSet(), true);
     }
-     private int GetLineNumber(int pointer,JTextPane pane) {
+
+    private int GetLineNumber(int pointer, JTextPane pane) {
         int i = 0;
         int line = 0;
         while (i < pointer) {
@@ -135,6 +131,4 @@ public class Controller {
         }
         return line;
     }
-
-
 }
