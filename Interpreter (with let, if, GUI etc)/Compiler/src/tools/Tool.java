@@ -24,4 +24,12 @@ public class Tool {
     public static void clearErrorLog() {
         errorLog.clear();
     }
+
+    public static void increaseErrorQnt() {
+        errorQnt++;
+    }
+
+    public static void clearErrorQnt() {
+        errorQnt = 0;
+    }
 }
