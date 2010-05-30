@@ -17,13 +17,13 @@ import java.util.*;
 import java.util.logging.*;
 import javax.swing.*;
 import javax.swing.text.*;
+import yaskov.Interpreter;
 
 /**
  *
  * @author Антон
  */
 public class MainForm extends javax.swing.JFrame implements IMainForm {
-
     Controller controller = null;
     String currentFileName = "";
     String textOpenedProgramm;
@@ -466,7 +466,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             clearOutputPane();
             clearErrorPane();
             String textPragramm = TextPane.getText();
-            setTextInOutputPane(controller.runProgram(textPragramm));
+            setTextInOutputPane(controller.runProgram(textPragramm, false));
         }//GEN-LAST:event_RunButtonActionPerformed
 
         private void CloseAboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseAboutButtonActionPerformed
@@ -483,11 +483,14 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_AboutActionPerformed
 
         private void DebugButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DebugButtonActionPerformed
-            // TODO add your handling code here:
+            clearOutputPane();
+            clearErrorPane();
+            String textPragramm = TextPane.getText();
+            setTextInOutputPane(controller.runProgram(textPragramm, true));
         }//GEN-LAST:event_DebugButtonActionPerformed
 
         private void StepNextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepNextButtonActionPerformed
-            // TODO add your handling code here:
+            Interpreter.isBlocked = false;
         }//GEN-LAST:event_StepNextButtonActionPerformed
 
         private void StepOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepOverButtonActionPerformed
