@@ -12,12 +12,13 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Interpreter {
+public class Interpreter extends Thread {
+    private final int SLEEP_TIME_MS = 200;
 
     public Tree input;
     public Value result;
     private String interpreterErrorLog = "";
-    private String output = "";
+    public String output = "";
     private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
     private int errorCounter = 0;
 
@@ -28,9 +29,7 @@ public class Interpreter {
         if (parseErrorQnt == 0) {
             input = parserOutput;
             this.isUnderDebug = isUnderDebug;
-            isBlocked = false;
-            //interpretSequence(parserOutput);
-            //System.out.println("--------------\n");
+            isBlocked = true;
         } else {
             fixError("there are parse or/and lexical errors");
         }
@@ -48,20 +47,19 @@ public class Interpreter {
         return output;
     }
 
-    public void interpretProgram() {
+    @Override
+    public void run() {
 //        System.out.println(getName());
 //        System.out.println(activeCount());
-        isBlocked = true;
 //        System.out.println("a");
-//        while(isBlocked) {
-//
-//        }
+//        waitKeypress();
 //        System.out.println("b");
         result = interpretNode(input);
+        //System.out.println(getState());
     }
 
     public Value interpretNode(Tree node) {
-        System.out.println(node.getClass().getSimpleName());
+        //System.out.println(node.getClass().getSimpleName());
 
         if (node instanceof ArOperand) {
             return interpret((ArOperand) node);
@@ -227,13 +225,15 @@ public class Interpreter {
 
     // узлы типа "выражение";
     private Value interpret(ExSequence sequence) {
-        int i;
+        Value res = null;
 
-        for (i = 0; i < sequence.getList().size() - 1; ++i) {
-            interpretNode(sequence.getList().get(i));
+        for (Expression statement : sequence.getList()) {
+           printNodeInfo(statement);
+           waitKeypress();
+           res = interpretNode(statement);
         }
         
-        return (Value) interpretNode(sequence.getList().get(i));
+        return res;
     }
 
     private Value interpret(ExBinding node) { // binding;
@@ -264,11 +264,13 @@ public class Interpreter {
     private Value interpret(ExPrint node) {
         Value exToPrintValue = interpretNode(node.getExToPrint());
 
-        if (exToPrintValue instanceof ValFun) {
+        if (exToPrintValue instanceof ValClosing) {
             fixError("\"print(expr)\" can not print function");
         }
         else {
-            output += exToPrintValue.getValue().toString() + "\n";
+            //output += exToPrintValue.getValue().toString() + "\n";
+            //karymov.MainForm.setTextInOutputPane();
+            System.out.print(exToPrintValue.getValue().toString() + "\n");
         }
 
         return new ValUnit();
@@ -285,8 +287,14 @@ public class Interpreter {
     }
 
     private Value interpret(ExApplication node) {
-        Value function = interpretNode(node.getFunction());
+        ValClosing function = (ValClosing) interpretNode(node.getFunction());
         Value arg = interpretNode(node.getArgument());
+        
+        LinkedList<EnvironmentCell> tempEnvironment = environment;
+        environment = function.getEnv();
+        environment.add(new EnvironmentCell(function.getId(), arg));
+
+        Value res = interpretNode(function.getFunctionBody());
         /*Expression arg = interpretNode(node.getArgument());
         EnvironmentCell environmentCell;
 
@@ -294,14 +302,37 @@ public class Interpreter {
             ArOperand arOperand = (ArOperand) arg;
             environmentCell = new EnvironmentCell(node., arg)
         }*/
-        return new ValUnit();
+        environment = tempEnvironment;
+        
+        return res;
     }
 
     private Value interpret(ExFunction node) {
-        return new ValFun(node.getFunctionBody(), environment);
+        return new ValClosing(node.getId(), node.getFunctionBody(), environment);
     }
 
     // вспомогательные функции;
+
+    private void printNodeInfo(Expression node) {
+        if (isUnderDebug) {
+            System.out.println(node.getClass().getSimpleName());
+            System.out.println(node.getPosition().getBegAbs() + " - " + node.getPosition().getEndAbs());
+        }
+    }
+
+    private void waitKeypress() {
+        if (isUnderDebug) {
+            while(isBlocked) {
+                try {
+                    sleep(SLEEP_TIME_MS);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            isBlocked = true;
+        }
+    }
+
     private EnvironmentCell findVar(int id) {
         for (EnvironmentCell cell: environment) {
             if (cell.getId() == id) {

@@ -18,8 +18,9 @@ public class Lexer {
     private String lexErrorLog = "";
     private LinkedList<Token> tokenStream = new LinkedList<Token>(); // преобразуется в последовательность токенов;
     private LinkedList<TableCell> varTable = new LinkedList<TableCell>(); // таблица для работы с переменными;
-    private Position curPos;
+    private Position curTokenPos;
     private char curSym;
+    private int beginPos;
     private int smblNo;
     private int lineNo;
     private int columnNo;
@@ -61,48 +62,47 @@ public class Lexer {
             if (sourceProgramEnds()) {
                 break;
             } else if (isDigit()) {
-                tokenStream.add(new Token(TokenType.NUMBER, getNumber(), curPos));
+                tokenStream.add(new Token(TokenType.NUMBER, getNumber(), curTokenPos));
             } else if (isSign()) {
-                tokenStream.add(new Token(getSign(), curPos));
+                tokenStream.add(new Token(getSign(), curTokenPos));
             } else if (isLetter()) {
                 word = getWord();
-                //curPos = new Position
 
                 if (word.equals("let")) {
-                    tokenStream.add(new Token(TokenType.LET, curPos));
+                    tokenStream.add(new Token(TokenType.LET, curTokenPos));
                 } else if (word.equals("in")) {
-                    tokenStream.add(new Token(TokenType.IN, curPos));
+                    tokenStream.add(new Token(TokenType.IN, curTokenPos));
                 } else if (word.equals("if")) {
-                    tokenStream.add(new Token(TokenType.IF, curPos));
+                    tokenStream.add(new Token(TokenType.IF, curTokenPos));
                 } else if (word.equals("then")) {
-                    tokenStream.add(new Token(TokenType.THEN, curPos));
+                    tokenStream.add(new Token(TokenType.THEN, curTokenPos));
                 } else if (word.equals("else")) {
-                    tokenStream.add(new Token(TokenType.ELSE, curPos));
+                    tokenStream.add(new Token(TokenType.ELSE, curTokenPos));
                 } else if (word.equals("print")) {
-                    tokenStream.add(new Token(TokenType.PRINT, curPos));
+                    tokenStream.add(new Token(TokenType.PRINT, curTokenPos));
                 } else if (word.equals("true")) {
-                    tokenStream.add(new Token(TokenType.LOG_OPERAND, 1, curPos));
+                    tokenStream.add(new Token(TokenType.LOG_OPERAND, 1, curTokenPos));
                 } else if (word.equals("false")) {
-                    tokenStream.add(new Token(TokenType.LOG_OPERAND, 0, curPos));
+                    tokenStream.add(new Token(TokenType.LOG_OPERAND, 0, curTokenPos));
                 } else if (word.equals("begin")) {
-                    tokenStream.add(new Token(TokenType.BEGIN, curPos));
+                    tokenStream.add(new Token(TokenType.BEGIN, curTokenPos));
                 } else if (word.equals("end")) {
-                    tokenStream.add(new Token(TokenType.END, curPos));
+                    tokenStream.add(new Token(TokenType.END, curTokenPos));
                 } else if (word.equals("fun")) {
-                    tokenStream.add(new Token(TokenType.FUNCTION, curPos));
+                    tokenStream.add(new Token(TokenType.FUNCTION, curTokenPos));
                 } else {
                     fixVariable(word);
                 }
             } else if (isLogSign()) {
-                tokenStream.add(new Token(getLogOperation(), curPos));
+                tokenStream.add(new Token(getLogOperation(), curTokenPos));
             } else if (isSemicolon()) {
-                tokenStream.add(new Token(TokenType.SEMICOLON, curPos));
+                tokenStream.add(new Token(TokenType.SEMICOLON, curTokenPos));
             } else {
                 fixError("unknown symbol");
             }
             getNextChar();
         }
-        tokenStream.add(new Token(TokenType.EOF, curPos));
+        tokenStream.add(new Token(TokenType.EOF, curTokenPos));
         if(tokenStream.size() == 1) {
             fixError("try to write some program");
         }
@@ -112,15 +112,15 @@ public class Lexer {
     private void fixVariable(String word) {
         if (!isInTable(word)) {
             varTable.add(new TableCell(idCounter, word));
-            tokenStream.add(new Token(TokenType.ID, idCounter, curPos));
+            tokenStream.add(new Token(TokenType.ID, idCounter, curTokenPos));
             idCounter++;
         } else {
-            tokenStream.add(new Token(TokenType.ID, findVarNamed(word).getId(), curPos));
+            tokenStream.add(new Token(TokenType.ID, findVarNamed(word).getId(), curTokenPos));
         }
     }
 
     private void deleteWhitespaces() {
-        while (isWhitespace() || isNewline()) {
+        while (isWhitespace() || curSym == '\n' || curSym == '\r') { // !!!
             if (isNewline()) {
                 columnNo = 0;
                 lineNo++;
@@ -130,12 +130,13 @@ public class Lexer {
             }
             getNextChar();
         }
-        curPos = null;//new Position(smblNo, lineNo, columnNo);
+        //curTokenPos = new Position(0, smblNo, lineNo, columnNo);
     }
 
     private int getNumber() {
         int number = 0;
 
+        beginPos = smblNo;
         while (isDigit()) {
             number *= TEN;
             number += symToDigit();
@@ -145,7 +146,7 @@ public class Lexer {
             fixError("invalid variable name");
         }
         ungetChar();
-        curPos = null;//new Position(curSym, lineNo, columnNo);
+        curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
         
         return number;
     }
@@ -153,16 +154,17 @@ public class Lexer {
     private String getWord() {
         String result = new String();
 
+        beginPos = smblNo;
         if (isLetter()) {
             while (isLetter() || isDigit()) {
                 result += curSym;
                 getNextChar();
             }
-            ungetChar();
         } else {
             fixError("invalid variable name");
         }
-        curPos = null;//new Position(curSym, lineNo, columnNo);
+        ungetChar();
+        curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
 
         return result;
     }
@@ -332,7 +334,7 @@ public class Lexer {
 
     private void fixError(String message) {
         errorCounter++;
-        lexErrorLog += "lexer error: " + message + " in line: " + lineNo + ";\n";
+        lexErrorLog += "lexer error: " + message + " in line: " + lineNo + ", column: " + columnNo + ";\n";
         //  System.out.println("lexer error: " + message + " in line: " + lineNo + ";\n");
     }
 

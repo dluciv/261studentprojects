@@ -4,6 +4,8 @@ package karymov;
 import ast.*;
 import java.awt.Color;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextPane;
 import javax.swing.text.*;
 import lebedev.*;
@@ -49,15 +51,25 @@ public class Controller {
         }
     }
 
-    public String runProgram(String input) {
+    public String runProgram(String input, boolean isUnderDebug) {
+        String output;
+
         Lexer lexer = new Lexer(input + '\0');
         lexer.analyzeSourceProgram();
 
         Parser parser = new Parser(lexer.getTokenStream(), lexer.getErrorQnt());
         parser.parseProgramm();
 
-        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), false);
-        interpreter.interpretProgram();
+        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), isUnderDebug);
+
+        interpreter.start();
+
+//        try {
+//            interpreter.join();
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        System.out.println("ddddddddddddddddddd");
 
         if (lexer.getErrorQnt() + parser.getErrorQnt() + interpreter.getErrorQnt() > 0) {
             String errorLog = lexer.getErrorLog() + parser.getErrorLog() + interpreter.getErrorLog();
