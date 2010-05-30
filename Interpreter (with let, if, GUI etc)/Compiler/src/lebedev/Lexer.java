@@ -27,12 +27,13 @@ public class Lexer {
     private int columnNo;
     private int idCounter;
     private int errorCounter;
+    private String[] keyWordList = {"if", "let", "in", "then", "else", "print", "true", "false", "begin", "end", "fun"};
 
     public Lexer(String input) {
         sourceProgram = input;
         idCounter = 0;
         smblNo = 0;
-        lineNo = 0;
+        lineNo = 1;
         columnNo = 0;
         errorCounter = 0;
     }
@@ -383,5 +384,9 @@ public class Lexer {
             System.out.print("<" + token.getType() + " " + token.getAttribute() + " " + token.getPosition().getLine() + " " + token.getPosition().getColumn() + "> ");
         }
         System.out.println();
+    }
+
+    public String[] getKeyWordList() {
+        return keyWordList;
     }
 }

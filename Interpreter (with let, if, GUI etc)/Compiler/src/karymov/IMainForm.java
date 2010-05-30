@@ -1,7 +1,9 @@
 package karymov;
 
 //import java.awt.TextPane;
+import java.util.LinkedList;
 import javax.swing.JTextPane;
+import tools.ErrorLogCell;
 
 public interface IMainForm {
 
@@ -9,7 +11,7 @@ public interface IMainForm {
 
     public void setTextInOutputPane(String text);
 
-    public void setTextInErrorPane(String text);
+    public void setTextInErrorPane(String text, int a, int b);
 
     public void clearTextPanel();
 
@@ -18,4 +20,6 @@ public interface IMainForm {
     public void clearOutputPane();
 
     public void clearErrorPane();
+
+    public void errorRevise(LinkedList<ErrorLogCell> errorList);
 }
