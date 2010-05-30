@@ -116,6 +116,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -234,9 +236,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -406,15 +406,15 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15618336" sideWeight="0.6625971" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32963374" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15618336" sideWeight="0.7846837" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995737" sideWeight="0.6625971" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995737" sideWeight="0.7846837" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25266525" sideWeight="0.7846837" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21108742" sideWeight="0.7846837" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27524972" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20754717" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -463,46 +463,27 @@
   <component name="editorHistoryManager">
     <entry file="jar://C:/Program Files/Java/jdk1.6.0_12/src.zip!/javax/swing/table/DefaultTableModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="105" column="35" selection-start="3403" selection-end="3409" vertical-scroll-proportion="0.64416474">
-          <folding />
-        </state>
+        <state line="105" column="35" selection-start="3403" selection-end="3409" vertical-scroll-proportion="0.64416474" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/Context.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="13" selection-start="146" selection-end="146" vertical-scroll-proportion="0.1361556">
-          <folding />
-        </state>
+        <state line="7" column="13" selection-start="146" selection-end="146" vertical-scroll-proportion="0.1361556" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/values/functions/AbstractFunctionValue.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="43" selection-start="237" selection-end="258" vertical-scroll-proportion="0.225">
-          <folding />
-        </state>
+        <state line="9" column="43" selection-start="237" selection-end="258" vertical-scroll-proportion="0.225" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/values/functions/FunctionValue.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="398" selection-end="398" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="13" column="13" selection-start="398" selection-end="398" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/model/interpreter/InterpretationCore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="0" selection-start="2315" selection-end="2315" vertical-scroll-proportion="0.3735294">
-          <folding>
-            <element signature="method#run#0;class#InterpretationCore#0" expanded="false" />
-            <element signature="method#step#0;class#InterpretationCore#0" expanded="false" />
-            <element signature="method#stepInto#0;class#InterpretationCore#0" expanded="false" />
-            <element signature="method#notifyListener#0;class#InterpretationCore#0" expanded="false" />
-            <element signature="method#notifyStop#0;class#InterpretationCore#0" expanded="false" />
-            <element signature="method#breakInterpretation#0;class#InterpretationCore#0" expanded="false" />
-            <element signature="method#interpret#0;class#InterpretationCore#0" expanded="false" />
-            <element signature="method#interpret#1;class#InterpretationCore#0" expanded="false" />
-          </folding>
-        </state>
+        <state line="58" column="0" selection-start="2315" selection-end="2315" vertical-scroll-proportion="0.3735294" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/images/small_90.png">
@@ -512,23 +493,17 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.6.0_12/src.zip!/java/lang/ClassLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1032" column="18" selection-start="37075" selection-end="37075" vertical-scroll-proportion="0.49838188">
-          <folding />
-        </state>
+        <state line="1032" column="18" selection-start="37075" selection-end="37075" vertical-scroll-proportion="0.49838188" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.6.0_12/src.zip!/java/lang/Class.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2073" column="23" selection-start="87695" selection-end="87695" vertical-scroll-proportion="0.52589">
-          <folding />
-        </state>
+        <state line="2073" column="23" selection-start="87695" selection-end="87695" vertical-scroll-proportion="0.52589" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.6.0_12/src.zip!/java/awt/Dialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1020" column="16" selection-start="40904" selection-end="40904" vertical-scroll-proportion="0.7823529">
-          <folding />
-        </state>
+        <state line="1020" column="16" selection-start="40904" selection-end="40904" vertical-scroll-proportion="0.7823529" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/EditorWindow.form">
@@ -538,39 +513,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/controller/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="150" column="38" selection-start="4790" selection-end="4790" vertical-scroll-proportion="0.62352943">
-          <folding>
-            <element signature="method#Controller#0;class#Controller#0" expanded="false" />
-            <element signature="method#onTextChanged#0;class#Controller#0" expanded="false" />
-            <element signature="method#updateProject#0;class#Controller#0" expanded="false" />
-            <element signature="method#saveProgram#0;class#Controller#0" expanded="false" />
-            <element signature="method#step#0;class#Controller#0" expanded="false" />
-            <element signature="method#stepInto#0;class#Controller#0" expanded="false" />
-            <element signature="method#close#0;class#Controller#0" expanded="false" />
-            <element signature="method#removeSelectedFile#0;class#Controller#0" expanded="false" />
-            <element signature="method#addFile#0;class#Controller#0" expanded="false" />
-            <element signature="method#loadProject#0;class#Controller#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/About.form">
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
+        <state line="150" column="38" selection-start="4790" selection-end="4790" vertical-scroll-proportion="0.62352943" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/About.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="17" selection-start="336" selection-end="336" vertical-scroll-proportion="0.3">
+        <state line="16" column="10" selection-start="375" selection-end="375" vertical-scroll-proportion="0.325">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/EditorWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="352" column="40" selection-start="11207" selection-end="11207" vertical-scroll-proportion="0.375">
+        <state line="390" column="8" selection-start="12150" selection-end="12344" vertical-scroll-proportion="0.675">
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/name/stepa/ml/About.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
       </provider>
     </entry>
   </component>
