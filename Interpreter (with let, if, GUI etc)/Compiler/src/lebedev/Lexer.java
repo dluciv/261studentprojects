@@ -8,6 +8,7 @@
 package lebedev;
 
 import java.util.LinkedList;
+import tools.Tool;
 
 public class Lexer {
 
@@ -26,6 +27,7 @@ public class Lexer {
     private int columnNo;
     private int idCounter;
     private int errorCounter;
+    private int tokenLenght;
 
     public Lexer(String input) {
         sourceProgram = input;
@@ -96,14 +98,20 @@ public class Lexer {
             } else if (isLogSign()) {
                 tokenStream.add(new Token(getLogOperation(), curTokenPos));
             } else if (isSemicolon()) {
+                tokenLenght = 1;
+                curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                 tokenStream.add(new Token(TokenType.SEMICOLON, curTokenPos));
             } else {
+                tokenLenght = 1;
+                curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                 fixError("unknown symbol");
             }
             getNextChar();
         }
+        tokenLenght = 1;
+        curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
         tokenStream.add(new Token(TokenType.EOF, curTokenPos));
-        if(tokenStream.size() == 1) {
+        if (tokenStream.size() == 1) {
             fixError("try to write some program");
         }
         //printTokenStream();
@@ -122,10 +130,10 @@ public class Lexer {
     private void deleteWhitespaces() {
         while (isWhitespace() || curSym == '\n' || curSym == '\r') { // !!!
             if (isNewline()) {
+                getNextChar();
                 columnNo = 0;
                 lineNo++;
-            }
-            else if (curSym == '\t') {
+            } else if (curSym == '\t') {
                 columnNo += TAB_LENGTH - 1;
             }
             getNextChar();
@@ -135,41 +143,64 @@ public class Lexer {
 
     private int getNumber() {
         int number = 0;
-
+        tokenLenght = 0;
         beginPos = smblNo;
         while (isDigit()) {
             number *= TEN;
             number += symToDigit();
             getNextChar();
-        }
-        if (isLetter()) {
-            fixError("invalid variable name");
+            tokenLenght++;
         }
         ungetChar();
+
+//        if (isLetter()) {
+//            fixError("invalid variable name");
+//        }
+//        ungetChar();
+
         curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
-        
+
+
         return number;
     }
 
     private String getWord() {
         String result = new String();
+        tokenLenght = 0;
 
-        beginPos = smblNo;
-        if (isLetter()) {
-            while (isLetter() || isDigit()) {
-                result += curSym;
-                getNextChar();
+
+        //    if (isLetter()) {
+        while (isLetter() || isDigit()) {
+            tokenLenght++;
+            result += curSym;
+            getNextChar();
+
+            beginPos = smblNo;
+            if (isLetter()) {
+                while (isLetter() || isDigit()) {
+                    result += curSym;
+                    getNextChar();
+                }
+            } else {
+                fixError("invalid variable name");
             }
-        } else {
-            fixError("invalid variable name");
-        }
-        ungetChar();
-        curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+            ungetChar();
+            //  } else {
+            //     fixError("invalid variable name");
+            //  }
 
+            ungetChar();
+            curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+
+
+        }
         return result;
+
     }
 
     private TokenType getSign() {
+        tokenLenght = 1;
+        curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
         switch (curSym) {
             case '+':
                 return TokenType.PLUS;
@@ -178,8 +209,7 @@ public class Lexer {
                 getNextChar();
                 if (curSym == '>') {
                     return TokenType.ARROW;
-                }
-                else {
+                } else {
                     ungetChar();
                     return TokenType.MINUS;
                 }
@@ -203,58 +233,77 @@ public class Lexer {
     }
 
     private TokenType getLogOperation() {
+        tokenLenght = 1;
         switch (curSym) {
             case '>':
                 getNextChar();
                 if (curSym == '=') {
+                    tokenLenght++;
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.GE;
                 } else {
                     ungetChar();
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.GREATER;
                 }
 
             case '<':
                 getNextChar();
                 if (curSym == '=') {
+                    tokenLenght++;
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.LE;
                 } else {
                     ungetChar();
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.LESS;
                 }
 
             case '!':
                 getNextChar();
                 if (curSym == '=') {
+                    tokenLenght++;
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.INEQUALITY;
                 } else {
                     ungetChar();
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.NOT;
                 }
 
             case '&':
                 getNextChar();
                 if (curSym == '&') {
+                    tokenLenght++;
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.AND;
                 } else {
                     ungetChar();
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.UNKNOWN;
                 }
 
             case '|':
                 getNextChar();
                 if (curSym == '|') {
+                    tokenLenght++;
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.OR;
                 } else {
                     ungetChar();
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.UNKNOWN;
                 }
 
             case '=':
                 getNextChar();
                 if (curSym == '=') {
+                    tokenLenght++;
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.EQUALITY;
                 } else {
                     ungetChar();
+                    curTokenPos = new Position(smblNo, lineNo, columnNo, tokenLenght);
                     return TokenType.EQUALS_SIGN;
                 }
 
@@ -294,7 +343,7 @@ public class Lexer {
     }
 
     private boolean isNewline() {
-        return curSym == '\n';
+        return curSym == '\r';
     }
 
     private boolean isSemicolon() {
@@ -334,14 +383,18 @@ public class Lexer {
 
     private void fixError(String message) {
         errorCounter++;
+        lexErrorLog += "lexer error: " + message + " at " + lineNo + " line " + columnNo + " symbol;\n";
+        System.out.println("lexer error: " + message + " at " + lineNo + " line " + columnNo + " symbol;\n");
+        Tool.fixError(message, curTokenPos);
         lexErrorLog += "lexer error: " + message + " in line: " + lineNo + ", column: " + columnNo + ";\n";
         //  System.out.println("lexer error: " + message + " in line: " + lineNo + ";\n");
     }
 
     // temp;
-    private void printTokenStream() {
+    public void printTokenStream() {
         for (Token token : tokenStream) {
-            System.out.print("<" + token.getType() + " " + token.getAttribute() + " " + token.getPosition().getLine()+ " " + token.getPosition().getColumn() + "> ");
+            System.out.print("<" + token.getType() + " " + token.getAttribute() + " " + token.getPosition().getLine() + " " + token.getPosition().getColumn() + "> ");
         }
+        System.out.println();
     }
 }

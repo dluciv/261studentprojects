@@ -8,7 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextPane;
 import javax.swing.text.*;
+//import javax.tools.*;
 import lebedev.*;
+import tools.*;
 import yaskov.*;
 
 public class Controller {
@@ -54,9 +56,15 @@ public class Controller {
     public String runProgram(String input, boolean isUnderDebug) {
         String output;
 
+        //Tool.clearErrorLog();
+        //Lexer lexer = new Lexer(input + '\0');
         Lexer lexer = new Lexer(input + '\0');
         lexer.analyzeSourceProgram();
-
+        lexer.printTokenStream();
+        //System.out.println(input);
+//        for (ErrorLogCell error : Tool.getErrorLog()){
+//            System.out.println(error.getErrorMessage() + " at " +error.getPosition().getLine() + " line "+ error.getPosition().getColumn() + " symbol");
+//        }
         Parser parser = new Parser(lexer.getTokenStream(), lexer.getErrorQnt());
         parser.parseProgramm();
 
@@ -77,6 +85,7 @@ public class Controller {
         } else {
             return interpreter.getOutput();
         }
+        //return "nothing";
     }
 
     public void lightKeywords(JTextPane pane) {

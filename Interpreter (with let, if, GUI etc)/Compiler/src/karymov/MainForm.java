@@ -237,7 +237,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Compiler");
-        setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
+        setFont(new java.awt.Font("Times New Roman", 0, 10));
         setMinimumSize(new java.awt.Dimension(565, 389));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {

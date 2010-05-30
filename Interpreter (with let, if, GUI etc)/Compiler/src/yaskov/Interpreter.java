@@ -31,6 +31,7 @@ public class Interpreter extends Thread {
             this.isUnderDebug = isUnderDebug;
             isBlocked = true;
         } else {
+            errorCounter = parseErrorQnt;
             fixError("there are parse or/and lexical errors");
         }
     }
@@ -49,6 +50,9 @@ public class Interpreter extends Thread {
 
     @Override
     public void run() {
+        if (errorCounter != 0)
+            return;
+
 //        System.out.println(getName());
 //        System.out.println(activeCount());
 //        System.out.println("a");
