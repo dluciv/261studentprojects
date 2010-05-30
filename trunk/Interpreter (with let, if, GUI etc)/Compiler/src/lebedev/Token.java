@@ -8,13 +8,16 @@
  * атрибут;
  *
  */
-
 package lebedev;
 
 public class Token {
+
     private TokenType tokenType;
     private int attribute;
     private Position position;
+
+    public Token() {
+    }
 
     public Token(TokenType token, int attribute, Position position) {
         this.tokenType = token;
@@ -33,6 +36,10 @@ public class Token {
 
     public int getAttribute() {
         return attribute;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public Position getPosition() {

@@ -4,18 +4,18 @@ package ast;
 import lebedev.Position;
 
 public class Expression extends Tree {
-	private Position position;
 
-    public Position getPosition(){
-    	return position;
+    private Position position;
+
+    public Position getPosition() {
+        return position;
     }
 
-    public void setPositon(Position position){
-    	this.position = position;
+    public void setPositon(Position position) {
+        this.position = position;
     }
 //    private Tree left;
 //    private Tree right;
-
 //    Expression(Tree left, Tree right) {
 //        this.LeftNode = left;
 //        this.RightNode = right;

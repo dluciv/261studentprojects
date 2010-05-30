@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ast;
 
 import lebedev.Position;
 
 public class Variable extends Expression {
+
     private int id;
     private Position position;
 
@@ -20,7 +20,8 @@ public class Variable extends Expression {
         return id;
     }
 
-    public Position getPosition(){
+    @Override
+    public Position getPosition() {
         return position;
     }
 }

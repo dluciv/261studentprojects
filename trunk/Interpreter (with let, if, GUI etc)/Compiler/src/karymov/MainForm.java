@@ -14,9 +14,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-import java.util.logging.*;
 import javax.swing.*;
-import javax.swing.text.*;
 import yaskov.Interpreter;
 
 /**
@@ -509,7 +507,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             if (SaveFileChooser.showSaveDialog(null) != SaveFileChooser.APPROVE_OPTION) {
                 return;
             }
-            ;
             currentFileName = SaveFileChooser.getSelectedFile().getPath() + ".txt";
             SaveButtonActionPerformed(null);
         }//GEN-LAST:event_SaveAsMenuItemActionPerformed
