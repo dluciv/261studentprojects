@@ -51,7 +51,7 @@ public enum TokenType {
 
     FUNCTION,
     ARROW,
-
+    
     UNKNOWN,
     EOL,
     EOF

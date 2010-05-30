@@ -10,6 +10,7 @@ package lebedev;
 
 import ast.*;
 import java.util.LinkedList;
+import tools.*;
 
 public class Parser {
 
@@ -43,7 +44,7 @@ public class Parser {
             output = parseSequence();
             //output = parseExpression();
         } else {
-            fixError("there are lexical errors");
+            fixError1("there are lexical errors");
             output = null;
         }
     }
@@ -102,7 +103,7 @@ public class Parser {
             } else if (sign.getType() == TokenType.INEQUALITY) {
                 result = new LogEquality(result, toFind, curPosition);
             } else {
-                fixError("code: 0");
+                fixError1("code: 0");
                 result = null;
             }
         }
@@ -129,7 +130,7 @@ public class Parser {
             } else if (sign.getType() == TokenType.LE) {
                 result = new LogLE(result, toFind, curPosition);
             } else {
-                fixError("code: 1");
+                fixError("code: 1", curPosition);
                 result = null;
             }
         }
@@ -176,8 +177,8 @@ public class Parser {
     }
 
     private Expression parseFactor() {
-        nextToken();
         Position curPosition = curToken.getPosition();
+        nextToken();
         Expression result;
         if (curToken.getType() == TokenType.NOT) {
             // nextToken();
@@ -204,9 +205,11 @@ public class Parser {
         Position curPosition = curToken.getPosition();
 
         if (curToken.getType() == TokenType.NUMBER) {
+            System.out.println("        Number " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
             result = new ArOperand(curToken.getAttribute(), curPosition);
             nextToken();
         } else if (curToken.getType() == TokenType.LOG_OPERAND) {
+            System.out.println("        LogOperand " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
             if (curToken.getAttribute() == 0) {
                 result = new LogOperand(false, curPosition);
             } else {
@@ -214,94 +217,127 @@ public class Parser {
             }
             nextToken();
         } else if (curToken.getType() == TokenType.ID) {
+            System.out.println("        ID " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
             result = new Variable(curToken.getAttribute(), curPosition);
             nextToken();
         } else if (curToken.getType() == TokenType.LEFT_BRACKET) {
             Expression toFind = parseExpression();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
 
             if (curToken.getType() != TokenType.RIGHT_BRACKET) {
-                fixError("strange symbol, ')' expected");
+                fixError("strange symbol, ')' expected", curPosition);
                 result = null;
             } else {
+                System.out.println("        (Expression) " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
                 nextToken();
                 result = toFind;
             }
         } else if (curToken.getType() == TokenType.LET) {
             nextToken();
             if (curToken.getType() != TokenType.ID) {
-                fixError("missed identifier");
+                fixError("missed identifier", curPosition);
                 result = null;
             } else {
                 int id = curToken.getAttribute();
 
                 nextToken();
+                curPosition.setEndAbs(curToken.getPosition().getEndAbs());
                 if (curToken.getType() != TokenType.EQUALS_SIGN) {
-                    fixError("strange symbol, error code: 2 (missed equals sign)");
+                    fixError("strange symbol, error code: 2 (missed equals sign)", curPosition);
                     result = null;
                 } else {
                     Expression letExpression = parseExpression();
+                    curPosition.setEndAbs(curToken.getPosition().getEndAbs());
                     if (curToken.getType() != TokenType.IN) {
-                        fixError("missed IN expression");
+                        fixError("missed IN expression", curPosition);
                         result = null;
                     } else {
                         Expression inExpression = parseExpression();
                         Expression binding = new ExBinding(id, letExpression,
-                                inExpression, curToken.getPosition());
+                                inExpression, curPosition);
+                        System.out.println("        Binding " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
                         result = binding;
                     }
                 }
             }
         } else if (curToken.getType() == TokenType.PRINT) {
             nextToken();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
             if (curToken.getType() != TokenType.LEFT_BRACKET) {
-                fixError("strange symbol, error code: 5");
+                fixError("strange symbol, error code: 5", curPosition);
                 result = null;
             } else {
-                ExPrint exPrint = new ExPrint(parseExpression(), curToken.getPosition());
+                Expression printExpr = parseExpression();
+                //ExPrint exPrint = new ExPrint(parseExpression(), curToken.getPosition());
+                curPosition.setEndAbs(curToken.getPosition().getEndAbs());
                 if (curToken.getType() != TokenType.RIGHT_BRACKET) {
-                    fixError("strange symbol, error code: 6");
+                    fixError("strange symbol, error code: 6", curPosition);
                     result = null;
                 } else {
                     nextToken();
-                    result = exPrint;
+                    System.out.println("        Print " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
+                    result = new ExPrint(printExpr, curPosition);
                 }
             }
         } else if (curToken.getType() == TokenType.IF) {
-            Expression conditional = new ExConditional(parseExpression(),
-                    parseExpression(), parseExpression(), curToken.getPosition());
-            result = conditional;
+            Expression ifExpr = parseExpression();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+            if (curToken.getType() != TokenType.THEN) {
+                fixError("missed THEN expression", curPosition);
+                result = null;
+            } else {
+                Expression thenExpr = parseExpression();
+                curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+                if (curToken.getType() != TokenType.ELSE) {
+                    fixError("missed ELSE expression", curPosition);
+                    result = null;
+                } else {
+                    Expression elseExpr = parseExpression();
+                    curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+                    System.out.println("        IF " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
+                    result = new ExConditional(ifExpr, thenExpr, elseExpr, curToken.getPosition());
+                }
+            }
         } else if (curToken.getType() == TokenType.BEGIN) {
             Expression seqExpr = parseSequence();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
             if (curToken.getType() != TokenType.END) {
-                fixError("strange symbol, error code: 7(missed end statement)");
+                fixError("strange symbol, error code: 7(missed end statement)", curPosition);
                 result = null;
             }
 
             nextToken();
+            System.out.println("        Begin Seq End " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
             result = seqExpr;
         } else if (curToken.getType() == TokenType.FUNCTION) {
             nextToken();
+            curPosition.setEndAbs(curToken.getPosition().getEndAbs());
             if (curToken.getType() != TokenType.ID) {
-                fixError("invalid variable");
+                fixError("invalid variable", curPosition);
                 result = null;
             } else {
                 int id = curToken.getAttribute();
                 nextToken();
+                curPosition.setEndAbs(curToken.getPosition().getEndAbs());
                 if (curToken.getType() != TokenType.ARROW) {
-                    fixError("strange symbol, error code: 4");
+                    fixError("strange symbol, error code: 4", curPosition);
                     result = null;
                 } else {
-                    ExFunction function = new ExFunction(id, parseExpression(), curToken.getPosition());
+                    Expression funExpr = parseExpression();
+                    curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+                    ExFunction function = new ExFunction(id, funExpr, curPosition);
+
+                    System.out.println("        Function " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
                     result = function;
                 }
             }
         } else if (curToken.getType() == TokenType.EOF) {
             //System.out.println(curToken.getType());
-            fixError("no expression after semicolon at " + curToken.getPosition().getBegAbs());
+            fixError("no expression after semicolon ", curToken.getPosition());
             result = null;
         } else {
             System.out.println(curToken.getType());
-            fixError("strange symbol, error code: 3 at " + curToken.getPosition().getBegAbs());
+            fixError("strange symbol, error code: 3 ", curToken.getPosition());
             result = null;
         }
         // nextToken();
@@ -317,12 +353,15 @@ public class Parser {
                 case LEFT_BRACKET:
                     prevToken();
                     // System.out.print(curToken.getType() + "!!!");
-                    result = new ExApplication(result, parseExpression(), curToken.getPosition());
+                    Expression parseExpr = parseExpression();
+                    curPosition.setEndAbs(curToken.getPosition().getEndAbs());
+                    System.out.println("        Application " + curPosition.getBegAbs() + "-" + curPosition.getEndAbs());
+                    result = new ExApplication(result, parseExpr, curToken.getPosition());
                     // System.out.println(result.getClass());
                     break;
             }
         }
-        System.out.println("        Prime" + curToken.getPosition().getBegAbs());
+        //System.out.println("        Prime" + curToken.getPosition().getBegAbs());
         return result;
     }
 
@@ -334,9 +373,14 @@ public class Parser {
         curToken = tokenStream.get(--tokenNo);
     }
 
-    private void fixError(String message) {
+    private void fixError1(String message) {
         errorCounter++;
         parseErrorLog += "parser error: " + message + ";\n";
         // System.out.println("\nparser error: " + message + ";");
+    }
+
+    private void fixError(String message, Position position) {
+        Tool.increaseErrorQnt();
+        Tool.fixError(message, position);
     }
 }

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.io.*;
 import javax.swing.JTextPane;
 import javax.swing.text.*;
-//import javax.tools.*;
 import lebedev.*;
 import tools.*;
 import yaskov.*;
@@ -30,9 +29,9 @@ public class Controller {
             iMainForm.getTextPanel().setText(String.copyValueOf(buff));
             fileReadStream.close();
         } catch (FileNotFoundException Exception) {
-            iMainForm.setTextInErrorPane("File can not open");
+            iMainForm.setTextInOutputPane("File can not open");
         } catch (IOException Exception) {
-            iMainForm.setTextInErrorPane("File can't be read");
+            iMainForm.setTextInOutputPane("File can't be read");
         }
 
     }
@@ -43,9 +42,9 @@ public class Controller {
             fileWriter.write(textProgramm);
             fileWriter.close();
         } catch (IOException Exception) {
-            iMainForm.setTextInErrorPane("File can't be write");
+            iMainForm.setTextInOutputPane("File can't be write");
         } catch (SecurityException Exception) {
-            iMainForm.setTextInErrorPane("File can not find");
+            iMainForm.setTextInOutputPane("File can not find");
         }
     }
 
@@ -71,12 +70,14 @@ public class Controller {
 //        System.out.println("ddddddddddddddddddd");
 
         if (Tool.getErrorQnt()/* + parser.getErrorQnt() + interpreter.getErrorQnt() */ > 0) {
-            String errorLog = "";
-            for (ErrorLogCell error : Tool.getErrorLog()) {
-                errorLog += error.getErrorMessage() + " at " + error.getPosition().getLine() + " line " + error.getPosition().getColumn() + " symbol\n";
-            }
+            iMainForm.errorRevise(Tool.getErrorLog());
+            //String errorLog = "";
+//            for (ErrorLogCell error : Tool.getErrorLog()) {
+//                errorLog += error.getErrorMessage() + " at " + error.getPosition().getLine() + " line " + error.getPosition().getColumn() + " symbol\n";
+//            }
             //String errorLog = lexer.getErrorLog() + parser.getErrorLog() + interpreter.getErrorLog();
-            return "there are some errors in source program:\n" + errorLog;
+            // return "there are some errors in source program:\n" + errorLog;
+            return "";
         } else {
             return interpreter.getOutput();
         }

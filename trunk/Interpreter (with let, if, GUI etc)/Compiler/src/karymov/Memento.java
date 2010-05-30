@@ -112,7 +112,6 @@ public final class Memento {
             return Integer.valueOf(expression.substring(0, i));
         }
     }
-    
 
     public void loadBounds() {
 

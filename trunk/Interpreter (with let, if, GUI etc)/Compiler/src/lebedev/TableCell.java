@@ -8,10 +8,10 @@
  * чено и установлено после интерпретации;
  * 
  */
-
 package lebedev;
 
 public class TableCell {
+
     private int id;
     private String varName;
 
