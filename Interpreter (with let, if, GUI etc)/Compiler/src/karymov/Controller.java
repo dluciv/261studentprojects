@@ -70,7 +70,7 @@ public class Controller {
         Parser parser = new Parser(lexer.getTokenStream(), Tool.getErrorQnt());
         parser.parseProgramm();
 
-        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), isUnderDebug, iMainForm.getController());
+        Interpreter interpreter = new Interpreter(parser.getOutput(), isUnderDebug, iMainForm.getController());
 
         interpreter.start();
 
