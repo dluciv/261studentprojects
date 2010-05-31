@@ -16,16 +16,10 @@ import java.io.*;
 import java.util.*;
 import java.util.logging.*;
 import javax.swing.*;
-<<<<<<< .mine
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.*;
 import tools.ErrorLogCell;
-=======
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.*;
-import tools.ErrorLogCell;
->>>>>>> .r1057
 import yaskov.Interpreter;
 
 /**
@@ -80,11 +74,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         DebugButton = new javax.swing.JButton();
         StepNextButton = new javax.swing.JButton();
         StepOverButton = new javax.swing.JButton();
-<<<<<<< .mine
         jSplitPane = new javax.swing.JSplitPane();
-=======
-        jSplitPane2 = new javax.swing.JSplitPane();
->>>>>>> .r1057
         jScrollTextPane = new javax.swing.JScrollPane();
         TextPane = new javax.swing.JTextPane();
         jOutputPane = new javax.swing.JTabbedPane();
@@ -297,103 +287,10 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             }
         });
 
-<<<<<<< .mine
         jSplitPane.setDividerLocation(150);
         jSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane.setPreferredSize(new java.awt.Dimension(120, 453));
-=======
-        jSplitPane2.setDividerLocation(150);
-        jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jSplitPane2.setPreferredSize(new java.awt.Dimension(120, 453));
 
-        TextPane.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TextPaneKeyReleased(evt);
-            }
-        });
-        jScrollTextPane.setViewportView(TextPane);
-
-        jSplitPane2.setTopComponent(jScrollTextPane);
-
-        jOutputScrollPane.setViewportView(jTextOutputPane);
-
-        jOutputPane.addTab("Output", jOutputScrollPane);
-
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(200, 204));
-
-        tableError.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Message", "Column", "Line"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tableError.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableErrorMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tableError);
-
-        jOutputPane.addTab("Error", jScrollPane1);
-
-        jSplitPane2.setRightComponent(jOutputPane);
-        jOutputPane.getAccessibleContext().setAccessibleName("Output");
-
-        javax.swing.GroupLayout jButtonPanelLayout = new javax.swing.GroupLayout(jButtonPanel);
-        jButtonPanel.setLayout(jButtonPanelLayout);
-        jButtonPanelLayout.setHorizontalGroup(
-            jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jButtonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSplitPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
-                    .addGroup(jButtonPanelLayout.createSequentialGroup()
-                        .addComponent(SaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
-                        .addComponent(RunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(78, 78, 78)
-                        .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
-                        .addComponent(StepNextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addComponent(StepOverButton, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jButtonPanelLayout.setVerticalGroup(
-            jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jButtonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(RunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(StepNextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(StepOverButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(SaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jSplitPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
->>>>>>> .r1057
-
-<<<<<<< .mine
         TextPane.setBackground(new java.awt.Color(255, 255, 254));
         TextPane.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -416,8 +313,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         tableError.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
-=======
->>>>>>> .r1057
             },
             new String [] {
                 "Message", "Column", "Line"
@@ -549,22 +444,15 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< .mine
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-=======
->>>>>>> .r1057
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< .mine
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-=======
-            .addComponent(jButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
->>>>>>> .r1057
         );
 
         pack();
@@ -746,12 +634,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 loadReacentFile(mainForm);
                 mainForm.TextPane.setFont(new Font("Times New Roman", Font.BOLD, 14));
                 mainForm.jTextOutputPane.setFont(new Font("Times New Roman", Font.BOLD, 14));
-<<<<<<< .mine
-=======
-                // mainForm.jErrorPane.setFont(new Font("Times New Roman", Font.BOLD, 14));
->>>>>>> .r1057
                 mainForm.setBounds(mainForm.coordinateX, mainForm.coordinateY, mainForm.width, mainForm.height);
-<<<<<<< .mine
                 mainForm.setTextInErrorPane("dsfdsf", 44, 44);
                 //               tableError.removeAll();
 //       DefaultTableModel model = (DefaultTableModel)tableError.getModel();
@@ -759,14 +642,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
 //           model.removeRow(model.getRowCount());
 //     }
                 mainForm.TextPane.requestFocus();
-=======
-//                mainForm.setTextInErrorPane("dsdf", 4, 2);
-//                mainForm.setTextInErrorPane("asdaf", 3, 1);
-//                mainForm.setTextInErrorPane("asdaf", 3, 4);
-//                mainForm.setTextInErrorPane("asdaf", 5, 3);
-
-                mainForm.TextPane.requestFocus();
->>>>>>> .r1057
                 mainForm.setVisible(true);
             }
 
@@ -852,11 +727,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     private javax.swing.JScrollPane jOutputScrollPane;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollTextPane;
-<<<<<<< .mine
     private javax.swing.JSplitPane jSplitPane;
-=======
-    private javax.swing.JSplitPane jSplitPane2;
->>>>>>> .r1057
     private javax.swing.JTextPane jTextOutputPane;
     private javax.swing.JTable tableError;
     // End of variables declaration//GEN-END:variables
@@ -889,15 +760,11 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     }
 
     public void clearErrorPane() {
-<<<<<<< .mine
         DefaultTableModel model = (DefaultTableModel) tableError.getModel();
         while (model.getRowCount()>0) {
             model.removeRow(0);
         }
         tableError.setModel(model);
-=======
-        ///jErrorPane.setText(null);
->>>>>>> .r1057
     }
 
     private void createRecentFile(File file) {
@@ -947,7 +814,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }
         frame.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
-<<<<<<< .mine
 
     public void errorRevise(LinkedList<ErrorLogCell> errorList) {
         for (ErrorLogCell cellError : errorList) {
@@ -956,15 +822,4 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
 
     }
 
-=======
-
-    public void errorRevise(LinkedList<ErrorLogCell> errorList) {
-        //tableError = new javax.swing.JTable();
-
-        for (ErrorLogCell cellError : errorList) {
-            setTextInErrorPane(cellError.getErrorMessage(), cellError.getPosition().getColumn(), cellError.getPosition().getLine());
-        }
-
-    }
->>>>>>> .r1057
 }
