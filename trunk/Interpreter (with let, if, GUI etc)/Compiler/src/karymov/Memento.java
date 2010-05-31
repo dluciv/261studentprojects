@@ -19,7 +19,7 @@ public final class Memento {
     private int width;
     private int coordinateX;
     private int coordinateY;
-    private String fileName = "src/Karymov/setting.txt";
+    private String fileName = "C:/Users/Антон/Desktop/InterVer1.3/karymov/src/karymov/setting.txt";
     private LinkedList<String> list = new LinkedList<String>();
 
     public static Memento getMemento() {

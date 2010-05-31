@@ -1,6 +1,13 @@
+<<<<<<< .mine
+height=764
+width=1288
+coordinateX=-4
+coordinateY=-4
+=======
 height=389
 width=565
 coordinateX=453
 coordinateY=120
+>>>>>>> .r1057
 C:\Users\Антон\Desktop\5445.txt
 C:\Users\Антон\Desktop\asdasd.txt

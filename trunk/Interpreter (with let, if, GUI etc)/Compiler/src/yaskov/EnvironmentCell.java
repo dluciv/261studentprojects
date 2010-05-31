@@ -18,7 +18,7 @@ public class EnvironmentCell {
         return id;
     }
 
-    public void setValue(Value value) {
+    public void setValue(Value value) { // а оно надо?
         this.value = value;
     }
 

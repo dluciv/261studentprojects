@@ -1,13 +1,15 @@
 /*
  * 
- * "Простейший транслятор"
+ * "Отлаживающий интерпретатор языка "Student ML"
  *
  * (c) Яськов Сергей, 261, 2010;
  *
  */
+
 package yaskov;
 
 import ast.*;
+import karymov.*;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,20 +17,24 @@ import java.util.logging.Logger;
 public class Interpreter extends Thread {
 
     private final int SLEEP_TIME_MS = 200;
-    public Tree input;
-    public Value result;
-    private String interpreterErrorLog = "";
-    public String output = "";
-    private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
-    private int errorCounter = 0;
-    public boolean isUnderDebug;
-    public static boolean isBlocked;
 
-    public Interpreter(Tree parserOutput, int parseErrorQnt, boolean isUnderDebug) {
+    private Expression input;
+    private Value result;
+    private String interpreterErrorLog = "";
+    private String output = "";
+    private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
+    Controller controller;
+    private int errorCounter = 0;
+
+    private boolean isUnderDebug;
+    private static boolean isBlocked;
+
+    public Interpreter(Expression parserOutput, int parseErrorQnt, boolean isUnderDebug, Controller controller) {
         if (parseErrorQnt == 0) {
             input = parserOutput;
             this.isUnderDebug = isUnderDebug;
             isBlocked = true;
+            this.controller = controller;
         } else {
             errorCounter = parseErrorQnt;
             fixError("there are parse or/and lexical errors");
@@ -47,24 +53,23 @@ public class Interpreter extends Thread {
         return output;
     }
 
-    @Override
-    public void run() {
-        if (errorCounter != 0) {
-            return;
-        }
-
-//        System.out.println(getName());
-//        System.out.println(activeCount());
-//        System.out.println("a");
-//        waitKeypress();
-//        System.out.println("b");
-        result = interpretNode(input);
-        //System.out.println(getState());
+    public static void unlockInterpreter() {
+        isBlocked = false;
     }
 
-    public Value interpretNode(Tree node) {
-        //System.out.println(node.getClass().getSimpleName());
+    @Override
+    public void run() {
+        if (errorCounter != 0)
+            return;
 
+        printDebugInfo(input);
+        result = interpretNode(input);
+        if (isUnderDebug) {
+            controller.printToConsole("end of source program;\n");
+        }
+    }
+
+    private Value interpretNode(Tree node) {
         if (node instanceof ArOperand) {
             return interpret((ArOperand) node);
         } else if (node instanceof ArAddition) {
@@ -154,7 +159,7 @@ public class Interpreter extends Thread {
         }
     }
 
-    private Value interpret(ArNegate node) { // !;
+    private Value interpret(ArNegate node) { // -;
         ValInt operand = (ValInt) interpretNode(node.getOperand());
 
         return new ValInt(-(Integer) operand.getValue());
@@ -232,21 +237,22 @@ public class Interpreter extends Thread {
         Value res = null;
 
         for (Expression statement : sequence.getList()) {
-            printNodeInfo(statement);
-            waitKeypress();
-            res = interpretNode(statement);
+           printDebugInfo(statement);
+           res = interpretNode(statement);
         }
-
+        
         return res;
     }
 
     private Value interpret(ExBinding node) { // binding;
+        printDebugInfo(node.getLetExpression());
         Value letExpressionValue = interpretNode(node.getLetExpression());
         EnvironmentCell environmentCell;
 
         environmentCell = new EnvironmentCell(node.getId(), letExpressionValue);
 
         environment.add(environmentCell);
+        printDebugInfo(node.getInExpression());
         Value inExpressionValue = interpretNode(node.getInExpression());
         environment.remove(environmentCell);
 
@@ -265,15 +271,17 @@ public class Interpreter extends Thread {
         return findVar(node.getId()).getValue();
     }
 
-    private Value interpret(ExPrint node) {
+    private Value interpret(ExPrint node) { // print
         Value exToPrintValue = interpretNode(node.getExToPrint());
 
         if (exToPrintValue instanceof ValClosing) {
             fixError("\"print(expr)\" can not print function");
-        } else {
+        }
+        else {
             //output += exToPrintValue.getValue().toString() + "\n";
             //karymov.MainForm.setTextInOutputPane();
-            System.out.print(exToPrintValue.getValue().toString() + "\n");
+            //System.out.print(exToPrintValue.getValue().toString() + "\n");
+            controller.printToConsole(exToPrintValue.getValue().toString() + "\n");
         }
 
         return new ValUnit();
@@ -283,60 +291,58 @@ public class Interpreter extends Thread {
         ValBoolean cnd = (ValBoolean) interpretNode(node.getLogExpression());
 
         if ((Boolean) cnd.getValue() == true) {
+            printDebugInfo(node.getThenExpression());
             return interpretNode(node.getThenExpression());
         } else {
-            return interpretNode(node.getElsePart());
+            printDebugInfo(node.getElseExpression());
+            return interpretNode(node.getElseExpression());
         }
     }
 
     private Value interpret(ExApplication node) {
         ValClosing function = (ValClosing) interpretNode(node.getFunction());
         Value arg = interpretNode(node.getArgument());
-
+        
         LinkedList<EnvironmentCell> tempEnvironment = environment;
         environment = function.getEnv();
         environment.add(new EnvironmentCell(function.getId(), arg));
 
         Value res = interpretNode(function.getFunctionBody());
-        /*Expression arg = interpretNode(node.getArgument());
-        EnvironmentCell environmentCell;
 
-        if (arg instanceof ArOperand) {
-        ArOperand arOperand = (ArOperand) arg;
-        environmentCell = new EnvironmentCell(node., arg)
-        }*/
         environment = tempEnvironment;
-
+        
         return res;
     }
 
     private Value interpret(ExFunction node) {
+        printDebugInfo(node.getFunctionBody());
         return new ValClosing(node.getId(), node.getFunctionBody(), environment);
     }
 
     // вспомогательные функции;
-    private void printNodeInfo(Expression node) {
+
+    private void printDebugInfo(Expression node) {
         if (isUnderDebug) {
-            System.out.println(node.getClass().getSimpleName());
-            System.out.println(node.getPosition().getBegAbs() + " - " + node.getPosition().getEndAbs());
+            controller.printToConsole(node.getClass().getSimpleName() + "\n");
+            controller.lightLine(node.getPosition().getLine() + 1, node.getPosition().getColumn() + 1);
+            //System.out.println(node.getPosition().getLine() + " - " + node.getPosition().getColumn());
+            waitKeypress();
         }
     }
 
     private void waitKeypress() {
-        if (isUnderDebug) {
-            while (isBlocked) {
-                try {
-                    sleep(SLEEP_TIME_MS);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        while(isBlocked) {
+            try {
+                sleep(SLEEP_TIME_MS);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
             }
-            isBlocked = true;
         }
+        isBlocked = true;
     }
 
     private EnvironmentCell findVar(int id) {
-        for (EnvironmentCell cell : environment) {
+        for (EnvironmentCell cell: environment) {
             if (cell.getId() == id) {
                 return cell;
             }

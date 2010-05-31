@@ -16,6 +16,18 @@ public class Controller {
         this.iMainForm = iMainForm;
     }
 
+    public IMainForm getMF() {
+        return iMainForm;
+    }
+
+    public void printToConsole(String string) {
+        iMainForm.setTextInOutputPane(string);
+    }
+
+    public void lightLine(int line, int col) {
+       iMainForm.selectLineForDebug(line, col);
+    }
+
     public void openFile(File file) {
         iMainForm.clearOutputPane();
         iMainForm.clearErrorPane();
@@ -58,7 +70,7 @@ public class Controller {
         Parser parser = new Parser(lexer.getTokenStream(), Tool.getErrorQnt());
         parser.parseProgramm();
 
-        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), isUnderDebug);
+        Interpreter interpreter = new Interpreter(parser.getOutput(), parser.getErrorQnt(), isUnderDebug, iMainForm.getController());
 
         interpreter.start();
 

@@ -15,6 +15,10 @@ public interface IMainForm {
 
     public void clearTextPanel();
 
+    public Controller getController();
+
+    public void selectLineForDebug(int line, int column);
+
     public JTextPane getTextPanel();
 
     public void clearOutputPane();
