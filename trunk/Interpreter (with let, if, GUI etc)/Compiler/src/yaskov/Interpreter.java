@@ -15,38 +15,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Interpreter extends Thread {
-
     private final int SLEEP_TIME_MS = 200;
 
     private Expression input;
-    private Value result;
-    private String interpreterErrorLog = "";
     private String output = "";
     private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
-    Controller controller;
-    private int errorCounter = 0;
+    private Controller controller;
 
     private boolean isUnderDebug;
     private static boolean isBlocked;
 
-    public Interpreter(Expression parserOutput, int parseErrorQnt, boolean isUnderDebug, Controller controller) {
-        if (parseErrorQnt == 0) {
-            input = parserOutput;
-            this.isUnderDebug = isUnderDebug;
-            isBlocked = true;
-            this.controller = controller;
-        } else {
-            errorCounter = parseErrorQnt;
-            fixError("there are parse or/and lexical errors");
-        }
-    }
-
-    public int getErrorQnt() {
-        return errorCounter;
-    }
-
-    public String getErrorLog() {
-        return interpreterErrorLog;
+    public Interpreter(Expression parserOutput, boolean isUnderDebug, Controller controller) {
+        input = parserOutput;
+        isBlocked = true;
+        this.isUnderDebug = isUnderDebug;
+        this.controller = controller;
     }
 
     public String getOutput() {
@@ -59,11 +42,8 @@ public class Interpreter extends Thread {
 
     @Override
     public void run() {
-        if (errorCounter != 0)
-            return;
-
         printDebugInfo(input);
-        result = interpretNode(input);
+        interpretNode(input);
         if (isUnderDebug) {
             controller.printToConsole("end of source program;\n");
         }
@@ -278,9 +258,6 @@ public class Interpreter extends Thread {
             fixError("\"print(expr)\" can not print function");
         }
         else {
-            //output += exToPrintValue.getValue().toString() + "\n";
-            //karymov.MainForm.setTextInOutputPane();
-            //System.out.print(exToPrintValue.getValue().toString() + "\n");
             controller.printToConsole(exToPrintValue.getValue().toString() + "\n");
         }
 
@@ -310,7 +287,6 @@ public class Interpreter extends Thread {
         Value res = interpretNode(function.getFunctionBody());
 
         environment = tempEnvironment;
-        
         return res;
     }
 
@@ -323,6 +299,7 @@ public class Interpreter extends Thread {
 
     private void printDebugInfo(Expression node) {
         if (isUnderDebug) {
+            //controller.printToConsole("next node: ");
             controller.printToConsole(node.getClass().getSimpleName() + "\n");
             controller.lightLine(node.getPosition().getLine() + 1, node.getPosition().getColumn() + 1);
             //System.out.println(node.getPosition().getLine() + " - " + node.getPosition().getColumn());
@@ -356,7 +333,6 @@ public class Interpreter extends Thread {
     }
 
     private void fixError(String message) {
-        errorCounter++;
-        interpreterErrorLog += "interpreter error: " + message + ";\n";
+        System.out.println("interpreter error: " + message + ";\n");
     }
 }
