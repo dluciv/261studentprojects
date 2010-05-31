@@ -27,7 +27,7 @@ public class ExConditional extends Expression { // if "logExpression" then "then
         return thenPart;
     }
 
-    public Expression getElsePart() {
+    public Expression getElseExpression() {
         return elsePart;
     }
 }
