@@ -5,7 +5,7 @@
 
 package ast;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class ExConditional extends Expression { // if "logExpression" then "thenPart" else "elsePart"
     private Expression logExpression;

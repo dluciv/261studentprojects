@@ -5,7 +5,7 @@
 
 package ast;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class ExFunction extends Expression {
     private int id;

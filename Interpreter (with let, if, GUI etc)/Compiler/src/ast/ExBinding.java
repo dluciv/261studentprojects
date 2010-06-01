@@ -5,7 +5,7 @@
 
 package ast;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class ExBinding extends Expression { // let "id" = "letExpression" in "inExpression"
     private int id;

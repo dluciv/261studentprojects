@@ -5,7 +5,7 @@
 
 package ast;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class LogGreater extends BinaryOperation {
     public LogGreater(Expression left, Expression right, Position position) {

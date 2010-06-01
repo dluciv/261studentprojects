@@ -1,7 +1,7 @@
 package tools;
 
 import java.util.LinkedList;
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class Tool {
 

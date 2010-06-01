@@ -5,7 +5,7 @@
 
 package ast;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class LogLess extends BinaryOperation {
     public LogLess(Expression left, Expression right, Position position) {

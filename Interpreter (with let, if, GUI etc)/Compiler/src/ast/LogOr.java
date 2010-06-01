@@ -5,7 +5,7 @@
 
 package ast;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class LogOr extends BinaryOperation {
     public LogOr(Expression left, Expression right, Position position) {

@@ -4,7 +4,7 @@
  */
 package ast;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class Variable extends Expression {
 
