@@ -5,7 +5,7 @@
 
 package ast;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class ExPrint extends Expression {
     private Expression exToPrint;

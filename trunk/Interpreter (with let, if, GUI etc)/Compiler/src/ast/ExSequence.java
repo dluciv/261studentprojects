@@ -3,7 +3,7 @@ package ast;
 
 import java.util.LinkedList;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class ExSequence extends Expression {
 

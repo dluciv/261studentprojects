@@ -5,7 +5,7 @@
 
 package ast;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class LogEquality extends BinaryOperation {
     public LogEquality(Expression left, Expression right, Position position) {

@@ -1,6 +1,6 @@
 package tools;
 
-import lebedev.Position;
+import lexerandparser.Position;
 
 public class ErrorLogCell {
 
