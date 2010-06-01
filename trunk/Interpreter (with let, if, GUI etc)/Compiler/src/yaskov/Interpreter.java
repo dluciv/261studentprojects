@@ -310,7 +310,7 @@ public class Interpreter extends Thread {
 
     private Value interpret(ExFunction node) {
         printDebugInfo(node.getFunctionBody());
-        return new ValClosing(node.getId(), node.getFunctionBody(), environment);
+        return new ValClosing(node.getId(), node.getFunctionBody(), (LinkedList<EnvironmentCell>)environment.clone());
     }
 
     // вспомогательные функции;

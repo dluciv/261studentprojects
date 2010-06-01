@@ -61,7 +61,7 @@ public class Controller {
         lexer.printTokenStream();
         Parser parser = new Parser(lexer.getTokenStream(), Tool.getErrorQnt());
         parser.parseProgramm();
-        Interpreter interpreter = new Interpreter(parser.getOutput(), Tool.getErrorQnt(), isUnderDebug, iMainForm.getController());
+        Interpreter interpreter = new Interpreter(parser.getOutput(), Tool.getErrorQnt(), isUnderDebug, this);
         interpreter.start();
 
         if (Tool.getErrorQnt() > 0) {
@@ -70,6 +70,7 @@ public class Controller {
         } else {
             return interpreter.getOutput();
         }
+
     }
 
     public void lightKeywords(JTextPane pane) {
@@ -194,5 +195,4 @@ public class Controller {
             iMainForm.setTextInErrorPane(cellError.getErrorMessage(), cellError.getPosition().getColumn(), cellError.getPosition().getLine());
         }
     }
-
 }

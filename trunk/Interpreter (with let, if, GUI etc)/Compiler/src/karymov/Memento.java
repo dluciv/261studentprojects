@@ -19,7 +19,7 @@ public final class Memento {
     private int width;
     private int coordinateX;
     private int coordinateY;
-    private String fileName = "src/karymov/setting.txt";
+    private String fileName = "setting.txt";
     private LinkedList<String> list = new LinkedList<String>();
 
     public static Memento getMemento() {
@@ -112,7 +112,6 @@ public final class Memento {
             return Integer.valueOf(expression.substring(0, i));
         }
     }
-    
 
     public void loadBounds() {
 
