@@ -16,7 +16,6 @@ public class Lexer {
     private final int TEN = 10;
     private final int TAB_LENGTH = 2; // можно ли как-то без этого?
     private String sourceProgram; // исходная программа - последовательность символов...
-    private String lexErrorLog = "";
     private LinkedList<Token> tokenStream = new LinkedList<Token>(); // преобразуется в последовательность токенов;
     private LinkedList<TableCell> varTable = new LinkedList<TableCell>(); // таблица для работы с переменными;
     private Position curTokenPos;
@@ -26,8 +25,8 @@ public class Lexer {
     private int lineNo;
     private int columnNo;
     private int idCounter;
-    private int errorCounter;
     private String[] keyWordList = {"if", "let", "in", "then", "else", "print", "true", "false", "begin", "end", "fun"};
+    private int beginColumnNo;
 
     public Lexer(String input) {
         sourceProgram = input;
@@ -35,7 +34,6 @@ public class Lexer {
         smblNo = 0;
         lineNo = 1;
         columnNo = 0;
-        errorCounter = 0;
     }
 
     public LinkedList<Token> getTokenStream() {
@@ -44,14 +42,6 @@ public class Lexer {
 
     public LinkedList<TableCell> getVarTable() {
         return varTable;
-    }
-
-    public int getErrorQnt() {
-        return errorCounter;
-    }
-
-    public String getErrorLog() {
-        return lexErrorLog;
     }
 
     public void analyzeSourceProgram() {
@@ -102,14 +92,14 @@ public class Lexer {
                 tokenStream.add(new Token(TokenType.SEMICOLON, curTokenPos));
             } else {
                 curTokenPos = new Position(smblNo, smblNo, lineNo, columnNo);
-                fixError("unknown symbol");
+                Tool.fixError("unknown symbol", curTokenPos);
             }
             getNextChar();
         }
         curTokenPos = new Position(smblNo, smblNo, lineNo, columnNo);
         tokenStream.add(new Token(TokenType.EOF, curTokenPos));
         if (tokenStream.size() == 1) {
-            fixError("try to write some program");
+            Tool.fixError("try to write some program", curTokenPos);
         }
         //printTokenStream();
     }
@@ -147,10 +137,6 @@ public class Lexer {
             getNextChar();
         }
         ungetChar();
-//        if (isLetter()) {
-//            fixError("invalid variable name");
-//        }
-//        ungetChar();
         curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
         return number;
     }
@@ -158,27 +144,13 @@ public class Lexer {
     private String getWord() {
         String result = new String();
         beginPos = smblNo;
-        //    if (isLetter()) {
+        beginColumnNo = columnNo;
         while (isLetter() || isDigit()) {
             result += curSym;
             getNextChar();
-//
-//            //beginPos = smblNo;
-//            if (isLetter()) {
-//                while (isLetter() || isDigit()) {
-//                    result += curSym;
-//                    getNextChar();
-//                }
-//            } else {
-//                fixError("invalid variable name");
-            }
+        }
         ungetChar();
-        //  } else {
-        //     fixError("invalid variable name");
-        //  }
-
-        //ungetChar();
-        curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+        curTokenPos = new Position(beginPos, smblNo, lineNo, beginColumnNo);
         return result;
     }
 
@@ -212,83 +184,77 @@ public class Lexer {
                 return TokenType.RIGHT_BRACKET;
 
             default:
-                fixError("getSign error: strange symbol");
+                Tool.fixError("getSign error: strange symbol", curTokenPos);
                 return null;
         }
 
     }
 
     private TokenType getLogOperation() {
-        beginPos = smblNo;
+        curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+        //beginPos = smblNo;
         switch (curSym) {
             case '>':
                 getNextChar();
                 if (curSym == '=') {
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+                    curTokenPos.setEndAbs(smblNo);
                     return TokenType.GE;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.GREATER;
                 }
 
             case '<':
                 getNextChar();
                 if (curSym == '=') {
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+                    curTokenPos.setEndAbs(smblNo);
                     return TokenType.LE;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.LESS;
                 }
 
             case '!':
                 getNextChar();
                 if (curSym == '=') {
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+                    curTokenPos.setEndAbs(smblNo);
                     return TokenType.INEQUALITY;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.NOT;
                 }
 
             case '&':
                 getNextChar();
                 if (curSym == '&') {
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+                    curTokenPos.setEndAbs(smblNo);
                     return TokenType.AND;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.UNKNOWN;
                 }
 
             case '|':
                 getNextChar();
                 if (curSym == '|') {
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+                    curTokenPos.setEndAbs(smblNo);
                     return TokenType.OR;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.UNKNOWN;
                 }
 
             case '=':
                 getNextChar();
                 if (curSym == '=') {
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
+                    curTokenPos.setEndAbs(smblNo);
                     return TokenType.EQUALITY;
                 } else {
                     ungetChar();
-                    curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                     return TokenType.EQUALS_SIGN;
                 }
 
             default:
-                curTokenPos = new Position(beginPos, smblNo, lineNo, columnNo);
                 return TokenType.UNKNOWN;
         }
 
@@ -362,20 +328,9 @@ public class Lexer {
             if (varTable.get(i).getVarName().equals(varName)) {
                 return varTable.get(i);
             }
-
         }
-
-        fixError("findVarNamed error: no such id");
+        Tool.fixError("findVarNamed error: no such id", curTokenPos);
         return null;
-    }
-
-    private void fixError(String message) {
-        errorCounter++;
-        Tool.increaseErrorQnt();
-        //lexErrorLog += "lexer error: " + message + " at " + lineNo + " line " + columnNo + " symbol;\n";
-        //System.out.println("lexer error: " + message + " at " + lineNo + " line " + columnNo + " symbol;\n");
-        Tool.fixError(message, curTokenPos);
-        //  System.out.println("lexer error: " + message + " in line: " + lineNo + ";\n");
     }
 
 // temp;

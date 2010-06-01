@@ -14,12 +14,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-import java.util.logging.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.text.*;
-import tools.ErrorLogCell;
+import javax.swing.table.*;
 import yaskov.Interpreter;
 
 /**
@@ -47,9 +43,11 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         coordinateY = Memento.getMemento().getCoordinateY();
         recentOpenedFileList = Memento.getMemento().getList();
     }
- public  Controller getController(){
+
+    public Controller getController() {
         return controller;
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -507,7 +505,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         private void RunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunButtonActionPerformed
             clearOutputPane();
             clearErrorPane();
-
             String textProgramm = TextPane.getText();
             setTextInOutputPane(controller.runProgram(textProgramm, false));
         }//GEN-LAST:event_RunButtonActionPerformed
@@ -552,7 +549,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             if (SaveFileChooser.showSaveDialog(null) != SaveFileChooser.APPROVE_OPTION) {
                 return;
             }
-            ;
             currentFileName = SaveFileChooser.getSelectedFile().getPath() + ".txt";
             SaveButtonActionPerformed(null);
         }//GEN-LAST:event_SaveAsMenuItemActionPerformed
@@ -575,51 +571,13 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_SaveWarningButtonActionPerformed
 
         private void tableErrorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableErrorMouseClicked
-            SelectLine(TextPane, (Integer) (tableError.getModel().getValueAt(tableError.getSelectedRow(), 2)),
+            controller.selectLine(TextPane, (Integer) (tableError.getModel().getValueAt(tableError.getSelectedRow(), 2)),
                     (Integer) (tableError.getModel().getValueAt(tableError.getSelectedRow(), 1)));
 }//GEN-LAST:event_tableErrorMouseClicked
 
         private void TextPaneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextPaneKeyReleased
             controller.lightKeywords(TextPane);
 }//GEN-LAST:event_TextPaneKeyReleased
-
-    public void SelectLine(JTextPane pane, int line, int column) {
-
-        MutableAttributeSet attr = new SimpleAttributeSet();
-        StyleConstants.setBackground(attr, Color.yellow);
-        StyledDocument doc = pane.getStyledDocument();
-        String text = pane.getText();
-
-        doc.setCharacterAttributes(0, text.length(), new SimpleAttributeSet(), true);
-
-        controller.lightKeywords(pane);
-
-        int curLine = 1;
-        int startSelection = 0;
-        int lengthSelection = 0;
-        int curPos = 0;
-
-        while ((curLine < line + 1) && (curPos < text.length())) {
-            if (text.charAt(curPos) == '\n') {
-                curLine++;
-                if ((line == curLine) && (line != 1)) {
-                    startSelection = curPos + 2 - line;
-                }
-            }
-            curPos++;
-        }
-        if (curPos != text.length()) {
-            lengthSelection = curPos - startSelection - 1 - line;
-        } else {
-            lengthSelection = curPos - startSelection + 1 - line;
-        }
-
-        pane.setCaretPosition(startSelection + column - 1);
-        doc.setCharacterAttributes(startSelection, lengthSelection, attr, false);
-
-        pane.setCharacterAttributes(new SimpleAttributeSet(), true);
-        pane.requestFocus();
-    }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -635,12 +593,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 mainForm.TextPane.setFont(new Font("Times New Roman", Font.BOLD, 14));
                 mainForm.jTextOutputPane.setFont(new Font("Times New Roman", Font.BOLD, 14));
                 mainForm.setBounds(mainForm.coordinateX, mainForm.coordinateY, mainForm.width, mainForm.height);
-                mainForm.setTextInErrorPane("dsfdsf", 44, 44);
-                //               tableError.removeAll();
-//       DefaultTableModel model = (DefaultTableModel)tableError.getModel();
-//       while(model.getRowCount()>=0){
-//           model.removeRow(model.getRowCount());
-//     }
                 mainForm.TextPane.requestFocus();
                 mainForm.setVisible(true);
             }
@@ -653,45 +605,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             }
         });
     }
-    public void selectLineForDebug(int line, int column) {
-
-        MutableAttributeSet attr = new SimpleAttributeSet();
-        StyleConstants.setBackground(attr, Color.green);
-        StyledDocument doc = TextPane.getStyledDocument();
-        String text = TextPane.getText();
-
-        doc.setCharacterAttributes(0, text.length(), new SimpleAttributeSet(), true);
-
-        controller.lightKeywords(TextPane);
-
-        int curLine = 1;
-        int startSelection = 0;
-        int lengthSelection = 0;
-        int curPos = 0;
-
-        while ((curLine < line + 1) && (curPos < text.length())) {
-            if (text.charAt(curPos) == '\n') {
-                curLine++;
-                if ((line == curLine) && (line != 1)) {
-                    startSelection = curPos + 2 - line;
-                }
-            }
-            curPos++;
-        }
-        if (curPos != text.length()) {
-            lengthSelection = curPos - startSelection - 1 - line;
-        } else {
-            lengthSelection = curPos - startSelection + 1 - line;
-        }
-
-        TextPane.setCaretPosition(startSelection + column - 1);
-        doc.setCharacterAttributes(startSelection, lengthSelection, attr, false);
-
-        TextPane.setCharacterAttributes(new SimpleAttributeSet(), true);
-        TextPane.requestFocus();
-    }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CanselButtonWarning;
     private javax.swing.JButton CloseAboutButton;
@@ -732,19 +645,15 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     private javax.swing.JTable tableError;
     // End of variables declaration//GEN-END:variables
 
-    public void setTextInTextPanel(String text) {
-        TextPane.setText(text);
-    }
-
     public void setTextInOutputPane(String text) {
-        jTextOutputPane.setText(jTextOutputPane.getText()+text);
+        jTextOutputPane.setText(jTextOutputPane.getText() + text);
     }
 
-    public void clearTextPanel() {
-        TextPane.setText(null);
+    public void clearOutputPane() {
+        jTextOutputPane.setText(null);
     }
 
-    public JTextPane getTextPanel() {
+    public JTextPane getTextPane() {
         return TextPane;
     }
 
@@ -755,13 +664,9 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         tableError.setModel(model);
     }
 
-    public void clearOutputPane() {
-        jTextOutputPane.setText(null);
-    }
-
     public void clearErrorPane() {
         DefaultTableModel model = (DefaultTableModel) tableError.getModel();
-        while (model.getRowCount()>0) {
+        while (model.getRowCount() > 0) {
             model.removeRow(0);
         }
         tableError.setModel(model);
@@ -814,12 +719,4 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }
         frame.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
-
-    public void errorRevise(LinkedList<ErrorLogCell> errorList) {
-        for (ErrorLogCell cellError : errorList) {
-            setTextInErrorPane(cellError.getErrorMessage(), cellError.getPosition().getColumn(), cellError.getPosition().getLine());
-        }
-
-    }
-
 }
