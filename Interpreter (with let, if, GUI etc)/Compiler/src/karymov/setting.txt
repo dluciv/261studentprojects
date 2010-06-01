@@ -1,4 +1,0 @@
-height=445
-width=565
-coordinateX=327
-coordinateY=65
