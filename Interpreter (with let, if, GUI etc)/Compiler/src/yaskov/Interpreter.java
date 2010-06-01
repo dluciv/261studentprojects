@@ -5,7 +5,6 @@
  * (c) Яськов Сергей, 261, 2010;
  *
  */
-
 package yaskov;
 
 import ast.*;
@@ -15,21 +14,36 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Interpreter extends Thread {
-    private final int SLEEP_TIME_MS = 200;
 
+    private final int SLEEP_TIME_MS = 200;
     private Expression input;
+    private Value result;
+    private String interpreterErrorLog = "";
     private String output = "";
     private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
-    private Controller controller;
-
+    Controller controller;
+    private int errorCounter = 0;
     private boolean isUnderDebug;
     private static boolean isBlocked;
 
-    public Interpreter(Expression parserOutput, boolean isUnderDebug, Controller controller) {
-        input = parserOutput;
-        isBlocked = true;
-        this.isUnderDebug = isUnderDebug;
-        this.controller = controller;
+    public Interpreter(Expression parserOutput, int parseErrorQnt, boolean isUnderDebug, Controller controller) {
+        if (parseErrorQnt == 0) {
+            input = parserOutput;
+            this.isUnderDebug = isUnderDebug;
+            isBlocked = true;
+            this.controller = controller;
+        } else {
+            errorCounter = parseErrorQnt;
+            fixError("there are parse or/and lexical errors");
+        }
+    }
+
+    public int getErrorQnt() {
+        return errorCounter;
+    }
+
+    public String getErrorLog() {
+        return interpreterErrorLog;
     }
 
     public String getOutput() {
@@ -42,10 +56,14 @@ public class Interpreter extends Thread {
 
     @Override
     public void run() {
+        if (errorCounter != 0) {
+            return;
+        }
+
         printDebugInfo(input);
-        interpretNode(input);
+        result = interpretNode(input);
         if (isUnderDebug) {
-            controller.printToConsole("end of source program;\n");
+            controller.printInOutputPane("end of source program;\n");
         }
     }
 
@@ -217,10 +235,10 @@ public class Interpreter extends Thread {
         Value res = null;
 
         for (Expression statement : sequence.getList()) {
-           printDebugInfo(statement);
-           res = interpretNode(statement);
+            printDebugInfo(statement);
+            res = interpretNode(statement);
         }
-        
+
         return res;
     }
 
@@ -256,9 +274,8 @@ public class Interpreter extends Thread {
 
         if (exToPrintValue instanceof ValClosing) {
             fixError("\"print(expr)\" can not print function");
-        }
-        else {
-            controller.printToConsole(exToPrintValue.getValue().toString() + "\n");
+        } else {
+            controller.printInOutputPane(exToPrintValue.getValue().toString() + "\n");
         }
 
         return new ValUnit();
@@ -279,7 +296,7 @@ public class Interpreter extends Thread {
     private Value interpret(ExApplication node) {
         ValClosing function = (ValClosing) interpretNode(node.getFunction());
         Value arg = interpretNode(node.getArgument());
-        
+
         LinkedList<EnvironmentCell> tempEnvironment = environment;
         environment = function.getEnv();
         environment.add(new EnvironmentCell(function.getId(), arg));
@@ -287,6 +304,7 @@ public class Interpreter extends Thread {
         Value res = interpretNode(function.getFunctionBody());
 
         environment = tempEnvironment;
+
         return res;
     }
 
@@ -296,19 +314,17 @@ public class Interpreter extends Thread {
     }
 
     // вспомогательные функции;
-
     private void printDebugInfo(Expression node) {
         if (isUnderDebug) {
-            //controller.printToConsole("next node: ");
-            controller.printToConsole(node.getClass().getSimpleName() + "\n");
-            controller.lightLine(node.getPosition().getLine() + 1, node.getPosition().getColumn() + 1);
+            controller.printInOutputPane(node.getClass().getSimpleName() + "\n");
+            controller.selectDebugLine(node.getPosition().getLine() + 1, node.getPosition().getColumn() + 1);
             //System.out.println(node.getPosition().getLine() + " - " + node.getPosition().getColumn());
             waitKeypress();
         }
     }
 
     private void waitKeypress() {
-        while(isBlocked) {
+        while (isBlocked) {
             try {
                 sleep(SLEEP_TIME_MS);
             } catch (InterruptedException ex) {
@@ -319,20 +335,18 @@ public class Interpreter extends Thread {
     }
 
     private EnvironmentCell findVar(int id) {
-        for (EnvironmentCell cell: environment) {
+        for (EnvironmentCell cell : environment) {
             if (cell.getId() == id) {
                 return cell;
             }
         }
-
-        //output += "id " + id + " undefined\n";
-        //System.exit(0);
         fixError("no such id");
         return new EnvironmentCell(environment.size(), new ValInt(0)); // позволяет завершить работу ин-
         // терпретатора, но с ошибкой;
     }
 
     private void fixError(String message) {
-        System.out.println("interpreter error: " + message + ";\n");
+        errorCounter++;
+        interpreterErrorLog += "interpreter error: " + message + ";\n";
     }
 }

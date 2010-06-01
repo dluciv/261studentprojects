@@ -346,25 +346,18 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-<<<<<<< .mine
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jButtonPanel" max="32767" attributes="0"/>
           </Group>
-=======
->>>>>>> .r1057
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-<<<<<<< .mine
           <Group type="102" alignment="0" attributes="0">
               <Component id="jButtonPanel" max="32767" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
-=======
-          <Component id="jButtonPanel" min="-2" max="-2" attributes="0"/>
->>>>>>> .r1057
       </Group>
     </DimensionLayout>
   </Layout>
@@ -391,24 +384,6 @@
                       <Component id="jSplitPane" alignment="1" pref="623" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-<<<<<<< .mine
-=======
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jSplitPane2" alignment="1" pref="623" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="SaveButton" min="-2" pref="58" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                          <Component id="RunButton" min="-2" pref="60" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
-                          <Component id="DebugButton" min="-2" pref="78" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-                          <Component id="StepNextButton" min="-2" pref="63" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                          <Component id="StepOverButton" min="-2" pref="64" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
->>>>>>> .r1057
               </Group>
           </Group>
         </DimensionLayout>
@@ -423,14 +398,8 @@
                       <Component id="StepNextButton" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
                       <Component id="StepOverButton" min="-2" pref="57" max="-2" attributes="0"/>
                   </Group>
-<<<<<<< .mine
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jSplitPane" pref="356" max="32767" attributes="0"/>
-=======
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jSplitPane2" min="-2" pref="254" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
->>>>>>> .r1057
               </Group>
           </Group>
         </DimensionLayout>
@@ -486,7 +455,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StepOverButtonActionPerformed"/>
           </Events>
         </Component>
-<<<<<<< .mine
         <Container class="javax.swing.JSplitPane" name="jSplitPane">
           <Properties>
             <Property name="dividerLocation" type="int" value="150"/>
@@ -495,16 +463,6 @@
               <Dimension value="[120, 453]"/>
             </Property>
           </Properties>
-=======
-        <Container class="javax.swing.JSplitPane" name="jSplitPane2">
-          <Properties>
-            <Property name="dividerLocation" type="int" value="150"/>
-            <Property name="orientation" type="int" value="0"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[120, 453]"/>
-            </Property>
-          </Properties>
->>>>>>> .r1057
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
           <SubComponents>
@@ -518,7 +476,6 @@
                 </Constraint>
               </Constraints>
 
-<<<<<<< .mine
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
                 <Component class="javax.swing.JTextPane" name="TextPane">
@@ -542,26 +499,6 @@
                   <JSplitPaneConstraints position="right"/>
                 </Constraint>
               </Constraints>
-=======
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-              <SubComponents>
-                <Component class="javax.swing.JTextPane" name="TextPane">
-                  <Events>
-                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextPaneKeyReleased"/>
-                  </Events>
-                </Component>
-              </SubComponents>
-            </Container>
-            <Container class="javax.swing.JTabbedPane" name="jOutputPane">
-              <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Output"/>
-              </AccessibilityProperties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-                  <JSplitPaneConstraints position="right"/>
-                </Constraint>
-              </Constraints>
->>>>>>> .r1057
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
               <SubComponents>
@@ -577,7 +514,6 @@
                     </Constraint>
                   </Constraints>
 
-<<<<<<< .mine
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="javax.swing.JTextPane" name="jTextOutputPane">
@@ -652,73 +588,6 @@
                 </Container>
               </SubComponents>
             </Container>
-=======
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTextPane" name="jTextOutputPane">
-                    </Component>
-                  </SubComponents>
-                </Container>
-                <Container class="javax.swing.JScrollPane" name="jScrollPane1">
-                  <Properties>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[200, 204]"/>
-                    </Property>
-                  </Properties>
-                  <AuxValues>
-                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                  </AuxValues>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="Error">
-                        <Property name="tabTitle" type="java.lang.String" value="Error"/>
-                      </JTabbedPaneConstraints>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTable" name="tableError">
-                      <Properties>
-                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="0">
-                            <Column editable="false" title="Message" type="java.lang.String"/>
-                            <Column editable="false" title="Column" type="java.lang.Integer"/>
-                            <Column editable="false" title="Line" type="java.lang.Integer"/>
-                          </Table>
-                        </Property>
-                        <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                          <TableColumnModel selectionModel="0">
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                          </TableColumnModel>
-                        </Property>
-                        <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                          <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-                        </Property>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableErrorMouseClicked"/>
-                      </Events>
-                    </Component>
-                  </SubComponents>
-                </Container>
-              </SubComponents>
-            </Container>
->>>>>>> .r1057
           </SubComponents>
         </Container>
       </SubComponents>
