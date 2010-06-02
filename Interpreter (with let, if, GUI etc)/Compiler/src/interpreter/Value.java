@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ * (c) Яськов Сергей, 261, 2010;
+ *
  */
 
 package interpreter;
@@ -14,7 +15,7 @@ public abstract class Value {
         try {
             return (Integer) value;
         } catch (ClassCastException e) {
-            Tool.fixError("cast error", Interpreter.getCurPos());
+            Tool.fixError("cast to integer error", Interpreter.getCurPos());
             return 0;
         }
     }
@@ -23,7 +24,7 @@ public abstract class Value {
         try {
             return (Boolean) value;
         } catch (ClassCastException e) {
-            Tool.fixError("cast error", Interpreter.getCurPos());
+            Tool.fixError("cast to boolean error", Interpreter.getCurPos());
             return true;
         }
     }

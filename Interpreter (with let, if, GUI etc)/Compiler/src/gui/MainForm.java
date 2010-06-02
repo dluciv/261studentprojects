@@ -23,6 +23,7 @@ import tools.Tool;
  * @author Антон
  */
 public class MainForm extends javax.swing.JFrame implements IMainForm {
+    private final int WAIT_INTERPRETER_STOP_MS = 25;
 
     Controller controller = null;
     String currentFileName = "";
@@ -727,7 +728,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         controller.stopInterpreter();
         while (controller.interpreterIsRunning()) {
             try {
-                Thread.sleep(50);
+                Thread.sleep(WAIT_INTERPRETER_STOP_MS);
             } catch (InterruptedException ex) {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
             }
