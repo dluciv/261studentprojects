@@ -8,8 +8,6 @@ package gui;
 import java.awt.Color;
 import java.io.*;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.text.*;
 import lexerandparser.*;
 import tools.*;
@@ -18,6 +16,7 @@ import interpreter.*;
 public class Controller implements iController {
 
     private IMainForm iMainForm;
+    private boolean interpreterIsRunning;
 
     public Controller(IMainForm iMainForm) {
         this.iMainForm = iMainForm;
@@ -68,10 +67,8 @@ public class Controller implements iController {
             Parser parser = new Parser(lexer.getTokenStream());
             parser.parseProgram();
             if (Tool.getErrorQnt() == 0) {
-                
-                
                 Interpreter interpreter = new Interpreter(parser.getOutput(), isUnderDebug, this);
-               
+                interpreterIsRunning = true;
                 interpreter.start();
             }
         }
@@ -204,5 +201,13 @@ public class Controller implements iController {
 
     public void stopInterpreter() {
         Interpreter.stopInterpreter();
+    }
+
+    public void setInterpreterStateFalse() {
+        interpreterIsRunning = false;
+    }
+
+    public boolean interpreterIsRunning() {
+        return interpreterIsRunning;
     }
 }
