@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Карымов Антон 261 группа
+ */
 package gui;
 
 import java.io.BufferedReader;
@@ -114,7 +118,6 @@ public final class Memento {
     }
 
     public void loadBounds() {
-
         try {
             BufferedReader stdin = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
             this.height = identifyHeight(stdin.readLine());
@@ -129,23 +132,6 @@ public final class Memento {
         }
     }
 
-//    public void readRecentFile(String fileName) {
-//        try {
-//            BufferedReader stdin = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
-//            String text = "";
-//            for (int i = 1; i <= 4; i++) {
-//                text = stdin.readLine();
-//            }
-//            while (stdin.ready()) {
-//
-//               this list.add(stdin.readLine());
-//            }
-//
-//        } catch (FileNotFoundException Exception) {
-//        } catch (IOException Exception) {
-//        }
-//
-//    }
     public void saveBounds(int height, int width, int coordinateX, int coordinateY, LinkedList<String> list) {
         try {
             BufferedWriter stdout = new BufferedWriter(new FileWriter(fileName));

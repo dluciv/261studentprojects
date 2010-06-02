@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Карымов Антон 261 группа
+ */
 package gui;
 
 import java.io.*;

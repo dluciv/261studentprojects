@@ -1,12 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * MainForm.java
+/**
  *
- * Created on 02.05.2010, 17:39:21
+ * @author Карымов Антон 261 группа
  */
 package gui;
 
@@ -16,7 +10,11 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyledDocument;
 import interpreter.Interpreter;
+import tools.LogChangedListener;
+import tools.Tool;
 
 /**
  *
@@ -33,19 +31,17 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     int coordinateX;
     int coordinateY;
     LinkedList<String> recentOpenedFileList;
+    LogChangedListener logChangedListener;
 
     public MainForm() {
         initComponents();
         controller = new Controller(this);
+        Tool.addLogChangedListener(new LogChangedListener(controller));
         height = Memento.getMemento().getHeight();
         width = Memento.getMemento().getWidth();
         coordinateX = Memento.getMemento().getCoordinateX();
         coordinateY = Memento.getMemento().getCoordinateY();
         recentOpenedFileList = Memento.getMemento().getList();
-    }
-
-    public Controller getController() {
-        return controller;
     }
 
     @SuppressWarnings("unchecked")
@@ -66,12 +62,14 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         NotSaveButtonWarning = new javax.swing.JButton();
         CanselButtonWarning = new javax.swing.JButton();
         FileChangedLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         jButtonPanel = new javax.swing.JPanel();
         SaveButton = new javax.swing.JButton();
         RunButton = new javax.swing.JButton();
         DebugButton = new javax.swing.JButton();
         StepNextButton = new javax.swing.JButton();
-        StepOverButton = new javax.swing.JButton();
+        StopButton = new javax.swing.JButton();
         jSplitPane = new javax.swing.JSplitPane();
         jScrollTextPane = new javax.swing.JScrollPane();
         TextPane = new javax.swing.JTextPane();
@@ -80,15 +78,23 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         jTextOutputPane = new javax.swing.JTextPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableError = new javax.swing.JTable();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jStatusSeparator = new javax.swing.JSeparator();
+        jStatusLabel = new javax.swing.JLabel();
+        jMenuBar = new javax.swing.JMenuBar();
         FileMenu = new javax.swing.JMenu();
         OpenMenuItem = new javax.swing.JMenuItem();
         SaveMenuItem = new javax.swing.JMenuItem();
         SaveAsMenuItem = new javax.swing.JMenuItem();
         RecentFileMenu = new javax.swing.JMenu();
+        MenuSeparator = new javax.swing.JSeparator();
         ExitMenuItem = new javax.swing.JMenuItem();
         HelpMenu = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        HelpMenuItem = new javax.swing.JMenuItem();
+        RunMenu = new javax.swing.JMenu();
+        RunMenuItem = new javax.swing.JMenuItem();
+        DebugMenuItem = new javax.swing.JMenuItem();
+        StepIntoMenuItem = new javax.swing.JMenuItem();
+        StopMenuItem = new javax.swing.JMenuItem();
 
         FrameAbout.setTitle("About");
         FrameAbout.setMinimumSize(new java.awt.Dimension(400, 300));
@@ -240,15 +246,39 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 .addContainerGap())
         );
 
+        jLabel2.setText("fdsfdfd");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 119, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Compiler");
-        setFont(new java.awt.Font("Times New Roman", 0, 10));
+        setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
         setMinimumSize(new java.awt.Dimension(565, 389));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
+
+        jButtonPanel.setMinimumSize(new java.awt.Dimension(565, 389));
 
         SaveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/icons/filesave.png"))); // NOI18N
         SaveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -278,10 +308,10 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             }
         });
 
-        StepOverButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/icons/undo.png"))); // NOI18N
-        StepOverButton.addActionListener(new java.awt.event.ActionListener() {
+        StopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/icons/StopBtn.png"))); // NOI18N
+        StopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StepOverButtonActionPerformed(evt);
+                StopButtonActionPerformed(evt);
             }
         });
 
@@ -347,9 +377,14 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         jButtonPanel.setLayout(jButtonPanelLayout);
         jButtonPanelLayout.setHorizontalGroup(
             jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jButtonPanelLayout.createSequentialGroup()
-                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jButtonPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jButtonPanelLayout.createSequentialGroup()
+                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jButtonPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE))
+                    .addComponent(jStatusSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+                    .addComponent(jStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jButtonPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(SaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(37, 37, 37)
@@ -358,26 +393,29 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                         .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(52, 52, 52)
                         .addComponent(StepNextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(StepOverButton, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSplitPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE))
+                        .addGap(54, 54, 54)
+                        .addComponent(StopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jButtonPanelLayout.setVerticalGroup(
             jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jButtonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(RunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(StepNextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(StepOverButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(StopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(RunButton, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                    .addComponent(SaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                    .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, Short.MAX_VALUE)
+                    .addComponent(StepNextButton, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
+                .addComponent(jStatusSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jStatusLabel))
         );
 
-        jMenuBar1.setName(""); // NOI18N
+        jMenuBar.setName(""); // NOI18N
 
         FileMenu.setText("File");
 
@@ -412,6 +450,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
 
         RecentFileMenu.setText("Open Recent File");
         FileMenu.add(RecentFileMenu);
+        FileMenu.add(MenuSeparator);
 
         ExitMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/icons/exit.png"))); // NOI18N
         ExitMenuItem.setText("Exit");
@@ -422,35 +461,70 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         });
         FileMenu.add(ExitMenuItem);
 
-        jMenuBar1.add(FileMenu);
+        jMenuBar.add(FileMenu);
 
         HelpMenu.setText("Help");
 
-        jMenuItem6.setText("About");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        HelpMenuItem.setText("About");
+        HelpMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AboutActionPerformed(evt);
             }
         });
-        HelpMenu.add(jMenuItem6);
+        HelpMenu.add(HelpMenuItem);
 
-        jMenuBar1.add(HelpMenu);
+        jMenuBar.add(HelpMenu);
 
-        setJMenuBar(jMenuBar1);
+        RunMenu.setText("Run");
+
+        RunMenuItem.setText("Run");
+        RunMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RunMenuItemActionPerformed(evt);
+            }
+        });
+        RunMenu.add(RunMenuItem);
+
+        DebugMenuItem.setText("Debug");
+        DebugMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DebugMenuItemActionPerformed(evt);
+            }
+        });
+        RunMenu.add(DebugMenuItem);
+
+        StepIntoMenuItem.setText("Step Into");
+        StepIntoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StepIntoMenuItemActionPerformed(evt);
+            }
+        });
+        RunMenu.add(StepIntoMenuItem);
+
+        StopMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/icons/stop_clicked.png"))); // NOI18N
+        StopMenuItem.setText("Stop");
+        StopMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StopMenuItemActionPerformed(evt);
+            }
+        });
+        RunMenu.add(StopMenuItem);
+
+        jMenuBar.add(RunMenu);
+
+        setJMenuBar(jMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jButtonPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -475,38 +549,21 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
             }
             textOpenedProgramm = TextPane.getText();
         }
-        controller.lightKeywords(TextPane);
+        controller.lightKeywords();
+        setStatus("File " + currentFileName + " opened.");
     }//GEN-LAST:event_OpenMenuItemActionPerformed
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
-        if (currentFileName.equals("")) {
-            SaveAsMenuItemActionPerformed(null);
-        } else {
-            controller.saveFile(TextPane.getText(), currentFileName);
-            textOpenedProgramm = TextPane.getText();
-            jTextOutputPane.setText("File saved in " + currentFileName);
-        }
+        save();
     }//GEN-LAST:event_SaveButtonActionPerformed
 
         private void ExitMenuItem(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuItem
-            String textCurrentProgramm = TextPane.getText();
-            if (textCurrentProgramm.equals(textOpenedProgramm) || textCurrentProgramm.equals("")) {
-                Memento.getMemento().saveBounds(MainForm.this.getHeight(),
-                        MainForm.this.getWidth(), MainForm.this.getX(), MainForm.this.getY(), this.recentOpenedFileList);
-                System.exit(0);
-            } else {
-                FileChangedLabel.setText("Сохранить изменения в файле: " + currentFileName + "???");
-                setCenterPosition(FileChangedWarningFrame);
-                FileChangedWarningFrame.setVisible(true);
-            }
-
+            exit();
         }//GEN-LAST:event_ExitMenuItem
 
         private void RunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunButtonActionPerformed
-            clearOutputPane();
-            clearErrorPane();
-            String textProgramm = TextPane.getText();
-            setTextInOutputPane(controller.runProgram(textProgramm, false));
+            controller.stopInterpreter();
+            run();
         }//GEN-LAST:event_RunButtonActionPerformed
 
         private void CloseAboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseAboutButtonActionPerformed
@@ -523,38 +580,28 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_AboutActionPerformed
 
         private void DebugButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DebugButtonActionPerformed
-            clearOutputPane();
-            clearErrorPane();
-            String textPragramm = TextPane.getText();
-            setTextInOutputPane(controller.runProgram(textPragramm, true));
+            controller.stopInterpreter();
+            debug();
         }//GEN-LAST:event_DebugButtonActionPerformed
 
         private void StepNextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepNextButtonActionPerformed
-            Interpreter.unlockInterpreter();
+            stepInto();
         }//GEN-LAST:event_StepNextButtonActionPerformed
 
-        private void StepOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepOverButtonActionPerformed
-            // TODO add your handling code here:
-        }//GEN-LAST:event_StepOverButtonActionPerformed
+        private void StopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopButtonActionPerformed
+            controller.stopInterpreter();
+        }//GEN-LAST:event_StopButtonActionPerformed
 
         private void SaveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveMenuItemActionPerformed
             SaveButtonActionPerformed(null);
         }//GEN-LAST:event_SaveMenuItemActionPerformed
 
         private void SaveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsMenuItemActionPerformed
-            SaveFrame.setTitle("Save As...");
-            setCenterPosition(SaveFrame);
-            javax.swing.filechooser.FileFilter filter = new MyFilter(".txt");
-            SaveFileChooser.addChoosableFileFilter(filter);
-            if (SaveFileChooser.showSaveDialog(null) != SaveFileChooser.APPROVE_OPTION) {
-                return;
-            }
-            currentFileName = SaveFileChooser.getSelectedFile().getPath() + ".txt";
-            SaveButtonActionPerformed(null);
+            saveAs();
         }//GEN-LAST:event_SaveAsMenuItemActionPerformed
 
         private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-            ExitMenuItem(null);
+            exit();
         }//GEN-LAST:event_formWindowClosing
 
         private void CanselButtonWarningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CanselButtonWarningActionPerformed
@@ -566,18 +613,101 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_NotSaveButtonWarningActionPerformed
 
         private void SaveWarningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveWarningButtonActionPerformed
-            SaveButtonActionPerformed(null);
+            save();
             FileChangedWarningFrame.hide();
         }//GEN-LAST:event_SaveWarningButtonActionPerformed
 
         private void tableErrorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableErrorMouseClicked
-            controller.selectLine(TextPane, (Integer) (tableError.getModel().getValueAt(tableError.getSelectedRow(), 2)),
+            controller.selectLine((Integer) (tableError.getModel().getValueAt(tableError.getSelectedRow(), 2)),
                     (Integer) (tableError.getModel().getValueAt(tableError.getSelectedRow(), 1)));
 }//GEN-LAST:event_tableErrorMouseClicked
 
         private void TextPaneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextPaneKeyReleased
-            controller.lightKeywords(TextPane);
+            controller.lightKeywords();
 }//GEN-LAST:event_TextPaneKeyReleased
+
+        private void RunMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunMenuItemActionPerformed
+            //jTextOutputPane.setText(controller.runProgram("print(4)", false));
+            controller.stopInterpreter();
+            run();
+        }//GEN-LAST:event_RunMenuItemActionPerformed
+
+        private void DebugMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DebugMenuItemActionPerformed
+            controller.stopInterpreter();
+            debug();
+        }//GEN-LAST:event_DebugMenuItemActionPerformed
+
+        private void StepIntoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepIntoMenuItemActionPerformed
+            stepInto();
+        }//GEN-LAST:event_StepIntoMenuItemActionPerformed
+
+        private void StopMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopMenuItemActionPerformed
+            // TODO add your handling code here:
+        }//GEN-LAST:event_StopMenuItemActionPerformed
+
+        public void setTips(){
+         SaveButton.setToolTipText("Save program");
+         RunButton.setToolTipText("Run program");
+         DebugButton.setToolTipText("Run program in debug regime");
+         StepNextButton.setToolTipText("Step Into");
+         StopButton.setToolTipText("Stop debug");
+        }
+        
+
+    private void save() {
+        if (currentFileName.equals("")) {
+            saveAs();
+        } else {
+            controller.saveFile(TextPane.getText(), currentFileName);
+            textOpenedProgramm = TextPane.getText();
+            setStatus("File saved in " + currentFileName);
+        }
+    }
+
+    private void saveAs() {
+        SaveFrame.setTitle("Save As...");
+        setCenterPosition(SaveFrame);
+        javax.swing.filechooser.FileFilter filter = new MyFilter(".txt");
+        SaveFileChooser.addChoosableFileFilter(filter);
+        if (SaveFileChooser.showSaveDialog(null) != SaveFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        currentFileName = SaveFileChooser.getSelectedFile().getPath() + ".txt";
+        save();
+    }
+
+    private void exit() {
+        String textCurrentProgramm = TextPane.getText();
+        if (textCurrentProgramm.equals(textOpenedProgramm) || textCurrentProgramm.equals("")) {
+            Memento.getMemento().saveBounds(MainForm.this.getHeight(),
+                    MainForm.this.getWidth(), MainForm.this.getX(), MainForm.this.getY(), this.recentOpenedFileList);
+            System.exit(0);
+        } else {            
+            FileChangedLabel.setText("Сохранить изменения в файле: " + currentFileName + "???");
+            setCenterPosition(FileChangedWarningFrame);
+            FileChangedWarningFrame.setVisible(true);
+        }
+    }
+
+    private void stepInto() {
+        Interpreter.unlockInterpreter();
+    }
+
+    private void run() {
+        clearOutputPane();
+        clearErrorPane();
+        String textProgramm = TextPane.getText();
+        controller.runProgram(textProgramm, false);
+        setStatus("Runing program...");
+    }
+
+    private void debug() {
+        clearOutputPane();
+        clearErrorPane();
+        String textPragramm = TextPane.getText();
+        controller.runProgram(textPragramm, true);
+        setStatus("Working in Debug regime");
+    }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -592,9 +722,12 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 loadReacentFile(mainForm);
                 mainForm.TextPane.setFont(new Font("Times New Roman", Font.BOLD, 14));
                 mainForm.jTextOutputPane.setFont(new Font("Times New Roman", Font.BOLD, 14));
+                mainForm.setTips();
                 mainForm.setBounds(mainForm.coordinateX, mainForm.coordinateY, mainForm.width, mainForm.height);
                 mainForm.TextPane.requestFocus();
+//                mainForm.add
                 mainForm.setVisible(true);
+                // System.out.println(mainForm.getController().runProgram("print(1895)", false));
             }
 
             private void loadReacentFile(MainForm mainForm) {
@@ -609,6 +742,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     private javax.swing.JButton CanselButtonWarning;
     private javax.swing.JButton CloseAboutButton;
     private javax.swing.JButton DebugButton;
+    private javax.swing.JMenuItem DebugMenuItem;
     private javax.swing.JMenuItem ExitMenuItem;
     private javax.swing.JLabel FileChangedLabel;
     private javax.swing.JFrame FileChangedWarningFrame;
@@ -616,12 +750,16 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     private javax.swing.JLabel FirstDeveloper;
     private javax.swing.JFrame FrameAbout;
     private javax.swing.JMenu HelpMenu;
+    private javax.swing.JMenuItem HelpMenuItem;
+    private javax.swing.JSeparator MenuSeparator;
     private javax.swing.JButton NotSaveButtonWarning;
     private javax.swing.JFileChooser OpenFileChooser;
     private javax.swing.JFrame OpenFrame;
     private javax.swing.JMenuItem OpenMenuItem;
     private javax.swing.JMenu RecentFileMenu;
     private javax.swing.JButton RunButton;
+    private javax.swing.JMenu RunMenu;
+    private javax.swing.JMenuItem RunMenuItem;
     private javax.swing.JMenuItem SaveAsMenuItem;
     private javax.swing.JButton SaveButton;
     private javax.swing.JFileChooser SaveFileChooser;
@@ -629,32 +767,34 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     private javax.swing.JMenuItem SaveMenuItem;
     private javax.swing.JButton SaveWarningButton;
     private javax.swing.JLabel SecondDeveloper;
+    private javax.swing.JMenuItem StepIntoMenuItem;
     private javax.swing.JButton StepNextButton;
-    private javax.swing.JButton StepOverButton;
+    private javax.swing.JButton StopButton;
+    private javax.swing.JMenuItem StopMenuItem;
     private javax.swing.JTextPane TextPane;
     private javax.swing.JLabel ThirdDeveloper;
     private javax.swing.JPanel jButtonPanel;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JTabbedPane jOutputPane;
     private javax.swing.JScrollPane jOutputScrollPane;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollTextPane;
     private javax.swing.JSplitPane jSplitPane;
+    private javax.swing.JLabel jStatusLabel;
+    private javax.swing.JSeparator jStatusSeparator;
     private javax.swing.JTextPane jTextOutputPane;
     private javax.swing.JTable tableError;
     // End of variables declaration//GEN-END:variables
 
     public void setTextInOutputPane(String text) {
         jTextOutputPane.setText(jTextOutputPane.getText() + text);
+        setStatus("Run succesful ended.");
     }
 
     public void clearOutputPane() {
         jTextOutputPane.setText(null);
-    }
-
-    public JTextPane getTextPane() {
-        return TextPane;
     }
 
     public void setTextInErrorPane(String text, int column, int line) {
@@ -685,6 +825,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 File file = new File(toolTipText);
                 controller.openFile(file);
                 currentFileName = toolTipText;
+                setStatus("File " + currentFileName + " opened.");
             }
         });
         RecentFileMenu.add(newItem);
@@ -719,4 +860,34 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }
         frame.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
+
+    public void setTextInTextPane(String text) {
+        TextPane.setText(text);
+    }
+
+    public String getTextInTextPane() {
+        return TextPane.getText();
+    }
+
+    public StyledDocument getStyledDocumentInTextPane() {
+        StyledDocument doc = TextPane.getStyledDocument();
+        return doc;
+    }
+
+    public void setCharacterAttributesInTextPane() {
+        TextPane.setCharacterAttributes(new SimpleAttributeSet(), true);
+    }
+
+    public void setFocusInTextPane() {
+        TextPane.requestFocus();
+    }
+
+    public void setCaretPositionInTextPane(int position) {
+        TextPane.setCaretPosition(position);
+    }
+
+    public void setStatus(String status) {
+        jStatusLabel.setText(status);
+    }
+
 }

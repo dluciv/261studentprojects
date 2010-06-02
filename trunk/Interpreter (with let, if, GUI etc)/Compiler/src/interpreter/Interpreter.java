@@ -12,62 +12,63 @@ import gui.*;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lexerandparser.Position;
+import tools.Tool;
 
 public class Interpreter extends Thread {
 
     private final int SLEEP_TIME_MS = 200;
     private Expression input;
-    private Value result;
-    private String interpreterErrorLog = "";
-    private String output = "";
     private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
-    Controller controller;
-    private int errorCounter = 0;
-    private boolean isUnderDebug;
+    private iController controller;
+    private boolean isDebugging;
     private static boolean isBlocked;
+    private static boolean isStoped;
+    private static Position curPos;
 
-    public Interpreter(Expression parserOutput, int parseErrorQnt, boolean isUnderDebug, Controller controller) {
-        if (parseErrorQnt == 0) {
-            input = parserOutput;
-            this.isUnderDebug = isUnderDebug;
-            isBlocked = true;
-            this.controller = controller;
-        } else {
-            errorCounter = parseErrorQnt;
-            fixError("there are parse or/and lexical errors");
-        }
-    }
-
-    public int getErrorQnt() {
-        return errorCounter;
-    }
-
-    public String getErrorLog() {
-        return interpreterErrorLog;
-    }
-
-    public String getOutput() {
-        return output;
+    public Interpreter(Expression parserOutput, boolean isDebugging, Controller controller) {
+        input = parserOutput;
+        this.isDebugging = isDebugging;
+        isBlocked = true;
+        //isStoped = false;
+        this.controller = controller;
     }
 
     public static void unlockInterpreter() {
         isBlocked = false;
     }
 
-    @Override
-    public void run() {
-        if (errorCounter != 0) {
-            return;
-        }
-
-        printDebugInfo(input);
-        result = interpretNode(input);
-        if (isUnderDebug) {
-            controller.printInOutputPane("end of source program;\n");
-        }
+    public static void stopInterpreter() {
+        isStoped = true;
     }
 
-    private Value interpretNode(Tree node) {
+    public static Position getCurPos() {
+        return curPos;
+    }
+
+    @Override
+    public void run() {
+        try {
+            isStoped = false;
+            //printDebugInfo(input);
+            interpretNode(input);
+            if (isDebugging) {
+                controller.printInOutputPane("end of source program;\n");
+            }
+        } catch (InterpreterStopedException e) {
+            System.out.println("abourted");
+            controller.printInOutputPane("program was stoped by user;\n");
+        }
+        
+    }
+
+    private Value interpretNode(Expression node) throws InterpreterStopedException {
+        curPos = node.getPosition();
+
+        if (isStoped) {
+            throw new InterpreterStopedException();
+        }
+
         if (node instanceof ArOperand) {
             return interpret((ArOperand) node);
         } else if (node instanceof ArAddition) {
@@ -123,44 +124,43 @@ public class Interpreter extends Thread {
         return new ValInt(node.getValue());
     }
 
-    private Value interpret(ArAddition node) {
-        ValInt leftNumber = (ValInt) interpretNode(node.getLeft());
-        ValInt rightNumber = (ValInt) interpretNode(node.getRight());
+    private Value interpret(ArAddition node) throws InterpreterStopedException {
+        Integer leftNumber = interpretNode(node.getLeft()).asInteger();
+        Integer rightNumber = interpretNode(node.getRight()).asInteger();
 
-        return new ValInt((Integer) leftNumber.getValue() + (Integer) rightNumber.getValue());
+        return new ValInt(leftNumber + rightNumber);
     }
 
-    private Value interpret(ArSubtraction node) {
-        ValInt leftNumber = (ValInt) interpretNode(node.getLeft());
-        ValInt rightNumber = (ValInt) interpretNode(node.getRight());
+    private Value interpret(ArSubtraction node) throws InterpreterStopedException {
+        Integer leftNumber = interpretNode(node.getLeft()).asInteger();
+        Integer rightNumber = interpretNode(node.getRight()).asInteger();
 
-        return new ValInt((Integer) leftNumber.getValue() - (Integer) rightNumber.getValue());
+        return new ValInt(leftNumber - rightNumber);
     }
 
-    private Value interpret(ArMultiplication node) {
-        ValInt leftNumber = (ValInt) interpretNode(node.getLeft());
-        ValInt rightNumber = (ValInt) interpretNode(node.getRight());
+    private Value interpret(ArMultiplication node) throws InterpreterStopedException {
+        Integer leftNumber = interpretNode(node.getLeft()).asInteger();
+        Integer rightNumber = interpretNode(node.getRight()).asInteger();
 
-        return new ValInt((Integer) leftNumber.getValue() * (Integer) rightNumber.getValue());
+        return new ValInt(leftNumber * rightNumber);
     }
 
-    private Value interpret(ArDivision node) {
-        ValInt leftNumber = (ValInt) interpretNode(node.getLeft());
-        ValInt rightNumber = (ValInt) interpretNode(node.getRight());
-        Integer divider = (Integer) rightNumber.getValue();
+    private Value interpret(ArDivision node) throws InterpreterStopedException {
+        Integer leftNumber = interpretNode(node.getLeft()).asInteger();
+        Integer rightNumber = interpretNode(node.getRight()).asInteger();
 
-        if (divider != 0) {
-            return new ValInt((Integer) leftNumber.getValue() / (Integer) rightNumber.getValue());
+        if (rightNumber != 0) {
+            return new ValInt(leftNumber / rightNumber);
         } else {
-            fixError("devide by zero");
+            Tool.fixError("devide by zero", curPos);
             return null;
         }
     }
 
-    private Value interpret(ArNegate node) { // -;
-        ValInt operand = (ValInt) interpretNode(node.getOperand());
+    private Value interpret(ArNegate node) throws InterpreterStopedException { // -;
+        Integer operand = interpretNode(node.getOperand()).asInteger();
 
-        return new ValInt(-(Integer) operand.getValue());
+        return new ValInt(-operand);
     }
 
     // логические узлы;
@@ -168,70 +168,70 @@ public class Interpreter extends Thread {
         return new ValBoolean(node.getValue());
     }
 
-    private Value interpret(LogAnd node) { // &&;
-        ValBoolean leftOperand = (ValBoolean) interpretNode(node.getLeft());
-        ValBoolean rightOperand = (ValBoolean) interpretNode(node.getRight());
+    private Value interpret(LogAnd node) throws InterpreterStopedException { // &&;
+        Boolean leftOperand = interpretNode(node.getLeft()).asBolean();
+        Boolean rightOperand = interpretNode(node.getRight()).asBolean();
 
-        return new ValBoolean((Boolean) leftOperand.getValue() && (Boolean) rightOperand.getValue());
+        return new ValBoolean(leftOperand && rightOperand);
     }
 
-    private Value interpret(LogOr node) { // ||;
-        ValBoolean leftOperand = (ValBoolean) interpretNode(node.getLeft());
-        ValBoolean rightOperand = (ValBoolean) interpretNode(node.getRight());
+    private Value interpret(LogOr node) throws InterpreterStopedException { // ||;
+        Boolean leftOperand = interpretNode(node.getLeft()).asBolean();
+        Boolean rightOperand = interpretNode(node.getRight()).asBolean();
 
-        return new ValBoolean((Boolean) leftOperand.getValue() || (Boolean) rightOperand.getValue());
+        return new ValBoolean(leftOperand || rightOperand);
     }
 
-    private Value interpret(LogNot node) { // !;
-        ValBoolean operand = (ValBoolean) interpretNode(node.getOperand());
+    private Value interpret(LogNot node) throws InterpreterStopedException { // !;
+        Boolean operand = interpretNode(node.getOperand()).asBolean();
 
-        return new ValBoolean(!(Boolean) operand.getValue());
+        return new ValBoolean(!operand);
     }
 
-    private Value interpret(LogEquality node) { // ==;
-        Value leftOperand = (Value) interpretNode(node.getLeft());
-        Value rightOperand = (Value) interpretNode(node.getRight());
+    private Value interpret(LogEquality node) throws InterpreterStopedException { // ==;
+        Object leftOperand = interpretNode(node.getLeft()).getValue();
+        Object rightOperand = interpretNode(node.getRight()).getValue();
 
-        return new ValBoolean(leftOperand.getValue() == rightOperand.getValue());
+        return new ValBoolean(leftOperand == rightOperand);
     }
 
-    private Value interpret(LogInequality node) { // !=;
-        Value leftOperand = (Value) interpretNode(node.getLeft());
-        Value rightOperand = (Value) interpretNode(node.getRight());
+    private Value interpret(LogInequality node) throws InterpreterStopedException { // !=;
+        Object leftOperand = interpretNode(node.getLeft()).getValue();
+        Object rightOperand = interpretNode(node.getRight()).getValue();
 
-        return new ValBoolean(leftOperand.getValue() == rightOperand.getValue());
+        return new ValBoolean(leftOperand != rightOperand);
     }
 
-    private Value interpret(LogGreater node) { // >;
-        ValInt leftOperand = (ValInt) interpretNode(node.getLeft());
-        ValInt rightOperand = (ValInt) interpretNode(node.getRight());
+    private Value interpret(LogGreater node) throws InterpreterStopedException { // >;
+        Integer leftOperand = interpretNode(node.getLeft()).asInteger();
+        Integer rightOperand = interpretNode(node.getRight()).asInteger();
 
-        return new ValBoolean((Integer) leftOperand.getValue() > (Integer) rightOperand.getValue());
+        return new ValBoolean(leftOperand > rightOperand);
     }
 
-    private Value interpret(LogLess node) { // <;
-        ValInt leftOperand = (ValInt) interpretNode(node.getLeft());
-        ValInt rightOperand = (ValInt) interpretNode(node.getRight());
+    private Value interpret(LogLess node) throws InterpreterStopedException { // <;
+        Integer leftOperand = interpretNode(node.getLeft()).asInteger();
+        Integer rightOperand = interpretNode(node.getRight()).asInteger();
 
-        return new ValBoolean((Integer) leftOperand.getValue() < (Integer) rightOperand.getValue());
+        return new ValBoolean(leftOperand < rightOperand);
     }
 
-    private Value interpret(LogGE node) { // >=;
-        ValInt leftOperand = (ValInt) interpretNode(node.getLeft());
-        ValInt rightOperand = (ValInt) interpretNode(node.getRight());
+    private Value interpret(LogGE node) throws InterpreterStopedException { // >=;
+        Integer leftOperand = interpretNode(node.getLeft()).asInteger();
+        Integer rightOperand = interpretNode(node.getRight()).asInteger();
 
-        return new ValBoolean((Integer) leftOperand.getValue() >= (Integer) rightOperand.getValue());
+        return new ValBoolean(leftOperand >= rightOperand);
     }
 
-    private Value interpret(LogLE node) { // <=;
-        ValInt leftOperand = (ValInt) interpretNode(node.getLeft());
-        ValInt rightOperand = (ValInt) interpretNode(node.getRight());
+    private Value interpret(LogLE node) throws InterpreterStopedException { // <=;
+        Integer leftOperand = interpretNode(node.getLeft()).asInteger();
+        Integer rightOperand = interpretNode(node.getRight()).asInteger();
 
-        return new ValBoolean((Integer) leftOperand.getValue() <= (Integer) rightOperand.getValue());
+        return new ValBoolean(leftOperand <= rightOperand);
     }
 
     // узлы типа "выражение";
-    private Value interpret(ExSequence sequence) {
+    private Value interpret(ExSequence sequence) throws InterpreterStopedException {
         Value res = null;
 
         for (Expression statement : sequence.getList()) {
@@ -242,7 +242,7 @@ public class Interpreter extends Thread {
         return res;
     }
 
-    private Value interpret(ExBinding node) { // binding;
+    private Value interpret(ExBinding node) throws InterpreterStopedException { // binding;
         printDebugInfo(node.getLetExpression());
         Value letExpressionValue = interpretNode(node.getLetExpression());
         EnvironmentCell environmentCell;
@@ -269,19 +269,19 @@ public class Interpreter extends Thread {
         return findVar(node.getId()).getValue();
     }
 
-    private Value interpret(ExPrint node) { // print
+    private Value interpret(ExPrint node) throws InterpreterStopedException { // print
         Value exToPrintValue = interpretNode(node.getExToPrint());
 
         if (exToPrintValue instanceof ValClosing) {
-            fixError("\"print(expr)\" can not print function");
-        } else {
+            Tool.fixError("\"print(expr)\" can not print function", curPos);
+        } else if (Tool.getErrorQnt() == 0) {
             controller.printInOutputPane(exToPrintValue.getValue().toString() + "\n");
         }
 
         return new ValUnit();
     }
 
-    private Value interpret(ExConditional node) {
+    private Value interpret(ExConditional node) throws InterpreterStopedException {
         ValBoolean cnd = (ValBoolean) interpretNode(node.getLogExpression());
 
         if ((Boolean) cnd.getValue() == true) {
@@ -293,16 +293,14 @@ public class Interpreter extends Thread {
         }
     }
 
-    private Value interpret(ExApplication node) {
+    private Value interpret(ExApplication node) throws InterpreterStopedException {
         ValClosing function = (ValClosing) interpretNode(node.getFunction());
         Value arg = interpretNode(node.getArgument());
 
         LinkedList<EnvironmentCell> tempEnvironment = environment;
         environment = function.getEnv();
         environment.add(new EnvironmentCell(function.getId(), arg));
-
         Value res = interpretNode(function.getFunctionBody());
-
         environment = tempEnvironment;
 
         return res;
@@ -315,7 +313,7 @@ public class Interpreter extends Thread {
 
     // вспомогательные функции;
     private void printDebugInfo(Expression node) {
-        if (isUnderDebug) {
+        if (isDebugging && !isStoped) {
             controller.printInOutputPane(node.getClass().getSimpleName() + "\n");
             controller.selectDebugLine(node.getPosition().getLine() + 1, node.getPosition().getColumn() + 1);
             //System.out.println(node.getPosition().getLine() + " - " + node.getPosition().getColumn());
@@ -324,14 +322,15 @@ public class Interpreter extends Thread {
     }
 
     private void waitKeypress() {
-        while (isBlocked) {
+        while (isBlocked && !isStoped) {
             try {
                 sleep(SLEEP_TIME_MS);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        isBlocked = true;
+        if (!isStoped)
+            isBlocked = true;
     }
 
     private EnvironmentCell findVar(int id) {
@@ -340,13 +339,7 @@ public class Interpreter extends Thread {
                 return cell;
             }
         }
-        fixError("no such id");
-        return new EnvironmentCell(environment.size(), new ValInt(0)); // позволяет завершить работу ин-
-        // терпретатора, но с ошибкой;
-    }
-
-    private void fixError(String message) {
-        errorCounter++;
-        interpreterErrorLog += "interpreter error: " + message + ";\n";
+        Tool.fixError("no such id", curPos);
+        return new EnvironmentCell(environment.size(), new ValInt(0));
     }
 }

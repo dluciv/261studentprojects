@@ -4,19 +4,19 @@ package ast;
 import lexerandparser.Position;
 
 public abstract class BinaryOperation extends Expression {
-    private Tree left, right;
+    private Expression left, right;
 
-    public BinaryOperation(Tree left, Tree right, Position position) {
+    public BinaryOperation(Expression left, Expression right, Position position) {
         this.left = left;
         this.right = right;
         setPositon(position);
     }
 
-    public Tree getLeft() {
+    public Expression getLeft() {
         return left;
     }
 
-    public Tree getRight() {
+    public Expression getRight() {
         return right;
     }
 
