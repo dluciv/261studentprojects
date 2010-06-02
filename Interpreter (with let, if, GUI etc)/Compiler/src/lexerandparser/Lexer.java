@@ -92,6 +92,7 @@ public class Lexer {
                 tokenStream.add(new Token(TokenType.SEMICOLON, curTokenPos));
             } else {
                 curTokenPos = new Position(smblNo, smblNo, lineNo, columnNo);
+                tokenStream.add(new Token(TokenType.UNKNOWN, curTokenPos));
                 Tool.fixError("unknown symbol", curTokenPos);
             }
             getNextChar();

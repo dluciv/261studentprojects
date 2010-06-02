@@ -8,14 +8,14 @@ package ast;
 import lexerandparser.Position;
 
 public abstract class UnaryOperation extends Expression {
-    private Tree operand;
+    private Expression operand;
 
-    public UnaryOperation(Tree operand, Position position) {
+    public UnaryOperation(Expression operand, Position position) {
         this.operand = operand;
         setPositon(position);
     }
 
-    public Tree getOperand() {
+    public Expression getOperand() {
         return operand;
     }
 }

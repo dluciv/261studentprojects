@@ -1,15 +1,21 @@
+
+/**
+ *
+ * @author Карымов Антон 261 группа
+ */
 package gui;
 
 import java.awt.Color;
 import java.io.*;
 import java.util.LinkedList;
-import javax.swing.JTextPane;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.text.*;
 import lexerandparser.*;
 import tools.*;
 import interpreter.*;
 
-public class Controller {
+public class Controller implements iController {
 
     private IMainForm iMainForm;
 
@@ -31,7 +37,7 @@ public class Controller {
             char[] buff = new char[size];
             Reader fileReadStream = new FileReader(file);
             int count = fileReadStream.read(buff);
-            iMainForm.getTextPane().setText(String.copyValueOf(buff));
+            iMainForm.setTextInTextPane(String.copyValueOf(buff));
             fileReadStream.close();
         } catch (FileNotFoundException Exception) {
             iMainForm.setTextInOutputPane("File can not open");
@@ -53,32 +59,30 @@ public class Controller {
         }
     }
 
-    public String runProgram(String input, boolean isUnderDebug) {
-        Tool.clearErrorQnt();
+    public void runProgram(String input, boolean isUnderDebug) {
+        //stopInterpreter();
         Tool.clearErrorLog();
         Lexer lexer = new Lexer(input + '\0');
         lexer.analyzeSourceProgram();
-        lexer.printTokenStream();
-        Parser parser = new Parser(lexer.getTokenStream(), Tool.getErrorQnt());
-        parser.parseProgramm();
-        Interpreter interpreter = new Interpreter(parser.getOutput(), Tool.getErrorQnt(), isUnderDebug, this);
-        interpreter.start();
-
-        if (Tool.getErrorQnt() > 0) {
-            errorRevise(Tool.getErrorLog());
-            return "";
-        } else {
-            return interpreter.getOutput();
+        if (Tool.getErrorQnt() == 0) {
+            Parser parser = new Parser(lexer.getTokenStream());
+            parser.parseProgram();
+            if (Tool.getErrorQnt() == 0) {
+                
+                
+                Interpreter interpreter = new Interpreter(parser.getOutput(), isUnderDebug, this);
+               
+                interpreter.start();
+            }
         }
     }
 
-    public void lightKeywords(JTextPane pane) {
+    public void lightKeywords() {
         MutableAttributeSet attr = new SimpleAttributeSet();
         StyleConstants.setForeground(attr, Color.blue);
         String[] keywordList = {"true", "false", "let", "in", "begin", "end", "if", "then", "print", "else"};
-        StyledDocument doc = pane.getStyledDocument();
-        String currentTextProgramm = pane.getText();
-        doc.setCharacterAttributes(0, pane.getText().length(), new SimpleAttributeSet(), true);
+        String currentTextProgramm = iMainForm.getTextInTextPane();
+        iMainForm.getStyledDocumentInTextPane().setCharacterAttributes(0, iMainForm.getTextInTextPane().length(), new SimpleAttributeSet(), true);
 
         for (String keyword : keywordList) {
             int pointer = 0;
@@ -100,21 +104,20 @@ public class Controller {
                     }
                 }
                 if (isKeyword) {
-                    doc.setCharacterAttributes(pointer - getLineNumber(pointer, pane), keyword.length(), attr, false);
+                    iMainForm.getStyledDocumentInTextPane().setCharacterAttributes(pointer - getLineNumber(pointer), keyword.length(), attr, false);
                 }
                 pointer++;
             }
         }
-        pane.setCharacterAttributes(new SimpleAttributeSet(), true);
+        iMainForm.setCharacterAttributesInTextPane();
     }
 
     public void selectDebugLine(int line, int column) {
         MutableAttributeSet attr = new SimpleAttributeSet();
         StyleConstants.setBackground(attr, Color.green);
-        StyledDocument doc = iMainForm.getTextPane().getStyledDocument();
-        String text = iMainForm.getTextPane().getText();
-        doc.setCharacterAttributes(0, text.length(), new SimpleAttributeSet(), true);
-        lightKeywords(iMainForm.getTextPane());
+        String text = iMainForm.getTextInTextPane();
+        iMainForm.getStyledDocumentInTextPane().setCharacterAttributes(0, text.length(), new SimpleAttributeSet(), true);
+        lightKeywords();
 
         int curLine = 1;
         int startSelection = 0;
@@ -136,20 +139,19 @@ public class Controller {
             lengthSelection = curPos - startSelection + 1 - line;
         }
 
-        iMainForm.getTextPane().setCaretPosition(startSelection + column - 1);
-        doc.setCharacterAttributes(startSelection, lengthSelection, attr, false);
-        iMainForm.getTextPane().setCharacterAttributes(new SimpleAttributeSet(), true);
-        iMainForm.getTextPane().requestFocus();
+        iMainForm.setCaretPositionInTextPane(startSelection + column - 1);
+        iMainForm.getStyledDocumentInTextPane().setCharacterAttributes(startSelection, lengthSelection, attr, false);
+        iMainForm.setCharacterAttributesInTextPane();
+        iMainForm.setFocusInTextPane();
     }
 
-    public void selectLine(JTextPane pane, int line, int column) {
+    public void selectLine(int line, int column) {
 
         MutableAttributeSet attr = new SimpleAttributeSet();
         StyleConstants.setBackground(attr, Color.yellow);
-        StyledDocument doc = pane.getStyledDocument();
-        String text = pane.getText();
-        doc.setCharacterAttributes(0, text.length(), new SimpleAttributeSet(), true);
-        lightKeywords(pane);
+        String text = iMainForm.getTextInTextPane();
+        iMainForm.getStyledDocumentInTextPane().setCharacterAttributes(0, text.length(), new SimpleAttributeSet(), true);
+        lightKeywords();
 
         int curLine = 1;
         int startSelection = 0;
@@ -171,27 +173,36 @@ public class Controller {
             lengthSelection = curPos - startSelection + 1 - line;
         }
 
-        pane.setCaretPosition(startSelection + column - 1);
-        doc.setCharacterAttributes(startSelection, lengthSelection, attr, false);
-        pane.setCharacterAttributes(new SimpleAttributeSet(), true);
-        pane.requestFocus();
+        iMainForm.setCaretPositionInTextPane(startSelection + column - 1);
+        iMainForm.getStyledDocumentInTextPane().setCharacterAttributes(startSelection, lengthSelection, attr, false);
+        iMainForm.setCharacterAttributesInTextPane();
+        iMainForm.setFocusInTextPane();
     }
 
-    private int getLineNumber(int pointer, JTextPane pane) {
+    private int getLineNumber(int pointer) {
         int i = 0;
         int line = 0;
         while (i < pointer) {
-            if (pane.getText().charAt(i) == '\n') {
+            if (iMainForm.getTextInTextPane().charAt(i) == '\n') {
                 line++;
             }
             i++;
         }
         return line;
     }
+    
+    public void cleanErrorPane(){
+        iMainForm.clearErrorPane();
+    }
 
     public void errorRevise(LinkedList<ErrorLogCell> errorList) {
         for (ErrorLogCell cellError : errorList) {
-            iMainForm.setTextInErrorPane(cellError.getErrorMessage(), cellError.getPosition().getColumn(), cellError.getPosition().getLine());
+            iMainForm.setTextInErrorPane(cellError.getErrorMessage(), cellError.getPosition().getColumn(), cellError.getPosition().getLine());     
         }
+         iMainForm.setStatus("You have some error in the programm.");
+    }
+
+    public void stopInterpreter() {
+        Interpreter.stopInterpreter();
     }
 }

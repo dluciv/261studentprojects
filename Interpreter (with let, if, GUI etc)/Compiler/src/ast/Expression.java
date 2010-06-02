@@ -3,7 +3,7 @@ package ast;
 
 import lexerandparser.Position;
 
-public class Expression extends Tree {
+public class Expression {
 
     private Position position;
 

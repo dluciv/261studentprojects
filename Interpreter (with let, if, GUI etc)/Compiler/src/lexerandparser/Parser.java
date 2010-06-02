@@ -21,7 +21,7 @@ public class Parser {
     private Token curToken = new Token();
     private Position defaultPosition = new Position(0, 0, 0, 0);
 
-    public Parser(LinkedList<Token> tokenStream, int lexErrorQnt) {
+    public Parser(LinkedList<Token> tokenStream) {
         this.tokenStream = tokenStream;
         errorCounter = Tool.getErrorQnt();
     }
@@ -30,7 +30,7 @@ public class Parser {
         return output;
     }
 
-    public void parseProgramm() {
+    public void parseProgram() {
         curToken.setPosition(defaultPosition);
         if (errorCounter == 0) {
             output = parseSequence();
