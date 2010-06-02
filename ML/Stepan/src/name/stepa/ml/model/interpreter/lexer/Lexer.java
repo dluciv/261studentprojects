@@ -1,5 +1,6 @@
 package name.stepa.ml.model.interpreter.lexer;
 
+import name.stepa.ml.model.interpreter.exceptions.UnexectedSymbolException;
 import name.stepa.ml.model.interpreter.lexer.keywords.*;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Lexer {
 
     private static final int SYMBOL_UNKNOWN = -1;
 
-    public Lexeme[] parse(String text) throws Exception {
+    public Lexeme[] parse(String text) throws UnexectedSymbolException {
         ArrayList<Lexeme> res = new ArrayList<Lexeme>();
         res.add(new BeginLexeme());
 
@@ -129,7 +130,7 @@ public class Lexer {
                         res.add(new OperationLexeme(data[pos++], posStart));
                     break;
                 case SYMBOL_UNKNOWN:
-                    throw new Exception("Unexpected symbol");
+                    throw new UnexectedSymbolException(data[pos]);
             }
         }
         res.add(new EndLexeme());
@@ -154,6 +155,8 @@ public class Lexer {
         if (c == '*')
             return SYMBOL_BINARY_OPERATION;
         if (c == '&')
+            return SYMBOL_BINARY_OPERATION;
+        if (c == '|')
             return SYMBOL_BINARY_OPERATION;
 
         if (c == '(')

@@ -1,5 +1,6 @@
 package name.stepa.ml.model.interpreter.syntax;
 
+import name.stepa.ml.model.interpreter.exceptions.LexemeTypeMismatchException;
 import name.stepa.ml.model.interpreter.lexer.*;
 import name.stepa.ml.model.interpreter.lexer.keywords.*;
 
@@ -10,76 +11,86 @@ import java.util.ArrayList;
  */
 public class SyntaxProcessor {
 
-    private int pointer;
-
-    public SyntaxTreeNode process(Lexeme[] data) throws Exception {
-        pointer = 0;
-        return processExpressionList(data);
+    public static SyntaxTreeNode process(LexemeStream stream) throws LexemeTypeMismatchException {
+        return processExpressionList(stream);
     }
 
-    private SyntaxTreeNode processExpressionList(Lexeme[] data) throws Exception {
-        if (data[pointer] instanceof BeginLexeme) {
-            BeginLexeme begin = (BeginLexeme) data[pointer];
+    private static SyntaxTreeNode processExpressionList(LexemeStream stream) throws LexemeTypeMismatchException {
+        if (stream.current() instanceof BeginLexeme) {
+            BeginLexeme begin = (BeginLexeme) stream.current();
             ArrayList<SyntaxTreeNode> nodes = new ArrayList<SyntaxTreeNode>();
-            pointer++;
-            nodes.add(processExpression(data));
-            // Skip semicolons by "++pointer"
-            while ((pointer < data.length - 1) && (!(data[++pointer] instanceof EndLexeme))) {
-                nodes.add(processExpression(data));
+            stream.next();
+
+            while ((!(stream.current() instanceof EndLexeme)) && (!(stream.current() instanceof EOFLexeme))) {
+                if ((stream.current() instanceof SemicolonLexeme)) {
+                    stream.next();
+                    continue;
+                }
+                nodes.add(processExpressionList(stream));
+                if (!(stream.current() instanceof SemicolonLexeme)) {
+                    throw new LexemeTypeMismatchException("SemicolonLexeme", stream.current());
+                } else
+                    stream.next();
             }
-            EndLexeme end = (EndLexeme) data[pointer++];
+            if (!(stream.current() instanceof EndLexeme))
+                throw new LexemeTypeMismatchException("EndLexeme", stream.current());
+
+            EndLexeme end = (EndLexeme) stream.currentAndNext();
             return new ExpressionListTreeNode(nodes.toArray(new SyntaxTreeNode[0]), begin, end);
         } else
-            return processExpression(data);
+            return processExpression(stream);
     }
 
 
-    private SyntaxTreeNode processExpression(Lexeme[] data) throws Exception {
-        if (data[pointer] instanceof LetLexeme) {
-            LetLexeme lexeme = (LetLexeme) data[pointer];
-            String variable = ((IdentifierLexeme) data[pointer + 1]).value;
-            pointer += 3;
-            AssignNode assign = new AssignNode(variable, processExpression(data), lexeme);
-            if ((data.length > pointer) && ((data[pointer] instanceof InLexeme))) {
-                pointer++;
-                return new InTreeNode(assign, processExpressionList(data));
+    private static SyntaxTreeNode processExpression(LexemeStream stream) throws LexemeTypeMismatchException {
+        if (stream.current() instanceof LetLexeme) {
+            LetLexeme lexeme = (LetLexeme) stream.current();
+            String variable = ((IdentifierLexeme) stream.next()).value;
+
+            stream.next();
+            if (!(stream.current() instanceof AssignLexeme))
+                throw new LexemeTypeMismatchException("AssignLexeme", stream.current());
+
+            stream.next();
+            AssignNode assign = new AssignNode(variable, processExpression(stream), lexeme);
+            if ((stream.haveNext()) && ((stream.current() instanceof InLexeme))) {
+                stream.next();
+                return new InTreeNode(assign, processExpressionList(stream));
             } else
                 return assign;
-        } else if (data[pointer] instanceof IfLexeme) {
-            IfLexeme lexeme = (IfLexeme) data[pointer];
-            pointer++;
-            SyntaxTreeNode comp = processExpression(data);
-            if (!(data[pointer] instanceof ThenLexeme))
-                throw new Exception("Syntax error! Expected: then");
-            pointer++;
-            SyntaxTreeNode thenExpr = processExpression(data);
-            if (!(data[pointer] instanceof ElseLexeme))
-                throw new Exception("Syntax error! Expected: else");
-            pointer++;
-            SyntaxTreeNode elseExpr = processExpression(data);
+        } else if (stream.current() instanceof IfLexeme) {
+            IfLexeme lexeme = (IfLexeme) stream.current();
+            stream.next();
+            SyntaxTreeNode comp = processExpression(stream);
+            if (!(stream.current() instanceof ThenLexeme))
+                throw new LexemeTypeMismatchException("ThenLexeme", stream.current());
+            stream.next();
+            SyntaxTreeNode thenExpr = processExpression(stream);
+            if (!(stream.current() instanceof ElseLexeme))
+                throw new LexemeTypeMismatchException("ElseLexeme", stream.current());
+            stream.next();
+            SyntaxTreeNode elseExpr = processExpression(stream);
             return new IfTreeNode(comp, thenExpr, elseExpr, lexeme);
-        } else if (data[pointer] instanceof FunLexeme) {
-            FunLexeme lexeme = (FunLexeme) data[pointer];
-            String argument = ((IdentifierLexeme) data[++pointer]).value;
-            if (!(data[++pointer] instanceof ArrowLexeme))
-                throw new Exception("Syntax error! Expected: ->");
-            pointer++;
+        } else if (stream.current() instanceof FunLexeme) {
+            FunLexeme lexeme = (FunLexeme) stream.current();
+            String argument = ((IdentifierLexeme) stream.next()).value;
+            if (!(stream.next() instanceof ArrowLexeme))
+                throw new LexemeTypeMismatchException("ArrowLexeme", stream.current());
+            stream.next();
 
-            SyntaxTreeNode expression = processExpression(data);
+            SyntaxTreeNode expression = processExpression(stream);
             return new FunctionDeclarationTreeNode(expression, argument, lexeme);
         } else {
-            SyntaxTreeNode res = processLogic(data);
-            if (isEndOfExpression(data[pointer]))
+            SyntaxTreeNode res = processLogic(stream);
+            if (isEndOfExpression(stream.current()))
                 return res;
             else {
-                return new ExpressionCallTreeNode(res, processExpression(data));
+                return new ExpressionCallTreeNode(res, processExpression(stream));
             }
         }
-        /*else
-            throw new Exception("Wrong expression!");*/
     }
 
-    private boolean isEndOfExpression(Lexeme lex) {
+    private static boolean isEndOfExpression(Lexeme lex) {
         if (lex instanceof SemicolonLexeme)
             return true;
         if (lex instanceof ThenLexeme)
@@ -96,96 +107,99 @@ public class SyntaxProcessor {
         return false;
     }
 
-    private SyntaxTreeNode processLogic(Lexeme[] data) throws Exception {
-        if (data[pointer] instanceof NotLexeme) {
-            Lexeme lexeme = data[pointer];
-            pointer++;
-            return new UnaryOperationTreeNode(UnaryOperationTreeNode.NOT, processLogic(data), lexeme);
+    private static SyntaxTreeNode processLogic(LexemeStream stream) throws LexemeTypeMismatchException {
+        if (stream.current() instanceof NotLexeme) {
+            Lexeme lexeme = stream.current();
+            stream.next();
+            return new UnaryOperationTreeNode(UnaryOperationTreeNode.NOT, processLogic(stream), lexeme);
         }
-        SyntaxTreeNode left = processComparison(data);
-        if (!(data[pointer] instanceof OperationLexeme)) {
+        SyntaxTreeNode left = processComparison(stream);
+        if (!(stream.current() instanceof OperationLexeme)) {
             return left;
         } else {
-            char op = ((OperationLexeme) data[pointer]).operation;
+            char op = ((OperationLexeme) stream.current()).operation;
             if (op == '&') {
-                pointer++;
-                return new BinaryOperationTreeNode(left, processLogic(data), op);
+                stream.next();
+                return new BinaryOperationTreeNode(left, processLogic(stream), op);
+            } else if (op == '|') {
+                stream.next();
+                return new BinaryOperationTreeNode(left, processLogic(stream), op);
             }
+            throw new LexemeTypeMismatchException("OperationLexeme - & or |", stream.current());
         }
 
-        throw new Exception("Syntax error!");
+
     }
 
-    private SyntaxTreeNode processComparison(Lexeme[] data) throws Exception {
-        SyntaxTreeNode left = processAlgebraic(data);
-        if (!(data[pointer] instanceof ComparisonLexeme)) {
+    private static SyntaxTreeNode processComparison(LexemeStream stream) throws LexemeTypeMismatchException {
+        SyntaxTreeNode left = processAlgebraic(stream);
+        if (!(stream.current() instanceof ComparisonLexeme)) {
             return left;
         }
-        ComparisonLexeme lex = (ComparisonLexeme) data[pointer];
-        pointer++;
-        return new CaparisonTreeNode(lex.type, left, processAlgebraic(data));
+        ComparisonLexeme lex = (ComparisonLexeme) stream.current();
+        stream.next();
+        return new CaparisonTreeNode(lex.type, left, processAlgebraic(stream));
     }
 
-    private SyntaxTreeNode processAlgebraic(Lexeme[] data) throws Exception {
-        return processAdditive(data);
+    private static SyntaxTreeNode processAlgebraic(LexemeStream stream) throws LexemeTypeMismatchException {
+        return processAdditive(stream);
     }
 
 
-    private SyntaxTreeNode processAdditive(Lexeme[] data) throws Exception {
-        if ((data[pointer] instanceof OperationLexeme) && (((OperationLexeme) data[pointer]).operation == '-')) {
-            Lexeme lexeme = data[pointer];
-            pointer++;
-            return new UnaryOperationTreeNode(UnaryOperationTreeNode.MINUS, processAdditive(data), lexeme);
+    private static SyntaxTreeNode processAdditive(LexemeStream stream) throws LexemeTypeMismatchException {
+        if ((stream.current() instanceof OperationLexeme) && (((OperationLexeme) stream.current()).operation == '-')) {
+            Lexeme lexeme = stream.current();
+            stream.next();
+            return new UnaryOperationTreeNode(UnaryOperationTreeNode.MINUS, processAdditive(stream), lexeme);
         }
 
-        SyntaxTreeNode left = processFraction(data);
-        if (!(data[pointer] instanceof OperationLexeme)) {
+        SyntaxTreeNode left = processFraction(stream);
+        if (!(stream.current() instanceof OperationLexeme)) {
             return left;
         }
-        OperationLexeme lex = (OperationLexeme) data[pointer];
+        OperationLexeme lex = (OperationLexeme) stream.current();
         if ((lex.operation == '+') || (lex.operation == '-')) {
-            pointer++;
-            return new BinaryOperationTreeNode(left, processAdditive(data), lex.operation);
+            stream.next();
+            return new BinaryOperationTreeNode(left, processAdditive(stream), lex.operation);
         } else
             return left;
     }
 
-    private SyntaxTreeNode processFraction(Lexeme[] data) throws Exception {
-        SyntaxTreeNode left = processValue(data);
-        if (!(data[pointer] instanceof OperationLexeme)) {
+    private static SyntaxTreeNode processFraction(LexemeStream stream) throws LexemeTypeMismatchException {
+        SyntaxTreeNode left = processValue(stream);
+        if (!(stream.current() instanceof OperationLexeme)) {
             return left;
         }
-        OperationLexeme lex = (OperationLexeme) data[pointer];
+        OperationLexeme lex = (OperationLexeme) stream.current();
         if ((lex.operation == '*') || (lex.operation == '/')) {
-            pointer++;
-            return new BinaryOperationTreeNode(left, processFraction(data), lex.operation);
+            stream.next();
+            return new BinaryOperationTreeNode(left, processFraction(stream), lex.operation);
         } else
             return left;
     }
 
-    private SyntaxTreeNode processValue(Lexeme[] data) throws Exception {
-        if (data[pointer] instanceof ValueLexeme) {
+    private static SyntaxTreeNode processValue(LexemeStream stream) throws LexemeTypeMismatchException {
+        if (stream.current() instanceof ValueLexeme) {
+            return new ValueTreeNode(((ValueLexeme) stream.current()).value, (ValueLexeme) stream.currentAndNext());
+        }
+        if (stream.current() instanceof IdentifierLexeme) {
 
-            return new ValueTreeNode(((ValueLexeme) data[pointer]).value, (ValueLexeme) data[pointer++]);
+            return new VariableTreeNode(((IdentifierLexeme) stream.current()).value, (IdentifierLexeme) stream.currentAndNext());
         }
-        if (data[pointer] instanceof IdentifierLexeme) {
-
-            return new VariableTreeNode(((IdentifierLexeme) data[pointer]).value, (IdentifierLexeme) data[pointer++]);
+        if (stream.current() instanceof OpenBracketLexeme) {
+            return processBracket(stream);
         }
-        if (data[pointer] instanceof OpenBracketLexeme) {
-            return processBracket(data);
-        }
-        throw new Exception("Syntax error!");
+        throw new LexemeTypeMismatchException("ValueLexeme or IdentifierLexeme or OpenBracketLexeme", stream.current());
     }
 
-    private SyntaxTreeNode processBracket(Lexeme[] data) throws Exception {
-        OpenBracketLexeme start = (OpenBracketLexeme) data[pointer];
-        pointer++;
-        SyntaxTreeNode res = processExpression(data);
-        if (!(data[pointer] instanceof CloseBracketLexeme))
-            throw new Exception("Syntax error!");
-        CloseBracketLexeme end = (CloseBracketLexeme) data[pointer];
-        pointer++;
+    private static SyntaxTreeNode processBracket(LexemeStream stream) throws LexemeTypeMismatchException {
+        OpenBracketLexeme start = (OpenBracketLexeme) stream.current();
+        stream.next();
+        SyntaxTreeNode res = processExpression(stream);
+        if (!(stream.current() instanceof CloseBracketLexeme))
+            throw new LexemeTypeMismatchException("CloseBracketLexeme", stream.current());
+        CloseBracketLexeme end = (CloseBracketLexeme) stream.current();
+        stream.next();
         return new BracketsTreeNode(res, start, end);
     }
 }

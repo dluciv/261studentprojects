@@ -2,6 +2,7 @@ package name.stepa.ml;
 
 import name.stepa.ml.controller.Controller;
 import name.stepa.ml.highlight.MlEditorKit;
+import name.stepa.ml.model.Environment;
 import name.stepa.ml.model.Project;
 import name.stepa.ml.model.interpreter.values.functions.AbstractFunctionValue;
 
@@ -17,7 +18,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Map;
 
-public class EditorWindow extends JFrame {
+/**
+ * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
+ */
+
+public class EditorWindow extends JFrame implements IMainWindow{
     private JPanel contentPane;
     private JButton buttonSave;
     private JButton buttonClose;
@@ -78,7 +83,14 @@ public class EditorWindow extends JFrame {
         try {
             Document d = logTextPane.getDocument();
             d.insertString(d.getLength(), s + "\n", null);
+
+
+            logTextPane.scrollRectToVisible(
+                    new Rectangle(0, logTextPane.getHeight() - 2, 1, 1));
+
         } catch (BadLocationException e) {
+        }
+        catch (Exception e) {
         }
     }
 
@@ -203,19 +215,22 @@ public class EditorWindow extends JFrame {
 
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.startStepByStep();
+                if (miStartStepByStep.isEnabled())
+                    controller.startStepByStep();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.stepInto();
+                if (miStepInto.isEnabled())
+                    controller.stepInto();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.step();
+                if (miStep.isEnabled())
+                    controller.step();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
@@ -318,21 +333,21 @@ public class EditorWindow extends JFrame {
 
         JMenu mInterpret = new JMenu("Interpret");
 
-        miStartStepByStep = new JMenuItem("Start step-by-step");
+        miStartStepByStep = new JMenuItem("[F5] Start step-by-step");
         miStartStepByStep.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.startStepByStep();
             }
         });
 
-        miStepInto = new JMenuItem("Step Into");
+        miStepInto = new JMenuItem("[F7] Step Into");
         miStepInto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.step();
             }
         });
 
-        miStep = new JMenuItem("Step");
+        miStep = new JMenuItem("[F9] Step");
         miStep.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.step();
@@ -385,9 +400,9 @@ public class EditorWindow extends JFrame {
         Toolkit tk = Toolkit.getDefaultToolkit();
         URL image = Thread.currentThread().getContextClassLoader().getResource("images/small_90.png");
         dialog.setIconImage(tk.getImage(image));
-        dialog.pack();
         dialog.setVisible(true);
-        dialog.setSize(700, 500);
+        dialog.setPreferredSize(new Dimension(700, 500));
+        dialog.pack();
         Toolkit toolkit = dialog.getToolkit();
         Dimension size = toolkit.getScreenSize();
         dialog.setLocation((size.width - dialog.getWidth()) / 2, (size.height - dialog.getHeight()) / 2);

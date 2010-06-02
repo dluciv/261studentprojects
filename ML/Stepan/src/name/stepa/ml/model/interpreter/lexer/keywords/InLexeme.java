@@ -3,11 +3,7 @@ package name.stepa.ml.model.interpreter.lexer.keywords;
 import name.stepa.ml.model.interpreter.lexer.Lexeme;
 
 /**
- * Created by IntelliJ IDEA.
- * User: m08ksa
- * Date: 11.05.2010
- * Time: 12:20:23
- * To change this template use File | Settings | File Templates.
+ * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
 public class InLexeme extends Lexeme {
     public InLexeme(int pos) {

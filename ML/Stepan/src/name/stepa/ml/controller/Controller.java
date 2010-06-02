@@ -2,6 +2,7 @@ package name.stepa.ml.controller;
 
 import name.stepa.ml.About;
 import name.stepa.ml.EditorWindow;
+import name.stepa.ml.IMainWindow;
 import name.stepa.ml.model.Environment;
 import name.stepa.ml.model.Project;
 import name.stepa.ml.model.interpreter.IInterpreterStateListener;
@@ -15,18 +16,14 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ex3NDR
- * Date: 24.05.2010
- * Time: 16:56:31
- * To change this template use File | Settings | File Templates.
+ * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
 public class Controller {
     public boolean isSaved = false;
 
-    EditorWindow window;
+    IMainWindow window;
 
-    public Controller(final EditorWindow window) {
+    public Controller(final IMainWindow window) {
         this.window = window;
         IO.setOutputInterface(new IO.IOutput() {
             public void println(String s) {
@@ -44,6 +41,10 @@ public class Controller {
                 window.beep();
                 window.removeHighlight();
                 window.writeToLog("Execution stopped.");
+            }
+
+            public void onExecutionStarted() {
+                window.writeToLog("Execution started.");
             }
         });
     }
@@ -95,7 +96,7 @@ public class Controller {
             updateVariables();
             window.enableInterpretControls();
         } catch (Exception e1) {
-            window.writeToLog(e1.getClass() + ":" + e1.getMessage());
+            window.writeToLog(e1.getClass().getSimpleName() + ":" + e1.getMessage());
             e1.printStackTrace();
         }
     }
@@ -137,7 +138,6 @@ public class Controller {
                 window.enableStartInterpretControls();
 
                 Environment.get().setSelectedFile(file);
-                Environment.get().setInterpretationProgram(text);
             } else {
                 window.disableMenuForFiles();
 
