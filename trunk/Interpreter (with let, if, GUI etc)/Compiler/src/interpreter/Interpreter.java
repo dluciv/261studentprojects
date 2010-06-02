@@ -5,6 +5,7 @@
  * (c) Яськов Сергей, 261, 2010;
  *
  */
+
 package interpreter;
 
 import ast.*;
@@ -16,8 +17,7 @@ import lexerandparser.Position;
 import tools.Tool;
 
 public class Interpreter extends Thread {
-
-    private final int SLEEP_TIME_MS = 200;
+    private final int SLEEP_TIME_MS = 25;
     private Expression input;
     private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
     private iController controller;
@@ -188,12 +188,16 @@ public class Interpreter extends Thread {
         Object leftOperand = interpretNode(node.getLeft()).getValue();
         Object rightOperand = interpretNode(node.getRight()).getValue();
 
+        compareTypesEquality(rightOperand, leftOperand);
+
         return new ValBoolean(leftOperand == rightOperand);
     }
 
     private Value interpret(LogInequality node) throws InterpreterStopedException { // !=;
         Object leftOperand = interpretNode(node.getLeft()).getValue();
         Object rightOperand = interpretNode(node.getRight()).getValue();
+
+        compareTypesEquality(rightOperand, leftOperand);
 
         return new ValBoolean(leftOperand != rightOperand);
     }
@@ -290,7 +294,13 @@ public class Interpreter extends Thread {
     }
 
     private Value interpret(ExApplication node) throws InterpreterStopedException {
-        ValClosing function = (ValClosing) interpretNode(node.getFunction());
+        ValClosing function = new ValClosing(0, new ArOperand(0, Interpreter.getCurPos()), environment);
+        try {
+            function = (ValClosing) interpretNode(node.getFunction());
+        }
+        catch (ClassCastException e) {
+            Tool.fixError("cast to function error", curPos);
+        }
         Value arg = interpretNode(node.getArgument());
 
         LinkedList<EnvironmentCell> tempEnvironment = environment;
@@ -308,11 +318,16 @@ public class Interpreter extends Thread {
     }
 
     // вспомогательные функции;
+    private void compareTypesEquality(Object firstOperand, Object secondOperand) {
+        if (firstOperand.getClass() != secondOperand.getClass()) {
+            Tool.fixError("type mismatch", curPos);
+        }
+    }
+
     private void printDebugInfo(Expression node) {
         if (isDebugging && !isStoped) {
             controller.printInOutputPane(node.getClass().getSimpleName() + "\n");
             controller.selectDebugLine(node.getPosition().getLine() + 1, node.getPosition().getColumn() + 1);
-            //System.out.println(node.getPosition().getLine() + " - " + node.getPosition().getColumn());
             waitKeypress();
         }
     }
