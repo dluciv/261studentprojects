@@ -271,7 +271,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Compiler");
         setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
-        setMinimumSize(new java.awt.Dimension(565, 389));
+        setMinimumSize(new java.awt.Dimension(500, 425));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -373,6 +373,8 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         jSplitPane.setRightComponent(jOutputPane);
         jOutputPane.getAccessibleContext().setAccessibleName("Output");
 
+        jStatusLabel.setBackground(new java.awt.Color(255, 51, 51));
+
         javax.swing.GroupLayout jButtonPanelLayout = new javax.swing.GroupLayout(jButtonPanel);
         jButtonPanel.setLayout(jButtonPanelLayout);
         jButtonPanelLayout.setHorizontalGroup(
@@ -381,38 +383,40 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
                 .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jButtonPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE))
-                    .addComponent(jStatusSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
-                    .addComponent(jStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+                        .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE))
+                    .addComponent(jStatusSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jButtonPanelLayout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(SaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(RunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(StepNextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(StopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jButtonPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(SaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
-                        .addComponent(RunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(74, 74, 74)
-                        .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52)
-                        .addComponent(StepNextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
-                        .addComponent(StopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jButtonPanelLayout.setVerticalGroup(
             jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jButtonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(StopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(RunButton, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                    .addComponent(SaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                    .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, Short.MAX_VALUE)
-                    .addComponent(StepNextButton, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(SaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DebugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StepNextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jStatusSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jStatusLabel))
+                .addComponent(jStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jMenuBar.setName(""); // NOI18N
@@ -477,6 +481,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
 
         RunMenu.setText("Run");
 
+        RunMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/icons/runprog.png"))); // NOI18N
         RunMenuItem.setText("Run");
         RunMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -485,6 +490,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         });
         RunMenu.add(RunMenuItem);
 
+        DebugMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/icons/debuggerStepInto.png"))); // NOI18N
         DebugMenuItem.setText("Debug");
         DebugMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -493,6 +499,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         });
         RunMenu.add(DebugMenuItem);
 
+        StepIntoMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/icons/Edit_Redo.png"))); // NOI18N
         StepIntoMenuItem.setText("Step Into");
         StepIntoMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -702,11 +709,12 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
     }
 
     private void debug() {
+        setStatus("Working in Debug regime");
         clearOutputPane();
         clearErrorPane();
-        String textPragramm = TextPane.getText();
+        String textPragramm = TextPane.getText();     
         controller.runProgram(textPragramm, true);
-        setStatus("Working in Debug regime");
+        
     }
 
     public static void main(String args[]) {

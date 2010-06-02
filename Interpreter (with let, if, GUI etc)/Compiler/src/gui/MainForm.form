@@ -355,6 +355,9 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="RunMenuItem">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/gui/icons/runprog.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Run"/>
               </Properties>
               <Events>
@@ -363,6 +366,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="DebugMenuItem">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/gui/icons/debuggerStepInto.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Debug"/>
               </Properties>
               <Events>
@@ -371,6 +377,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="StepIntoMenuItem">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/gui/icons/Edit_Redo.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Step Into"/>
               </Properties>
               <Events>
@@ -400,7 +409,7 @@
       <Font name="Times New Roman" size="10" style="0"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[565, 389]"/>
+      <Dimension value="[500, 425]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -452,21 +461,24 @@
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jSplitPane" pref="584" max="32767" attributes="0"/>
+                          <Component id="jSplitPane" pref="576" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="jStatusSeparator" alignment="1" pref="594" max="32767" attributes="0"/>
-                      <Component id="jStatusLabel" alignment="1" pref="594" max="32767" attributes="0"/>
+                      <Component id="jStatusSeparator" alignment="1" pref="586" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                          <Component id="SaveButton" min="-2" pref="67" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                          <Component id="RunButton" min="-2" pref="60" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                          <Component id="DebugButton" min="-2" pref="59" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                          <Component id="StepNextButton" min="-2" pref="58" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                          <Component id="StopButton" min="-2" pref="54" max="-2" attributes="0"/>
+                      </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="SaveButton" min="-2" pref="58" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                          <Component id="RunButton" min="-2" pref="60" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
-                          <Component id="DebugButton" min="-2" pref="78" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                          <Component id="StepNextButton" min="-2" pref="63" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                          <Component id="StopButton" min="-2" pref="54" max="-2" attributes="0"/>
+                          <Component id="jStatusLabel" pref="576" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -477,19 +489,19 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="StopButton" max="32767" attributes="1"/>
-                      <Component id="RunButton" alignment="0" pref="57" max="32767" attributes="1"/>
-                      <Component id="SaveButton" alignment="0" pref="57" max="32767" attributes="1"/>
-                      <Component id="DebugButton" alignment="0" pref="57" max="32767" attributes="1"/>
-                      <Component id="StepNextButton" alignment="0" pref="57" max="32767" attributes="1"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="SaveButton" min="-2" pref="63" max="-2" attributes="1"/>
+                      <Component id="DebugButton" min="-2" pref="63" max="-2" attributes="1"/>
+                      <Component id="StepNextButton" min="-2" pref="63" max="-2" attributes="1"/>
+                      <Component id="StopButton" min="-2" pref="63" max="-2" attributes="1"/>
+                      <Component id="RunButton" min="-2" pref="63" max="-2" attributes="1"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jSplitPane" pref="289" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jSplitPane" pref="281" max="32767" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jStatusSeparator" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jStatusLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="jStatusLabel" min="-2" pref="32" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -683,6 +695,11 @@
         <Component class="javax.swing.JSeparator" name="jStatusSeparator">
         </Component>
         <Component class="javax.swing.JLabel" name="jStatusLabel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="33" red="ff" type="rgb"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
