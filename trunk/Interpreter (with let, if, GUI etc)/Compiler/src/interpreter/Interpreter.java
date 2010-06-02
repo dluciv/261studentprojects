@@ -30,7 +30,6 @@ public class Interpreter extends Thread {
         input = parserOutput;
         this.isDebugging = isDebugging;
         isBlocked = true;
-        //isStoped = false;
         this.controller = controller;
     }
 
@@ -50,16 +49,13 @@ public class Interpreter extends Thread {
     public void run() {
         try {
             isStoped = false;
-            //printDebugInfo(input);
+            printDebugInfo(input);
             interpretNode(input);
             if (isDebugging) {
                 controller.printInOutputPane("end of source program;\n");
             }
-        } catch (InterpreterStopedException e) {
-            System.out.println("abourted");
-            controller.printInOutputPane("program was stoped by user;\n");
-        }
-        
+        } catch (InterpreterStopedException e) { }
+        controller.setInterpreterStateFalse();
     }
 
     private Value interpretNode(Expression node) throws InterpreterStopedException {
@@ -329,8 +325,7 @@ public class Interpreter extends Thread {
                 Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (!isStoped)
-            isBlocked = true;
+        isBlocked = true;
     }
 
     private EnvironmentCell findVar(int id) {

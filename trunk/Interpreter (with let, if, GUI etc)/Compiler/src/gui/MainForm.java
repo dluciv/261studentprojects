@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -569,7 +571,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_ExitMenuItem
 
         private void RunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunButtonActionPerformed
-            controller.stopInterpreter();
             run();
         }//GEN-LAST:event_RunButtonActionPerformed
 
@@ -587,7 +588,6 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_AboutActionPerformed
 
         private void DebugButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DebugButtonActionPerformed
-            controller.stopInterpreter();
             debug();
         }//GEN-LAST:event_DebugButtonActionPerformed
 
@@ -596,7 +596,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         }//GEN-LAST:event_StepNextButtonActionPerformed
 
         private void StopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopButtonActionPerformed
-            controller.stopInterpreter();
+            stopByButton();
         }//GEN-LAST:event_StopButtonActionPerformed
 
         private void SaveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveMenuItemActionPerformed
@@ -635,12 +635,10 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
 
         private void RunMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunMenuItemActionPerformed
             //jTextOutputPane.setText(controller.runProgram("print(4)", false));
-            controller.stopInterpreter();
             run();
         }//GEN-LAST:event_RunMenuItemActionPerformed
 
         private void DebugMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DebugMenuItemActionPerformed
-            controller.stopInterpreter();
             debug();
         }//GEN-LAST:event_DebugMenuItemActionPerformed
 
@@ -704,6 +702,7 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         clearOutputPane();
         clearErrorPane();
         String textProgramm = TextPane.getText();
+        stopRunningInterpreters();
         controller.runProgram(textProgramm, false);
         setStatus("Runing program...");
     }
@@ -712,9 +711,27 @@ public class MainForm extends javax.swing.JFrame implements IMainForm {
         setStatus("Working in Debug regime");
         clearOutputPane();
         clearErrorPane();
-        String textPragramm = TextPane.getText();     
+        String textPragramm = TextPane.getText();
+        stopRunningInterpreters();
         controller.runProgram(textPragramm, true);
-        
+    }
+
+    private void stopByButton() {
+        if (controller.interpreterIsRunning()) {
+                controller.stopInterpreter();
+                setTextInOutputPane("interpreter was stopped by user;");
+        }
+    }
+
+    private void stopRunningInterpreters() {
+        controller.stopInterpreter();
+        while (controller.interpreterIsRunning()) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public static void main(String args[]) {
