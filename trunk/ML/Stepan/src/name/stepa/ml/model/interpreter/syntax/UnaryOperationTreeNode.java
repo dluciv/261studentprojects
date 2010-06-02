@@ -3,11 +3,7 @@ package name.stepa.ml.model.interpreter.syntax;
 import name.stepa.ml.model.interpreter.lexer.Lexeme;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ex3NDR
- * Date: 09.05.2010
- * Time: 15:45:58
- * To change this template use File | Settings | File Templates.
+ * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
 public class UnaryOperationTreeNode extends SyntaxTreeNode {
     public static final int NOT = 1;

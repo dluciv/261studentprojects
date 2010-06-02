@@ -28,6 +28,10 @@ public class Context {
         }
     }
 
+    public void remove(String name) {
+        values.remove(name);
+    }
+
     public Context clone() {
         return new Context((TreeMap<String, Object>) this.values.clone());
     }

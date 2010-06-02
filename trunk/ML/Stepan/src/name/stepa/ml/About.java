@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
+ */
 public class About extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;

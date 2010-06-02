@@ -6,17 +6,14 @@ import name.stepa.ml.model.interpreter.IO;
 import name.stepa.ml.model.interpreter.InterpretationCore;
 import name.stepa.ml.model.interpreter.lexer.ComparisonLexeme;
 import name.stepa.ml.model.interpreter.lexer.Lexeme;
+import name.stepa.ml.model.interpreter.lexer.LexemeStream;
 import name.stepa.ml.model.interpreter.lexer.Lexer;
 import name.stepa.ml.model.interpreter.syntax.*;
 
 import java.util.Arrays;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ex3NDR
- * Date: 08.05.2010
- * Time: 18:24:20
- * To change this template use File | Settings | File Templates.
+ * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
 public class Interpreter {
 
@@ -25,14 +22,8 @@ public class Interpreter {
 
     public void setProgram(String program) throws Exception {
         if (program != null) {
-            IO.println("Expression:");
-            IO.println(program);
             Lexeme[] lexemes = new Lexer().parse(program);
-            IO.println("lexemes:");
-            IO.println(Arrays.toString(lexemes));
-            SyntaxTreeNode syntax = new SyntaxProcessor().process(lexemes);
-            IO.println("syntax:");
-            IO.println(syntax.toString());
+            SyntaxTreeNode syntax = new SyntaxProcessor().process(new LexemeStream(lexemes));
             core = new InterpretationCore(syntax);
             core.stateListener = stateListener;
         }

@@ -1,11 +1,7 @@
 package name.stepa.ml.model.interpreter.lexer;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ex3NDR
- * Date: 12.05.2010
- * Time: 15:07:26
- * To change this template use File | Settings | File Templates.
+ * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
 public class BeginLexeme extends Lexeme {
     public BeginLexeme() {

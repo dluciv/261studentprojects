@@ -3,11 +3,7 @@ package name.stepa.ml.model.interpreter.syntax;
 import name.stepa.ml.model.interpreter.lexer.keywords.InLexeme;
 
 /**
- * Created by IntelliJ IDEA.
- * User: m08ksa
- * Date: 11.05.2010
- * Time: 12:28:42
- * To change this template use File | Settings | File Templates.
+ * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
 public class InTreeNode extends SyntaxTreeNode {
     public AssignNode assignment;

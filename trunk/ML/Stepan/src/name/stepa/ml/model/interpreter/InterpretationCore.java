@@ -1,21 +1,15 @@
 package name.stepa.ml.model.interpreter;
 
+import name.stepa.ml.model.interpreter.exceptions.InvalidOperationException;
+import name.stepa.ml.model.interpreter.exceptions.TypeMismatchException;
 import name.stepa.ml.model.interpreter.execution.ExecutionStack;
 import name.stepa.ml.model.interpreter.execution.ExecutionStackItem;
-import name.stepa.ml.model.interpreter.values.ExecutionStateValue;
 import name.stepa.ml.model.interpreter.values.functions.*;
 import name.stepa.ml.model.interpreter.lexer.ComparisonLexeme;
 import name.stepa.ml.model.interpreter.syntax.*;
 
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-
 /**
- * Created by IntelliJ IDEA.
- * User: Ex3NDR
- * Date: 12.05.2010
- * Time: 16:17:33
- * To change this template use File | Settings | File Templates.
+ * Autor: Korshakov Stepan (korshakov.stepan@gmail.com)
  */
 public class InterpretationCore {
 
@@ -65,10 +59,12 @@ public class InterpretationCore {
             @Override
             public void run() {
                 try {
+                    if (stateListener != null)
+                        stateListener.onExecutionStarted();
                     interpret(root, false);
                     notifyStop();
                 } catch (Exception e) {
-                    IO.println(e.getClass() + ":" + e.getMessage());
+                    IO.println(e.getClass().getSimpleName() + ":" + e.getMessage());
                     if (stateListener != null)
                         stateListener.onExecutionStopped();
                     e.printStackTrace();
@@ -114,8 +110,8 @@ public class InterpretationCore {
         }
     }
 
-    public Object interpret(SyntaxTreeNode node, boolean breakExecution) throws Exception {
-        stack.add(new ExecutionStackItem(node, rootContext.clone()));
+    public Object interpret(SyntaxTreeNode node, boolean breakExecution) throws TypeMismatchException, InvalidOperationException {
+        stack.add(new ExecutionStackItem(node));
 
         if (breakExecution)
             breakInterpretation();
@@ -146,14 +142,14 @@ public class InterpretationCore {
         else if (node instanceof BracketsTreeNode)
             res = interpret((BracketsTreeNode) node);
         else
-            throw new Exception("Unsupported syntax tree item: " + node.getClass().getSimpleName());
+            throw new InvalidOperationException("Unsupported syntax tree item: " + node.getClass().getSimpleName());
 
-        rootContext = stack.pop().context;
+        //rootContext = stack.pop().context;
 
         return res;
     }
 
-    private Object interpret(ExpressionListTreeNode node) throws Exception {
+    private Object interpret(ExpressionListTreeNode node) throws TypeMismatchException, InvalidOperationException {
         Object res = null;
         for (SyntaxTreeNode i : node.nodes) {
             res = interpret(i, true);
@@ -162,45 +158,50 @@ public class InterpretationCore {
     }
 
 
-    private Object interpret(BracketsTreeNode node) throws Exception {
+    private Object interpret(BracketsTreeNode node) throws TypeMismatchException, InvalidOperationException {
         return interpret(node.inner, false);
     }
 
 
-    private Object interpret(ExpressionCallTreeNode node) throws Exception {
+    private Object interpret(ExpressionCallTreeNode node) throws TypeMismatchException, InvalidOperationException {
         Object expression = interpret(node.expression, false);
         if (expression instanceof AbstractFunctionValue) {
             return ((AbstractFunctionValue) expression).execute(interpret(node.argument, false));
         } else if (expression instanceof FunctionValue) {
             FunctionValue fun = (FunctionValue) expression;
             Object argument = interpret(node.argument, isStepInto);
+            Context oldCOntext = fun.context;
             this.rootContext = fun.context;
             this.rootContext.put(fun.argumentName, argument);
-            return interpret(fun.expression, isStepInto);
+            Object res = interpret(fun.expression, isStepInto);
+            this.rootContext = oldCOntext;
+            return res;
         } else
-            return expression;
+            throw new TypeMismatchException("Function", expression);
+        //return expression;
     }
 
-    private Object interpret(FunctionDeclarationTreeNode node) throws Exception {
+    private Object interpret(FunctionDeclarationTreeNode node) throws TypeMismatchException, InvalidOperationException {
         return new FunctionValue(rootContext.clone(), node.expression, node.argumentName, this);
     }
 
-    private Object interpret(IfTreeNode node) throws Exception {
+    private Object interpret(IfTreeNode node) throws TypeMismatchException, InvalidOperationException {
         if (getLogicValue(interpret(node.ifExpr, isStepInto))) {
             return interpret(node.thenExpr, isStepInto);
         } else
             return interpret(node.elseExpr, isStepInto);
     }
 
-    private Object interpret(InTreeNode node) throws Exception {
+    private Object interpret(InTreeNode node) throws TypeMismatchException, InvalidOperationException {
 
         Object assignVal = interpret(node.assignment.assignExpression, isStepInto);
         rootContext.put(node.assignment.variable, assignVal);
         Object res = interpret(node.expression, isStepInto);
+        rootContext.remove(node.assignment.variable);
         return res;
     }
 
-    private Object interpret(AssignNode node) throws Exception {
+    private Object interpret(AssignNode node) throws TypeMismatchException, InvalidOperationException {
         Object value = interpret(node.assignExpression, isStepInto);
         String name = node.variable;
         rootContext.put(name, value);
@@ -208,17 +209,17 @@ public class InterpretationCore {
         return value;
     }
 
-    private Object interpret(UnaryOperationTreeNode node) throws Exception {
+    private Object interpret(UnaryOperationTreeNode node) throws TypeMismatchException, InvalidOperationException {
         if (node.operation == UnaryOperationTreeNode.MINUS) {
             return -getAlgebraicValue(interpret(node.argument, false));
         } else if (node.operation == UnaryOperationTreeNode.NOT) {
             return !getLogicValue(interpret(node.argument, false));
         }
 
-        throw new Exception("Unsupported unary operation: " + node.operation);
+        throw new InvalidOperationException("Unsupported unary operation: " + node.operation);
     }
 
-    private Object interpret(CaparisonTreeNode node) throws Exception {
+    private Object interpret(CaparisonTreeNode node) throws TypeMismatchException, InvalidOperationException {
         if ((node.operation == ComparisonLexeme.E) || (node.operation == ComparisonLexeme.NE)) {
             Object left = interpret(node.left, false);
             Object right = interpret(node.right, false);
@@ -243,7 +244,7 @@ public class InterpretationCore {
             }
         }
 
-        throw new Exception("Invalid comparison operation: " + node.operation);
+        throw new InvalidOperationException("Invalid comparison operation: " + node.operation);
     }
 
     private Object interpret(ValueTreeNode node) {
@@ -254,7 +255,7 @@ public class InterpretationCore {
         return rootContext.get(node.variable);
     }
 
-    private Object interpret(BinaryOperationTreeNode node) throws Exception {
+    private Object interpret(BinaryOperationTreeNode node) throws TypeMismatchException, InvalidOperationException {
         if (isAlgebraicOperation(node.operation)) {
             Double left = getAlgebraicValue(interpret(node.left, false));
             Double right = getAlgebraicValue(interpret(node.right, false));
@@ -277,7 +278,7 @@ public class InterpretationCore {
                 return left ^ right;
         }
 
-        throw new Exception("Invalid binary operation: " + node.operation);
+        throw new InvalidOperationException("Invalid binary operation: " + node.operation);
     }
 
     private boolean isAlgebraicOperation(char c) {
@@ -293,23 +294,23 @@ public class InterpretationCore {
             return false;
     }
 
-    private Double getAlgebraicValue(Object value) throws Exception {
+    private Double getAlgebraicValue(Object value) throws TypeMismatchException, InvalidOperationException {
         if (value == null)
-            throw new Exception("Type mismatch! Expected Double, got NULL");
+            throw new TypeMismatchException("Double", value);
 
         if (value instanceof Double)
             return (Double) value;
 
-        throw new Exception("Type mismatch! Expected Double, got " + value.getClass().getSimpleName());
+        throw new TypeMismatchException("Double", value);
     }
 
-    private Boolean getLogicValue(Object value) throws Exception {
+    private Boolean getLogicValue(Object value) throws TypeMismatchException, InvalidOperationException {
         if (value == null)
-            throw new Exception("Type mismatch! Expected Boolean, got NULL");
+            throw new TypeMismatchException("Boolean", value);
 
         if (value instanceof Boolean)
             return (Boolean) value;
 
-        throw new Exception("Type mismatch! Expected Boolean, got " + value.getClass().getSimpleName());
+        throw new TypeMismatchException("Boolean", value);
     }
 }
