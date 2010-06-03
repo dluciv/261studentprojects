@@ -1,7 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ * (c) Яськов Сергей, 261, 2010;
+ *
  */
+
 package ast;
 
 import lexerandparser.Position;

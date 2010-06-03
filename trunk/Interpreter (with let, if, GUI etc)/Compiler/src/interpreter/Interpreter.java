@@ -21,6 +21,7 @@ public class Interpreter extends Thread {
     private Expression input;
     private LinkedList<EnvironmentCell> environment = new LinkedList<EnvironmentCell>();
     private iController controller;
+    private Value result;
     private boolean isDebugging;
     private static boolean isBlocked;
     private static boolean isStoped;
@@ -45,12 +46,16 @@ public class Interpreter extends Thread {
         return curPos;
     }
 
+    public Value getResult() {
+        return result;
+    }
+
     @Override
     public void run() {
         try {
             isStoped = false;
             printDebugInfo(input);
-            interpretNode(input);
+            result = interpretNode(input);
             if (isDebugging) {
                 controller.printInOutputPane("end of source program;\n");
             }
