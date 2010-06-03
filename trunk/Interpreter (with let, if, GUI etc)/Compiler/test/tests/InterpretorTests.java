@@ -1,6 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * 
+ * тесты для программы "Отлаживающий интерпретатор языка "Student ML"
+ *
+ * (c) Яськов Сергей, 261, 2010;
+ *
  */
 
 package interpretertests;
