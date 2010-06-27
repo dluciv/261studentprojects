@@ -37,6 +37,14 @@ public class Pair<L, R> {
         return equal(getLeft(), other.getLeft()) && equal(getRight(), other.getRight());
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + (this.left != null ? this.left.hashCode() : 0);
+        hash = 53 * hash + (this.right != null ? this.right.hashCode() : 0);
+        return hash;
+    }
+
     public static final boolean equal(Object o1, Object o2) {
         if (o1 == null) {
             return o2 == null;
@@ -44,11 +52,5 @@ public class Pair<L, R> {
         return o1.equals(o2);
     }
 
-    @Override
-    public int hashCode() {
-        int hLeft = getLeft() == null ? 0 : getLeft().hashCode();
-        int hRight = getRight() == null ? 0 : getRight().hashCode();
-
-        return hLeft + (57 * hRight);
-    }
+   
 }

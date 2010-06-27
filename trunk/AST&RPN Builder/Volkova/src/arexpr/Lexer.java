@@ -34,8 +34,6 @@ public enum lexems {Plus,Minus,Divide,Multiply,LeftBracket,RightBracket,Number,A
         if (CurrLexem.equals("/")) return new Pair<lexems, String>(lexems.Divide,"0");
         if (CurrLexem.equals("(")) return new Pair<lexems, String>(lexems.LeftBracket,"0");
         if (CurrLexem.equals(")")) return new Pair<lexems, String>(lexems.RightBracket,"0");
-        //if (CurrLexem.equals("=")) return new Pair<lexems, String>(lexems.Assigment,"0");
-        //if (CurrLexem.equals("print")) return new Pair<lexems, String>(lexems.Assigment,"0");
         if (CurrLexem.charAt(0) >= '0'&&CurrLexem.charAt(0)<='9') return new Pair<lexems, String>(lexems.Number,CurrLexem);
         if (CurrLexem.equals("/n")) return new Pair<lexems, String>(lexems.EOL,"/n");
 
@@ -62,7 +60,7 @@ public enum lexems {Plus,Minus,Divide,Multiply,LeftBracket,RightBracket,Number,A
         if (expression.length()>0){
             while (expression.charAt(0)>='0'&&expression.charAt(0)<='9'){
                 expr = expression.substring(1);
-                expression = expr;   //??? maybe not important
+                expression = expr; 
                 if (expression.length()==0||expression.charAt(0)<'0'||expression.charAt(0)>'9') return;
             }
             expr = expression.substring(1);
