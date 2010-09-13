@@ -1,86 +1,242 @@
 package arexprnew;
 
+//import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  *
  * @author kate
  */
 public class Lexer {
 
-    private String expression;
-    private int deletedCharsCount = 0;
+    private String program;
+    
+    private RepresLexem currLexeme;
+    private int currIndex = 0;
+    private int prevIndex = 0;
+    private int lineNumber = 0;
+    private int colomnNumber = 0;
+   // private ArrayList<CellOfTable> table = new ArrayList<CellOfTable>();
+    //private ArrayList<Lexeme> lexem = new ArrayList<Lexeme>();//posled. lexem
+    public HashMap<String, Lexeme> keyTable = new HashMap<String, Lexeme>() {
 
+        {
+            put("if", Lexeme.If);
+            put("then", Lexeme.Then);
+            put("else", Lexeme.Else);
+            put("let", Lexeme.Let);
+            put("in", Lexeme.In);
+            put("print", Lexeme.Print);
+            put("begin", Lexeme.Begin);
+            put("fun", Lexeme.Fun);
+            put("end", Lexeme.End);
+            put("->", Lexeme.OpFun);
+            put("rec", Lexeme.Rec);
+
+        }
+    };
+
+    /*
     public Lexer(String args) {
-        expression = args.replaceAll(" ", "");
+    expression = args.replaceAll(" ", "");
+    }
+     */
+    public Lexer(String program) {
+        this.program = program.replaceAll(" ", "");
     }
 
-    public int getDeletedCharsCount() {
-        return deletedCharsCount;
+    /*
+   
+    }
+     */
+    public boolean isKeyWord(String kw) {
+        return (keyTable.containsKey(kw));
     }
 
-    public Lexem getCurrentLexem() {
-        if (!hasNext()) {
-            return new Lexem(Lexem.Operation.END);
-        }
-
-        String currentLexem = getCurrentChar();
-
-        if (currentLexem.equals("+")) {
-            return new Lexem(Lexem.Operation.Plus);
-        }
-        if (currentLexem.equals("-")) {
-            return new Lexem(Lexem.Operation.Minus);
-        }
-        if (currentLexem.equals("*")) {
-            return new Lexem(Lexem.Operation.Multiply);
-        }
-        if (currentLexem.equals("/")) {
-            return new Lexem(Lexem.Operation.Divide);
-        }
-        if (currentLexem.equals("(")) {
-            return new Lexem(Lexem.Operation.LeftBracket);
-        }
-        if (currentLexem.equals(")")) {
-            return new Lexem(Lexem.Operation.RightBracket);
-        }
-
-        return new Lexem(Integer.parseInt(currentLexem));
+    public HashMap<String, Lexeme> getKeyTable(){
+        return keyTable;
+    }
+    
+   /* public ArrayList<Lexeme> getLexemString() {
+        return lexem;
     }
 
-    public void next() {
-        deletedCharsCount += getCurrentChar().length();
-        expression = expression.substring(getCurrentChar().length());
+    public ArrayList<CellOfTable> getTable() {
+        return table;
+    }
+*/
+    public RepresLexem getCurrLexeme() {
+        return currLexeme;
     }
 
-    public boolean hasNext() {
-        return !expression.isEmpty();
+    private boolean isId() {
+        return ((program.charAt(currIndex) >= 'a' && program.charAt(currIndex) <= 'z') || (program.charAt(currIndex) >= 'A' && program.charAt(currIndex) <= 'Z'));
     }
 
-    private String getNumber() {//get element by
-        String number = String.valueOf(expression.charAt(0));
+    private boolean isNumber() {
+        return (program.charAt(currIndex) >= '0' && program.charAt(currIndex) <= '9');
+    }
 
-        int i = 1;
+    //the end of expr
+    private boolean isEOL() {
+        return (currIndex == program.length());
+    }
+
+    private String getId() {
+
+        //valueof return zadannii ob'ekt
+        String id = String.valueOf(program.charAt(currIndex));
+
+        currIndex++;
         while (true) {
-            if (expression.length() > i && expression.charAt(i) >= '0' && expression.charAt(i) <= '9') {
-                number += String.valueOf(expression.charAt(i));
-                i++;
+            if (program.length() > currIndex && isId()) {
+                   id += String.valueOf(program.charAt(currIndex));
+                   currIndex++;
             } else {
                 break;
             }
         }
 
-        return number;
+        return id;
     }
 
-    private String getCurrentChar() {
-        if (expression.length() > 0) {
-            if (expression.charAt(0) >= '0' && expression.charAt(0) <= '9') {
-                return getNumber();
+    private Integer getNumber() {
+        String number = String.valueOf(program.charAt(currIndex));
+
+        currIndex++;
+        while (true) {
+            if (program.length() > currIndex && program.charAt(currIndex) >= '0' && program.charAt(currIndex) <= '9') {
+                number += String.valueOf(program.charAt(currIndex));
+                currIndex++;
             } else {
-                return "" + expression.charAt(0);
+                break;
             }
-        } else {
-            return "\n";
         }
+
+        return Integer.parseInt(number);//preobrazuet input string in zeloe chislo
+    }
+
+    private Position getPosition() {
+        return new Position(colomnNumber, lineNumber, prevIndex, currIndex - prevIndex);
+    }
+
+    public void next() {
+        char currChar = ' ';
+
+        if (currIndex < program.length()) {
+            currChar = program.charAt(currIndex);
+
+            while ((currChar == ' ' || currChar == '\r' || currChar == '\n') && currIndex < (program.length() - 1)) {
+                currIndex++;
+                if (currChar == '\n') {
+                    colomnNumber = 0;
+                    lineNumber++;
+                } else {
+                    colomnNumber++;
+                }
+                currChar = program.charAt(currIndex);
+            }
+        }
+
+        prevIndex = currIndex;
+
+        if (isEOL()) {
+            currLexeme = new RepresLexem(Lexeme.EOL, '0', getPosition());
+        } else {
+            switch (currChar) {//currChar sravnivaetcia c kazdim case
+                case '+':
+                    currIndex++;
+                    currLexeme = new RepresLexem(Lexeme.Plus, '+', getPosition());
+                    break;
+                case '*':
+                    currIndex++;
+                    currLexeme = new RepresLexem(Lexeme.Mult, '*', getPosition());
+                    break;
+                case '/':
+                    currIndex++;
+                    currLexeme = new RepresLexem(Lexeme.Div, '/', getPosition());
+                    break;
+                case '(':
+                    currIndex++;
+                    currLexeme = new RepresLexem(Lexeme.LeftBracket, '(', getPosition());
+                    break;
+                case ')':
+                    currIndex++;
+                    currLexeme = new RepresLexem(Lexeme.RightBracket, ')', getPosition());
+                    break;
+                case '=':
+                    currIndex++;
+                    currLexeme = new RepresLexem(Lexeme.Equal, '=', getPosition());
+                    break;
+                case ';':
+                    currIndex++;
+                    currLexeme = new RepresLexem(Lexeme.Semi, ';', getPosition());
+                    break;
+                case '!':
+                    currIndex++;
+                    currLexeme = new RepresLexem(Lexeme.Not, '!', getPosition());
+                    break;
+                case '-':
+                    if (program.charAt(currIndex + 1) == '>') {
+                        currIndex += 2;
+                        currLexeme = new RepresLexem(Lexeme.OpFun, '-', getPosition());//->
+                        break;
+                    } else {
+                        currIndex++;
+                        currLexeme = new RepresLexem(Lexeme.Minus, '-', getPosition());
+                        break;
+                    }
+                case '>':
+                    if (program.charAt(currIndex + 1) == '=') {
+                        currIndex += 2;
+                        currLexeme = new RepresLexem(Lexeme.GreaterEq, '>', getPosition());//>=
+                        break;
+                    } else {
+                        currIndex++;
+                        currLexeme = new RepresLexem(Lexeme.Greater, '>', getPosition());
+                        break;
+                    }
+                case '<':
+                    if (program.charAt(currIndex + 1) == '=') {
+                        currIndex += 2;
+                        currLexeme = new RepresLexem(Lexeme.LessEq, '<', getPosition());//<=
+                        break;
+                    } else {
+                        currIndex++;
+                        currLexeme = new RepresLexem(Lexeme.Less, '>', getPosition());
+                        break;
+                    }
+                case '&':
+
+                    if (program.charAt(currIndex + 1) == '&') {
+                        currIndex += 2;
+                        currLexeme = new RepresLexem(Lexeme.And, '&', getPosition());//&&
+                    }
+                    break;
+
+                case '|':
+                    if (program.charAt(currIndex + 1) == '|') {
+                        currIndex += 2;
+                        currLexeme = new RepresLexem(Lexeme.Or, '|', getPosition());//||
+                    }
+                    break;
+
+                default:
+                    if (isNumber()) {
+                        currLexeme = new RepresLexem(Lexeme.Number, getNumber(), getPosition());
+                    } else if (isId()) {
+                        String id = getId();
+                        if (isKeyWord(id)) {
+                            currLexeme = new RepresLexem(keyTable.get(id), id, getPosition());
+                        } else {
+                            currLexeme = new RepresLexem(Lexeme.Id, id, getPosition());
+                        }
+                    } else {
+                        currLexeme = new RepresLexem(Lexeme.UnKnown, '?', getPosition());
+                    }
+            }
+        }
+
     }
 }
 
