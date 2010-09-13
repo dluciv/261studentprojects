@@ -2,15 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package arexprnew;
 
 /**
  *
  * @author kate
  */
-public class Tree {
-    private Tree left, right;
+public interface Tree {
+}
+
+/*
+ * private Tree left, right;
     private Lexem lexem;
 
     public Tree(Lexem lexem, Tree left, Tree right) {
@@ -26,5 +28,4 @@ public class Tree {
         } else {
             return left+" "+right+" "+lexem;
         }
-    }
-}
+    }*/
