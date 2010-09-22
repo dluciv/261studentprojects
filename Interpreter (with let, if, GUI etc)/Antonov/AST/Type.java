@@ -21,6 +21,10 @@ public class Type extends Expression{
             this.type = type;
         }
 
+        public Types GetType(){
+            return type;
+        }
+
 	public Tree LeftNode(){
 		return Left;
 	}

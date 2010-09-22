@@ -16,6 +16,7 @@ public class Environment {
     }
 
     public void removeEnvironment() {
+
         environment.clear();
     }
 

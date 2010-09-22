@@ -9,21 +9,21 @@ public class Function extends Expression {
 
     private Identificator identifier;
     private Expression expression;
-    private Type type;
+   // private Type type;
 
-    public Function(Identificator new_identifier, Expression new_expression, Type new_type) {
+    public Function(Identificator new_identifier, Expression new_expression) {
         identifier = new_identifier;
         expression = new_expression;
-        type = new_type;
+        
     }
 
     public Identificator getIdentifier() {
         return identifier;
     }
 
-    public Type getType() {
-        return type;
-    }
+//    public Type getType() {
+//        return type;
+//    }
 
     public Expression getExpression() {
         return expression;
