@@ -7,14 +7,22 @@ package AST;
 public class Identificator extends Expression {
 
     private String identificator;
-    
-    public Identificator(String new_identificator){
+    private Type type;
+
+    public Identificator(String new_identificator) {
         identificator = new_identificator;
-       
     }
 
-    public String GetName(){
+    public Identificator(String new_identificator, Type new_type) {
+        identificator = new_identificator;
+        type = new_type;
+    }
+
+    public String GetName() {
         return identificator;
     }
 
+    public Type GetType() {
+        return type;
+    }
 }

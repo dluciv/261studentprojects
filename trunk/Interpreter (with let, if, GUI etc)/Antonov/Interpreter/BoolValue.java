@@ -2,19 +2,17 @@
  *  класс для булевых значений
  * Antonov Kirill(c), 2010
  */
-
 package Interpreter;
 
-public class BoolValue extends Value{
+public class BoolValue extends Value {
 
-	private boolean booleanVal;
+    private boolean booleanVal;
 
-    public BoolValue(boolean value){
-    	booleanVal = value;
+    public BoolValue(boolean value) {
+        booleanVal = value;
     }
 
-    public boolean getValue(){
+    public boolean getValue() {
         return booleanVal;
     }
-
 }

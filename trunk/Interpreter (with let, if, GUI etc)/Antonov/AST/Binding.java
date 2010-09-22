@@ -12,11 +12,11 @@ public class Binding extends Expression {
     private Expression value;
     private Type type;
 
-    public Binding(Identificator new_identifier, Expression new_expression, Expression new_value, Type new_type) {
+    public Binding(Identificator new_identifier, Expression new_expression, Expression new_value) {
         identifier = new_identifier;
         expression = new_expression;
         value = new_value;
-        type = new_type;
+        
     }
 
     public Identificator getIdentifier() {

@@ -44,4 +44,3 @@ public class Lexem {
         return position;
     }
 }
-

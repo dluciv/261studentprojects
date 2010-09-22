@@ -27,6 +27,7 @@ import AST.Plus;
 import AST.Print;
 import AST.Sequence;
 import AST.Tree;
+import AST.Types;
 
 import AST.equality;
 import AST.unequality;
@@ -91,6 +92,19 @@ public class Interpret {
     } catch (InterpreterException e) { }
     controler.setInterpreterStateFalse();
     }*/
+    private boolean EqualTypes(Types type, Value value) {
+        switch (type) {
+            case Bool:
+                return (value instanceof BoolValue);
+            case Int:
+                return (value instanceof IntValue);
+            case Unit:
+                return (value instanceof UnitValue);
+            default:
+                return false;
+        }
+    }
+
     private Value interpret(Binding binding) throws InterpreterException {
         Value old_value = null, val;
 
@@ -99,10 +113,32 @@ public class Interpret {
             old_value = interpret(binding.getExpression());
             val = interpret(binding.getValue());
             environment.removeIdentificator(binding.getIdentifier());
-            environment.addToEnvironment(binding.getIdentifier(), old_value);
+
+            if (EqualTypes(binding.getIdentifier().GetType().GetType(), old_value)) {
+                environment.addToEnvironment(binding.getIdentifier(), old_value);
+            } else {
+                throw new InterpreterException(null);
+            }
+
         } else {
             if (binding.getValue() != null) {
-                environment.addToEnvironment(binding.getIdentifier(), interpret(binding.getExpression()));
+                Value value = interpret(binding.getExpression());
+
+                if (value instanceof Closure) {
+                    if (((Closure) value).getFunction().getIdentifier().GetType().GetType()
+                            == binding.getIdentifier().GetType().GetType()) {
+                        environment.addToEnvironment(binding.getIdentifier(), value);
+                    } else {
+                        throw new InterpreterException(null);
+                    }
+                } else {
+                    if (EqualTypes(binding.getIdentifier().GetType().GetType(), value)) {
+                        environment.addToEnvironment(binding.getIdentifier(), value);
+                    } else {
+                        throw new InterpreterException(null);
+                    }
+                }
+
                 //environment.addToEnvironment(binding.getIdentifier(), interpret(binding.getValue()));
                 //printDebugInfo(binding.getValue());
                 val = interpret(binding.getValue());
@@ -346,6 +382,10 @@ public class Interpret {
                 val = interpret(fun.getExpression());
             }
         }
+
+//        if ((val instanceof BoolValue) && (fun.getIdentifier().GetType().RightNode() == Types.Bool)){
+//
+//        }
 
         return val;
     }

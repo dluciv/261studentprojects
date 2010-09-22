@@ -4,7 +4,6 @@
  * moves right on one symbol then asked
  * Antonov Kirill(c), 2010
  */
-
 package Lexer;
 
 public class LexerTwo {
@@ -12,7 +11,7 @@ public class LexerTwo {
     private String expression;
     //private LinkedList<Lexem> tokenStream = new LinkedList<Lexem>();
     private String[] dictionary = new String[]{"true", "false", "print", "let",
-        "if", "then", "else", "fun", "in", "begin", "end"};
+        "if", "then", "else", "fun", "int", "in", "begin", "end", "bool", "unit", "->>"};
     //private final char EOF = '\0';
     private int curr_index = 0;
     private int old_index = 0;
@@ -134,11 +133,11 @@ public class LexerTwo {
                     if (word.equals("print")) {
                         currLexem = new Lexem(LexemKind.PRINT, getPosition());
                     }
-                    if (word.equals("in")) {
-                        currLexem = new Lexem(LexemKind.IN, getPosition());
-                    }
                     if (word.equals("int")) {
                         currLexem = new Lexem(LexemKind.Int, getPosition());
+                    }
+                    if (word.equals("in")) {
+                        currLexem = new Lexem(LexemKind.IN, getPosition());
                     }
                     if (word.equals("bool")) {
                         currLexem = new Lexem(LexemKind.Bool, getPosition());
@@ -262,4 +261,3 @@ public class LexerTwo {
 
     }
 }
-

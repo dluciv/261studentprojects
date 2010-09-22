@@ -47,7 +47,6 @@ public class ParserTwo {
         lexer.moveNext();
     }
 
-    //Нужен ли метод ParseType() для типов??
     public Type ParseType() throws ParserException {
         return ParseTypeFunction();
     }
@@ -296,30 +295,45 @@ public class ParserTwo {
             if (lexer.getCurrent().getTypeLexem() != LexemKind.Identificator) {
                 throw new ParserException(lexer.getCurrent().getPosition());
             }
-            identificator = new Identificator(lexer.getCurrent().getStringLexem());
+            String idName = lexer.getCurrent().getStringLexem();
             lexer.moveNext();
             if (lexer.getCurrent().getTypeLexem() == LexemKind.Colon) {
                 lexer.moveNext();
-                type = ParseType();
+                identificator = new Identificator(idName, ParseType());
+            } else {
+                throw new ParserException(lexer.getCurrent().getPosition());
             }
+            //lexer.moveNext();
+            //if (lexer.getCurrent().getTypeLexem() == LexemKind.Colon) {
+            //    lexer.moveNext();
+            //    type = ParseType();
+            //}
             if (lexer.getCurrent().getTypeLexem() != LexemKind.ARROW) {
                 throw new ParserException(lexer.getCurrent().getPosition());
             }
             lexer.moveNext();
             expr = getExpression();
-            return new Function(identificator, expr, type);
+            return new Function(identificator, expr);
 
         } else if (lexer.getCurrent().getTypeLexem() == LexemKind.LET) {
             lexer.moveNext();
             if (lexer.getCurrent().getTypeLexem() != LexemKind.Identificator) {
                 throw new ParserException(lexer.getCurrent().getPosition());
             }
-            identificator = new Identificator(lexer.getCurrent().getStringLexem());
+            String idName = lexer.getCurrent().getStringLexem();
             lexer.moveNext();
             if (lexer.getCurrent().getTypeLexem() == LexemKind.Colon) {
                 lexer.moveNext();
-                type = ParseType();
+                identificator = new Identificator(idName, ParseType());
+            } else {
+                throw new ParserException(lexer.getCurrent().getPosition());
             }
+
+            //lexer.moveNext();
+            //if (lexer.getCurrent().getTypeLexem() == LexemKind.Colon) {
+            //    lexer.moveNext();
+            //    type = ParseType();
+            //}
             if (lexer.getCurrent().getTypeLexem() != LexemKind.equality) {
                 throw new ParserException(lexer.getCurrent().getPosition());
             }
@@ -330,10 +344,10 @@ public class ParserTwo {
             }
             lexer.moveNext();
             expr2 = getExpression();
-            return new Binding(identificator, expr, expr2, type);
+            return new Binding(identificator, expr, expr2);
         } else if (lexer.getCurrent().getTypeLexem() == LexemKind.PRINT) {
             lexer.moveNext();
-            type = ParseType();
+            //type = ParseType();
             return new Print(getExpression());
         } else if (lexer.getCurrent().getTypeLexem() == LexemKind.IF) {
             Expression else_expr = null;
@@ -363,3 +377,5 @@ public class ParserTwo {
         }
     }
 }
+
+//let fun x:Int->>Unit -> print x in x 2
