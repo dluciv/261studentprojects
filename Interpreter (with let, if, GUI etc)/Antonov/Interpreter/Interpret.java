@@ -31,6 +31,7 @@ import AST.Types;
 
 import AST.equality;
 import AST.unequality;
+import Exception.IncompatibleTypedException;
 import Exception.InterpreterException;
 import Exception.NullIDException;
 
@@ -117,7 +118,7 @@ public class Interpret {
             if (EqualTypes(binding.getIdentifier().GetType().GetType(), old_value)) {
                 environment.addToEnvironment(binding.getIdentifier(), old_value);
             } else {
-                throw new InterpreterException(null);
+                throw new IncompatibleTypedException(null);
             }
 
         } else {
@@ -129,13 +130,13 @@ public class Interpret {
                             == binding.getIdentifier().GetType().GetType()) {
                         environment.addToEnvironment(binding.getIdentifier(), value);
                     } else {
-                        throw new InterpreterException(null);
+                        throw new IncompatibleTypedException(null);
                     }
                 } else {
                     if (EqualTypes(binding.getIdentifier().GetType().GetType(), value)) {
                         environment.addToEnvironment(binding.getIdentifier(), value);
                     } else {
-                        throw new InterpreterException(null);
+                        throw new IncompatibleTypedException(null);
                     }
                 }
 
