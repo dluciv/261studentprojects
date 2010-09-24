@@ -1,5 +1,5 @@
 package AST;
 
 public enum Types {
- Int, Bool, Unit, Function
+ Int, Bool, Unit
 }
