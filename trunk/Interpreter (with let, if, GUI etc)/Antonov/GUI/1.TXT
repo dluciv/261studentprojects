@@ -1,1 +1,1 @@
-454 if 
+let f:int->>int = fun x:int->>int -> x+1 in f(0);

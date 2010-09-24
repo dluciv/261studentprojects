@@ -27,6 +27,7 @@ import AST.Plus;
 import AST.Print;
 import AST.Sequence;
 import AST.Tree;
+import AST.Type;
 import AST.Types;
 
 import AST.equality;
@@ -106,6 +107,10 @@ public class Interpret {
         }
     }
 
+    private boolean EqualFunTypes(Type left, Type right) {
+        return ((left.LeftNode() == right.LeftNode()) && (left.RightNode() == right.RightNode()));
+    }
+
     private Value interpret(Binding binding) throws InterpreterException {
         Value old_value = null, val;
 
@@ -115,7 +120,7 @@ public class Interpret {
             val = interpret(binding.getValue());
             environment.removeIdentificator(binding.getIdentifier());
 
-            if (EqualTypes(binding.getIdentifier().GetType().GetType(), old_value)) {
+            if (EqualTypes(binding.getIdentifier().GetType().LeftNode(), old_value)) {
                 environment.addToEnvironment(binding.getIdentifier(), old_value);
             } else {
                 throw new IncompatibleTypedException(null);
@@ -126,14 +131,16 @@ public class Interpret {
                 Value value = interpret(binding.getExpression());
 
                 if (value instanceof Closure) {
-                    if (((Closure) value).getFunction().getIdentifier().GetType().GetType()
-                            == binding.getIdentifier().GetType().GetType()) {
+                    if ((EqualFunTypes(((Closure) value).getFunction().getIdentifier().GetType(),
+                            binding.getIdentifier().GetType()))
+                            && (EqualTypes(((Closure) value).getFunction().getIdentifier().GetType().LeftNode(),
+                            interpret(((Application) binding.getValue()).getExpression())))) {
                         environment.addToEnvironment(binding.getIdentifier(), value);
                     } else {
                         throw new IncompatibleTypedException(null);
                     }
                 } else {
-                    if (EqualTypes(binding.getIdentifier().GetType().GetType(), value)) {
+                    if (EqualTypes(binding.getIdentifier().GetType().LeftNode(), value)) {
                         environment.addToEnvironment(binding.getIdentifier(), value);
                     } else {
                         throw new IncompatibleTypedException(null);
@@ -218,7 +225,8 @@ public class Interpret {
         } else if (interpret(id.getExpression()) instanceof BoolValue) {
             System.out.println(((BoolValue) interpret(id.getExpression())).getValue());
         }
-        return new Value();
+
+        return new UnitValue();
     }
 
     private Value interpret(Number number) throws InterpreterException {
@@ -336,15 +344,19 @@ public class Interpret {
 
     private Value interpret(If id) throws InterpreterException {
         Value val = interpret(id.getExpression());
+        Value ifVal = interpret(id.getIfExpression());
+        Value elseVal = interpret(id.getElseExpression());
+
+        if (ifVal.getClass() != elseVal.getClass()) {
+            throw new IncompatibleTypedException(null);
+        }
         if (((BoolValue) val).getValue()) {
             //printDebugInfo(id.getIfExpression());
-            return interpret(id.getIfExpression());
+            return ifVal;
         } else {
             //rintDebugInfo(id.getElseExpression());
-            return interpret(id.getElseExpression());
+            return elseVal;
         }
-
-
     }
 
     private Value interpret(Function id) throws InterpreterException {
@@ -387,7 +399,9 @@ public class Interpret {
 //        if ((val instanceof BoolValue) && (fun.getIdentifier().GetType().RightNode() == Types.Bool)){
 //
 //        }
-
+        if (!(EqualTypes(fun.getIdentifier().GetType().RightNode(), val))) {
+            throw new IncompatibleTypedException(null);
+        }
         return val;
     }
 

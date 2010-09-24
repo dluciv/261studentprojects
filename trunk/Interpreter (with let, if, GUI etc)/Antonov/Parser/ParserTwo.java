@@ -48,40 +48,28 @@ public class ParserTwo {
     }
 
     public Type ParseType() throws ParserException {
-        return ParseTypeFunction();
-    }
-
-    public Type ParseTypeFunction() throws ParserException {
-        Type temp = ParseSimpleType();
+        Types left = ParseSimpleType();
+        Types right = null;
+        lexer.moveNext();
         if (lexer.getCurrent().getTypeLexem() == LexemKind.TypeArrow) {
             lexer.moveNext();
-            Type fun = new Type(temp, ParseTypeFunction(), Types.Function);
-            return fun;
+            right = ParseSimpleType();
+            lexer.moveNext();
         }
-        return temp;
+        return new Type(left, right);
     }
 
-    public Type ParseSimpleType() throws ParserException {
-        Type temp = null;
-        if (lexer.getCurrent().getTypeLexem() == LexemKind.LeftBracket) {
-            lexer.moveNext();
-            temp = ParseTypeFunction();
-            if (lexer.getCurrent().getTypeLexem() != LexemKind.RightBracket) {
+    public Types ParseSimpleType() throws ParserException {
+        switch (lexer.getCurrent().getTypeLexem()) {
+            case Int:
+                return Types.Int;
+            case Bool:
+                return Types.Bool;
+            case Unit:
+                return Types.Unit;
+            default:
                 throw new ParserException(lexer.getCurrent().getPosition());
-                //error
-            }
-            lexer.moveNext();
-        } else if (lexer.getCurrent().getTypeLexem() == LexemKind.Int) {
-            temp = new Type(Types.Int);
-            lexer.moveNext();
-        } else if (lexer.getCurrent().getTypeLexem() == LexemKind.Bool) {
-            temp = new Type(Types.Bool);
-            lexer.moveNext();
-        } else if (lexer.getCurrent().getTypeLexem() == LexemKind.Unit) {
-            temp = new Type(Types.Unit);
-            lexer.moveNext();
         }
-        return temp;
     }
 
     public Sequence getSequence() throws ParserException {
@@ -257,7 +245,7 @@ public class ParserTwo {
         Expression expr = null;
         Expression expr2 = null;
         Identificator identificator = null;
-        Type type = null;
+        //Type type = null;
 
 
         if (lexer.getCurrent().getTypeLexem() == LexemKind.Number) {
@@ -377,5 +365,5 @@ public class ParserTwo {
         }
     }
 }
+//let f=fun x:Int->>Unit -> print x in x 2
 
-//let fun x:Int->>Unit -> print x in x 2

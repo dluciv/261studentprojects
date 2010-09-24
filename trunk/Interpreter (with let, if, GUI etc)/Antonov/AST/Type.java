@@ -7,28 +7,22 @@ package AST;
 
 public class Type extends Expression{
 
-        public Tree Left;
-        public Tree Right;
-        private Types type;
+        private Types Left;
+        private Types Right;
 
-	public Type(Tree left_node, Tree right_node, Types type){
+	public Type(Types left_node, Types right_node){
 		this.Left = left_node;
 		this.Right = right_node;
-                this.type = type;
 	}
         
         public Type (Types type){
-            this.type = type;
+            this.Left = type;
         }
 
-        public Types GetType(){
-            return type;
-        }
-
-	public Tree LeftNode(){
+	public Types LeftNode(){
 		return Left;
 	}
-	public Tree RightNode(){
+	public Types RightNode(){
 		return Right;
 	}
 
