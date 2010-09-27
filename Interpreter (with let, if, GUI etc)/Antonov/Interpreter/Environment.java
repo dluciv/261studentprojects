@@ -39,11 +39,7 @@ public class Environment {
     }
 
     public void removeIdentificator(Identifier ident) {
-        for (Identifier i : environment.keySet()) {
-            if (i.GetName().equals(ident.GetName())) {
-                environment.remove(i);
-            }
-        }
+        environment.remove(ident);
     }
 
     @Override
