@@ -2,42 +2,42 @@
  * This class receives the string, then by the recursive descent builds the program tree
  * Antonov Kirill(c), 2010
  */
-package Parser;
+package name.kirill.ml.parser;
 
-import Exception.ParserException;
-import AST.Begin;
-import AST.unequality;
-import AST.And;
-import AST.Application;
-import AST.BinaryOperation;
-import AST.Div;
-import AST.GE;
-import AST.Negate;
-import AST.Number;
-import AST.If;
-import AST.BooleanOp;
-import AST.Binding;
-import AST.Identifier;
-import AST.Or;
-import AST.equality;
-import AST.Expression;
-import AST.Function;
-import AST.Minus;
-import AST.Mult;
-import AST.Less;
-import AST.LE;
-import AST.Print;
-import AST.Plus;
-import AST.Greater;
-import AST.Sequence;
-import AST.Type;
-import AST.Types;
-import Exception.IncompatibleTypedException;
+import name.kirill.ml.exception.ParserException;
+import name.kirill.ml.ast.Begin;
+import name.kirill.ml.ast.Unequality;
+import name.kirill.ml.ast.And;
+import name.kirill.ml.ast.Application;
+import name.kirill.ml.ast.BinaryOperation;
+import name.kirill.ml.ast.Div;
+import name.kirill.ml.ast.GE;
+import name.kirill.ml.ast.Negate;
+import name.kirill.ml.ast.Number;
+import name.kirill.ml.ast.If;
+import name.kirill.ml.ast.BooleanOp;
+import name.kirill.ml.ast.Binding;
+import name.kirill.ml.ast.Identifier;
+import name.kirill.ml.ast.Or;
+import name.kirill.ml.ast.Equality;
+import name.kirill.ml.ast.Expression;
+import name.kirill.ml.ast.Function;
+import name.kirill.ml.ast.Minus;
+import name.kirill.ml.ast.Mult;
+import name.kirill.ml.ast.Less;
+import name.kirill.ml.ast.LE;
+import name.kirill.ml.ast.Print;
+import name.kirill.ml.ast.Plus;
+import name.kirill.ml.ast.Greater;
+import name.kirill.ml.ast.Sequence;
+import name.kirill.ml.ast.Type;
+import name.kirill.ml.ast.Types;
+import name.kirill.ml.exception.IncompatibleTypedException;
 
-import Exception.RightBracketException;
-import Exception.UnknownSymbolException;
-import Lexer.LexemKind;
-import Lexer.Lexer;
+import name.kirill.ml.exception.RightBracketException;
+import name.kirill.ml.exception.UnknownSymbolException;
+import name.kirill.ml.lexer.LexemKind;
+import name.kirill.ml.lexer.Lexer;
 
 public class Parser {
 
@@ -238,11 +238,11 @@ public class Parser {
             case unequality:
                 lexer.moveNext();
                 right = comparison();
-                return new unequality(left, right);
+                return new Unequality(left, right);
             case equality:
                 lexer.moveNext();
                 right = comparison();
-                return new equality(left, right);
+                return new Equality(left, right);
             case TRUE:
                 lexer.moveNext();
                 return new BooleanOp(true);

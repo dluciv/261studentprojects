@@ -1,12 +1,12 @@
 /*
- * equality node
+ * Equality node
  * Antonov Kirill(c), 2010
  */
-package AST;
+package name.kirill.ml.ast;
 
-public class equality extends BinaryOperation {
+public class Equality extends BinaryOperation {
 
-    public equality(Tree leftNode, Tree rightNode) {
+    public Equality(Tree leftNode, Tree rightNode) {
         super(leftNode, rightNode);
     }
 }

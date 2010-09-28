@@ -3,7 +3,7 @@
  * fun ident -> expr(ident)
  * Antonov Kirill(c), 2010
  */
-package AST;
+package name.kirill.ml.ast;
 
 public class Function extends Expression {
 

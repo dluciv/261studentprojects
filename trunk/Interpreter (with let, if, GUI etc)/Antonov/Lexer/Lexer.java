@@ -4,7 +4,7 @@
  * moves right on one symbol then asked
  * Antonov Kirill(c), 2010
  */
-package Lexer;
+package name.kirill.ml.lexer;
 
 public class Lexer {
 

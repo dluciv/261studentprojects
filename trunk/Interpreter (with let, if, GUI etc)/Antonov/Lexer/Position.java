@@ -4,7 +4,7 @@
  * общего текущего индекса в тексте и размера лексемы
  * Antonov Kirill(c), 2010
  */
-package Lexer;
+package name.kirill.ml.lexer;
 
 public class Position {
 
@@ -18,9 +18,6 @@ public class Position {
         this.row_num = row;
         this.curr_ind = ind;
         this.range = range;
-    }
-
-    public Position() {
     }
 
     public int getColNumBeg() {

@@ -2,36 +2,35 @@
  * интерпретирует программу, выводит на печать последнее значение
  * Antonov Kirill(c)
  */
-package Interpreter;
+package name.kirill.ml.interpreter;
 
-import AST.And;
-import AST.Application;
-import AST.Begin;
-import AST.Binding;
-import AST.BooleanOp;
-import AST.Div;
-import AST.Expression;
-import AST.Function;
-import AST.GE;
-import AST.Greater;
-import AST.Identifier;
-import AST.Number;
-import AST.If;
-import AST.LE;
-import AST.Less;
-import AST.Minus;
-import AST.Mult;
-import AST.Negate;
-import AST.Or;
-import AST.Plus;
-import AST.Print;
-import AST.Sequence;
-import AST.Tree;
-import AST.equality;
-import AST.unequality;
-import Exception.IncompatibleTypedException;
-import Exception.InterpreterException;
-import Exception.NullIDException;
+import name.kirill.ml.ast.And;
+import name.kirill.ml.ast.Application;
+import name.kirill.ml.ast.Begin;
+import name.kirill.ml.ast.Binding;
+import name.kirill.ml.ast.BooleanOp;
+import name.kirill.ml.ast.Div;
+import name.kirill.ml.ast.Expression;
+import name.kirill.ml.ast.Function;
+import name.kirill.ml.ast.GE;
+import name.kirill.ml.ast.Greater;
+import name.kirill.ml.ast.Identifier;
+import name.kirill.ml.ast.Number;
+import name.kirill.ml.ast.If;
+import name.kirill.ml.ast.LE;
+import name.kirill.ml.ast.Less;
+import name.kirill.ml.ast.Minus;
+import name.kirill.ml.ast.Mult;
+import name.kirill.ml.ast.Negate;
+import name.kirill.ml.ast.Or;
+import name.kirill.ml.ast.Plus;
+import name.kirill.ml.ast.Print;
+import name.kirill.ml.ast.Sequence;
+import name.kirill.ml.ast.Tree;
+import name.kirill.ml.ast.Equality;
+import name.kirill.ml.ast.Unequality;
+import name.kirill.ml.exception.InterpreterException;
+import name.kirill.ml.exception.NullIDException;
 
 public class Interpret {
 
@@ -104,10 +103,10 @@ public class Interpret {
             return interpret((Or) node);
         } else if (node instanceof And) {
             return interpret((And) node);
-        } else if (node instanceof equality) {
-            return interpret((equality) node);
-        } else if (node instanceof unequality) {
-            return interpret((unequality) node);
+        } else if (node instanceof Equality) {
+            return interpret((Equality) node);
+        } else if (node instanceof Unequality) {
+            return interpret((Unequality) node);
         } else if (node instanceof Identifier) {
             return interpret((Identifier) node);
         } else if (node instanceof If) {
@@ -182,7 +181,7 @@ public class Interpret {
     }
 
     //логические узлы
-    private Value interpret(equality id) throws InterpreterException {
+    private Value interpret(Equality id) throws InterpreterException {
         if (((IntValue) interpret(id.LeftNode())).getValue() == ((IntValue) interpret(id.RightNode())).getValue()) {
             return new BoolValue(true);
         } else {
@@ -191,7 +190,7 @@ public class Interpret {
 
     }
 
-    private Value interpret(unequality id) throws InterpreterException {
+    private Value interpret(Unequality id) throws InterpreterException {
         if (((IntValue) interpret(id.LeftNode())).getValue() != ((IntValue) interpret(id.RightNode())).getValue()) {
             return new BoolValue(true);
         } else {

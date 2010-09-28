@@ -2,7 +2,7 @@
  * sequence
  * Antonov Kirill(c), 2010
  */
-package AST;
+package name.kirill.ml.ast;
 
 import java.util.ArrayList;
 import java.util.List;

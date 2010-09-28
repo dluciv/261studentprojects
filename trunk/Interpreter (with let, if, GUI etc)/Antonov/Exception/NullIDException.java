@@ -2,9 +2,9 @@
  * Means - there is no value(or it is NULL) for the asked id in the environment
  * Antonov Kirill(c), 2010
  */
-package Exception;
+package name.kirill.ml.exception;
 
-import Lexer.Position;
+import name.kirill.ml.lexer.Position;
 
 public class NullIDException extends InterpreterException {
 

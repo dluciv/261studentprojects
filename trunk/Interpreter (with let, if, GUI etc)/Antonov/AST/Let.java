@@ -3,7 +3,7 @@
  * Let <clause> in  <expr>
  * Antonov Kirill(c), 2010
  */
-package AST;
+package name.kirill.ml.ast;
 
 public class Let extends Expression {
 

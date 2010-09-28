@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import name.kirill.ml.gui.Program;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
