@@ -3,9 +3,9 @@
  * содержит копию среды, до добавления в нее значения переменной из функции
  * Antonov Kirill(c), 2010
  */
-package Interpreter;
+package name.kirill.ml.interpreter;
 
-import AST.Function;
+import name.kirill.ml.ast.Function;
 
 public class Closure extends Value {
 

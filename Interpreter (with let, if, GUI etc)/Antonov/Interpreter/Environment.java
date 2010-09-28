@@ -2,9 +2,9 @@
  * хранит все переменные с их значениями
  * Antonov Kirill(c), 2010
  */
-package Interpreter;
+package name.kirill.ml.interpreter;
 
-import AST.Identifier;
+import name.kirill.ml.ast.Identifier;
 import java.util.HashMap;
 
 public class Environment {

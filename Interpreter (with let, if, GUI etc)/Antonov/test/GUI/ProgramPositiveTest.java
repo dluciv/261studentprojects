@@ -5,6 +5,7 @@
 
 package GUI;
 
+import name.kirill.ml.gui.Program;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,6 +20,16 @@ public class ProgramPositiveTest {
         assertEquals(expResult, result);
     }
 
+    @Test
+    public void testComplexLetFun() throws Exception {
+        String programContent = "let x :int= 3 in let f:(int->int) = fun y:(int->int) -> x + y in let x:int = 5 in f 4";
+        Program instance = new Program(programContent);
+        String expResult = "7";
+        String result = instance.Interpret();
+        assertEquals(expResult, result);
+    }
+
+    
     @Test
     public void testSimpleIf() throws Exception {
         String programContent = "if 4<5 then true else false";

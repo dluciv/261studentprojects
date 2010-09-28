@@ -2,9 +2,9 @@
  *  class for IncompatibleTypedException
  * Antonov Kirill(c), 2010
  */
-package Exception;
+package name.kirill.ml.exception;
 
-import Lexer.Position;
+import name.kirill.ml.lexer.Position;
 
 public class IncompatibleTypedException extends ParserException {
 

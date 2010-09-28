@@ -3,7 +3,7 @@
  * last expression is the scope of this identifier
  * Antonov Kirill(c), 2010
  */
-package AST;
+package name.kirill.ml.ast;
 
 public class Binding extends Expression {
 

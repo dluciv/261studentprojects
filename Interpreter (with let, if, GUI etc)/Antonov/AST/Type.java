@@ -2,7 +2,7 @@
  * общий класс для типов int, bool, unit..
  * Antonov Kirill(c), 2010
  */
-package AST;
+package name.kirill.ml.ast;
 
 public class Type extends Expression {
 

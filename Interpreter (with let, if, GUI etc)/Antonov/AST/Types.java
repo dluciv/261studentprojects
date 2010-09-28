@@ -1,4 +1,4 @@
-package AST;
+package name.kirill.ml.ast;
 
 public enum Types {
 
