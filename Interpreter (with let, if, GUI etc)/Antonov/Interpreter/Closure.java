@@ -5,6 +5,8 @@
  */
 package name.kirill.ml.interpreter;
 
+import name.kirill.ml.environment.Environment;
+import name.kirill.ml.environment.Value;
 import name.kirill.ml.ast.Function;
 
 public class Closure extends Value {

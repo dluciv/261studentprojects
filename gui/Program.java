@@ -5,14 +5,15 @@
 package name.kirill.ml.gui;
 
 import name.kirill.ml.ast.Sequence;
-import name.kirill.ml.interpreter.BoolValue;
-import name.kirill.ml.interpreter.IntValue;
+import name.kirill.ml.environment.BoolValue;
+import name.kirill.ml.environment.IntValue;
 import name.kirill.ml.exception.InterpreterException;
 import name.kirill.ml.exception.ParserException;
 import name.kirill.ml.interpreter.Interpret;
-import name.kirill.ml.interpreter.Value;
+import name.kirill.ml.environment.Value;
 import name.kirill.ml.lexer.Lexer;
 import name.kirill.ml.parser.Parser;
+import name.kirill.ml.types.TypeCheking;
 //import sun.awt.SunHints.Value;
 
 public class Program {
@@ -23,6 +24,7 @@ public class Program {
     public String Interpret() throws InterpreterException {
         interpreter = new Interpret();
 
+        (new TypeCheking()).Check(sequence);
         Value result = interpreter.interpret(sequence);
         interpreter.interpret(sequence);
 
