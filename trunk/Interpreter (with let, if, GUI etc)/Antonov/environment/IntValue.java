@@ -2,7 +2,7 @@
  *  класс для целых значений 
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.interpreter;
+package name.kirill.ml.environment;
 
 public class IntValue extends Value{
 

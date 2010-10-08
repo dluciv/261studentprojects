@@ -4,6 +4,11 @@
  */
 package name.kirill.ml.interpreter;
 
+import name.kirill.ml.environment.Environment;
+import name.kirill.ml.environment.BoolValue;
+import name.kirill.ml.environment.Value;
+import name.kirill.ml.environment.UnitValue;
+import name.kirill.ml.environment.IntValue;
 import name.kirill.ml.ast.And;
 import name.kirill.ml.ast.Application;
 import name.kirill.ml.ast.Begin;
