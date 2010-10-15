@@ -4,8 +4,6 @@
  */
 package name.kirill.ml.ast;
 
-import name.kirill.ml.types.Type;
-
 public class Identifier extends Expression {
 
     private String identificator;

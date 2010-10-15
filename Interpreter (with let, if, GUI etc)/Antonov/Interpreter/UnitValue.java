@@ -1,4 +1,4 @@
-package name.kirill.ml.environment;
+package name.kirill.ml.interpreter;
 
 public class UnitValue extends Value {
 
