@@ -30,70 +30,134 @@ import name.kirill.ml.ast.Print;
 import name.kirill.ml.ast.Plus;
 import name.kirill.ml.ast.Greater;
 import name.kirill.ml.ast.Sequence;
-import name.kirill.ml.environment.Environment;
+import name.kirill.ml.ast.Type;
+import name.kirill.ml.ast.Types;
 import name.kirill.ml.exception.IncompatibleTypedException;
 
 import name.kirill.ml.exception.RightBracketException;
 import name.kirill.ml.exception.UnknownSymbolException;
 import name.kirill.ml.lexer.LexemKind;
 import name.kirill.ml.lexer.Lexer;
-import name.kirill.ml.types.BasicType;
-import name.kirill.ml.types.CombinedType;
-import name.kirill.ml.types.TBasicType;
-import name.kirill.ml.types.Type;
 
 public class Parser {
 
     private Lexer lexer;
-    private Environment environment;
 
     public Parser(Lexer args) {
         lexer = args;
         lexer.moveNext();
-        environment = new Environment();
     }
 
     public Type ParseType() throws ParserException {
-        Type type;
+        Types left = null;
+        Types right = null;
 
         if (lexer.getCurrent().getTypeLexem() == LexemKind.LeftBracket) {
             lexer.moveNext();
-            
-            BasicType left = ParseBasicType();
+            left = ParseSimpleType();
             lexer.moveNext();
             if (lexer.getCurrent().getTypeLexem() == LexemKind.ARROW) {
                 lexer.moveNext();
             } else {
                 throw new ParserException(lexer.getCurrent().getPosition());
             }
-            BasicType right = ParseBasicType();
+            right = ParseSimpleType();
             lexer.moveNext();
             if (lexer.getCurrent().getTypeLexem() == LexemKind.RightBracket) {
                 lexer.moveNext();
             } else {
                 throw new ParserException(lexer.getCurrent().getPosition());
             }
-
-            type = new CombinedType(left, right);
         } else {
-            type = ParseBasicType();
+            left = ParseSimpleType();
             lexer.moveNext();
         }
-
-        return type;
+        return new Type(left, right);
     }
 
-    public BasicType ParseBasicType() throws ParserException {
+    public Types ParseSimpleType() throws ParserException {
         switch (lexer.getCurrent().getTypeLexem()) {
             case Int:
-                return new BasicType(TBasicType.Int);
+                return Types.Int;
             case Bool:
-                return new BasicType(TBasicType.Bool);
+                return Types.Bool;
             case Unit:
-                return new BasicType(TBasicType.Unit);
+                return Types.Unit;
             default:
                 throw new ParserException(lexer.getCurrent().getPosition());
         }
+    }
+
+    private Type checkTypes(Expression expr) throws IncompatibleTypedException {
+        Type left = null;
+        Type right = null;
+
+        if (expr.getClass() == Number.class) {
+            return new Type(Types.Int);
+        }
+        if (expr.getClass() == BooleanOp.class) {
+            return new Type(Types.Bool);
+        }
+        if (expr.getClass() == Print.class) {
+            return new Type(Types.Unit);
+        }
+        if (expr instanceof BinaryOperation) {
+            if ((((BinaryOperation) expr) instanceof Plus)
+                    || (((BinaryOperation) expr) instanceof Minus)
+                    || (((BinaryOperation) expr) instanceof Mult)
+                    || (((BinaryOperation) expr) instanceof Div)) {
+                return new Type(Types.Int);
+            } else {
+                return new Type(Types.Bool);
+            }
+        }
+        if (expr.getClass() == Negate.class) {
+            return new Type(Types.Bool);
+        }
+        if (expr.getClass() == Function.class) {
+            if (((((Function) expr).getIdentifier().GetType().RightNode()) != null)
+                    && (checkTypes(((Function) expr).getExpression())) != null) {
+                if ((((Function) expr).getIdentifier().GetType().RightNode())
+                        != checkTypes(((Function) expr).getExpression()).LeftNode()) {
+                    throw new IncompatibleTypedException(lexer.getCurrent().getPosition());
+                }
+            }
+            return (((Function) expr).getIdentifier().GetType());
+        }
+        if (expr.getClass() == Identifier.class) {
+            return (((Identifier) expr).GetType());
+        }
+        if (expr.getClass() == If.class) {
+            left = checkTypes(((If) expr).getIfExpression());
+            right = checkTypes(((If) expr).getElseExpression());
+        }
+        if (expr.getClass() == Application.class) {
+            return checkTypes(((Application) expr).getExpression());
+        }
+        if (expr.getClass() == Binding.class) {
+            left = checkTypes(((Binding) expr).getIdentifier());
+            right = checkTypes(((Binding) expr).getExpression());
+            if (((((Binding) expr).getIdentifier().GetType().RightNode()) != null)
+                    && ((checkTypes(((Binding) expr).getValue())) != null)) {
+                if ((((Binding) expr).getIdentifier().GetType().LeftNode())
+                        != checkTypes(((Binding) expr).getValue()).LeftNode()) {
+                    throw new IncompatibleTypedException(lexer.getCurrent().getPosition());
+                }
+            }
+        }
+
+
+        if ((left == null) || (right == null)) {
+            if (left == right) {
+                return new Type(Types.Unit);
+            }
+            throw new IncompatibleTypedException(null);
+        }
+        if (!((left.LeftNode() == right.LeftNode()) && (left.RightNode() == right.RightNode()))) {
+            throw new IncompatibleTypedException(null);
+        }
+
+        return new Type(Types.Unit);
     }
 
     public Sequence getSequence() throws ParserException, IncompatibleTypedException {
@@ -104,6 +168,10 @@ public class Parser {
             } else {
                 sequence.addStatement(getExpression());
             }
+        }
+
+        for (Expression expr : sequence.returnStatement()) {
+            checkTypes(expr);
         }
 
         return sequence;
@@ -298,13 +366,7 @@ public class Parser {
             lexer.moveNext();
             return left;
         } else if (lexer.getCurrent().getTypeLexem() == LexemKind.Identifier) {
-
-            String name = lexer.getCurrent().getStringLexem();
-            Type idType = environment.GetIdentifier(name).GetType();
-//            if (idType instanceof CombinedType){
-//                idType = ((CombinedType)idType).GetLeft();
-//            }
-            left = new Identifier(name, idType);
+            left = new Identifier(lexer.getCurrent().getStringLexem());
             lexer.moveNext();
             return left;
         } else if (lexer.getCurrent().getTypeLexem() == LexemKind.FUN) {
@@ -317,7 +379,6 @@ public class Parser {
             if (lexer.getCurrent().getTypeLexem() == LexemKind.Colon) {
                 lexer.moveNext();
                 identificator = new Identifier(idName, ParseType());
-                environment.addToEnvironment(identificator, null);
             } else {
                 throw new ParserException(lexer.getCurrent().getPosition());
             }
@@ -338,9 +399,7 @@ public class Parser {
             lexer.moveNext();
             if (lexer.getCurrent().getTypeLexem() == LexemKind.Colon) {
                 lexer.moveNext();
-
                 identificator = new Identifier(idName, ParseType());
-                environment.addToEnvironment(identificator, null);
             } else {
                 throw new ParserException(lexer.getCurrent().getPosition());
             }
