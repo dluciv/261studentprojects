@@ -2,11 +2,11 @@
  * Unequality node
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class Unequality extends BinaryOperation {
 
-    public Unequality(Tree leftNode, Tree rightNode) {
+    public Unequality(Expression leftNode, Expression rightNode) {
         super(leftNode, rightNode);
 
     }

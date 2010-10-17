@@ -3,7 +3,7 @@
  * fun ident -> expr(ident)
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class Function extends Expression {
 
@@ -23,4 +23,5 @@ public class Function extends Expression {
     public Expression getExpression() {
         return expression;
     }
+
 }

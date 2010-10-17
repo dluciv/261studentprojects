@@ -2,11 +2,11 @@
  * Less node
  *  Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class Less extends BinaryOperation {
 
-    public Less(Tree leftNode, Tree rightNode) {
+    public Less(Expression leftNode, Expression rightNode) {
         super(leftNode, rightNode);
     }
 }

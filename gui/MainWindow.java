@@ -3,7 +3,7 @@
  * Antonov Kirill(c), 2010
  */
 
-package name.kirill.ml.gui;
+package gui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -21,7 +21,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
-import name.kirill.ml.lexer.Position;
+import lexer.Position;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 
@@ -29,7 +29,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
 
      Program programm = null;
      Controler controler = null;
-     String current_file_path = "src/name/kirill/ml/gui/1.txt";
+     String current_file_path = "src/gui/1.txt";
      Boolean ifProgrammChanged = false;
      String file_programText = "";
 
@@ -110,7 +110,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
         aboutDialog.setModal(true);
         aboutDialog.setResizable(false);
 
-        imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/Image/DSC03282.jpg")));
+        imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/Image/DSC03282.jpg")));
 
         okAboutDButton.setText("OK");
         okAboutDButton.addActionListener(new java.awt.event.ActionListener() {
@@ -253,7 +253,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
         jScrollPane2.setViewportView(consoleTextField);
         consoleTextField.getAccessibleContext().setAccessibleName("consoleTextField");
 
-        saveFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i16/save.png"))); // NOI18N
+        saveFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i16/save.png"))); // NOI18N
         saveFileButton.setToolTipText("Save");
         saveFileButton.setFocusable(false);
         saveFileButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -265,7 +265,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
             }
         });
 
-        openRecentFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i16/folder doc_1.png"))); // NOI18N
+        openRecentFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i16/folder doc_1.png"))); // NOI18N
         openRecentFileButton.setToolTipText("Open File");
         openRecentFileButton.setMaximumSize(new java.awt.Dimension(31, 31));
         openRecentFileButton.setMinimumSize(new java.awt.Dimension(31, 31));
@@ -275,7 +275,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
             }
         });
 
-        executeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i24/play.png"))); // NOI18N
+        executeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i24/play.png"))); // NOI18N
         executeButton.setToolTipText("Run");
         executeButton.setMaximumSize(new java.awt.Dimension(31, 31));
         executeButton.setMinimumSize(new java.awt.Dimension(31, 31));
@@ -285,14 +285,14 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
             }
         });
 
-        DebugButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i24/stop_1.png"))); // NOI18N
+        DebugButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i24/stop_1.png"))); // NOI18N
         DebugButton.setToolTipText("Start Debug");
         DebugButton.setFocusable(false);
         DebugButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         DebugButton.setMaximumSize(new java.awt.Dimension(31, 31));
         DebugButton.setMinimumSize(new java.awt.Dimension(31, 31));
 
-        NextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i24/forward.png"))); // NOI18N
+        NextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i24/forward.png"))); // NOI18N
         NextButton.setToolTipText("Next Step");
         NextButton.setFocusable(false);
         NextButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -333,7 +333,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
 
         fileMenu.setText("File");
 
-        openMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i16/folder doc_1.png"))); // NOI18N
+        openMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i16/folder doc_1.png"))); // NOI18N
         openMenuItem.setText("Open");
         openMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -343,7 +343,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
         fileMenu.add(openMenuItem);
 
         saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i16/save.png"))); // NOI18N
+        saveMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i16/save.png"))); // NOI18N
         saveMenuItem.setText("Save");
         saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,7 +352,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
         });
         fileMenu.add(saveMenuItem);
 
-        saveAsMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i16/save as.png"))); // NOI18N
+        saveAsMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i16/save as.png"))); // NOI18N
         saveAsMenuItem.setText("Save As...");
         saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -361,11 +361,11 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
         });
         fileMenu.add(saveAsMenuItem);
 
-        recentFilesMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i16/file.png"))); // NOI18N
+        recentFilesMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i16/file.png"))); // NOI18N
         recentFilesMenuItem.setText("Recent Files");
         fileMenu.add(recentFilesMenuItem);
 
-        exitMEnuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i24/remove.png"))); // NOI18N
+        exitMEnuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i24/remove.png"))); // NOI18N
         exitMEnuItem.setText("Exit");
         exitMEnuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -378,7 +378,7 @@ public class MainWindow extends javax.swing.JFrame implements IMainView {
 
         helpMenu.setText("Help");
 
-        aboutMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/name/kirill/ml/gui/icons/i16/info.png"))); // NOI18N
+        aboutMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ml/gui/icons/i16/info.png"))); // NOI18N
         aboutMenuItem.setText("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

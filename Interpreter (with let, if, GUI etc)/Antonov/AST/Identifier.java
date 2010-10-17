@@ -2,7 +2,9 @@
  * Identifier node
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
+
+import types.Type;
 
 public class Identifier extends Expression {
 

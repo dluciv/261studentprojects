@@ -3,15 +3,15 @@
  * описана подсветка ключивых слов и дебаггера
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.gui;
+package gui;
 
-import name.kirill.ml.exception.IncompatibleTypedException;
-import name.kirill.ml.exception.InterpreterException;
-import name.kirill.ml.exception.NullIDException;
-import name.kirill.ml.exception.ParserException;
-import name.kirill.ml.exception.RightBracketException;
-import name.kirill.ml.exception.SemicolonException;
-import name.kirill.ml.exception.UnexpectedRightBracketException;
+import exception.IncompatibleTypedException;
+import exception.InterpreterException;
+import exception.NullIDException;
+import exception.ParserException;
+import exception.RightBracketException;
+import exception.SemicolonException;
+import exception.UnexpectedRightBracketException;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

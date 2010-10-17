@@ -2,7 +2,7 @@
  *класс лексема - хранит тип, позицию и значение (если есть) лексемы
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.lexer;
+package lexer;
 
 public class Lexem {
 

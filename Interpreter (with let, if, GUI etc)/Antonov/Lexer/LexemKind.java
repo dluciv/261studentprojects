@@ -2,7 +2,7 @@
  * списсок все возможных лекем
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.lexer;
+package lexer;
 
 public enum LexemKind {
 

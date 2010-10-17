@@ -2,9 +2,9 @@
  * хранит все переменные с их значениями
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.interpreter;
+package environment;
 
-import name.kirill.ml.ast.Identifier;
+import ml.ast.Identifier;
 import java.util.HashMap;
 
 public class Environment {
@@ -18,6 +18,15 @@ public class Environment {
     public void removeEnvironment() {
 
         environment.clear();
+    }
+
+    public Identifier GetIdentifier(String name){
+        for (Identifier i : environment.keySet()) {
+            if (i.GetName().equals(name)) {
+                return i;
+            }
+        }
+        return null;
     }
 
     public Value getValue(Identifier Identificator) {

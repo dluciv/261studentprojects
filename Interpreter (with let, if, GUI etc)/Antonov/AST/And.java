@@ -2,11 +2,11 @@
  * && operation for bool expressions
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class And extends BinaryOperation {
 
-    public And(Tree leftNode, Tree rightNode) {
+    public And(Expression leftNode, Expression rightNode) {
         super(leftNode, rightNode);
     }
 }

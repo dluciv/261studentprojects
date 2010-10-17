@@ -2,9 +2,9 @@
  * There was Left Bracket but we reached the EOL||then||in||end without Right Bracket
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.exception;
+package exception;
 
-import name.kirill.ml.lexer.Position;
+import lexer.Position;
 
 public class RightBracketException extends ParserException {
 

@@ -2,9 +2,9 @@
  * Интерфейс открывающий доступ констроллеру к функциям главного окна
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.gui;
+package gui;
 
-import name.kirill.ml.lexer.Position;
+import lexer.Position;
 import javax.swing.text.StyledDocument;
 
 public interface IMainView {

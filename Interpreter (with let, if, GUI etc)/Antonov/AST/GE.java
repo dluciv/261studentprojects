@@ -2,11 +2,11 @@
  * GreaterOrEqual Node 
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class GE extends BinaryOperation {
 
-    public GE(Tree leftNode, Tree rightNode) {
+    public GE(Expression leftNode, Expression rightNode) {
         super(leftNode, rightNode);
     }
 }

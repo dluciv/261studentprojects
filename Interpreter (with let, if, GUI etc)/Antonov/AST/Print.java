@@ -2,7 +2,7 @@
  * Print node Print <expr>
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class Print extends Expression {
 

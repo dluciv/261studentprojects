@@ -2,11 +2,11 @@
  * Greater node
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class Greater extends BinaryOperation {
 
-    public Greater(Tree leftNode, Tree rightNode) {
+    public Greater(Expression leftNode, Expression rightNode) {
         super(leftNode, rightNode);
     }
 }
