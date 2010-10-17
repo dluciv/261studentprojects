@@ -2,7 +2,7 @@
  * Number node
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class Number extends Expression {
 

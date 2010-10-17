@@ -2,31 +2,23 @@
  *General class for tree nodes: /,*,-,+ extends this class
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public abstract class BinaryOperation extends Expression {
 
-    public Tree Left;
-    public Tree Right;
+    public Expression Left;
+    public Expression Right;
 
-    public BinaryOperation(Tree left_node, Tree right_node) {
+    public BinaryOperation(Expression left_node, Expression right_node) {
         this.Left = left_node;
         this.Right = right_node;
     }
 
-    public Tree LeftNode() {
+    public Expression LeftNode() {
         return Left;
     }
 
-    public Tree RightNode() {
+    public Expression RightNode() {
         return Right;
     }
-    //public void print(){
-    //    Left.print();
-    //    System.out.print(" ");
-    //    Right.print();
-    //    System.out.print(" ");
-    //    printOperation();
-    //}
-    //abstract protected void printOperation();
 }

@@ -4,7 +4,7 @@
  * общего текущего индекса в тексте и размера лексемы
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.lexer;
+package lexer;
 
 public class Position {
 

@@ -2,11 +2,11 @@
  * Mult node
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class Mult extends BinaryOperation {
 
-    public Mult(Tree leftNode, Tree rightNode) {
+    public Mult(Expression leftNode, Expression rightNode) {
         super(leftNode, rightNode);
     }
 }

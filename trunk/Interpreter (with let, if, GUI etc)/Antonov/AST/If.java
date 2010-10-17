@@ -3,7 +3,7 @@
  * If <condition> then <if_expression> else <else_expr>
  *  Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class If extends Expression {
 
@@ -26,4 +26,5 @@ public class If extends Expression {
     public Expression getElseExpression() {
         return else_expr;
     }
+
 }

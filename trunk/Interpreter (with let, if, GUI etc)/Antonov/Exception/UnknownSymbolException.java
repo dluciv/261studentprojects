@@ -2,9 +2,9 @@
  * reached unknown to lexer symbol in the string
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.exception;
+package exception;
 
-import name.kirill.ml.lexer.Position;
+import lexer.Position;
 
 public class UnknownSymbolException extends ParserException{
 

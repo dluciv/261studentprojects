@@ -2,18 +2,18 @@
  * Содержит дерево программы, и функции обращающиеся к интерпретатору 
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.gui;
+package gui;
 
-import name.kirill.ml.ast.Sequence;
-import name.kirill.ml.environment.BoolValue;
-import name.kirill.ml.environment.IntValue;
-import name.kirill.ml.exception.InterpreterException;
-import name.kirill.ml.exception.ParserException;
-import name.kirill.ml.interpreter.Interpret;
-import name.kirill.ml.environment.Value;
-import name.kirill.ml.lexer.Lexer;
-import name.kirill.ml.parser.Parser;
-import name.kirill.ml.types.TypeCheking;
+import ast.Sequence;
+import environment.BoolValue;
+import environment.IntValue;
+import exception.InterpreterException;
+import exception.ParserException;
+import interpreter.Interpret;
+import environment.Value;
+import lexer.Lexer;
+import parser.Parser;
+import types.TypeCheckingVisitor;
 //import sun.awt.SunHints.Value;
 
 public class Program {
@@ -24,7 +24,9 @@ public class Program {
     public String Interpret() throws InterpreterException {
         interpreter = new Interpret();
 
-        (new TypeCheking()).Check(sequence);
+        TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
+        sequence.Accept(typeCheckingVisitor);
+
         Value result = interpreter.interpret(sequence);
         interpreter.interpret(sequence);
 

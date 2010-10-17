@@ -2,35 +2,40 @@
  * интерпретирует программу, выводит на печать последнее значение
  * Antonov Kirill(c)
  */
-package name.kirill.ml.interpreter;
+package interpreter;
 
-import name.kirill.ml.ast.And;
-import name.kirill.ml.ast.Application;
-import name.kirill.ml.ast.Begin;
-import name.kirill.ml.ast.Binding;
-import name.kirill.ml.ast.BooleanOp;
-import name.kirill.ml.ast.Div;
-import name.kirill.ml.ast.Expression;
-import name.kirill.ml.ast.Function;
-import name.kirill.ml.ast.GE;
-import name.kirill.ml.ast.Greater;
-import name.kirill.ml.ast.Identifier;
-import name.kirill.ml.ast.Number;
-import name.kirill.ml.ast.If;
-import name.kirill.ml.ast.LE;
-import name.kirill.ml.ast.Less;
-import name.kirill.ml.ast.Minus;
-import name.kirill.ml.ast.Mult;
-import name.kirill.ml.ast.Negate;
-import name.kirill.ml.ast.Or;
-import name.kirill.ml.ast.Plus;
-import name.kirill.ml.ast.Print;
-import name.kirill.ml.ast.Sequence;
-import name.kirill.ml.ast.Tree;
-import name.kirill.ml.ast.Equality;
-import name.kirill.ml.ast.Unequality;
-import name.kirill.ml.exception.InterpreterException;
-import name.kirill.ml.exception.NullIDException;
+import environment.Environment;
+import environment.BoolValue;
+import environment.Value;
+import environment.UnitValue;
+import environment.IntValue;
+import ast.And;
+import ast.Application;
+import ast.Begin;
+import ast.Binding;
+import ast.BooleanOperation;
+import ast.Div;
+import ast.Expression;
+import ast.Function;
+import ast.GE;
+import ast.Greater;
+import ast.Identifier;
+import ast.Number;
+import ast.If;
+import ast.LE;
+import ast.Less;
+import ast.Minus;
+import ast.Mult;
+import ast.Negate;
+import ast.Or;
+import ast.Plus;
+import ast.Print;
+import ast.Sequence;
+import ast.Tree;
+import ast.Equality;
+import ast.Unequality;
+import exception.InterpreterException;
+import exception.NullIDException;
 
 public class Interpret {
 
@@ -125,8 +130,8 @@ public class Interpret {
             return interpret((And) node);
         } else if (node instanceof Or) {
             return interpret((Or) node);
-        } else if (node instanceof BooleanOp) {
-            return interpret((BooleanOp) node);
+        } else if (node instanceof BooleanOperation) {
+            return interpret((BooleanOperation) node);
         } else if (node instanceof Begin) {
             return interpret((Begin) node);
         } else if (node instanceof Function) {
@@ -246,8 +251,8 @@ public class Interpret {
         return new BoolValue(((BoolValue) interpret(id.LeftNode())).getValue() && ((BoolValue) interpret(id.RightNode())).getValue());
     }
 
-    private Value interpret(BooleanOp id) throws InterpreterException {
-        return new BoolValue(((BooleanOp) id).getBool());
+    private Value interpret(BooleanOperation id) throws InterpreterException {
+        return new BoolValue(((BooleanOperation) id).getBool());
     }
 
     private Value interpret(Identifier id) throws NullIDException {

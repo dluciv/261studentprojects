@@ -2,13 +2,13 @@
  * Bool Values
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ml.ast;
 
-public class BooleanOp extends Expression {
+public class BooleanOperation extends Expression {
 
     boolean ifTrue = false;
 
-    public BooleanOp(boolean TRUE) {
+    public BooleanOperation(boolean TRUE) {
         ifTrue = TRUE;
     }
 

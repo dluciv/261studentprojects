@@ -3,7 +3,7 @@
  * expr expr
  * Antonov Kirill(c), 2010
  */
-package name.kirill.ml.ast;
+package ast;
 
 public class Application extends Expression {
 
